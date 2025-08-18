@@ -799,7 +799,7 @@ model OrganisationGlobalSettings {
 /// @zod.import(["import { ZDocumentEmailSettingsSchema } from '@documenso/lib/types/document-email';"])
 model TeamGlobalSettings {
   id   String @id
-  team Team
+  team Team?
 
   documentVisibility DocumentVisibility?
   documentLanguage   String?
