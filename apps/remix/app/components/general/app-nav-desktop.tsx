@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { Trans } from '@lingui/react/macro';
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
@@ -61,6 +60,56 @@ export const AppNavDesktop = ({
         href: `/t/${teamUrl}/templates`,
         label: msg`Templates`,
       },
+      {
+        href: `/t/${teamUrl}/files`,
+        label: msg`Files`,
+      },
+      {
+        href: `/t/${teamUrl}/contracts`,
+        label: msg`Contracts`,
+      },
+      {
+        href: `/t/${teamUrl}/events`,
+        label: msg`Events`,
+      },
+      {
+        href: `/t/${teamUrl}/chatspace`,
+        label: msg`Chat`,
+      },
+    ];
+  }, [currentTeam, organisations]);
+  const menuNavigationLinksMusic = useMemo(() => {
+    let teamUrl = currentTeam?.url || null;
+
+    if (!teamUrl && isPersonalLayout(organisations)) {
+      teamUrl = organisations[0].teams[0]?.url || null;
+    }
+
+    if (!teamUrl) {
+      return [];
+    }
+
+    return [
+      {
+        href: `/t/${teamUrl}/music`,
+        label: msg`Music`,
+      },
+      {
+        href: `/t/${teamUrl}/tuStreams`,
+        label: msg`TuStreams`,
+      },
+      {
+        href: `/t/${teamUrl}/releases`,
+        label: msg`Releases`,
+      },
+      {
+        href: `/t/${teamUrl}/distribution`,
+        label: msg`Distribution`,
+      },
+      {
+        href: `/t/${teamUrl}/isrc`,
+        label: msg`ISRC`,
+      },
     ];
   }, [currentTeam, organisations]);
 
@@ -102,12 +151,11 @@ export const AppNavDesktop = ({
 
       <Button
         variant="outline"
-        className="text-muted-foreground flex w-full max-w-96 items-center justify-between rounded-lg"
+        className="text-muted-foreground flex w-full max-w-28 items-center justify-between rounded-lg"
         onClick={() => setIsCommandMenuOpen(true)}
       >
         <div className="flex items-center">
           <Search className="mr-2 h-5 w-5" />
-          <Trans>Search</Trans>
         </div>
 
         <div>

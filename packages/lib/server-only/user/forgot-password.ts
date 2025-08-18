@@ -43,6 +43,7 @@ export const forgotPassword = async ({ email }: { email: string }) => {
       token,
       expiry: new Date(Date.now() + ONE_DAY),
       userId: user.id,
+      buyerId: '<BUYER_ID>',
     },
   });
 

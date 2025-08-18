@@ -4,7 +4,7 @@ export type LogoProps = SVGAttributes<SVGSVGElement>;
 
 export const BrandingLogo = ({ ...props }: LogoProps) => {
   return (
-    <span>LPM</span>
+    <span className="text-2xl font-bold">LPM</span>
     // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2248 320" {...props}>
     //   <path
     //     fill="currentColor"

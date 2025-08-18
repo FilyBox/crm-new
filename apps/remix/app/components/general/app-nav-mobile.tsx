@@ -5,7 +5,6 @@ import { Trans } from '@lingui/react/macro';
 import { ReadStatus } from '@prisma/client';
 import { Link } from 'react-router';
 
-import LogoImage from '@documenso/assets/logo.png';
 import { authClient } from '@documenso/auth/client';
 import { useSession } from '@documenso/lib/client-only/providers/session';
 import { isPersonalLayout } from '@documenso/lib/utils/organisations';
@@ -14,6 +13,8 @@ import { Sheet, SheetContent } from '@documenso/ui/primitives/sheet';
 import { ThemeSwitcher } from '@documenso/ui/primitives/theme-switcher';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
+
+import { BrandingLogo } from './branding-logo';
 
 export type AppNavMobileProps = {
   isMenuOpen: boolean;
@@ -83,16 +84,7 @@ export const AppNavMobile = ({ isMenuOpen, onMenuOpenChange }: AppNavMobileProps
   return (
     <Sheet open={isMenuOpen} onOpenChange={onMenuOpenChange}>
       <SheetContent className="flex w-full max-w-[350px] flex-col">
-        <Link to="/" onClick={handleMenuItemClick}>
-          <img
-            src={LogoImage}
-            alt="Documenso Logo"
-            className="dark:invert"
-            width={170}
-            height={25}
-          />
-        </Link>
-
+        <BrandingLogo className="h-6 w-auto" />
         <div className="mt-8 flex w-full flex-col items-start gap-y-4">
           {menuNavigationLinks.map(({ href, text }) => (
             <Link

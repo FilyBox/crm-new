@@ -32,8 +32,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@documenso/ui/primitives/dropdown-menu';
+import { ThemeSwitcher } from '@documenso/ui/primitives/theme-switcher';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
 
@@ -117,7 +119,7 @@ export const OrgMenuSwitcher = () => {
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
+    <DropdownMenu modal={false} open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button
           data-testid="menu-switcher"
@@ -144,7 +146,7 @@ export const OrgMenuSwitcher = () => {
         align="end"
         forceMount
       >
-        <div className="flex h-[400px] w-full divide-x">
+        <div className="flex h-[400px] w-full max-w-[640px] divide-x">
           {/* Organisations column */}
           <div className="flex w-full flex-col md:w-1/3">
             <div className="flex h-12 items-center border-b p-2">
@@ -205,14 +207,14 @@ export const OrgMenuSwitcher = () => {
           </div>
 
           {/* Teams column */}
-          <div className="hidden w-1/3 flex-col md:flex">
+          <div className="hidden w-1/3 max-w-[211.99px] flex-col md:flex">
             <div className="flex h-12 items-center border-b p-2">
               <h3 className="text-muted-foreground flex items-center px-2 text-sm font-medium">
                 <UsersIcon className="mr-2 h-3.5 w-3.5" />
                 <Trans>Teams</Trans>
               </h3>
             </div>
-            <div className="flex-1 space-y-1 overflow-y-auto p-1.5">
+            <div className="max-w-[211.99px] flex-1 space-y-1 overflow-y-auto p-1.5">
               <AnimateGenericFadeInOut key={displayedOrg ? 'displayed-org' : 'no-org'}>
                 {hoveredOrg ? (
                   hoveredOrg.teams.map((team) => (
@@ -248,7 +250,7 @@ export const OrgMenuSwitcher = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-muted-foreground my-12 flex items-center justify-center px-2 text-center text-sm">
+                  <div className="text-muted-foreground my-12 flex max-w-[211.99px] items-center justify-center px-2 text-center text-sm">
                     <Trans>Select an organisation to view teams</Trans>
                   </div>
                 )}
@@ -322,11 +324,17 @@ export const OrgMenuSwitcher = () => {
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                className="text-muted-foreground hover:!text-muted-foreground px-4 py-2"
+                className="text-destructive/90 hover:!text-destructive px-4 py-2"
                 onSelect={async () => authClient.signOut()}
               >
                 <Trans>Sign Out</Trans>
               </DropdownMenuItem>
+              <div
+                className={`flex ${currentTeam ? 'min-h-[80px]' : 'min-h-[140px]'} flex-col items-center justify-end gap-2`}
+              >
+                <DropdownMenuSeparator className="border-muted-foreground w-full" />
+                <ThemeSwitcher className="flex w-full items-center justify-center rounded-md py-1" />
+              </div>
             </div>
           </div>
         </div>

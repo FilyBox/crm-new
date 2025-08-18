@@ -11,6 +11,8 @@ const Sheet = SheetPrimitive.Root;
 
 const SheetTrigger = SheetPrimitive.Trigger;
 
+const SheetClose = SheetPrimitive.Close;
+
 const portalVariants = cva('fixed inset-0 z-[61] flex', {
   variants: {
     position: {
@@ -28,9 +30,7 @@ interface SheetPortalProps
     VariantProps<typeof portalVariants> {}
 
 const SheetPortal = ({ position, children, ...props }: SheetPortalProps) => (
-  <SheetPrimitive.Portal {...props}>
-    <div className={portalVariants({ position })}>{children}</div>
-  </SheetPrimitive.Portal>
+  <SheetPrimitive.Portal {...props}>{children}</SheetPrimitive.Portal>
 );
 
 SheetPortal.displayName = SheetPrimitive.Portal.displayName;
@@ -41,7 +41,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, children: _children, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      'bg-background/80 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in fixed inset-0 z-[61] backdrop-blur-sm transition-all duration-100',
+      'bg-background/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in fixed inset-0 z-[100] backdrop-blur-sm transition-all duration-100',
       className,
     )}
     {...props}
@@ -52,14 +52,16 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
-  'fixed z-[61] scale-100 gap-4 bg-background p-6 opacity-100 shadow-lg border',
+  'fixed z-50 scale-100 z-[200] gap-4 overflow-y-auto border bg-background p-6 opacity-100 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-300',
   {
     variants: {
       position: {
-        top: 'animate-in slide-in-from-top w-full duration-300',
-        bottom: 'animate-in slide-in-from-bottom w-full duration-300',
-        left: 'animate-in slide-in-from-left h-full duration-300',
-        right: 'animate-in slide-in-from-right h-full duration-300',
+        top: 'left-0 top-0 w-full data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
+        bottom:
+          'bottom-0 left-0 w-full data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
+        left: 'left-0 top-0 h-full data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left',
+        right:
+          'right-0 top-0 h-full data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
       },
       size: {
         content: '',
@@ -214,6 +216,7 @@ export {
   SheetTrigger,
   SheetContent,
   SheetHeader,
+  SheetClose,
   SheetFooter,
   SheetTitle,
   SheetDescription,

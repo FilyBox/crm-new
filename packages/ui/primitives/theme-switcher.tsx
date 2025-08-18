@@ -1,18 +1,40 @@
+import { useCallback } from 'react';
+
 import { motion } from 'framer-motion';
-import { Monitor, MoonStar, Sun } from 'lucide-react';
+import { MoonStar, Sun } from 'lucide-react';
 import { Theme, useTheme } from 'remix-themes';
 
 import { useIsMounted } from '@documenso/lib/client-only/hooks/use-is-mounted';
 
-export const ThemeSwitcher = () => {
+import { cn } from '../lib/utils';
+
+export const ThemeSwitcher = ({ className }: { className?: string }) => {
   const [theme, setTheme] = useTheme();
+
+  const applyTheme = useCallback(
+    (darkMode: boolean) => {
+      if (darkMode) {
+        document.startViewTransition(() => {
+          document.documentElement.classList.add('dark');
+          setTheme(Theme.DARK);
+        });
+      } else {
+        document.startViewTransition(() => {
+          document.documentElement.classList.remove('dark');
+          setTheme(Theme.LIGHT);
+        });
+      }
+    },
+    [setTheme],
+  );
+
   const isMounted = useIsMounted();
 
   return (
-    <div className="bg-muted flex items-center gap-x-1 rounded-full p-1">
+    <div className={cn('bg-muted flex items-center gap-x-1 rounded-full p-1', className)}>
       <button
         className="text-muted-foreground relative z-10 flex h-8 w-8 items-center justify-center rounded-full"
-        onClick={() => setTheme(Theme.LIGHT)}
+        onClick={() => applyTheme(false)}
       >
         {isMounted && theme === Theme.LIGHT && (
           <motion.div
@@ -25,7 +47,7 @@ export const ThemeSwitcher = () => {
 
       <button
         className="text-muted-foreground relative z-10 flex h-8 w-8 items-center justify-center rounded-full"
-        onClick={() => setTheme(Theme.DARK)}
+        onClick={() => applyTheme(true)}
       >
         {isMounted && theme === Theme.DARK && (
           <motion.div
@@ -37,7 +59,7 @@ export const ThemeSwitcher = () => {
         <MoonStar className="h-5 w-5" />
       </button>
 
-      <button
+      {/* <button
         className="text-muted-foreground relative z-10 flex h-8 w-8 items-center justify-center rounded-full"
         onClick={() => setTheme(null)}
       >
@@ -48,7 +70,7 @@ export const ThemeSwitcher = () => {
           />
         )}
         <Monitor className="h-5 w-5" />
-      </button>
+      </button> */}
     </div>
   );
 };

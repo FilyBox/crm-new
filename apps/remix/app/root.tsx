@@ -32,7 +32,7 @@ import { themeSessionResolver } from './storage/theme-session.server';
 import { appMetaTags } from './utils/meta';
 
 const { trackPageview } = Plausible({
-  domain: 'documenso.com',
+  // domain: 'documenso.com',
   trackLocalhost: false,
 });
 
@@ -128,7 +128,8 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         {/* Fix: https://stackoverflow.com/questions/21147149/flash-of-unstyled-content-fouc-in-firefox-only-is-ff-slow-renderer */}
         <script>0</script>
       </head>
-      <body>
+      <body id="root">
+        <div></div>
         <SessionProvider initialSession={session}>
           <TooltipProvider>
             <TrpcProvider>

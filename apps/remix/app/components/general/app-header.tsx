@@ -80,7 +80,7 @@ export const Header = ({ className, ...props }: HeaderProps) => {
           </Link>
         </Button>
 
-        <div className="md:ml-4">
+        <div className="md:-ml-2">
           {isPersonalLayout(organisations) ? <MenuSwitcher /> : <OrgMenuSwitcher />}
         </div>
 

@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@documenso/ui/primitives/dropdown-menu';
+import { ThemeSwitcher } from '@documenso/ui/primitives/theme-switcher';
 
 export const MenuSwitcher = () => {
   const { _ } = useLingui();
@@ -41,7 +42,7 @@ export const MenuSwitcher = () => {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           data-testid="menu-switcher"
@@ -110,6 +111,10 @@ export const MenuSwitcher = () => {
         >
           <Trans>Sign Out</Trans>
         </DropdownMenuItem>
+        <div className="flex min-h-[74px] flex-col items-center justify-end gap-2">
+          <DropdownMenuSeparator className="border-muted-foreground w-full" />
+          <ThemeSwitcher className="flex w-full items-center justify-center rounded-md py-1" />
+        </div>
       </DropdownMenuContent>
 
       <LanguageSwitcherDialog open={languageSwitcherOpen} setOpen={setLanguageSwitcherOpen} />
