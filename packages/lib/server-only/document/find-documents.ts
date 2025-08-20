@@ -315,6 +315,14 @@ const findDocumentsFilter = (
       userId: user.id,
       status: ExtendedDocumentStatus.DRAFT,
     }))
+    .with(ExtendedDocumentStatus.ERROR, () => ({
+      userId: user.id,
+      status: ExtendedDocumentStatus.ERROR,
+    }))
+    .with(ExtendedDocumentStatus.PROCESSING, () => ({
+      userId: user.id,
+      status: ExtendedDocumentStatus.PROCESSING,
+    }))
     .with(ExtendedDocumentStatus.PENDING, () => ({
       OR: [
         {
@@ -492,6 +500,56 @@ const findTeamDocumentsFilter = (
       if (teamEmail && filter.OR) {
         filter.OR.push({
           status: ExtendedDocumentStatus.DRAFT,
+          user: {
+            email: teamEmail,
+          },
+          OR: visibilityFilters,
+          folderId: folderId,
+        });
+      }
+
+      return filter;
+    })
+    .with(ExtendedDocumentStatus.ERROR, () => {
+      const filter: Prisma.DocumentWhereInput = {
+        OR: [
+          {
+            teamId: team.id,
+            status: ExtendedDocumentStatus.ERROR,
+            OR: visibilityFilters,
+            folderId: folderId,
+          },
+        ],
+      };
+
+      if (teamEmail && filter.OR) {
+        filter.OR.push({
+          status: ExtendedDocumentStatus.ERROR,
+          user: {
+            email: teamEmail,
+          },
+          OR: visibilityFilters,
+          folderId: folderId,
+        });
+      }
+
+      return filter;
+    })
+    .with(ExtendedDocumentStatus.PROCESSING, () => {
+      const filter: Prisma.DocumentWhereInput = {
+        OR: [
+          {
+            teamId: team.id,
+            status: ExtendedDocumentStatus.PROCESSING,
+            OR: visibilityFilters,
+            folderId: folderId,
+          },
+        ],
+      };
+
+      if (teamEmail && filter.OR) {
+        filter.OR.push({
+          status: ExtendedDocumentStatus.PROCESSING,
           user: {
             email: teamEmail,
           },

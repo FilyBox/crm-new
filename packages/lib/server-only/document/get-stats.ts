@@ -54,6 +54,8 @@ export const getStats = async ({
     [ExtendedDocumentStatus.COMPLETED]: 0,
     [ExtendedDocumentStatus.REJECTED]: 0,
     [ExtendedDocumentStatus.INBOX]: 0,
+    [ExtendedDocumentStatus.ERROR]: 0,
+    [ExtendedDocumentStatus.PROCESSING]: 0,
     [ExtendedDocumentStatus.ALL]: 0,
   };
 

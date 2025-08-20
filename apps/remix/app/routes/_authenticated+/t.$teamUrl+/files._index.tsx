@@ -1,0 +1,117 @@
+import { useEffect, useMemo } from 'react';
+
+import { Trans } from '@lingui/react/macro';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
+
+import { FolderType } from '@documenso/lib/types/folder-type';
+import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
+import { trpc } from '@documenso/trpc/react';
+import { ZFindDocumentsInternalRequestSchema } from '@documenso/trpc/server/document-router/schema';
+import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
+
+import { DocumentSearch } from '~/components/general/document/document-search';
+import { UploadDropzone } from '~/components/general/files/files-document-upload';
+import { FileDropZoneWrapper } from '~/components/general/files/files-drop-zone-wrapper';
+import { FolderGrid } from '~/components/general/folder/folder-grid';
+import { PeriodSelector } from '~/components/general/period-selector';
+import { FilesTable } from '~/components/tables/files-table';
+import { GeneralTableEmptyState } from '~/components/tables/general-table-empty-state';
+import { useCurrentTeam } from '~/providers/team';
+import { appMetaTags } from '~/utils/meta';
+
+export function meta() {
+  return appMetaTags('Files');
+}
+
+const ZSearchParamsSchema = ZFindDocumentsInternalRequestSchema.pick({
+  period: true,
+  page: true,
+  perPage: true,
+  query: true,
+});
+
+export default function FilesPage() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const team = useCurrentTeam();
+  const { folderId } = useParams();
+
+  const findDocumentSearchParams = useMemo(
+    () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
+    [searchParams],
+  );
+
+  const { data, isLoading, isLoadingError, refetch } = trpc.files.findFilesInternal.useQuery({
+    ...findDocumentSearchParams,
+  });
+
+  useEffect(() => {
+    void refetch();
+  }, [team?.url]);
+
+  return (
+    <FileDropZoneWrapper>
+      <div className="mx-auto w-full max-w-screen-xl px-4 md:px-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex gap-4 sm:flex-row sm:justify-end">
+            <UploadDropzone />
+            {/* <CreateFolderDialog createFrom={FolderType.FILE} /> */}
+          </div>
+        </div>
+
+        <FolderGrid type={FolderType.FILE} parentId={folderId ?? null} />
+
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-8">
+          <div className="flex flex-row items-center">
+            {team && (
+              <Avatar className="dark:border-border mr-3 h-12 w-12 border-2 border-solid border-white">
+                {team.avatarImageId && <AvatarImage src={formatAvatarUrl(team.avatarImageId)} />}
+                <AvatarFallback className="text-muted-foreground text-xs">
+                  {team.name.slice(0, 1)}
+                </AvatarFallback>
+              </Avatar>
+            )}
+
+            <h2 className="text-4xl font-semibold">
+              <Trans>Files</Trans>
+            </h2>
+          </div>
+
+          <div className="-m-1 flex flex-wrap gap-x-4 gap-y-6 overflow-hidden p-1">
+            <div className="flex w-48 flex-wrap items-center justify-between gap-x-2 gap-y-4">
+              <PeriodSelector />
+            </div>
+            <div className="flex w-48 flex-wrap items-center justify-between gap-x-2 gap-y-4">
+              <DocumentSearch initialValue={findDocumentSearchParams.query} />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <div>
+            {data && data.count === 0 ? (
+              <GeneralTableEmptyState status="ALL" />
+            ) : (
+              <FilesTable
+                data={data}
+                isLoading={isLoading}
+                isLoadingError={isLoadingError}
+                // onMoveDocument={(documentId) => {
+                //   setDocumentToMove(documentId);
+                //   setIsMovingDocument(true);
+                // }}
+                // onMultipleDelete={handleMultipleDelete}
+                // isMultipleDelete={isMultipleDelete}
+                // setIsMultipleDelete={setIsMultipleDelete}
+
+                // onAdd={openCreateDialog}
+                // onEdit={handleEdit}
+                // onDelete={handleDelete}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </FileDropZoneWrapper>
+  );
+}

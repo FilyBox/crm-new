@@ -213,7 +213,9 @@ export default function DocumentPage() {
                       />
                     );
                   })
-                  .exhaustive()}
+                  .otherwise(() => (
+                    <Trans>This document is not available</Trans>
+                  ))}
               </p>
 
               <div className="mt-4 border-t px-4 pt-4">

@@ -39,6 +39,7 @@ msgstr "“{documentName}” has been signed"
 msgid "“{documentName}” was signed by all signers"
 msgstr "“{documentName}” was signed by all signers"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "\"{documentTitle}\" has been successfully deleted"
 msgstr "\"{documentTitle}\" has been successfully deleted"
@@ -139,6 +140,7 @@ msgstr "{0} invited you to {recipientActionVerb} a document"
 
 #. placeholder {0}: remaining.documents
 #. placeholder {1}: quota.documents
+#: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 msgid "{0} of {1} documents remaining this month."
@@ -759,6 +761,7 @@ msgstr "Acknowledgment"
 
 #: apps/remix/app/components/tables/settings-security-activity-table.tsx
 #: apps/remix/app/components/tables/settings-public-profile-templates-table.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/document-logs-table.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
@@ -779,6 +782,7 @@ msgstr "Action"
 #: apps/remix/app/components/tables/organisation-groups-table.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
@@ -1024,6 +1028,7 @@ msgstr "All documents"
 msgid "All documents have been completed!"
 msgstr "All documents have been completed!"
 
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "All documents have been processed. Any new documents that are sent or received will show here."
 msgstr "All documents have been processed. Any new documents that are sent or received will show here."
@@ -1041,10 +1046,12 @@ msgstr "All email domains have been synced successfully"
 msgid "All Folders"
 msgstr "All Folders"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "All inserted signatures will be voided"
 msgstr "All inserted signatures will be voided"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "All recipients will be notified"
 msgstr "All recipients will be notified"
@@ -1172,6 +1179,7 @@ msgid "An error occurred while disabling the user."
 msgstr "An error occurred while disabling the user."
 
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
@@ -1281,6 +1289,11 @@ msgstr "An error occurred while updating your profile."
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 msgid "An error occurred while uploading your document."
 msgstr "An error occurred while uploading your document."
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+#: apps/remix/app/components/general/files/files-document-upload.tsx
+msgid "An error occurred while uploading your file."
+msgstr "An error occurred while uploading your file."
 
 #: apps/remix/app/components/general/generic-error-layout.tsx
 msgid "An unexpected error occurred."
@@ -1453,6 +1466,7 @@ msgstr "Are you sure you wish to delete this team?"
 #: apps/remix/app/components/dialogs/organisation-group-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-email-domain-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-email-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Are you sure?"
 msgstr "Are you sure?"
@@ -1664,6 +1678,7 @@ msgstr "by <0>{senderName}</0>"
 msgid "By accepting this request, you will be granting <0>{teamName}</0> access to:"
 msgstr "By accepting this request, you will be granting <0>{teamName}</0> access to:"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "By deleting this document, the following will occur:"
 msgstr "By deleting this document, the following will occur:"
@@ -1755,6 +1770,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-resend-dialog.tsx
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
@@ -2436,6 +2452,10 @@ msgstr "Created on"
 msgid "Created on {0}"
 msgstr "Created on {0}"
 
+#: apps/remix/app/components/tables/files-table.tsx
+msgid "CreatedAt"
+msgstr "CreatedAt"
+
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "CSV Structure"
 msgstr "CSV Structure"
@@ -2535,6 +2555,7 @@ msgstr "Default Signature Settings"
 msgid "Default Time Zone"
 msgstr "Default Time Zone"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "delete"
 msgstr "delete"
@@ -2549,6 +2570,7 @@ msgstr "delete"
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/components/tables/organisation-groups-table.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/general/folder/folder-card.tsx
@@ -2566,8 +2588,10 @@ msgstr "delete"
 #: apps/remix/app/components/dialogs/organisation-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/claim-delete-dialog.tsx
+#: packages/ui/primitives/expandable-card.tsx
 msgid "Delete"
 msgstr "Delete"
 
@@ -2680,6 +2704,10 @@ msgstr "Deleted"
 #: apps/remix/app/components/dialogs/account-delete-dialog.tsx
 msgid "Deleting account..."
 msgstr "Deleting account..."
+
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Deleting records..."
+msgstr "Deleting records..."
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 msgid "Details"
@@ -2960,6 +2988,10 @@ msgstr "Document draft"
 msgid "Document Duplicated"
 msgstr "Document Duplicated"
 
+#: apps/remix/app/components/general/document/document-status.tsx
+msgid "Document error"
+msgstr "Document error"
+
 #: packages/lib/utils/document-audit-logs.ts
 msgctxt "Audit log format"
 msgid "Document external ID updated"
@@ -3031,6 +3063,10 @@ msgstr "Document Preferences"
 msgid "Document preferences updated"
 msgstr "Document preferences updated"
 
+#: apps/remix/app/components/general/document/document-status.tsx
+msgid "Document processing"
+msgstr "Document processing"
+
 #: apps/remix/app/components/dialogs/document-resend-dialog.tsx
 msgid "Document re-sent"
 msgstr "Document re-sent"
@@ -3067,6 +3103,7 @@ msgctxt "Audit log format"
 msgid "Document signing auth updated"
 msgstr "Document signing auth updated"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Document signing process will be cancelled"
 msgstr "Document signing process will be cancelled"
@@ -3093,6 +3130,7 @@ msgstr "Document updated"
 msgid "Document updated successfully"
 msgstr "Document updated successfully"
 
+#: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "Document upload disabled due to unpaid invoices"
 msgstr "Document upload disabled due to unpaid invoices"
@@ -3116,6 +3154,7 @@ msgctxt "Audit log format"
 msgid "Document visibility updated"
 msgstr "Document visibility updated"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Document will be permanently deleted"
 msgstr "Document will be permanently deleted"
@@ -3171,8 +3210,10 @@ msgstr "Domain Name"
 msgid "Don't have an account? <0>Sign up</0>"
 msgstr "Don't have an account? <0>Sign up</0>"
 
+#: apps/remix/app/components/tables/table-action-bar.tsx
 #: apps/remix/app/components/tables/organisation-billing-invoices-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/general/share-document-download-button.tsx
@@ -3202,6 +3243,10 @@ msgstr "Download Original"
 msgid "Download Template CSV"
 msgstr "Download Template CSV"
 
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Downloading files..."
+msgstr "Downloading files..."
+
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/general/document/document-status.tsx
 #: packages/lib/constants/document.ts
@@ -3223,6 +3268,10 @@ msgstr "Drag & drop your PDF here."
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Drag and drop or click to upload"
 msgstr "Drag and drop or click to upload"
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+msgid "Drag and drop your file here"
+msgstr "Drag and drop your file here"
 
 #: apps/remix/app/components/general/template/template-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
@@ -3269,6 +3318,7 @@ msgstr "Duplicate on all pages"
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
+#: packages/ui/primitives/expandable-card.tsx
 msgid "Edit"
 msgstr "Edit"
 
@@ -3548,6 +3598,8 @@ msgstr "Enterprise"
 #: apps/remix/app/components/general/template/template-edit-form.tsx
 #: apps/remix/app/components/general/template/template-edit-form.tsx
 #: apps/remix/app/components/general/template/template-edit-form.tsx
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+#: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-signature-field.tsx
@@ -3572,6 +3624,7 @@ msgstr "Enterprise"
 #: apps/remix/app/components/general/document-signing/document-signing-checkbox-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
+#: apps/remix/app/components/general/document/document-status.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
@@ -3592,8 +3645,18 @@ msgstr "Enterprise"
 #: apps/remix/app/components/dialogs/admin-user-delete-dialog.tsx
 #: packages/ui/primitives/pdf-viewer.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
+#: packages/lib/constants/document.ts
 msgid "Error"
 msgstr "Error"
+
+#: apps/remix/app/components/tables/table-action-bar.tsx
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Error deleting records"
+msgstr "Error deleting records"
+
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Error downloading files"
+msgstr "Error downloading files"
 
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Error uploading file"
@@ -3635,6 +3698,18 @@ msgstr "Expired"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "Expires on {0}"
 msgstr "Expires on {0}"
+
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Export"
+msgstr "Export"
+
+#: apps/remix/app/components/tables/data-table-export-all-data.tsx
+msgid "Export All"
+msgstr "Export All"
+
+#: apps/remix/app/components/tables/data-table-export-all-data.tsx
+msgid "Exporting"
+msgstr "Exporting"
 
 #: packages/ui/primitives/template-flow/add-template-settings.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
@@ -3762,19 +3837,38 @@ msgid "Fields updated"
 msgstr "Fields updated"
 
 #: apps/remix/app/components/general/template/template-drop-zone-wrapper.tsx
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+#: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "File cannot be larger than {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgstr "File cannot be larger than {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
+msgid "File deleted"
+msgstr "File deleted"
+
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "File size exceeds the limit of {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
 msgstr "File size exceeds the limit of {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
 
+#: apps/remix/app/components/general/files/files-document-upload.tsx
+msgid "File uploaded"
+msgstr "File uploaded"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/files._index.tsx
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 msgid "Files"
 msgstr "Files"
+
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Files downloaded successfully"
+msgstr "Files downloaded successfully"
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+msgid "Files uploaded"
+msgstr "Files uploaded"
 
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
@@ -4057,7 +4151,9 @@ msgid "Hi, {userName} <0>({userEmail})</0>"
 msgstr "Hi, {userName} <0>({userEmail})</0>"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Hide"
 msgstr "Hide"
@@ -4694,6 +4790,7 @@ msgid "Move Template to Folder"
 msgstr "Move Template to Folder"
 
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 msgid "Move to Folder"
 msgstr "Move to Folder"
@@ -4801,6 +4898,7 @@ msgstr "Next field"
 msgid "No"
 msgstr "No"
 
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "No active drafts"
 msgstr "No active drafts"
@@ -4910,6 +5008,8 @@ msgstr "None"
 msgid "Not supported"
 msgstr "Not supported"
 
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "Nothing to do"
@@ -4972,6 +5072,7 @@ msgstr "On this page, you can create new Webhooks and manage the existing ones."
 msgid "On this page, you can edit the webhook and its settings."
 msgstr "On this page, you can edit the webhook and its settings."
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Once confirmed, the following will occur:"
 msgstr "Once confirmed, the following will occur:"
@@ -5376,6 +5477,7 @@ msgstr "Please confirm your email"
 msgid "Please confirm your email address"
 msgstr "Please confirm your email address"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Please contact support if you would like to revert this action."
 msgstr "Please contact support if you would like to revert this action."
@@ -5402,10 +5504,12 @@ msgstr "Please mark as viewed to complete."
 msgid "Please note that proceeding will remove direct linking recipient and turn it into a placeholder."
 msgstr "Please note that proceeding will remove direct linking recipient and turn it into a placeholder."
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Please note that this action is <0>irreversible</0>."
 msgstr "Please note that this action is <0>irreversible</0>."
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Please note that this action is <0>irreversible</0>. Once confirmed, this document will be permanently deleted."
 msgstr "Please note that this action is <0>irreversible</0>. Once confirmed, this document will be permanently deleted."
@@ -5465,6 +5569,7 @@ msgid "Please try again or contact our support."
 msgstr "Please try again or contact our support."
 
 #. placeholder {0}: `'${_(deleteMessage)}'`
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Please type {0} to confirm"
 msgstr "Please type {0} to confirm"
@@ -5509,6 +5614,11 @@ msgstr "Private templates can only be modified and viewed by you."
 #: apps/remix/app/components/dialogs/assistant-confirmation-dialog.tsx
 msgid "Proceed"
 msgstr "Proceed"
+
+#: apps/remix/app/components/general/document/document-status.tsx
+#: packages/lib/constants/document.ts
+msgid "Processing"
+msgstr "Processing"
 
 #: apps/remix/app/routes/_authenticated+/settings+/profile.tsx
 #: apps/remix/app/components/general/settings-nav-mobile.tsx
@@ -5658,6 +5768,7 @@ msgstr "Recipients"
 msgid "Recipients metrics"
 msgstr "Recipients metrics"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "Recipients will still retain their copy of the document"
 msgstr "Recipients will still retain their copy of the document"
@@ -5673,6 +5784,10 @@ msgstr "Record Type"
 #: apps/remix/app/components/dialogs/organisation-email-domain-records-dialog.tsx
 msgid "Record Value"
 msgstr "Record Value"
+
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Records deleted successfully"
+msgstr "Records deleted successfully"
 
 #: apps/remix/app/components/forms/2fa/recovery-code-list.tsx
 msgid "Recovery code copied"
@@ -5870,6 +5985,7 @@ msgstr "Restricted Access"
 msgid "Retention of Documents"
 msgstr "Retention of Documents"
 
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
 msgid "Retry"
 msgstr "Retry"
@@ -6515,6 +6631,7 @@ msgstr "Some signers have not been assigned a signature field. Please assign at 
 #: apps/remix/app/components/tables/organisation-member-invites-table.tsx
 #: apps/remix/app/components/tables/organisation-member-invites-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
@@ -6549,6 +6666,7 @@ msgstr "Some signers have not been assigned a signature field. Please assign at 
 #: apps/remix/app/components/dialogs/team-email-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/team-email-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-member-invite-dialog.tsx
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-resend-dialog.tsx
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
@@ -7091,6 +7209,7 @@ msgstr "The document owner has been notified of your decision. They may contact 
 msgid "The document was created but could not be sent to recipients."
 msgstr "The document was created but could not be sent to recipients."
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "The document will be hidden from your account"
 msgstr "The document will be hidden from your account"
@@ -7349,10 +7468,12 @@ msgstr ""
 "The webhook you are looking for may have been removed, renamed or may have never\n"
 "                    existed."
 
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "There are no active drafts at the current moment. You can upload a document to start drafting."
 msgstr "There are no active drafts at the current moment. You can upload a document to start drafting."
 
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "There are no completed documents yet. Documents that you have created or received will appear here once completed."
 msgstr "There are no completed documents yet. Documents that you have created or received will appear here once completed."
@@ -7381,6 +7502,13 @@ msgstr "This account has been disabled. Please contact support."
 msgid "This account has not been verified. Please verify your account before signing in."
 msgstr "This account has not been verified. Please verify your account before signing in."
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
+msgid "This action is <0>irreversible</0>. Once confirmed, this document will be permanently deleted."
+msgstr "This action is <0>irreversible</0>. Once confirmed, this document will be permanently deleted."
+
 #: apps/remix/app/components/dialogs/admin-user-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/admin-document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/account-delete-dialog.tsx
@@ -7403,6 +7531,7 @@ msgstr "This document can not be recovered, if you would like to dispute the rea
 msgid "This document cannot be changed"
 msgstr "This document cannot be changed"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "This document could not be deleted at this time. Please try again."
 msgstr "This document could not be deleted at this time. Please try again."
@@ -7442,6 +7571,10 @@ msgstr "This document is available in your Documenso account. You can view more 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 msgid "This document is currently a draft and has not been sent"
 msgstr "This document is currently a draft and has not been sent"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
+msgid "This document is not available"
+msgstr "This document is not available"
 
 #: apps/remix/app/components/general/legacy-field-warning-popover.tsx
 msgid "This document is using legacy field insertion, we recommend using the new field insertion method for more accurate results."
@@ -7599,6 +7732,7 @@ msgstr "Time Zone"
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
@@ -7919,6 +8053,8 @@ msgstr "Untitled Group"
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 #: packages/ui/primitives/document-flow/add-subject.tsx
 #: packages/ui/primitives/document-flow/add-subject.tsx
+#: packages/ui/primitives/document-flow/add-subject.tsx
+#: packages/ui/primitives/document-flow/add-subject.tsx
 msgid "Update"
 msgstr "Update"
 
@@ -8037,6 +8173,10 @@ msgstr "Upgrade <0>{0}</0> to {planName}"
 msgid "Upgrade your plan to upload more documents"
 msgstr "Upgrade your plan to upload more documents"
 
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+msgid "Upgrade your plan to upload more files"
+msgstr "Upgrade your plan to upload more files"
+
 #: packages/lib/constants/document.ts
 msgctxt "Upload signatute type"
 msgid "Upload"
@@ -8072,6 +8212,10 @@ msgstr "Upload custom document"
 msgid "Upload Document"
 msgstr "Upload Document"
 
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+msgid "Upload File"
+msgstr "Upload File"
+
 #: packages/ui/primitives/signature-pad/signature-pad-upload.tsx
 msgid "Upload Signature"
 msgstr "Upload Signature"
@@ -8106,9 +8250,17 @@ msgstr "Uploaded file is too small"
 msgid "Uploaded file not an allowed file type"
 msgstr "Uploaded file not an allowed file type"
 
+#: apps/remix/app/components/tables/files-table.tsx
+msgid "uploader"
+msgstr "uploader"
+
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 msgid "Uploading document..."
 msgstr "Uploading document..."
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+msgid "Uploading File..."
+msgstr "Uploading File..."
 
 #: apps/remix/app/components/general/template/template-drop-zone-wrapper.tsx
 msgid "Uploading template..."
@@ -8214,6 +8366,7 @@ msgstr "Verify your email address"
 msgid "Verify your email address to unlock all features."
 msgstr "Verify your email address to unlock all features."
 
+#: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "Verify your email to upload documents."
 msgstr "Verify your email to upload documents."
@@ -8235,6 +8388,7 @@ msgstr "Vertical"
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
+#: packages/ui/primitives/expandable-card.tsx
 msgid "View"
 msgstr "View"
 
@@ -8285,6 +8439,8 @@ msgid "View document"
 msgstr "View document"
 
 #: apps/remix/app/components/general/document-signing/document-signing-page-view.tsx
+#: packages/ui/primitives/document-flow/add-subject.tsx
+#: packages/ui/primitives/document-flow/add-subject.tsx
 #: packages/ui/primitives/document-flow/add-subject.tsx
 #: packages/ui/primitives/document-flow/add-subject.tsx
 #: packages/ui/primitives/document-flow/add-subject.tsx
@@ -8672,6 +8828,7 @@ msgid "We won't send anything to notify recipients."
 msgstr "We won't send anything to notify recipients."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "We're all empty"
 msgstr "We're all empty"
@@ -8796,6 +8953,7 @@ msgstr "Yes"
 msgid "You"
 msgstr "You"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "You are about to delete <0>\"{documentTitle}\"</0>"
 msgstr "You are about to delete <0>\"{documentTitle}\"</0>"
@@ -8813,6 +8971,7 @@ msgstr "You are about to delete the following team email from <0>{teamName}</0>.
 msgid "You are about to give all organisation members access to this team under their organisation role."
 msgstr "You are about to give all organisation members access to this team under their organisation role."
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "You are about to hide <0>\"{documentTitle}\"</0>"
 msgstr "You are about to hide <0>\"{documentTitle}\"</0>"
@@ -9007,6 +9166,10 @@ msgstr "You currently have no access to any teams within this organisation. Plea
 msgid "You do not have permission to create a token for this team"
 msgstr "You do not have permission to create a token for this team"
 
+#: apps/remix/app/components/tables/general-table-empty-state.tsx
+msgid "You don't have any data yet"
+msgstr "You don't have any data yet"
+
 #: packages/email/template-components/template-document-cancel.tsx
 msgid "You don't need to sign it anymore."
 msgstr "You don't need to sign it anymore."
@@ -9081,6 +9244,7 @@ msgstr "You have reached the maximum number of teams for your plan. Please conta
 msgid "You have reached your document limit for this month. Please upgrade your plan."
 msgstr "You have reached your document limit for this month. Please upgrade your plan."
 
+#: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 #: packages/ui/primitives/document-dropzone.tsx
 msgid "You have reached your document limit."
@@ -9089,6 +9253,11 @@ msgstr "You have reached your document limit."
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "You have reached your document limit. <0>Upgrade your account to continue!</0>"
 msgstr "You have reached your document limit. <0>Upgrade your account to continue!</0>"
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+#: apps/remix/app/components/general/files/files-document-upload.tsx
+msgid "You have reached your file limit for this month. Please upgrade your plan."
+msgstr "You have reached your file limit for this month. Please upgrade your plan."
 
 #: packages/email/templates/document-rejection-confirmed.tsx
 msgid "You have rejected the document '{documentName}'"
@@ -9316,6 +9485,19 @@ msgstr "Your email preferences have been updated"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "Your existing tokens"
 msgstr "Your existing tokens"
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+#: apps/remix/app/components/general/files/files-document-upload.tsx
+msgid "Your file failed to upload."
+msgstr "Your file failed to upload."
+
+#: apps/remix/app/components/general/files/files-document-upload.tsx
+msgid "Your file has been uploaded successfully."
+msgstr "Your file has been uploaded successfully."
+
+#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
+msgid "Your files have been uploaded successfully."
+msgstr "Your files have been uploaded successfully."
 
 #: apps/remix/app/components/forms/reset-password.tsx
 #: apps/remix/app/components/forms/password.tsx

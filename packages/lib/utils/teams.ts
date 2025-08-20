@@ -34,6 +34,38 @@ export const formatTemplatesPath = (teamUrl: string) => {
   return `/t/${teamUrl}/templates`;
 };
 
+export const formatFilesPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/files` : '/files';
+};
+
+export const formatChatPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/chatspace` : '/chatspace';
+};
+
+export const formatContractsPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/contracts` : '/contracts';
+};
+
+export const formatNewTaskPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/newtask` : '/newtask';
+};
+
+export const formTasksPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/tasks` : '/tasks';
+};
+
+export const formReleasePath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/releases` : '/releases';
+};
+
+export const formTuStreamsPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/tuStreams` : '/tuStreams';
+};
+
+export const formMusicPath = (teamUrl?: string) => {
+  return teamUrl ? `/t/${teamUrl}/music` : '/music';
+};
+
 /**
  * Determines whether a team member can execute a given action.
  *

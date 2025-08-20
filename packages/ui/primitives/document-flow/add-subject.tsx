@@ -114,12 +114,16 @@ export const AddSubjectFormPartial = ({
         : msg`Send`,
       [DocumentStatus.COMPLETED]: msg`Update`,
       [DocumentStatus.REJECTED]: msg`Update`,
+      [DocumentStatus.PROCESSING]: msg`Update`,
+      [DocumentStatus.ERROR]: msg`Update`,
     },
     [DocumentDistributionMethod.NONE]: {
       [DocumentStatus.DRAFT]: msg`Generate Links`,
       [DocumentStatus.PENDING]: msg`View Document`,
       [DocumentStatus.COMPLETED]: msg`View Document`,
       [DocumentStatus.REJECTED]: msg`View Document`,
+      [DocumentStatus.PROCESSING]: msg`View Document`,
+      [DocumentStatus.ERROR]: msg`View Document`,
     },
   };
 

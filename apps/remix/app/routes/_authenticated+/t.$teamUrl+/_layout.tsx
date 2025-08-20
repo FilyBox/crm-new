@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { msg } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { SubscriptionStatus } from '@prisma/client';
+import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
 import { Link, Outlet } from 'react-router';
 
 import { PAID_PLAN_LIMITS } from '@documenso/ee/server-only/limits/constants';
@@ -80,7 +81,9 @@ export default function Layout() {
     <div key={team.url}>
       <TrpcProvider headers={trpcHeaders}>
         <LimitsProvider initialValue={limits} teamId={team.id}>
-          <Outlet />
+          <NuqsAdapter>
+            <Outlet />
+          </NuqsAdapter>
         </LimitsProvider>
       </TrpcProvider>
     </div>

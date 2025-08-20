@@ -24,6 +24,12 @@ export const DOCUMENT_STATUS: {
   [DocumentStatus.PENDING]: {
     description: msg`Pending`,
   },
+  [DocumentStatus.ERROR]: {
+    description: msg`Error`,
+  },
+  [DocumentStatus.PROCESSING]: {
+    description: msg`Processing`,
+  },
 };
 
 type DocumentDistributionMethodTypeData = {

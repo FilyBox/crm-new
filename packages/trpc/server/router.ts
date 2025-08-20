@@ -5,6 +5,7 @@ import { documentRouter } from './document-router/router';
 import { embeddingPresignRouter } from './embedding-router/_router';
 import { enterpriseRouter } from './enterprise-router/router';
 import { fieldRouter } from './field-router/router';
+import { filesRouter } from './files-router/router';
 import { folderRouter } from './folder-router/router';
 import { organisationRouter } from './organisation-router/router';
 import { profileRouter } from './profile-router/router';
@@ -31,6 +32,7 @@ export const appRouter = router({
   template: templateRouter,
   webhook: webhookRouter,
   embeddingPresign: embeddingPresignRouter,
+  files: filesRouter,
 });
 
 export type AppRouter = typeof appRouter;

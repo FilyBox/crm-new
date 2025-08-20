@@ -117,6 +117,14 @@ export const DocumentDeleteDialog = ({
                   </Trans>
                 </AlertDescription>
               ))
+              .with(DocumentStatus.ERROR, () => (
+                <AlertDescription>
+                  <Trans>
+                    This action is <strong>irreversible</strong>. Once confirmed, this document will
+                    be permanently deleted.
+                  </Trans>
+                </AlertDescription>
+              ))
               .with(DocumentStatus.PENDING, () => (
                 <AlertDescription>
                   <p>
@@ -161,7 +169,14 @@ export const DocumentDeleteDialog = ({
                   </ul>
                 </AlertDescription>
               ))
-              .exhaustive()}
+              .otherwise(() => (
+                <AlertDescription>
+                  <Trans>
+                    This action is <strong>irreversible</strong>. Once confirmed, this document will
+                    be permanently deleted.
+                  </Trans>
+                </AlertDescription>
+              ))}
           </Alert>
         ) : (
           <Alert variant="warning" className="-mt-1">
@@ -170,7 +185,6 @@ export const DocumentDeleteDialog = ({
             </AlertDescription>
           </Alert>
         )}
-
         {status !== DocumentStatus.DRAFT && canManageDocument && (
           <Input
             type="text"
