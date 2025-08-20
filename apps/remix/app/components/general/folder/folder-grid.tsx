@@ -5,7 +5,13 @@ import { FolderType } from '@prisma/client';
 import { FolderIcon, HomeIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { formatDocumentsPath, formatTemplatesPath } from '@documenso/lib/utils/teams';
+import {
+  formatChatPath,
+  formatContractsPath,
+  formatDocumentsPath,
+  formatFilesPath,
+  formatTemplatesPath,
+} from '@documenso/lib/utils/teams';
 import { trpc } from '@documenso/trpc/react';
 import { type TFolderWithSubfolders } from '@documenso/trpc/server/folder-router/schema';
 import { Skeleton } from '@documenso/ui/primitives/skeleton';
@@ -16,6 +22,7 @@ import { FolderMoveDialog } from '~/components/dialogs/folder-move-dialog';
 import { FolderUpdateDialog } from '~/components/dialogs/folder-update-dialog';
 import { TemplateCreateDialog } from '~/components/dialogs/template-create-dialog';
 import { DocumentUploadDropzone } from '~/components/general/document/document-upload';
+import { FilesUploadDropzone } from '~/components/general/files/files-document-upload';
 import { FolderCard, FolderCardEmpty } from '~/components/general/folder/folder-card';
 import { useCurrentTeam } from '~/providers/team';
 
@@ -42,24 +49,27 @@ export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
     parentId,
   });
 
-  const formatBreadCrumbPath = (folderId: string) => {
-    const rootPath =
-      type === FolderType.DOCUMENT ? formatDocumentsPath(team.url) : formatTemplatesPath(team.url);
+  const folderTypePaths: Record<FolderType, (teamUrl: string) => string> = {
+    DOCUMENT: formatDocumentsPath,
+    TEMPLATE: formatTemplatesPath,
+    CHAT: formatChatPath,
+    CONTRACT: formatContractsPath,
+    FILE: formatFilesPath,
+  };
 
+  const formatBreadCrumbPath = (folderId: string) => {
+    const rootPath = folderTypePaths[type]?.(team.url) ?? '';
     return `${rootPath}/f/${folderId}`;
   };
 
   const formatViewAllFoldersPath = () => {
-    const rootPath =
-      type === FolderType.DOCUMENT ? formatDocumentsPath(team.url) : formatTemplatesPath(team.url);
-
+    const rootPath = folderTypePaths[type]?.(team.url) ?? '';
     return `${rootPath}/folders`;
   };
 
   const formatRootPath = () => {
-    return type === FolderType.DOCUMENT
-      ? formatDocumentsPath(team.url)
-      : formatTemplatesPath(team.url);
+    const rootPath = folderTypePaths[type]?.(team.url) ?? '';
+    return rootPath;
   };
 
   const pinnedFolders = foldersData?.folders.filter((folder) => folder.pinned) || [];
@@ -97,11 +107,24 @@ export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
         </div>
 
         <div className="flex gap-4 sm:flex-row sm:justify-end">
-          {type === FolderType.DOCUMENT ? (
-            <DocumentUploadDropzone />
-          ) : (
-            <TemplateCreateDialog folderId={parentId ?? undefined} />
-          )}
+          {(() => {
+            switch (type) {
+              case FolderType.DOCUMENT:
+                return <DocumentUploadDropzone />;
+              case FolderType.TEMPLATE:
+                return <TemplateCreateDialog folderId={parentId ?? undefined} />;
+              case FolderType.CHAT:
+                // pal CHAT
+                return null;
+              case FolderType.CONTRACT:
+                // pal CONTRACT
+                return null;
+              case FolderType.FILE:
+                return <FilesUploadDropzone />;
+              default:
+                return null;
+            }
+          })()}
 
           <FolderCreateDialog type={type} />
         </div>

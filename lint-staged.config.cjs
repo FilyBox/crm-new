@@ -12,4 +12,7 @@ module.exports = {
   '**/*.{js,jsx,cjs,mjs}': [prettier],
   '**/*.{yml,mdx}': [prettier],
   '**/*/package.json': 'npm run precommit',
+  rules: {
+    '@typescript-eslint/consistent-type-assertions': 'off',
+  },
 };

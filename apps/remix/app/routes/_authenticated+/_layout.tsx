@@ -112,7 +112,7 @@ export default function Layout({ loaderData, params }: Route.ComponentProps) {
 
         <Header />
 
-        <main className="mt-8 pb-8 md:mt-12 md:pb-12">
+        <main className="mt-5 h-fit overflow-x-hidden">
           <Outlet />
         </main>
       </TeamProvider>

@@ -40,13 +40,28 @@ export const Header = ({ className, ...props }: HeaderProps) => {
   );
 
   useEffect(() => {
+    let throttleTimeout: NodeJS.Timeout | null = null;
+    const throttleMs = 300;
+
     const onScroll = () => {
-      setScrollY(window.scrollY);
+      if (throttleTimeout) {
+        clearTimeout(throttleTimeout);
+      }
+
+      throttleTimeout = setTimeout(() => {
+        setScrollY(window.scrollY);
+        throttleTimeout = null;
+      }, throttleMs);
     };
 
     window.addEventListener('scroll', onScroll);
 
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (throttleTimeout) {
+        clearTimeout(throttleTimeout);
+      }
+    };
   }, []);
 
   return (

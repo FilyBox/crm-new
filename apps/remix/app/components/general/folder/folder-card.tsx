@@ -11,7 +11,11 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { formatDocumentsPath, formatTemplatesPath } from '@documenso/lib/utils/teams';
+import {
+  formatDocumentsPath,
+  formatFilesPath,
+  formatTemplatesPath,
+} from '@documenso/lib/utils/teams';
 import { type TFolderWithSubfolders } from '@documenso/trpc/server/folder-router/schema';
 import { Button } from '@documenso/ui/primitives/button';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
@@ -48,7 +52,9 @@ export const FolderCard = ({
     const rootPath =
       folder.type === FolderType.DOCUMENT
         ? formatDocumentsPath(team.url)
-        : formatTemplatesPath(team.url);
+        : folder.type === FolderType.TEMPLATE
+          ? formatTemplatesPath(team.url)
+          : formatFilesPath(team.url);
 
     return `${rootPath}/f/${folder.id}`;
   };
@@ -69,19 +75,46 @@ export const FolderCard = ({
 
                 <div className="text-muted-foreground mt-1 flex space-x-2 truncate text-xs">
                   <span>
-                    {folder.type === FolderType.TEMPLATE ? (
-                      <Plural
-                        value={folder._count.templates}
-                        one={<Trans># template</Trans>}
-                        other={<Trans># templates</Trans>}
-                      />
-                    ) : (
-                      <Plural
-                        value={folder._count.documents}
-                        one={<Trans># document</Trans>}
-                        other={<Trans># documents</Trans>}
-                      />
-                    )}
+                    {(() => {
+                      const typeMap: Record<
+                        FolderType,
+                        { count: number; one: string; other: string }
+                      > = {
+                        DOCUMENT: {
+                          count: folder._count.documents,
+                          one: '# document',
+                          other: '# documents',
+                        },
+                        TEMPLATE: {
+                          count: folder._count.templates,
+                          one: '1 template',
+                          other: '# templates',
+                        },
+                        CHAT: {
+                          count: folder._count.documents,
+                          one: '1 chat',
+                          other: '# chats',
+                        },
+                        CONTRACT: {
+                          count: folder._count.documents,
+                          one: '1 contract',
+                          other: '# contracts',
+                        },
+                        FILE: {
+                          count: folder._count.files,
+                          one: '1 file',
+                          other: `${folder._count.files} files`,
+                        },
+                      };
+                      const { count, one, other } = typeMap[folder.type];
+                      return (
+                        <Plural
+                          value={count}
+                          one={<Trans>{one}</Trans>}
+                          other={<Trans>{other}</Trans>}
+                        />
+                      );
+                    })()}
                   </span>
                   <span>•</span>
                   <span>

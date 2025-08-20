@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import { Trans } from '@lingui/react/macro';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 
 import { FolderType } from '@documenso/lib/types/folder-type';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
@@ -10,12 +10,10 @@ import { ZFindDocumentsInternalRequestSchema } from '@documenso/trpc/server/docu
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 
 import { DocumentSearch } from '~/components/general/document/document-search';
-import { UploadDropzone } from '~/components/general/files/files-document-upload';
 import { FileDropZoneWrapper } from '~/components/general/files/files-drop-zone-wrapper';
 import { FolderGrid } from '~/components/general/folder/folder-grid';
 import { PeriodSelector } from '~/components/general/period-selector';
 import { FilesTable } from '~/components/tables/files-table';
-import { GeneralTableEmptyState } from '~/components/tables/general-table-empty-state';
 import { useCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
 
@@ -32,7 +30,6 @@ const ZSearchParamsSchema = ZFindDocumentsInternalRequestSchema.pick({
 
 export default function FilesPage() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const team = useCurrentTeam();
   const { folderId } = useParams();
 
@@ -43,6 +40,7 @@ export default function FilesPage() {
 
   const { data, isLoading, isLoadingError, refetch } = trpc.files.findFilesInternal.useQuery({
     ...findDocumentSearchParams,
+    folderId,
   });
 
   useEffect(() => {
@@ -52,13 +50,6 @@ export default function FilesPage() {
   return (
     <FileDropZoneWrapper>
       <div className="mx-auto w-full max-w-screen-xl px-4 md:px-8">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex gap-4 sm:flex-row sm:justify-end">
-            <UploadDropzone />
-            {/* <CreateFolderDialog createFrom={FolderType.FILE} /> */}
-          </div>
-        </div>
-
         <FolderGrid type={FolderType.FILE} parentId={folderId ?? null} />
 
         <div className="mt-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-8">
@@ -89,26 +80,22 @@ export default function FilesPage() {
 
         <div className="mt-8">
           <div>
-            {data && data.count === 0 ? (
-              <GeneralTableEmptyState status="ALL" />
-            ) : (
-              <FilesTable
-                data={data}
-                isLoading={isLoading}
-                isLoadingError={isLoadingError}
-                // onMoveDocument={(documentId) => {
-                //   setDocumentToMove(documentId);
-                //   setIsMovingDocument(true);
-                // }}
-                // onMultipleDelete={handleMultipleDelete}
-                // isMultipleDelete={isMultipleDelete}
-                // setIsMultipleDelete={setIsMultipleDelete}
+            <FilesTable
+              data={data}
+              isLoading={isLoading}
+              isLoadingError={isLoadingError}
+              // onMoveDocument={(documentId) => {
+              //   setDocumentToMove(documentId);
+              //   setIsMovingDocument(true);
+              // }}
+              // onMultipleDelete={handleMultipleDelete}
+              // isMultipleDelete={isMultipleDelete}
+              // setIsMultipleDelete={setIsMultipleDelete}
 
-                // onAdd={openCreateDialog}
-                // onEdit={handleEdit}
-                // onDelete={handleDelete}
-              />
-            )}
+              // onAdd={openCreateDialog}
+              // onEdit={handleEdit}
+              // onDelete={handleDelete}
+            />
           </div>
         </div>
       </div>

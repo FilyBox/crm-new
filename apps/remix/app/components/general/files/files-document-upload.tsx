@@ -31,7 +31,7 @@ export type DropzoneProps = {
   className?: string;
 };
 
-export const UploadDropzone = ({ className }: DropzoneProps) => {
+export const FilesUploadDropzone = ({ className }: DropzoneProps) => {
   const { _ } = useLingui();
   const { toast } = useToast();
   const { user } = useSession();

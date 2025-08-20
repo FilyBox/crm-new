@@ -36,6 +36,7 @@ export type TFolder = z.infer<typeof ZFolderSchema>;
 const ZFolderCountSchema = z.object({
   documents: z.number(),
   templates: z.number(),
+  files: z.number(),
   subfolders: z.number(),
 });
 

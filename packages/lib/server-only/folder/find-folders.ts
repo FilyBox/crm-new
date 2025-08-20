@@ -58,35 +58,41 @@ export const findFolders = async ({ userId, teamId, parentId, type }: FindFolder
     const foldersWithDetails = await Promise.all(
       folders.map(async (folder) => {
         try {
-          const [subfolders, documentCount, templateCount, subfolderCount] = await Promise.all([
-            prisma.folder.findMany({
-              where: {
-                parentId: folder.id,
-                teamId,
-                ...visibilityFilters,
-              },
-              orderBy: {
-                createdAt: 'desc',
-              },
-            }),
-            prisma.document.count({
-              where: {
-                folderId: folder.id,
-              },
-            }),
-            prisma.template.count({
-              where: {
-                folderId: folder.id,
-              },
-            }),
-            prisma.folder.count({
-              where: {
-                parentId: folder.id,
-                teamId,
-                ...visibilityFilters,
-              },
-            }),
-          ]);
+          const [subfolders, documentCount, templateCount, filesCount, subfolderCount] =
+            await Promise.all([
+              prisma.folder.findMany({
+                where: {
+                  parentId: folder.id,
+                  teamId,
+                  ...visibilityFilters,
+                },
+                orderBy: {
+                  createdAt: 'desc',
+                },
+              }),
+              prisma.document.count({
+                where: {
+                  folderId: folder.id,
+                },
+              }),
+              prisma.template.count({
+                where: {
+                  folderId: folder.id,
+                },
+              }),
+              prisma.files.count({
+                where: {
+                  folderId: folder.id,
+                },
+              }),
+              prisma.folder.count({
+                where: {
+                  parentId: folder.id,
+                  teamId,
+                  ...visibilityFilters,
+                },
+              }),
+            ]);
 
           const subfoldersWithEmptySubfolders = subfolders.map((subfolder) => ({
             ...subfolder,
@@ -95,6 +101,7 @@ export const findFolders = async ({ userId, teamId, parentId, type }: FindFolder
               documents: 0,
               templates: 0,
               subfolders: 0,
+              files: 0,
             },
           }));
 
@@ -105,6 +112,7 @@ export const findFolders = async ({ userId, teamId, parentId, type }: FindFolder
               documents: documentCount,
               templates: templateCount,
               subfolders: subfolderCount,
+              files: filesCount,
             },
           };
         } catch (error) {

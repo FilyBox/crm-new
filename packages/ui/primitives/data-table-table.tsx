@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
 import {
   type Table as TanstackTable,
@@ -518,7 +519,7 @@ export function DataTable<TData>({
           <div className="text-center">
             {/* <h3 className="text-lg font-semibold">{_(title)}</h3> */}
 
-            <p className="mt-2 max-w-[60ch]">No data found</p>
+            <Trans>No data found</Trans>
           </div>
         </div>
       ) : (
