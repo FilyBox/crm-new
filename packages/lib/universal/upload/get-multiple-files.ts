@@ -34,7 +34,7 @@ const getFileFromBytes64 = (data: string) => {
 export const getFileFromS3 = async (key: string) => {
   try {
     const getPresignedUrlResponse = await fetch(
-      `${NEXT_PUBLIC_WEBAPP_URL || 'http://localhost:3000'}/api/files/presigned-get-url`,
+      `${NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000'}/api/files/presigned-get-url`,
       {
         method: 'POST',
         headers: {

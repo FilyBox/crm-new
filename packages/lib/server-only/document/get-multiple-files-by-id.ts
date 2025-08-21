@@ -21,11 +21,11 @@ export const getMultipleFilesById = async ({
   teamId,
   folderId,
 }: GetDocumentByIdOptions) => {
-  const documentWhereInput = await getDocumentWhereInput({
-    documentId: documentsId[0],
-    userId,
-    teamId,
-  });
+  // const documentWhereInput = await getDocumentWhereInput({
+  //   documentId: documentsId[0],
+  //   userId,
+  //   teamId,
+  // });
 
   const documents = await prisma.files.findMany({
     where: {

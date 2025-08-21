@@ -57,6 +57,7 @@ export const getAbsolutePresignPostUrl = async (key: string) => {
 };
 
 export const getPresignGetUrl = async (key: string) => {
+  console.log('key:', key);
   if (env('NEXT_PRIVATE_UPLOAD_DISTRIBUTION_DOMAIN')) {
     const distributionUrl = new URL(key, `${env('NEXT_PRIVATE_UPLOAD_DISTRIBUTION_DOMAIN')}`);
 

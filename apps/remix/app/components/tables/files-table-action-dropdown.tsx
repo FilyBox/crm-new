@@ -4,6 +4,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { Download, MoreHorizontal, MoveRight, RefreshCcw, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { downloadAnyFile } from '@documenso/lib/client-only/download-any-file';
 import { useSession } from '@documenso/lib/client-only/providers/session';
@@ -16,7 +17,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@documenso/ui/primitives/dropdown-menu';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { DocumentDuplicateDialog } from '~/components/dialogs/document-duplicate-dialog';
 // import { DocumentMoveDialog } from '~/components/dialogs/document-move-dialog';
@@ -37,7 +37,6 @@ export const TableActionDropdown = ({
   const { user } = useSession();
   const team = useOptionalCurrentTeam();
 
-  const { toast } = useToast();
   const { _ } = useLingui();
 
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -62,13 +61,23 @@ export const TableActionDropdown = ({
         return;
       }
 
-      await downloadAnyFile({ documentData, fileName: row.title });
+      toast.promise(downloadAnyFile({ documentData, fileName: row.title }), {
+        loading: _(msg`Downloading file...`),
+        success: () => {
+          return _(msg`Files downloaded successfully`);
+        },
+        error: () => {
+          return _(msg`Error downloading files`);
+        },
+        position: 'bottom-center',
+        className: 'mb-16',
+      });
     } catch (err) {
-      console.error('Error downloading document:', err);
-      toast({
-        title: _(msg`Something went wrong`),
-        description: _(msg`An error occurred while downloading your document.`),
-        variant: 'destructive',
+      console.error('Error downloading file:', err);
+      toast.error(_(msg`Something went wrong`), {
+        className: 'mb-16',
+        position: 'bottom-center',
+        description: _(msg`An error occurred while downloading your file.`),
       });
     }
   };
@@ -100,11 +109,12 @@ export const TableActionDropdown = ({
           <RefreshCcw className="mr-2 h-4 w-4" />
           <Trans>Retry</Trans>
         </DropdownMenuItem>
-
-        <DropdownMenuItem onClick={onDownloadOriginalClick}>
-          <Download className="mr-2 h-4 w-4" />
-          <Trans>Download</Trans>
-        </DropdownMenuItem>
+        {canManageDocument && (
+          <DropdownMenuItem onClick={onDownloadOriginalClick}>
+            <Download className="mr-2 h-4 w-4" />
+            <Trans>Download</Trans>
+          </DropdownMenuItem>
+        )}
 
         {onMoveDocument && (
           <DropdownMenuItem

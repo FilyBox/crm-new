@@ -11,7 +11,7 @@ import { getTeamById } from '../team/get-team';
 export type GetDocumentByIdOptions = {
   documentId: number;
   userId: number;
-  teamId?: number;
+  teamId: number;
   folderId?: string;
 };
 
@@ -21,36 +21,21 @@ export const getFilesById = async ({
   teamId,
   folderId,
 }: GetDocumentByIdOptions) => {
-  const documentWhereInput = await getDocumentWhereInput({
-    documentId,
-    userId,
-    teamId,
-  });
+  // const documentWhereInput = await getDocumentWhereInput({
+  //   documentId,
+  //   userId,
+  //   teamId,
+  // });
 
   const document = await prisma.files.findFirst({
     where: {
-      ...documentWhereInput,
-      folderId,
+      id: documentId,
     },
     include: {
       documentData: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
-      },
-
-      team: {
-        select: {
-          id: true,
-          url: true,
-        },
-      },
     },
   });
-
+  console.log('document', document);
   if (!document) {
     throw new AppError(AppErrorCode.NOT_FOUND, {
       message: 'Document could not be found',
@@ -63,7 +48,7 @@ export const getFilesById = async ({
 export type GetDocumentWhereInputOptions = {
   documentId: number;
   userId: number;
-  teamId?: number;
+  teamId: number;
 
   /**
    * Whether to return a filter that allows access to both the user and team documents.

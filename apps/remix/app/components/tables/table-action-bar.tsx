@@ -154,11 +154,17 @@ export function TableActionBar<TData extends { id: number }>({
   const { _ } = useLingui();
 
   async function handleDownload() {
-    const files = await getFiles.mutateAsync({
-      fileIds: rows.map((row) => row.original.id),
-    });
-    if (files) {
-      await downloadAnyFileMultiple({ multipleFiles: files });
+    try {
+      const files = await getFiles.mutateAsync({
+        fileIds: rows.map((row) => row.original.id),
+      });
+
+      if (files) {
+        await downloadAnyFileMultiple({ multipleFiles: files });
+      }
+    } catch (error) {
+      console.log('error downloading files:', error);
+      throw new Error('Error downloading files');
     }
   }
 

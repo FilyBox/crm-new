@@ -77,9 +77,6 @@ export const filesRouter = router({
         teamId,
         documentsId: fileIds,
       });
-
-      console.log('Retrieved files:', files);
-
       return files;
     }),
 
