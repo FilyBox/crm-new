@@ -29,7 +29,7 @@ interface DataTableProps<TData, TValue> {
   onAdd?: () => void;
   onEdit?: (data: DocumentsTableRow) => void;
   onDelete?: (data: DocumentsTableRow) => void;
-  onMultipleDelete?: (ids: number[]) => void;
+  onMultipleDelete?: (ids: number[]) => Promise<void>;
   isMultipleDelete?: boolean;
   setIsMultipleDelete?: (value: boolean) => void;
   onMoveDocument?: (documentId: number) => void;
@@ -50,7 +50,7 @@ export const FilesTable = ({
   isMultipleDelete = false,
   setIsMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
-  const { _, i18n } = useLingui();
+  const { _ } = useLingui();
 
   const team = useOptionalCurrentTeam();
   const [isPending, startTransition] = useTransition();
@@ -200,7 +200,7 @@ export const FilesTable = ({
         table={table}
         actionBar={
           <TableActionBar
-            // onMultipleDelete={onMultipleDelete}
+            onMultipleDelete={onMultipleDelete}
             table={table}
             download={true}
             loading={isLoading || false}

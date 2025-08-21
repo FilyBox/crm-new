@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
 import { FolderType } from '@prisma/client';
+import { queryOptions } from '@tanstack/react-query';
 import { FolderIcon, HomeIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -44,10 +45,17 @@ export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
   const { mutateAsync: pinFolder } = trpc.folder.pinFolder.useMutation();
   const { mutateAsync: unpinFolder } = trpc.folder.unpinFolder.useMutation();
 
-  const { data: foldersData, isPending } = trpc.folder.getFolders.useQuery({
-    type,
-    parentId,
-  });
+  const { data: foldersData, isPending } = trpc.folder.getFolders.useQuery(
+    {
+      type,
+      parentId,
+    },
+    queryOptions({
+      queryKey: ['folders', type, parentId, team?.url],
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+    }),
+  );
 
   const folderTypePaths: Record<FolderType, (teamUrl: string) => string> = {
     DOCUMENT: formatDocumentsPath,

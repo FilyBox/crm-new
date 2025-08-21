@@ -87,8 +87,6 @@ const ITEM_VARIANTS: Variants = {
   },
 };
 
-const actions = ['update-status', 'update-priority', 'export', 'delete'] as const;
-
 interface DataTablePaginationProps<TData extends { id: number }>
   extends React.ComponentProps<'div'> {
   table: Table<TData>;
@@ -258,8 +256,8 @@ export function TableActionBar<TData extends { id: number }>({
           >
             <ChevronLeft size={16} />
           </Button>
-          <div className="mx-2 flex items-center space-x-1 text-sm tabular-nums">
-            <span className="text-muted-foreground flex min-w-5 items-center">
+          <div className="mr-3 flex items-center text-sm tabular-nums">
+            <span className="text-muted-foreground flex min-w-5 items-end justify-end">
               <NumberFlow value={table.getState().pagination.pageIndex + 1} />
             </span>
             <span className="text-muted-foreground flex items-center gap-1">

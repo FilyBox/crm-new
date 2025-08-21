@@ -6,7 +6,6 @@ import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { AppError } from '@documenso/lib/errors/app-error';
 import { encryptSecondaryData } from '@documenso/lib/server-only/crypto/encrypt';
 import { deleteFile } from '@documenso/lib/server-only/document/DeleteObjectS3';
-import { deleteFiles } from '@documenso/lib/server-only/document/delete-files';
 import { duplicateDocument } from '@documenso/lib/server-only/document/duplicate-document-by-id';
 import { findDocumentAuditLogs } from '@documenso/lib/server-only/document/find-document-audit-logs';
 import { findFiles } from '@documenso/lib/server-only/document/find-files';
@@ -223,22 +222,35 @@ export const filesRouter = router({
     .input(ZDeleteDocumentMutationSchema)
     .output(ZSuccessResponseSchema)
     .mutation(async ({ input, ctx }) => {
-      const { teamId } = ctx;
       const { documentId } = input;
 
-      const userId = ctx.user.id;
-
-      await deleteFiles({
-        id: documentId,
-        userId,
-        teamId,
-        requestMetadata: ctx.metadata,
+      await prisma.files.update({
+        where: { id: documentId },
+        data: { deletedAt: new Date() },
       });
+
+      // await deleteFiles({
+      //   id: documentId,
+      //   userId,
+      //   teamId,
+      //   requestMetadata: ctx.metadata,
+      // });
 
       return ZGenericSuccessResponse;
     }),
 
-  deleteMultipleByIds: authenticatedProcedure
+  deleteSoftMultipleByIds: authenticatedProcedure
+    .input(z.object({ ids: z.array(z.number()) }))
+    .mutation(async ({ input }) => {
+      const { ids } = input;
+
+      await prisma.files.updateMany({
+        where: { id: { in: ids } },
+        data: { deletedAt: new Date() },
+      });
+    }),
+
+  deleteHardMultipleByIds: authenticatedProcedure
     .input(z.object({ ids: z.array(z.number()) }))
     .mutation(async ({ input }) => {
       const { ids } = input;

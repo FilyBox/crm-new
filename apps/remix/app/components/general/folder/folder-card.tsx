@@ -1,3 +1,5 @@
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { Plural, Trans } from '@lingui/react/macro';
 import { FolderType } from '@prisma/client';
 import {
@@ -47,6 +49,7 @@ export const FolderCard = ({
   onDelete,
 }: FolderCardProps) => {
   const team = useCurrentTeam();
+  const { _ } = useLingui();
 
   const formatPath = () => {
     const rootPath =
@@ -82,28 +85,28 @@ export const FolderCard = ({
                       > = {
                         DOCUMENT: {
                           count: folder._count.documents,
-                          one: '# document',
-                          other: '# documents',
+                          one: _(msg`1 document`),
+                          other: _(msg`${folder._count.documents} documents`),
                         },
                         TEMPLATE: {
                           count: folder._count.templates,
-                          one: '1 template',
-                          other: '# templates',
+                          one: _(msg`1 template`),
+                          other: _(msg`${folder._count.templates} templates`),
                         },
                         CHAT: {
                           count: folder._count.documents,
-                          one: '1 chat',
-                          other: '# chats',
+                          one: _(msg`1 file`),
+                          other: _(msg`# files`),
                         },
                         CONTRACT: {
                           count: folder._count.documents,
-                          one: '1 contract',
-                          other: '# contracts',
+                          one: _(msg`1 contract`),
+                          other: _(msg`# contracts`),
                         },
                         FILE: {
                           count: folder._count.files,
-                          one: '1 file',
-                          other: `${folder._count.files} files`,
+                          one: _(msg`1 file`),
+                          other: _(msg`${folder._count.files} files`),
                         },
                       };
                       const { count, one, other } = typeMap[folder.type];

@@ -116,11 +116,12 @@ export const TableActionDropdown = ({
             <Trans>Move to Folder</Trans>
           </DropdownMenuItem>
         )}
-
-        <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)}>
-          <Trash2 className="mr-2 h-4 w-4" />
-          {canManageDocument ? _(msg`Delete`) : _(msg`Hide`)}
-        </DropdownMenuItem>
+        {canManageDocument && (
+          <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)}>
+            <Trash2 className="mr-2 h-4 w-4" />
+            <Trans>Delete</Trans>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
 
       <FilesDeleteDialog

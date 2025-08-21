@@ -83,6 +83,7 @@ export const findFolders = async ({ userId, teamId, parentId, type }: FindFolder
               prisma.files.count({
                 where: {
                   folderId: folder.id,
+                  deletedAt: null,
                 },
               }),
               prisma.folder.count({

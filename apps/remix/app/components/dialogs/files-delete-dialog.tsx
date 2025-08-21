@@ -4,10 +4,11 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { DocumentStatus } from '@prisma/client';
+import { toast } from 'sonner';
 import { P, match } from 'ts-pattern';
 
 import { useLimits } from '@documenso/ee/server-only/limits/provider/client';
-import { trpc as trpcReact } from '@documenso/trpc/react';
+import { queryClient, trpc as trpcReact } from '@documenso/trpc/react';
 import { Alert, AlertDescription } from '@documenso/ui/primitives/alert';
 import { Button } from '@documenso/ui/primitives/button';
 import {
@@ -19,7 +20,6 @@ import {
   DialogTitle,
 } from '@documenso/ui/primitives/dialog';
 import { Input } from '@documenso/ui/primitives/input';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 type FilesDeleteDialogProps = {
   id: number;
@@ -41,7 +41,6 @@ export const FilesDeleteDialog = ({
   documentTitle,
   canManageDocument,
 }: FilesDeleteDialogProps) => {
-  const { toast } = useToast();
   const { refreshLimits } = useLimits();
   const { _ } = useLingui();
 
@@ -55,23 +54,36 @@ export const FilesDeleteDialog = ({
     onSuccess: async () => {
       void refreshLimits();
 
-      toast({
-        title: _(msg`File deleted`),
-        description: _(msg`"${documentTitle}" has been successfully deleted`),
-        duration: 5000,
-      });
+      // toast({
+      //   title: _(msg`File deleted`),
+      //   description: _(msg`"${documentTitle}" has been successfully deleted`),
+      //   duration: 5000,
+      // });
 
       await onDelete?.();
-
-      onOpenChange(false);
+      await queryClient.invalidateQueries({ queryKey: ['files'] });
     },
-    onError: (e) => {
-      toast({
-        title: _(msg`Something went wrong`),
-        description: _(msg`This document could not be deleted at this time. Please try again.`),
-        variant: 'destructive',
-        duration: 7500,
+    onError: () => {
+      // toast({
+      //   title: _(msg`Something went wrong`),
+      //   description: _(msg`This document could not be deleted at this time. Please try again.`),
+      //   variant: 'destructive',
+      //   duration: 7500,
+      // });
+
+      toast.error(_(msg`Error deleting records`), {
+        className: 'mb-16',
+        position: 'bottom-center',
       });
+    },
+    onSettled: (success) => {
+      if (success) {
+        toast.success(_(msg`Files deleted successfully`), {
+          className: 'mb-16',
+          position: 'bottom-center',
+        });
+      }
+      onOpenChange(false);
     },
   });
 

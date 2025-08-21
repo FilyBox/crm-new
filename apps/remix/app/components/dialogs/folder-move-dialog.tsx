@@ -6,6 +6,7 @@ import { Trans } from '@lingui/react/macro';
 import type * as DialogPrimitive from '@radix-ui/react-dialog';
 import { FolderIcon, HomeIcon, Search } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
@@ -28,7 +29,6 @@ import {
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
 import { Input } from '@documenso/ui/primitives/input';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 export type FolderMoveDialogProps = {
   foldersData: TFolderWithSubfolders[] | undefined;
@@ -50,7 +50,6 @@ export const FolderMoveDialog = ({
   onOpenChange,
 }: FolderMoveDialogProps) => {
   const { t } = useLingui();
-  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
 
   const { mutateAsync: moveFolder } = trpc.folder.moveFolder.useMutation();
@@ -73,26 +72,26 @@ export const FolderMoveDialog = ({
 
       onOpenChange(false);
 
-      toast({
-        title: t`Folder moved successfully`,
+      toast.success(t`Folder moved successfully`, {
+        className: 'mb-16',
+        position: 'bottom-center',
       });
     } catch (err) {
       const error = AppError.parseError(err);
 
       if (error.code === AppErrorCode.NOT_FOUND) {
-        toast({
-          title: t`Folder not found`,
+        toast.error(t`Folder not found`, {
+          className: 'mb-16',
+          position: 'bottom-center',
           description: t`The folder you are trying to move does not exist.`,
-          variant: 'destructive',
         });
-
         return;
       }
 
-      toast({
-        title: t`Failed to move folder`,
+      toast.error(t`Failed to move folder`, {
+        className: 'mb-16',
+        position: 'bottom-center',
         description: t`An unknown error occurred while moving the folder.`,
-        variant: 'destructive',
       });
     }
   };

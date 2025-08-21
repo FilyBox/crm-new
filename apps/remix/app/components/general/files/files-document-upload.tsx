@@ -16,7 +16,7 @@ import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
 import { putGeneralFile } from '@documenso/lib/universal/upload/put-general-file';
 import { trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
-import { DocumentDropzone } from '@documenso/ui/primitives/document-upload';
+import { FilesDropzone } from '@documenso/ui/primitives/any-file-upload';
 import {
   Tooltip,
   TooltipContent,
@@ -128,7 +128,7 @@ export const FilesUploadDropzone = ({ className }: DropzoneProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <div>
-              <DocumentDropzone
+              <FilesDropzone
                 disabled={remaining.documents === 0 || !user.emailVerified}
                 disabledMessage={disabledMessage}
                 onDrop={onFileDrop}

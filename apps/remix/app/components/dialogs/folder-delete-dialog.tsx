@@ -5,6 +5,7 @@ import { useLingui } from '@lingui/react/macro';
 import { Trans } from '@lingui/react/macro';
 import type * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
@@ -29,7 +30,6 @@ import {
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
 import { Input } from '@documenso/ui/primitives/input';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 export type FolderDeleteDialogProps = {
   folder: TFolderWithSubfolders;
@@ -40,7 +40,6 @@ export type FolderDeleteDialogProps = {
 export const FolderDeleteDialog = ({ folder, isOpen, onOpenChange }: FolderDeleteDialogProps) => {
   const { t } = useLingui();
 
-  const { toast } = useToast();
   const { mutateAsync: deleteFolder } = trpc.folder.deleteFolder.useMutation();
 
   const deleteMessage = t`delete ${folder.name}`;
@@ -67,27 +66,25 @@ export const FolderDeleteDialog = ({ folder, isOpen, onOpenChange }: FolderDelet
       });
 
       onOpenChange(false);
-
-      toast({
-        title: t`Folder deleted successfully`,
+      toast.success(t`Folder deleted successfully`, {
+        className: 'mb-16',
+        position: 'bottom-center',
       });
     } catch (err) {
       const error = AppError.parseError(err);
 
       if (error.code === AppErrorCode.NOT_FOUND) {
-        toast({
-          title: t`Folder not found`,
-          description: t`The folder you are trying to delete does not exist.`,
-          variant: 'destructive',
+        toast.error(t`Folder not found`, {
+          className: 'mb-16',
+          position: 'bottom-center',
         });
 
         return;
       }
-
-      toast({
-        title: t`Failed to delete folder`,
+      toast.error(t`Failed to delete folder`, {
+        className: 'mb-16',
+        position: 'bottom-center',
         description: t`An unknown error occurred while deleting the folder.`,
-        variant: 'destructive',
       });
     }
   };

@@ -45,7 +45,6 @@ msgid "“{documentName}” was signed by all signers"
 msgstr "„{documentName}“ wurde von allen Unterzeichnern signiert"
 
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
-#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 msgid "\"{documentTitle}\" has been successfully deleted"
 msgstr "\"{documentTitle}\" wurde erfolgreich gelöscht"
 
@@ -122,6 +121,16 @@ msgstr "{0}"
 msgid "{0} direct signing templates"
 msgstr "{0} direkte Signaturvorlagen"
 
+#. placeholder {0}: folder._count.documents
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "{0} documents"
+msgstr ""
+
+#. placeholder {0}: folder._count.files
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "{0} files"
+msgstr ""
+
 #. placeholder {0}: team.name
 #. placeholder {1}: document.title
 #: packages/lib/jobs/definitions/emails/send-signing-email.handler.ts
@@ -163,6 +172,11 @@ msgstr "{0} Empfänger(in)"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
 msgid "{0} Teams"
 msgstr "{0} Teams"
+
+#. placeholder {0}: folder._count.templates
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "{0} templates"
+msgstr ""
 
 #: apps/remix/app/components/tables/internal-audit-log-table.tsx
 msgid "{browserInfo} on {os}"
@@ -405,6 +419,14 @@ msgstr "{userName} hat das Dokument angesehen"
 msgid "{visibleRows, plural, one {Showing # result.} other {Showing # results.}}"
 msgstr "{visibleRows, plural, one {Eine # Ergebnis wird angezeigt.} other {# Ergebnisse werden angezeigt.}}"
 
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "# contracts"
+msgstr ""
+
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "# files"
+msgstr ""
+
 #. placeholder {0}: document.title
 #: apps/remix/app/routes/_recipient+/sign.$token+/_index.tsx
 msgid "<0>\"{0}\"</0>is no longer available to sign"
@@ -497,6 +519,19 @@ msgstr "<0>Sie sind dabei, die Ansicht von \"<1>{documentTitle}</1>\" abzuschlie
 msgid "0 Free organisations left"
 msgstr "0 freie Organisationen übrig"
 
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "1 contract"
+msgstr ""
+
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "1 document"
+msgstr ""
+
+#: apps/remix/app/components/general/folder/folder-card.tsx
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "1 file"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 msgid "1 Free organisations left"
 msgstr "1 Freie Organisationen übrig"
@@ -504,6 +539,10 @@ msgstr "1 Freie Organisationen übrig"
 #: apps/remix/app/components/forms/token.tsx
 msgid "1 month"
 msgstr "1 Monat"
+
+#: apps/remix/app/components/general/folder/folder-card.tsx
+msgid "1 template"
+msgstr ""
 
 #: apps/remix/app/components/forms/token.tsx
 msgid "12 months"
@@ -2300,6 +2339,10 @@ msgstr "Antrag erstellen"
 msgid "Create Claim"
 msgstr "Antrag erstellen"
 
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Create contracts"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-direct-link-dialog-wrapper.tsx
 msgid "Create Direct Link"
 msgstr "Direkten Link erstellen"
@@ -3159,7 +3202,6 @@ msgid "Document will be permanently deleted"
 msgstr "Dokument wird dauerhaft gelöscht"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/skeletons/document-edit-skeleton.tsx
 #: apps/remix/app/components/general/user-profile-timur.tsx
@@ -3648,6 +3690,7 @@ msgstr "Unternehmen"
 msgid "Error"
 msgstr "Fehler"
 
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Error deleting records"
@@ -3714,6 +3757,10 @@ msgstr ""
 #: packages/ui/primitives/template-flow/add-template-settings.tsx
 msgid "External ID"
 msgstr "Externe ID"
+
+#: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+msgid "Failed not found"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "Failed to create folder"
@@ -3844,10 +3891,6 @@ msgstr "Felder aktualisiert"
 msgid "File cannot be larger than {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgstr "Die Datei darf nicht größer als {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB sein"
 
-#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
-msgid "File deleted"
-msgstr ""
-
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "File size exceeds the limit of {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
 msgstr "Dateigröße überschreitet das Limit von {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
@@ -3859,6 +3902,10 @@ msgstr ""
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/files._index.tsx
 msgid "Files"
+msgstr ""
+
+#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
+msgid "Files deleted successfully"
 msgstr ""
 
 #: apps/remix/app/components/tables/table-action-bar.tsx
@@ -3896,7 +3943,6 @@ msgstr "Ordnername"
 
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
-#: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 msgid "Folder not found"
 msgstr "Ordner nicht gefunden"
 
@@ -4152,7 +4198,6 @@ msgstr "Hallo, {userName} <0>({userEmail})</0>"
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
-#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
 msgid "Hide"
 msgstr "Ausblenden"
@@ -6627,7 +6672,6 @@ msgstr "Einige Unterzeichner haben noch kein Unterschriftsfeld zugewiesen bekomm
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 #: apps/remix/app/components/dialogs/document-resend-dialog.tsx
-#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-member-invite-dialog.tsx
 #: apps/remix/app/components/dialogs/team-email-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/team-email-delete-dialog.tsx
@@ -7248,10 +7292,6 @@ msgstr "Die Ereignisse, die einen Webhook auslösen, der an Ihre URL gesendet wi
 msgid "The fields have been updated to the new field insertion method successfully"
 msgstr "Die Felder wurden erfolgreich auf die neue Feld-Integrationsmethode aktualisiert"
 
-#: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
-msgid "The folder you are trying to delete does not exist."
-msgstr "Der Order, den Sie löschen möchten, existiert nicht."
-
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
 msgid "The folder you are trying to move does not exist."
 msgstr "Der Order, den Sie verschieben möchten, existiert nicht."
@@ -7519,7 +7559,6 @@ msgid "This document cannot be changed"
 msgstr "Dieses Dokument kann nicht geändert werden"
 
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
-#: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 msgid "This document could not be deleted at this time. Please try again."
 msgstr "Dieses Dokument konnte derzeit nicht gelöscht werden. Bitte versuchen Sie es erneut."
 
@@ -8146,6 +8185,7 @@ msgstr "Passwort wird aktualisiert..."
 msgid "Updating Your Information"
 msgstr "Aktualisierung Ihrer Informationen"
 
+#: packages/ui/primitives/any-file-upload.tsx
 #: packages/ui/primitives/document-dropzone.tsx
 #: packages/ui/primitives/document-upload.tsx
 msgid "Upgrade"
@@ -9141,6 +9181,10 @@ msgstr "Sie können derzeit keine Dokumente hochladen."
 msgid "You cannot upload encrypted PDFs"
 msgstr "Sie können keine verschlüsselten PDFs hochladen"
 
+#: packages/ui/primitives/any-file-upload.tsx
+msgid "You cannot upload files at this time."
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.billing.tsx
 msgid "You currently have an inactive <0>{currentProductName}</0> subscription"
 msgstr "Sie haben derzeit ein inaktives <0>{currentProductName}</0> Abonnement"
@@ -9480,10 +9524,6 @@ msgstr ""
 
 #: apps/remix/app/components/general/files/files-document-upload.tsx
 msgid "Your file has been uploaded successfully."
-msgstr ""
-
-#: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
-msgid "Your files have been uploaded successfully."
 msgstr ""
 
 #: apps/remix/app/components/forms/password.tsx

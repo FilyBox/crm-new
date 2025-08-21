@@ -6,9 +6,9 @@ import { Trans } from '@lingui/react/macro';
 import { Loader } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import { Link, useNavigate, useParams } from 'react-router';
+import { toast } from 'sonner';
 import { match } from 'ts-pattern';
 
-import { useLimits } from '@documenso/ee/server-only/limits/provider/client';
 import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
 import { useSession } from '@documenso/lib/client-only/providers/session';
 import { APP_DOCUMENT_UPLOAD_SIZE_LIMIT, IS_BILLING_ENABLED } from '@documenso/lib/constants/app';
@@ -18,9 +18,9 @@ import { megabytesToBytes } from '@documenso/lib/universal/unit-convertions';
 import { putGeneralFile } from '@documenso/lib/universal/upload/put-general-file';
 import { trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
-import { useOptionalCurrentTeam } from '~/providers/team';
+import { useCurrentTeam } from '~/providers/team';
+import { canPerformAction } from '~/utils/constants';
 
 export interface FileDropZoneWrapperProps {
   children: ReactNode;
@@ -29,11 +29,12 @@ export interface FileDropZoneWrapperProps {
 
 export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapperProps) => {
   const { _ } = useLingui();
-  const { toast } = useToast();
   const { user } = useSession();
   const { folderId } = useParams();
 
-  const team = useOptionalCurrentTeam();
+  const team = useCurrentTeam();
+
+  const canDoAdminManager = canPerformAction({ teamMemberRole: team.currentTeamRole });
 
   const navigate = useNavigate();
   const analytics = useAnalytics();
@@ -44,14 +45,13 @@ export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapper
     TIME_ZONES.find((timezone) => timezone === Intl.DateTimeFormat().resolvedOptions().timeZone) ??
     DEFAULT_DOCUMENT_TIME_ZONE;
 
-  const { quota, remaining, refreshLimits } = useLimits();
+  // const { quota, remaining, refreshLimits } = useLimits();
 
   const { mutateAsync: createFile } = trpc.files.createFile.useMutation();
 
-  const isUploadDisabled = remaining.documents === 0 || !user.emailVerified;
-
+  const isUploadEnabled = canDoAdminManager || !user.emailVerified;
   const onFileDrop = async (files: File[]) => {
-    if (isUploadDisabled && IS_BILLING_ENABLED()) {
+    if (!isUploadEnabled && IS_BILLING_ENABLED()) {
       await navigate('/settings/billing');
       return;
     }
@@ -69,7 +69,7 @@ export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapper
           folderId: folderId ?? undefined,
         });
 
-        void refreshLimits();
+        // void refreshLimits();
 
         analytics.capture('App: File Uploaded', {
           userId: user.id,
@@ -78,11 +78,16 @@ export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapper
         });
       }
 
-      toast({
-        title: _(msg`Files uploaded`),
-        description: _(msg`Your files have been uploaded successfully.`),
-        duration: 5000,
+      toast.success(_(msg`Files uploaded`), {
+        className: 'mb-16',
+        position: 'bottom-center',
       });
+
+      // toast({
+      //   title: _(msg`Files uploaded`),
+      //   description: _(msg`Your files have been uploaded successfully.`),
+      //   duration: 5000,
+      // });
     } catch (err) {
       const error = AppError.parseError(err);
 
@@ -93,36 +98,40 @@ export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapper
         )
         .otherwise(() => msg`An error occurred while uploading your file.`);
 
-      toast({
-        title: _(msg`Error`),
+      toast.error(_(msg`Error`), {
+        className: 'mb-16',
+        position: 'bottom-center',
         description: _(errorMessage),
-        variant: 'destructive',
-        duration: 7500,
       });
+      // toast({
+      //   title: _(msg`Error`),
+      //   description: _(errorMessage),
+      //   variant: 'destructive',
+      //   duration: 7500,
+      // });
     } finally {
       setIsLoading(false);
     }
   };
 
   const onFileDropRejected = () => {
-    toast({
-      title: _(msg`Your file failed to upload.`),
+    toast.error(_(msg`Your file failed to upload.`), {
       description: _(msg`File cannot be larger than ${APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB`),
-      duration: 5000,
-      variant: 'destructive',
+      className: 'mb-16',
+      position: 'bottom-center',
     });
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      'application/pdf': ['.pdf'],
-      'text/xml': ['.xml'],
-      'application/xml': ['.xml'],
-      'application/xlsx': ['.xlsx'],
-      'application/csv': ['.csv'],
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-    },
-    //disabled: isUploadDisabled,
+    // accept: {
+    //   'application/pdf': ['.pdf'],
+    //   'text/xml': ['.xml'],
+    //   'application/xml': ['.xml'],
+    //   'application/xlsx': ['.xlsx'],
+    //   'application/csv': ['.csv'],
+    //   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+    // },
+    disabled: !isUploadEnabled,
     multiple: true,
     maxSize: megabytesToBytes(APP_DOCUMENT_UPLOAD_SIZE_LIMIT),
     onDrop: (acceptedFiles) => {
@@ -153,7 +162,7 @@ export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapper
               <Trans>Drag and drop your file here</Trans>
             </p>
 
-            {isUploadDisabled && IS_BILLING_ENABLED() && (
+            {!isUploadEnabled && IS_BILLING_ENABLED() && (
               <Link
                 to="/settings/billing"
                 className="mt-4 text-sm text-amber-500 hover:underline dark:text-amber-400"
@@ -161,17 +170,6 @@ export const FileDropZoneWrapper = ({ children, className }: FileDropZoneWrapper
                 <Trans>Upgrade your plan to upload more files</Trans>
               </Link>
             )}
-
-            {!isUploadDisabled &&
-              team?.id === undefined &&
-              remaining.documents > 0 &&
-              Number.isFinite(remaining.documents) && (
-                <p className="text-muted-foreground/80 mt-4 text-sm">
-                  {/* <Trans>
-                    {remaining.documents} of {quota.documents} documents remaining this month.
-                  </Trans> */}
-                </p>
-              )}
           </div>
         </div>
       )}

@@ -5,6 +5,7 @@ import { useLingui } from '@lingui/react/macro';
 import { Trans } from '@lingui/react/macro';
 import type * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
@@ -37,7 +38,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@documenso/ui/primitives/select';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
 
@@ -58,7 +58,6 @@ export const FolderUpdateDialog = ({ folder, isOpen, onOpenChange }: FolderUpdat
   const { t } = useLingui();
   const team = useOptionalCurrentTeam();
 
-  const { toast } = useToast();
   const { mutateAsync: updateFolder } = trpc.folder.updateFolder.useMutation();
 
   const isTeamContext = !!team;
@@ -94,8 +93,9 @@ export const FolderUpdateDialog = ({ folder, isOpen, onOpenChange }: FolderUpdat
           : DocumentVisibility.EVERYONE,
       });
 
-      toast({
-        title: t`Folder updated successfully`,
+      toast.success(t`Folder updated successfully`, {
+        className: 'mb-16',
+        position: 'bottom-center',
       });
 
       onOpenChange(false);
@@ -103,8 +103,9 @@ export const FolderUpdateDialog = ({ folder, isOpen, onOpenChange }: FolderUpdat
       const error = AppError.parseError(err);
 
       if (error.code === AppErrorCode.NOT_FOUND) {
-        toast({
-          title: t`Folder not found`,
+        toast.error(t`Failed not found`, {
+          className: 'mb-16',
+          position: 'bottom-center',
         });
       }
     }

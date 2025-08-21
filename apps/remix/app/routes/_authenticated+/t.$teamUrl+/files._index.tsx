@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from 'react';
 
 import { Trans } from '@lingui/react/macro';
+import { queryOptions } from '@tanstack/react-query';
 import { useParams, useSearchParams } from 'react-router';
 
 import { FolderType } from '@documenso/lib/types/folder-type';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
-import { trpc } from '@documenso/trpc/react';
+import { queryClient, trpc } from '@documenso/trpc/react';
 import { ZFindDocumentsInternalRequestSchema } from '@documenso/trpc/server/document-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 
@@ -38,10 +39,27 @@ export default function FilesPage() {
     [searchParams],
   );
 
-  const { data, isLoading, isLoadingError, refetch } = trpc.files.findFilesInternal.useQuery({
-    ...findDocumentSearchParams,
-    folderId,
+  const { data, isLoading, isLoadingError, refetch } = trpc.files.findFilesInternal.useQuery(
+    {
+      ...findDocumentSearchParams,
+      folderId,
+    },
+    queryOptions({
+      queryKey: ['files', findDocumentSearchParams, folderId, team?.url],
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+    }),
+  );
+
+  const { mutateAsync: deleteDocumentMutation } = trpc.files.deleteSoftMultipleByIds.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['files'] });
+    },
   });
+
+  const handleMultipleDelete = async (ids: number[]) => {
+    await deleteDocumentMutation({ ids });
+  };
 
   useEffect(() => {
     void refetch();
@@ -84,11 +102,10 @@ export default function FilesPage() {
               data={data}
               isLoading={isLoading}
               isLoadingError={isLoadingError}
-              // onMoveDocument={(documentId) => {
+              onMultipleDelete={handleMultipleDelete}
               //   setDocumentToMove(documentId);
               //   setIsMovingDocument(true);
               // }}
-              // onMultipleDelete={handleMultipleDelete}
               // isMultipleDelete={isMultipleDelete}
               // setIsMultipleDelete={setIsMultipleDelete}
 
