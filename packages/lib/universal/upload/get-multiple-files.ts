@@ -2,6 +2,8 @@ import { DocumentDataType } from '@prisma/client';
 import { base64 } from '@scure/base';
 import { match } from 'ts-pattern';
 
+import { NEXT_PUBLIC_WEBAPP_URL } from '../../constants/app';
+
 export type GetFileOptions = {
   type: DocumentDataType;
   data: string;
@@ -32,7 +34,7 @@ const getFileFromBytes64 = (data: string) => {
 export const getFileFromS3 = async (key: string) => {
   try {
     const getPresignedUrlResponse = await fetch(
-      `http://localhost:3000/api/files/presigned-get-url`,
+      `${NEXT_PUBLIC_WEBAPP_URL || 'http://localhost:3000'}/api/files/presigned-get-url`,
       {
         method: 'POST',
         headers: {
