@@ -459,6 +459,7 @@ enum DocumentSource {
   DOCUMENT
   TEMPLATE
   TEMPLATE_DIRECT_LINK
+  CHAT
 }
 
 enum DocumentVisibility {

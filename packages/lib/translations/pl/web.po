@@ -1054,7 +1054,22 @@ msgstr "Po podpisaniu dokumentu elektronicznie, otrzymasz możliwość obejrzeni
 msgid "After submission, a document will be automatically generated and added to your documents page. You will also receive a notification via email."
 msgstr "Po przesłaniu dokumentu zostanie automatycznie wygenerowany i dodany do Twojej strony dokumentów. Otrzymasz również powiadomienie pocztą elektroniczną."
 
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+msgid "Album"
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/contracts-status.tsx
+#: apps/remix/app/components/general/task/contracts-status.tsx
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/task-priority.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
 msgid "All"
 msgstr "Wszystko"
 
@@ -1223,10 +1238,13 @@ msgstr "Wystąpił błąd podczas wyłączania użytkownika."
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
-#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 msgid "An error occurred while downloading your document."
 msgstr "Wystąpił błąd podczas pobierania dokumentu."
+
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
+msgid "An error occurred while downloading your file."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/template-duplicate-dialog.tsx
 msgid "An error occurred while duplicating template."
@@ -1331,6 +1349,12 @@ msgstr "Wystąpił błąd podczas przesyłania dokumentu."
 #: apps/remix/app/components/general/files/files-document-upload.tsx
 #: apps/remix/app/components/general/files/files-drop-zone-wrapper.tsx
 msgid "An error occurred while uploading your file."
+msgstr ""
+
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
+msgid "An error occurred. Please try again."
 msgstr ""
 
 #: apps/remix/app/components/general/generic-error-layout.tsx
@@ -1644,6 +1668,10 @@ msgstr "Płatności"
 msgid "Black"
 msgstr "Czarny"
 
+#: apps/remix/app/components/general/task/task-status.tsx
+msgid "Blocked"
+msgstr ""
+
 #: packages/ui/primitives/signature-pad/signature-pad-color-picker.tsx
 msgid "Blue"
 msgstr "Niebieski"
@@ -1824,6 +1852,10 @@ msgstr "Może przygotować"
 msgid "Cancel"
 msgstr "Anuluj"
 
+#: apps/remix/app/components/general/task/task-status.tsx
+msgid "Cancelled"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/passkey-create-dialog.tsx
 msgid "Cancelled by user"
 msgstr "Anulowano przez użytkownika"
@@ -1870,6 +1902,7 @@ msgid "Charts"
 msgstr "Wykresy"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 msgid "Chat"
 msgstr ""
 
@@ -2021,6 +2054,7 @@ msgstr "Zakończ wyświetlanie"
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
 #: apps/remix/app/components/general/document/document-status.tsx
 #: apps/remix/app/components/general/stack-avatars-with-tooltip.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: packages/email/template-components/template-document-completed.tsx
 #: packages/email/template-components/template-document-recipient-signed.tsx
@@ -2191,6 +2225,7 @@ msgid "Continue to login"
 msgstr "Kontynuuj do logowania"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 msgid "Contracts"
 msgstr ""
 
@@ -2496,6 +2531,10 @@ msgstr "Utworzono {0}"
 
 #: apps/remix/app/components/tables/files-table.tsx
 msgid "CreatedAt"
+msgstr ""
+
+#: apps/remix/app/components/general/task/task-priority.tsx
+msgid "Critical"
 msgstr ""
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
@@ -2935,6 +2974,8 @@ msgid "Document access auth updated"
 msgstr ""
 
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/task-priority.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
 msgid "Document All"
 msgstr "Wszystkie dokumenty"
 
@@ -2949,6 +2990,8 @@ msgid "Document Cancelled"
 msgstr "Dokument anulowany"
 
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/task-priority.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
 msgid "Document completed"
 msgstr "Zakończono dokument"
 
@@ -3023,6 +3066,7 @@ msgid "Document Distribution Method"
 msgstr "Metoda dystrybucji dokumentu"
 
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/task-priority.tsx
 msgid "Document draft"
 msgstr "Szkic dokumentu"
 
@@ -3031,6 +3075,7 @@ msgid "Document Duplicated"
 msgstr "Dokument zduplikowany"
 
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/task-priority.tsx
 msgid "Document error"
 msgstr ""
 
@@ -3087,6 +3132,8 @@ msgid "Document opened"
 msgstr ""
 
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/task-priority.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
 msgid "Document pending"
 msgstr "Dokument w toku"
 
@@ -3283,6 +3330,10 @@ msgstr "Pobierz oryginał"
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Download Template CSV"
 msgstr "Pobierz szablon CSV"
+
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
+msgid "Downloading file..."
+msgstr ""
 
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Downloading files..."
@@ -3627,6 +3678,13 @@ msgstr "Wprowadź swój tekst tutaj"
 msgid "Enterprise"
 msgstr "Enterprise"
 
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+msgid "EP"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/admin-user-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/admin-user-disable-dialog.tsx
 #: apps/remix/app/components/dialogs/admin-user-enable-dialog.tsx
@@ -3696,6 +3754,7 @@ msgstr "Błąd"
 msgid "Error deleting records"
 msgstr ""
 
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Error downloading files"
 msgstr ""
@@ -3908,6 +3967,7 @@ msgstr ""
 msgid "Files deleted successfully"
 msgstr ""
 
+#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Files downloaded successfully"
 msgstr ""
@@ -3919,6 +3979,11 @@ msgstr ""
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
 msgstr "Wypełnij szczegóły, aby utworzyć nowe roszczenie subskrypcyjne."
+
+#: apps/remix/app/components/general/task/contracts-status.tsx
+#: apps/remix/app/components/general/task/contracts-status.tsx
+msgid "Finalizado"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/template-move-to-folder-dialog.tsx
@@ -4202,6 +4267,10 @@ msgstr "Cześć, {userName} <0>({userEmail})</0>"
 msgid "Hide"
 msgstr "Ukryj"
 
+#: apps/remix/app/components/general/task/task-priority.tsx
+msgid "High"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
 #: apps/remix/app/components/general/folder/folder-grid.tsx
 #: apps/remix/app/components/general/generic-error-layout.tsx
@@ -4269,6 +4338,10 @@ msgstr "Jeśli nie znajdziesz linku potwierdzającego w swojej skrzynce odbiorcz
 #: apps/remix/app/components/forms/2fa/enable-authenticator-app-dialog.tsx
 msgid "If your authenticator app does not support QR codes, you can use the following code instead:"
 msgstr "Jeśli Twoja aplikacja uwierzytelniająca nie obsługuje kodów QR, możesz użyć poniższego kodu:"
+
+#: apps/remix/app/components/general/task/task-status.tsx
+msgid "In Progress"
+msgstr ""
 
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
@@ -4582,6 +4655,10 @@ msgstr "Lokalna strefa czasowa"
 msgid "Login"
 msgstr "Zaloguj się"
 
+#: apps/remix/app/components/general/task/task-priority.tsx
+msgid "Low"
+msgstr ""
+
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/components/tables/user-organisations-table.tsx
@@ -4745,6 +4822,10 @@ msgstr "Max"
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Maximum file size: 4MB. Maximum 100 rows per upload. Blank values will use template defaults."
 msgstr "Maksymalny rozmiar pliku: 4MB. Maksymalnie 100 wierszy na przesyłkę. Puste wartości zostaną zastąpione domyślnymi z szablonu."
+
+#: apps/remix/app/components/general/task/task-priority.tsx
+msgid "Medium"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/team-member-create-dialog.tsx
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
@@ -4949,6 +5030,14 @@ msgstr "Brak aktywnych szkiców"
 
 #: packages/ui/primitives/data-table-table.tsx
 msgid "No data found"
+msgstr ""
+
+#: apps/remix/app/components/general/task/contracts-status.tsx
+msgid "No Especificado"
+msgstr ""
+
+#: apps/remix/app/components/general/task/contracts-status.tsx
+msgid "No Especificado  "
 msgstr ""
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
@@ -5403,6 +5492,7 @@ msgstr "Płatność zaległa"
 
 #: apps/remix/app/components/general/document/document-page-view-recipients.tsx
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.members.tsx
@@ -6281,6 +6371,13 @@ msgstr "Wybierz wyzwalacze"
 msgid "Select visibility"
 msgstr "Wybierz widoczność"
 
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/release-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+msgid "Sencillo"
+msgstr ""
+
 #: packages/ui/primitives/document-flow/add-subject.tsx
 #: packages/ui/primitives/document-flow/add-subject.tsx
 #: packages/ui/primitives/document-flow/send-document-action-dialog.tsx
@@ -6656,6 +6753,11 @@ msgstr "Rejestracje są wyłączone."
 msgid "Since {0}"
 msgstr "Od {0}"
 
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+#: apps/remix/app/components/general/task/tustreams-type.tsx
+msgid "Single"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/admin+/site-settings.tsx
 msgid "Site Banner"
 msgstr "Baner strony"
@@ -6925,6 +7027,15 @@ msgstr "Wymagania systemowe"
 #: apps/remix/app/components/general/app-command-menu.tsx
 msgid "System Theme"
 msgstr "Motyw systemowy"
+
+#: apps/remix/app/components/general/task/task-status.tsx
+#: apps/remix/app/components/general/task/task-status.tsx
+msgid "Task cancelled"
+msgstr ""
+
+#: apps/remix/app/components/general/task/task-status.tsx
+msgid "Task in progress"
+msgstr ""
 
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
@@ -8541,6 +8652,11 @@ msgstr ""
 #: packages/lib/constants/recipient-roles.ts
 msgctxt "Recipient role progressive verb"
 msgid "Viewing"
+msgstr ""
+
+#: apps/remix/app/components/general/task/contracts-status.tsx
+#: apps/remix/app/components/general/task/contracts-status.tsx
+msgid "Vigente"
 msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx

@@ -1,5 +1,8 @@
 import { DocumentDataType } from '@prisma/client';
+import { DocumentSource } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import { DateTime } from 'luxon';
+import { z } from 'zod';
 
 import { getServerLimits } from '@documenso/ee/server-only/limits/server';
 import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
@@ -22,8 +25,21 @@ import { resendDocument } from '@documenso/lib/server-only/document/resend-docum
 import { searchDocumentsWithKeyword } from '@documenso/lib/server-only/document/search-documents-with-keyword';
 import { sendDocument } from '@documenso/lib/server-only/document/send-document';
 import { getTeamById } from '@documenso/lib/server-only/team/get-team';
-import { getPresignPostUrl } from '@documenso/lib/universal/upload/server-actions';
+import {
+  getContractInfoTask,
+  getExtractBodyContractTask,
+} from '@documenso/lib/server-only/trigger';
+import {
+  generateChartConfig,
+  generateQuery,
+  runGenerateSQLQuery,
+} from '@documenso/lib/universal/ai/queries-proccessing';
+import {
+  getPresignGetUrl,
+  getPresignPostUrl,
+} from '@documenso/lib/universal/upload/server-actions';
 import { isDocumentCompleted } from '@documenso/lib/utils/document';
+import { prisma } from '@documenso/prisma';
 
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { downloadDocumentRoute } from './download-document';
@@ -685,5 +701,132 @@ export const documentRouter = router({
       return {
         url: `${NEXT_PUBLIC_WEBAPP_URL()}/__htmltopdf/certificate?d=${encrypted}`,
       };
+    }),
+
+  retryChatDocument: authenticatedProcedure
+    .input(z.object({ documenDataId: z.string().optional(), documentId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { documenDataId, documentId } = input;
+      const { teamId, user } = ctx;
+      const userId = user.id;
+
+      const document = await prisma.document.findUnique({
+        where: { id: documentId },
+        select: {
+          documentDataId: true,
+        },
+      });
+      if (!document) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Document not found.',
+        });
+      }
+
+      const documentData = await prisma.documentData.findUnique({
+        where: {
+          id: document.documentDataId ?? documenDataId,
+        },
+      });
+      if (documentData) {
+        const { url } = await getPresignGetUrl(documentData.data || '');
+        await getExtractBodyContractTask(userId, documentId, url, teamId);
+
+        await prisma.document.update({
+          where: { id: documentId },
+          data: { status: 'PENDING' },
+        });
+        // const url = await getURL({ type: documentData.type, data: documentData.data });
+      }
+
+      return documentData;
+    }),
+
+  retryContractData: authenticatedProcedure
+    .input(z.object({ documentId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { documentId } = input;
+      const { teamId, user } = ctx;
+      const userId = user.id;
+
+      let newPulicAccessToken = '';
+      let newId = '';
+
+      const document = await prisma.document.findUnique({
+        where: { id: documentId },
+        select: {
+          documentDataId: true,
+        },
+      });
+      if (!document) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Document not found.',
+        });
+      }
+
+      const documentData = await prisma.documentData.findUnique({
+        where: {
+          id: document.documentDataId,
+        },
+      });
+      if (documentData) {
+        const { url } = await getPresignGetUrl(documentData.data || '');
+        const { publicAccessToken, id } = await getContractInfoTask(
+          userId,
+          documentId,
+          url,
+          teamId,
+        );
+        newPulicAccessToken = publicAccessToken;
+        newId = id;
+        await prisma.document.update({
+          where: { id: documentId },
+          data: { status: 'PENDING' },
+        });
+        // const url = await getURL({ type: documentData.type, data: documentData.data });
+      }
+      // const { publicAccessToken, id } = await getContractInfoTask(userId, documentId, teamId);
+
+      return { publicAccessToken: newPulicAccessToken, id: newId };
+    }),
+
+  aiConnection: authenticatedProcedure
+    .input(
+      z.object({
+        question: z.string(),
+        folderId: z.number().optional(),
+        tableToConsult: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { teamId, user } = ctx;
+      const userId = user.id;
+      const { question, folderId, tableToConsult } = input;
+      try {
+        const query = await generateQuery(question, userId, teamId, folderId, tableToConsult);
+
+        const companies = await runGenerateSQLQuery(query);
+
+        const generation = await generateChartConfig(companies, question);
+        return { query, companies, generation };
+      } catch (e) {
+        return { query: '', companies: [], generation: undefined };
+      }
+    }),
+
+  findAllDocumentsInternalUseToChat: authenticatedProcedure
+    .input(ZFindDocumentsInternalRequestSchema)
+    .query(async ({ ctx }) => {
+      const { user, teamId } = ctx;
+      const userId = user.id;
+
+      const documentsChat = await prisma.document.findMany({
+        where: {
+          teamId,
+          source: DocumentSource.CHAT,
+        },
+      });
+      return documentsChat;
     }),
 });
