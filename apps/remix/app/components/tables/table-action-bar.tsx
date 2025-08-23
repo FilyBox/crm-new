@@ -171,7 +171,6 @@ export function TableActionBar<TData extends { id: number }>({
   const handleMultipleDelete = () => {
     try {
       const ids = rows.map((row) => row.original.id);
-      console.log('Deleting IDs:', ids);
       if (onMultipleDelete) {
         setIsDownloading(true);
         toast.promise(onMultipleDelete(ids), {

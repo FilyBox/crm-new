@@ -1,6 +1,6 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 
-import { ContractSchema } from '@documenso/prisma/generated/zod/modelSchema/ContractSchema';
+import { ReleasesSchema } from '@documenso/prisma/generated/zod/modelSchema/ReleasesSchema';
 import { TaskSchema } from '@documenso/prisma/generated/zod/modelSchema/TaskSchema';
 import { TeamSchema } from '@documenso/prisma/generated/zod/modelSchema/TeamSchema';
 import { UserSchema } from '@documenso/prisma/generated/zod/modelSchema/UserSchema';
@@ -10,34 +10,37 @@ import { UserSchema } from '@documenso/prisma/generated/zod/modelSchema/UserSche
  *
  * Mainly used for returning a single document from the API.
  */
-export const ZContractsSchema = ContractSchema.pick({
+
+const ZArtistSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+export const ZReleaseSchema = ReleasesSchema.pick({
   id: true,
-  artists: true,
-  startDate: true,
-  endDate: true,
-  isPossibleToExpand: true,
-  possibleExtensionTime: true,
-  status: true,
-  documentId: true,
-  summary: true,
-  fileName: true,
+  date: true,
+  artist: true,
+  assets: true,
+  audioWAV: true,
+  banners: true,
+  cover: true,
+  Biography: true,
+  canvas: true,
   createdAt: true,
-  updatedAt: true,
-  teamId: true,
-  userId: true,
-  title: true,
-  collectionPeriod: true,
-  collectionPeriodDescription: true,
-  collectionPeriodDuration: true,
-  contractType: true,
-  folderId: true,
-  retentionPeriod: true,
-  retentionPeriodDescription: true,
-  retentionPeriodDuration: true,
-  deletedAt: true,
+  video: true,
+  EPKUpdates: true,
+  lanzamiento: true,
+  release: true,
+  pitch: true,
+  uploaded: true,
+  streamingLink: true,
+  typeOfRelease: true,
+  WebSiteUpdates: true,
+}).extend({
+  artists: z.array(ZArtistSchema).optional(),
+  artistsToUpdate: z.array(z.string()).optional(),
 });
 
-export type TContracts = z.infer<typeof ZContractsSchema>;
+export type TRelease = z.infer<typeof ZReleaseSchema>;
 
 /**
  * A lite version of the document response schema without relations.

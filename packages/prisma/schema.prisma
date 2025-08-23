@@ -533,6 +533,7 @@ model Document {
   deletedAt             DateTime?
   templateId            Int?
   source                DocumentSource
+  useToChat             Boolean                @default(false)
 
   useLegacyFieldInsertion Boolean @default(false)
 
@@ -1758,6 +1759,7 @@ model Contract {
   documentId                  Int
   createdAt                   DateTime                      @default(now())
   updatedAt                   DateTime                      @updatedAt
+  deletedAt                   DateTime?
   summary                     String?                       @db.Text
   userId                      Int?
   teamId                      Int

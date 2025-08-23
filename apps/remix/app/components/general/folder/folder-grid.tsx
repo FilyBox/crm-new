@@ -27,12 +27,27 @@ import { FilesUploadDropzone } from '~/components/general/files/files-document-u
 import { FolderCard, FolderCardEmpty } from '~/components/general/folder/folder-card';
 import { useCurrentTeam } from '~/providers/team';
 
+import ContractsSheet from '../sheets/contracts-sheet';
+
 export type FolderGridProps = {
   type: FolderType;
   parentId: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialData?: any | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setInitialData?: (data: any | null) => void;
+  setIsSheetOpen?: (isOpen: boolean) => void;
+  isSheetOpen?: boolean;
 };
 
-export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
+export const FolderGrid = ({
+  type,
+  parentId,
+  initialData,
+  setInitialData,
+  setIsSheetOpen,
+  isSheetOpen,
+}: FolderGridProps) => {
   const team = useCurrentTeam();
 
   const [isMovingFolder, setIsMovingFolder] = useState(false);
@@ -125,8 +140,15 @@ export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
                 // pal CHAT
                 return null;
               case FolderType.CONTRACT:
-                // pal CONTRACT
-                return null;
+                return (
+                  <ContractsSheet
+                    initialData={initialData}
+                    setInitialData={setInitialData}
+                    setIsSheetOpen={setIsSheetOpen}
+                    isSheetOpen={isSheetOpen}
+                    folderId={parentId}
+                  />
+                );
               case FolderType.FILE:
                 return <FilesUploadDropzone />;
               default:

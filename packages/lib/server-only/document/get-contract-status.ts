@@ -138,6 +138,7 @@ const getCounts = async ({ user, period, search, folderId, teamId }: GetCountsOp
         ],
         AND: [
           { teamId },
+          { deletedAt: null },
           ...(searchFilter ? [searchFilter] : []),
           ...(folderId ? [{ folderId }] : []),
         ],

@@ -276,7 +276,19 @@ export const contractsRouter = router({
       return olalo;
     }),
 
-  deleteContractsById: authenticatedProcedure
+  deleteSoftContractsById: authenticatedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      const { id } = input;
+      const deletedIsrcSong = await prisma.contract.update({
+        where: { id },
+        data: { deletedAt: new Date() },
+      });
+
+      return deletedIsrcSong;
+    }),
+
+  deleteHardContractsById: authenticatedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
       const { id } = input;
@@ -287,7 +299,19 @@ export const contractsRouter = router({
       return deletedIsrcSong;
     }),
 
-  deleteMultipleContractsByIds: authenticatedProcedure
+  deleteSoftMultipleContractsByIds: authenticatedProcedure
+    .input(z.object({ ids: z.array(z.number()) }))
+    .mutation(async ({ input }) => {
+      const { ids } = input;
+      const deletedContracts = await prisma.contract.updateMany({
+        where: { id: { in: ids } },
+        data: { deletedAt: new Date() },
+      });
+
+      return deletedContracts;
+    }),
+
+  deleteHardMultipleContractsByIds: authenticatedProcedure
     .input(z.object({ ids: z.array(z.number()) }))
     .mutation(async ({ input }) => {
       const { ids } = input;

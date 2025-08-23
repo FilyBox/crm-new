@@ -193,8 +193,8 @@ export const documentRouter = router({
         period,
         search: query,
         folderId,
+        source,
       };
-
       if (teamId) {
         const team = await getTeamById({ userId: user.id, teamId });
 
@@ -816,10 +816,9 @@ export const documentRouter = router({
     }),
 
   findAllDocumentsInternalUseToChat: authenticatedProcedure
-    .input(ZFindDocumentsInternalRequestSchema)
-    .query(async ({ ctx }) => {
-      const { user, teamId } = ctx;
-      const userId = user.id;
+    .input(z.object({ teamId: z.number() }))
+    .query(async ({ input }) => {
+      const { teamId } = input;
 
       const documentsChat = await prisma.document.findMany({
         where: {

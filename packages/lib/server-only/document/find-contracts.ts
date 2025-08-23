@@ -121,6 +121,7 @@ export const findContracts = async ({
     // { ...filters },
     // { ...searchFilter },
     { ...Filter },
+    { deletedAt: null },
     ...(where ? [where] : []),
   ];
 

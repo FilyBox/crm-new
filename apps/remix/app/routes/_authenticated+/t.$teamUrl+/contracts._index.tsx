@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { Trans } from '@lingui/react/macro';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { queryOptions } from '@tanstack/react-query';
+import { useParams, useSearchParams } from 'react-router';
 import { Link } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { FolderType } from '@documenso/lib/types/folder-type';
@@ -12,21 +14,19 @@ import { formatContractsPath } from '@documenso/lib/utils/teams';
 import { type Contract } from '@documenso/prisma/client';
 import { ExtendedContractStatus } from '@documenso/prisma/types/extended-contracts';
 import { trpc } from '@documenso/trpc/react';
+import { queryClient } from '@documenso/trpc/react';
 import {
   type TFindContractsInternalResponse,
   ZFindContractsInternalRequestSchema,
 } from '@documenso/trpc/server/contracts-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
-import { Dialog, DialogContent } from '@documenso/ui/primitives/dialog';
-import ContractForm from '@documenso/ui/primitives/form-contracts';
 import { Tabs, TabsList, TabsTrigger } from '@documenso/ui/primitives/tabs';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { AdvancedFilterDialog } from '~/components/general/advanced-filter-drawer';
 import { FolderGrid } from '~/components/general/folder/folder-grid';
 import { ContractsStatus } from '~/components/general/task/contracts-status';
 import { ContractsTable } from '~/components/tables/contracts-table';
-import { useOptionalCurrentTeam } from '~/providers/team';
+import { useCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
 import { useSortParams } from '~/utils/searchParams';
 
@@ -64,13 +64,17 @@ export const TypeSearchParams = z.record(
 );
 
 export default function ContractsPage() {
+  const [editingUser, setEditingUser] = useState<Contract | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+
   const [searchParams] = useSearchParams();
   const { folderId } = useParams();
+  const { t } = useLingui();
 
   const {
     filters,
     applyFilters,
-    applySorting,
     perPage,
     query,
     page,
@@ -80,8 +84,7 @@ export default function ContractsPage() {
     columnDirection,
   } = useSortParams({ sortColumns, status: ['VIGENTE', 'NO_ESPECIFICADO', 'FINALIZADO'] });
 
-  const team = useOptionalCurrentTeam();
-  const navigate = useNavigate();
+  const team = useCurrentTeam();
 
   const documentRootPath = formatContractsPath(team?.url);
   const [status, setStatus] = useState<TFindContractsInternalResponse['status']>({
@@ -96,43 +99,43 @@ export default function ContractsPage() {
     [searchParams],
   );
 
-  const { data, isLoading, isLoadingError, refetch } = trpc.contracts.findContracts.useQuery({
-    query: findDocumentSearchParams.query || query,
-    period: findDocumentSearchParams.period,
-    page: page,
-    perPage: perPage,
-    status: statusParams,
-    orderByColumn: columnOrder,
-    orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
-    joinOperator: joinOperator,
-  });
+  const { data, isLoading, isLoadingError } = trpc.contracts.findContracts.useQuery(
+    {
+      query: findDocumentSearchParams.query || query,
+      period: findDocumentSearchParams.period,
+      page: page,
+      perPage: perPage,
+      status: statusParams,
+      orderByColumn: columnOrder,
+      orderByDirection: columnDirection as 'asc' | 'desc',
+      filterStructure: applyFilters ? filters : [],
+      joinOperator: joinOperator,
+    },
+    queryOptions({
+      queryKey: ['contracts', findDocumentSearchParams, folderId, team?.url],
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+    }),
+  );
 
   const retryDocument = trpc.document.retryChatDocument.useMutation();
 
-  const {
-    data: documentsData,
-    // isLoading: isDocumentsLoading,
-    // isLoadingError: isDocumentsLoadingError,
-    // refetch: refetchDocuments,
-  } = trpc.document.findAllDocumentsInternalUseToChat.useQuery({
-    query: findDocumentSearchParams.query,
-    period: findDocumentSearchParams.period,
-    page: findDocumentSearchParams.page,
-    perPage: findDocumentSearchParams.perPage,
+  const createManyContractsMutation = trpc.contracts.createManyContracts.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['contracts'] });
+    },
   });
-
-  const createContractsMutation = trpc.contracts.createContracts.useMutation();
-  const createManyContractsMutation = trpc.contracts.createManyContracts.useMutation();
-  const updateContractsMutation = trpc.contracts.updateContractsById.useMutation();
-  const deleteContractsMutation = trpc.contracts.deleteContractsById.useMutation();
-  const deleteMultipleContractsMutation = trpc.contracts.deleteMultipleContractsByIds.useMutation();
-  const { toast } = useToast();
-  const [editingUser, setEditingUser] = useState<Contract | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [isMultipleDelete, setIsMultipleDelete] = useState(false);
+  const deleteContractsMutation = trpc.contracts.deleteSoftContractsById.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['contracts'] });
+    },
+  });
+  const deleteMultipleContractsMutation =
+    trpc.contracts.deleteSoftMultipleContractsByIds.useMutation({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ['contracts'] });
+      },
+    });
 
   const getTabHref = (value: keyof typeof ExtendedContractStatus) => {
     const params = new URLSearchParams(searchParams);
@@ -221,8 +224,6 @@ export default function ContractsPage() {
         return undefined;
       }
     };
-
-    setIsSubmitting(true);
     try {
       const csvData = await parseCsvFile(csvFile);
 
@@ -262,23 +263,20 @@ export default function ContractsPage() {
         Contracts: filteredData,
       });
 
-      toast({
-        description: `Se han creado ${result.count} registros exitosamente`,
+      toast.success(t`Se han creado ${result.count} registros exitosament`, {
+        position: 'bottom-center',
+        className: 'mb-16',
       });
 
       // Refrescar los datos
-      await refetch();
       setCsvFile(null);
     } catch (error) {
       console.error('Error al procesar el CSV:', error);
-      toast({
-        variant: 'destructive',
-        description:
-          'Error al procesar el archivo CSV: ' +
-          (error instanceof Error ? error.message : 'Error desconocido'),
+
+      toast.error(t`Error while processing CSV`, {
+        position: 'bottom-center',
+        className: 'mb-16',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -286,129 +284,77 @@ export default function ContractsPage() {
     try {
       const { documentId, id } = row;
       if (!documentId || documentId === 0) {
-        toast({
-          variant: 'destructive',
-          description: 'El registro no tiene un documento asociado.',
+        toast.error(t`The record does not have an associated document.`, {
+          position: 'bottom-center',
+          className: 'mb-16',
         });
         return;
       }
       const result = await retryDocument.mutateAsync({
         documentId: documentId,
       });
-
-      toast({
-        description: 'Attempting to retry',
+      toast.info(t`Attempting to retry`, {
+        position: 'bottom-center',
+        className: 'mb-16',
       });
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        description: 'Error',
+      toast.error(t`Error al reintentar`, {
+        position: 'bottom-center',
+        className: 'mb-16',
       });
       console.error('Error:', error);
     }
   };
 
-  const handleCreate = async (newRecord: Omit<Contract, 'id'>) => {
-    setIsSubmitting(true);
-    try {
-      await createContractsMutation.mutateAsync({
-        title: newRecord.title ?? '',
-        fileName: newRecord.fileName ?? '',
-        artists: newRecord.artists ?? '',
-        startDate: newRecord.startDate ?? new Date(),
-        endDate: newRecord.endDate ?? new Date(),
-        isPossibleToExpand: newRecord.isPossibleToExpand ?? '',
-        possibleExtensionTime: newRecord.possibleExtensionTime ?? '',
-        status: newRecord.status ?? 'NO_ESPECIFICADO',
-        documentId: newRecord.documentId ?? 0,
-        summary: newRecord.summary ?? '',
-      });
-      await refetch();
-      setIsDialogOpen(false);
-    } catch (error) {
-      console.error('Error creating record:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
   const hanleOnNavegate = (row: Contract) => {
     const { documentId } = row;
     const documentPath = `${documentRootPath}/${documentId}`;
     window.location.href = documentPath;
   };
-  const handleUpdate = async (updatedContracts: Contract) => {
-    setIsSubmitting(true);
-    try {
-      await updateContractsMutation.mutateAsync({
-        id: updatedContracts.id,
-        title: updatedContracts.title ?? '',
-        artists: updatedContracts.artists ?? '',
-        fileName: updatedContracts.fileName ?? undefined,
-        startDate: updatedContracts.startDate ?? new Date(),
-        endDate: updatedContracts.endDate ?? new Date(),
-        isPossibleToExpand: updatedContracts.isPossibleToExpand ?? undefined,
-        possibleExtensionTime: updatedContracts.possibleExtensionTime ?? undefined,
-        status: updatedContracts.status ?? undefined,
-        documentId: updatedContracts.documentId ?? undefined,
-        summary: updatedContracts.summary ?? undefined,
-      });
-      setIsDialogOpen(false);
-      setEditingUser(null);
-    } catch (error) {
-      console.error('Error updating record:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
-  const handleDelete = async (deleteData: Contract) => {
-    try {
-      await deleteContractsMutation.mutateAsync({ id: deleteData.id });
+  const handleDelete = (deleteData: Contract) => {
+    console.log('deletadata', deleteData);
 
-      toast({
-        description: 'Data deleted successfully',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        description: 'Error deleting data',
-      });
-      console.error('Error deleting record:', error);
-    }
+    toast.promise(deleteContractsMutation.mutateAsync({ id: deleteData.id }), {
+      loading: t`Deleting record...`,
+      success: () => {
+        return t`Record deleted successfully`;
+      },
+      error: () => {
+        return t`Error deleting record`;
+      },
+      position: 'bottom-center',
+      className: 'mb-16',
+    });
   };
 
   const handleMultipleDelete = async (ids: number[]) => {
     try {
       await deleteMultipleContractsMutation.mutateAsync({ ids: ids });
-
-      toast({
-        description: `${ids.length} deleted successfully`,
-      });
-      await refetch();
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        description: 'Error deleting data',
-      });
       console.error('Error deleting record:', error);
-    } finally {
-      setIsMultipleDelete(false);
     }
   };
 
   const handleEdit = (record: Contract) => {
     setEditingUser(record);
-    setIsDialogOpen(true);
+    setIsSheetOpen(true);
   };
 
   const openCreateDialog = () => {
     setEditingUser(null);
-    setIsDialogOpen(true);
   };
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-y-8 px-4 md:px-8">
-      <FolderGrid type={FolderType.CONTRACT} parentId={folderId ?? null} />
+      <FolderGrid
+        initialData={editingUser}
+        setInitialData={setEditingUser}
+        type={FolderType.CONTRACT}
+        parentId={folderId ?? null}
+        setIsSheetOpen={setIsSheetOpen}
+        isSheetOpen={isSheetOpen}
+      />
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-8">
         <div className="flex flex-row items-center">
@@ -457,34 +403,10 @@ export default function ContractsPage() {
             </Tabs>
 
             <AdvancedFilterDialog tableToConsult="Contracts" />
-            {/* <div className="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-4 sm:w-48">
-              <DocumentSearch initialValue={findDocumentSearchParams.query} />
-            </div> */}
           </div>
         </div>
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-2xl">
-          <div>
-            <ContractForm
-              documents={documentsData || []}
-              isSubmitting={isSubmitting}
-              onSubmit={editingUser ? handleUpdate : handleCreate}
-              initialData={editingUser}
-            />
-          </div>
-        </DialogContent>
-        {/* <div className="mb-4 flex items-center gap-2">
-          <Input type="file" accept=".csv" onChange={handleFileChange} className="max-w-sm" />
-          <Button onClick={handleCsvUpload} disabled={!csvFile || isSubmitting}>
-            {isSubmitting ? 'Procesando...' : 'Cargar CSV'}
-          </Button>
-        </div> */}
-      </Dialog>
-      {/* {data && (!data?.documents.data.length || data?.documents.data.length === 0) ? (
-        <GeneralTableEmptyState status={'ALL'} />
-      ) : ( */}
       <ContractsTable
         data={
           data?.documents ?? {
@@ -498,7 +420,7 @@ export default function ContractsPage() {
         onMultipleDelete={handleMultipleDelete}
         onRetry={handleRetry}
         isLoading={isLoading}
-        isMultipleDelete={isMultipleDelete}
+        isMultipleDelete={deleteMultipleContractsMutation.isPending}
         isLoadingError={isLoadingError}
         // onMoveDocument={(row: Contract) => {
         //   setDocumentToMove(row.id);

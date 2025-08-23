@@ -64,16 +64,13 @@ export function useSortParams({
     }
     if (sort.status) {
       const s = sort.status as string;
-      console.log('status', s);
       if (status) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         st = status.includes(s) ? (s as any) : undefined;
-        console.log('st', st);
       }
     }
     if (sort.type) {
       const t = sort.type as string;
-      console.log('type', t);
       if (type) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         tp = type.includes(t) ? (t as any) : undefined;

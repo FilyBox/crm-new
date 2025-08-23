@@ -1,6 +1,6 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 
-import { ContractSchema } from '@documenso/prisma/generated/zod/modelSchema/ContractSchema';
+import { IsrcSongsSchema } from '@documenso/prisma/generated/zod/modelSchema/IsrcSongsSchema';
 import { TaskSchema } from '@documenso/prisma/generated/zod/modelSchema/TaskSchema';
 import { TeamSchema } from '@documenso/prisma/generated/zod/modelSchema/TeamSchema';
 import { UserSchema } from '@documenso/prisma/generated/zod/modelSchema/UserSchema';
@@ -10,34 +10,29 @@ import { UserSchema } from '@documenso/prisma/generated/zod/modelSchema/UserSche
  *
  * Mainly used for returning a single document from the API.
  */
-export const ZContractsSchema = ContractSchema.pick({
+
+const ZArtistSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+export const ZIsrcSongsSchema = IsrcSongsSchema.pick({
   id: true,
-  artists: true,
-  startDate: true,
-  endDate: true,
-  isPossibleToExpand: true,
-  possibleExtensionTime: true,
-  status: true,
-  documentId: true,
-  summary: true,
-  fileName: true,
-  createdAt: true,
-  updatedAt: true,
+  date: true,
+  isrc: true,
+  artist: true,
+  duration: true,
+  trackName: true,
+  title: true,
+  license: true,
   teamId: true,
   userId: true,
-  title: true,
-  collectionPeriod: true,
-  collectionPeriodDescription: true,
-  collectionPeriodDuration: true,
-  contractType: true,
-  folderId: true,
-  retentionPeriod: true,
-  retentionPeriodDescription: true,
-  retentionPeriodDuration: true,
-  deletedAt: true,
+  createdAt: true,
+}).extend({
+  artists: z.array(ZArtistSchema).optional(),
+  artistsToUpdate: z.array(z.string()).optional(),
 });
 
-export type TContracts = z.infer<typeof ZContractsSchema>;
+export type TIsrcSongs = z.infer<typeof ZIsrcSongsSchema>;
 
 /**
  * A lite version of the document response schema without relations.

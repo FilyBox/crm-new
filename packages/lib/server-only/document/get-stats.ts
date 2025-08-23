@@ -1,5 +1,5 @@
 import { TeamMemberRole } from '@prisma/client';
-import type { Prisma, User } from '@prisma/client';
+import type { DocumentSource, Prisma, User } from '@prisma/client';
 import { SigningStatus } from '@prisma/client';
 import { DocumentVisibility } from '@prisma/client';
 import { DateTime } from 'luxon';
@@ -16,17 +16,18 @@ export type GetStatsInput = {
   period?: PeriodSelectorValue;
   search?: string;
   folderId?: string;
+  source?: DocumentSource;
 };
 
 export const getStats = async ({
   user,
   period,
+  source,
   search = '',
   folderId,
   ...options
 }: GetStatsInput) => {
   let createdAt: Prisma.DocumentWhereInput['createdAt'];
-
   if (period) {
     const daysAgo = parseInt(period.replace(/d$/, ''), 10);
 
@@ -45,6 +46,7 @@ export const getStats = async ({
         userId: user.id,
         search,
         folderId,
+        source,
       })
     : getCounts({ user, createdAt, search, folderId }));
 
@@ -95,9 +97,10 @@ type GetCountsOption = {
   createdAt: Prisma.DocumentWhereInput['createdAt'];
   search?: string;
   folderId?: string | null;
+  source?: DocumentSource;
 };
 
-const getCounts = async ({ user, createdAt, search, folderId }: GetCountsOption) => {
+const getCounts = async ({ user, createdAt, search, folderId, source }: GetCountsOption) => {
   const searchFilter: Prisma.DocumentWhereInput = {
     OR: [
       { title: { contains: search, mode: 'insensitive' } },
@@ -118,6 +121,7 @@ const getCounts = async ({ user, createdAt, search, folderId }: GetCountsOption)
       where: {
         userId: user.id,
         createdAt,
+        ...(source ? { source } : {}),
         deletedAt: null,
         AND: [searchFilter, rootPageFilter, folderId ? { folderId } : {}],
       },
@@ -130,6 +134,7 @@ const getCounts = async ({ user, createdAt, search, folderId }: GetCountsOption)
       },
       where: {
         status: ExtendedDocumentStatus.PENDING,
+        ...(source ? { source } : {}),
         recipients: {
           some: {
             email: user.email,
@@ -149,6 +154,7 @@ const getCounts = async ({ user, createdAt, search, folderId }: GetCountsOption)
       },
       where: {
         createdAt,
+        ...(source ? { source } : {}),
         user: {
           email: {
             not: user.email,
@@ -157,6 +163,7 @@ const getCounts = async ({ user, createdAt, search, folderId }: GetCountsOption)
         OR: [
           {
             status: ExtendedDocumentStatus.PENDING,
+            ...(source ? { source } : {}),
             recipients: {
               some: {
                 email: user.email,
@@ -192,10 +199,11 @@ type GetTeamCountsOption = {
   currentTeamMemberRole?: TeamMemberRole;
   search?: string;
   folderId?: string | null;
+  source?: DocumentSource;
 };
 
 const getTeamCounts = async (options: GetTeamCountsOption) => {
-  const { createdAt, teamId, teamEmail, folderId } = options;
+  const { createdAt, teamId, teamEmail, folderId, source } = options;
 
   const senderIds = options.senderIds ?? [];
 
@@ -265,6 +273,7 @@ const getTeamCounts = async (options: GetTeamCountsOption) => {
     ...ownerCountsWhereInput,
     ...visibilityFiltersWhereInput,
     ...searchFilter,
+    ...(source ? { source } : {}),
   };
 
   if (teamEmail) {

@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
 import { ContractStatus, ExpansionPossibility } from '@prisma/client';
-import { format, isValid, parse } from 'date-fns';
-// Add import for parse and isValid
+import { queryOptions } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { type Contract, type Document } from '@documenso/prisma/client';
-import { useToast } from '@documenso/ui/primitives/use-toast';
-
-import { cn } from '../lib/utils';
-import { Button } from './button';
-import { Calendar } from './calendar-year-picker';
-import { Card, CardContent } from './card';
+import { trpc } from '@documenso/trpc/react';
+import { queryClient } from '@documenso/trpc/react';
+import { cn } from '@documenso/ui/lib/utils';
+import { Button } from '@documenso/ui/primitives/button';
+import { Calendar } from '@documenso/ui/primitives/calendar-year-picker';
 import {
   Command,
   CommandEmpty,
@@ -22,75 +25,144 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from './command';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
-import { Input } from './input';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { ScrollArea } from './scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
-import { Textarea } from './textarea';
+} from '@documenso/ui/primitives/command';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@documenso/ui/primitives/form';
+import { Input } from '@documenso/ui/primitives/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
+import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@documenso/ui/primitives/select';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@documenso/ui/primitives/sheet';
+import { Textarea } from '@documenso/ui/primitives/textarea';
 
-// Define the enum types from Prisma
-
-// Interface for Contract model
+import { useCurrentTeam } from '~/providers/team';
 
 const formSchema = z.object({
   id: z.number().optional(),
   title: z.string().min(1, { message: 'Title is required' }),
   fileName: z.string().optional().nullable(),
   artists: z.string().optional().nullable(),
-  startDate: z.date().optional().nullable(),
-  endDate: z.date().optional().nullable(),
+  startDate: z.date().optional(),
+  endDate: z.date(),
   isPossibleToExpand: z.nativeEnum(ExpansionPossibility),
   possibleExtensionTime: z.string().optional().nullable(),
   status: z.nativeEnum(ContractStatus),
-  documentId: z.number().optional(),
-  folderId: z.string().optional(),
+  documentId: z.number(),
+  folderId: z.string().optional().nullable(),
   summary: z.string().optional().nullable(),
 });
 
-interface ContractFormProps {
-  onSubmit: (data: Contract) => void;
-  folderId?: string;
-  initialData: Contract | null;
+interface MyFormProps {
+  initialData?: Contract | null;
+  setInitialData?: (data: Contract | null) => void;
   isSubmitting?: boolean;
-  documents: Document[];
+  folderId: string | null;
+  setIsSheetOpen?: (isOpen: boolean) => void;
+  isSheetOpen?: boolean;
 }
 
-const parseDate = (dateString: string | null | undefined) => {
-  if (!dateString) return undefined;
-
-  try {
-    let date;
-    if (dateString.includes('/')) {
-      date = parse(dateString, 'dd/MM/yyyy', new Date());
-    } else {
-      date = new Date(dateString + 'T00:00:00');
-    }
-
-    return isValid(date) ? date : undefined;
-  } catch (error) {
-    console.error('Date parsing error:', error);
-    return undefined;
-  }
-};
-
-export default function ContractForm({
-  documents,
-  folderId,
-  onSubmit,
+export default function ContractsSheet({
   initialData,
-  isSubmitting = false,
-}: ContractFormProps) {
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  setInitialData,
+  folderId,
+  setIsSheetOpen,
+  isSheetOpen,
+}: MyFormProps) {
+  const { _ } = useLingui();
+  const team = useCurrentTeam();
+
+  const { data: documents } = trpc.document.findAllDocumentsInternalUseToChat.useQuery(
+    { teamId: team.id },
+    queryOptions({
+      queryKey: ['chatDocuments', team.id],
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+    }),
+  );
+
+  // const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const updateContractsMutation = trpc.contracts.updateContractsById.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['contracts'] });
+    },
+    onError: () => {
+      toast.error(_(msg`Error updating record`), {
+        className: 'mb-16',
+        position: 'bottom-center',
+      });
+    },
+    onSettled: (success) => {
+      if (success) {
+        toast.success(_(msg`Record updated successfully`), {
+          className: 'mb-16',
+          position: 'bottom-center',
+        });
+        setInitialData?.(null);
+        setIsSheetOpen?.(false);
+      }
+    },
+  });
+
+  const createContractsMutation = trpc.contracts.createContracts.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['contracts'] });
+    },
+    onError: () => {
+      toast.error(_(msg`Error updating record`), {
+        className: 'mb-16',
+        position: 'bottom-center',
+      });
+    },
+    onSettled: (success) => {
+      if (success) {
+        toast.success(_(msg`Record updated successfully`), {
+          className: 'mb-16',
+          position: 'bottom-center',
+        });
+        setIsSheetOpen?.(false);
+      }
+    },
+  });
+  const expansionOptions = [
+    { label: 'Sí', value: ExpansionPossibility.SI },
+    { label: 'No', value: ExpansionPossibility.NO },
+    { label: 'No Especificado', value: ExpansionPossibility.NO_ESPECIFICADO },
+  ];
+
+  const statusOptions = [
+    { label: 'Finalizado', value: ContractStatus.FINALIZADO },
+    { label: 'Vigente', value: ContractStatus.VIGENTE },
+    { label: 'No Especificado', value: ContractStatus.NO_ESPECIFICADO },
+  ];
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       fileName: '',
       artists: '',
-      folderId: folderId,
+      folderId: folderId || undefined,
       isPossibleToExpand: ExpansionPossibility.NO_ESPECIFICADO,
       possibleExtensionTime: '',
       status: ContractStatus.NO_ESPECIFICADO,
@@ -111,63 +183,123 @@ export default function ContractForm({
       if (initialData.id) {
         form.setValue('id', initialData.id);
       }
+
+      if (initialData.documentId && documents) {
+        const document = documents.find((doc) => doc.id === initialData.documentId);
+        setSelectedDocument(document || null);
+      }
     }
-  }, [form, initialData]);
+  }, [form, initialData, documents]);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    console.log('handleSubmit', values);
     try {
-      console.log('actualizando');
-      setIsLoading(true);
-      const dataToSubmit = initialData?.id ? { ...values, id: initialData.id } : values;
-      await onSubmit(dataToSubmit as Contract);
-      toast({
-        description: 'Contract data submitted successfully',
-      });
+      const formData = initialData?.id ? { ...values, id: initialData.id } : values;
+
+      console.log('Form submitted:', formData);
+      const dataToSubmit = {
+        ...formData,
+        documentId: selectedDocument?.id,
+        fileName: selectedDocument?.title,
+      };
+
+      console.log('Data to submit:', dataToSubmit);
+
+      if (initialData?.id) {
+        await handleUpdate(dataToSubmit as unknown as Contract);
+      } else {
+        await handleCreate(dataToSubmit as unknown as Omit<Contract, 'id'>);
+      }
+      console.log('Form submitted successfully', values);
+      form.reset();
+      setSelectedDocument(null);
     } catch (error) {
       console.error('Form submission error', error);
-      toast({
-        variant: 'destructive',
-        description: 'Error submitting contract data',
-      });
-    } finally {
-      setIsLoading(false);
     }
   }
 
-  const expansionOptions = [
-    { label: 'Sí', value: ExpansionPossibility.SI },
-    { label: 'No', value: ExpansionPossibility.NO },
-    { label: 'No Especificado', value: ExpansionPossibility.NO_ESPECIFICADO },
-  ];
+  const handleCreate = async (newRecord: Omit<Contract, 'id'>) => {
+    try {
+      await createContractsMutation.mutateAsync({
+        title: newRecord.title ?? '',
+        fileName: newRecord.fileName ?? '',
+        artists: newRecord.artists ?? '',
+        startDate: newRecord.startDate ?? new Date(),
+        endDate: newRecord.endDate ?? new Date(),
+        isPossibleToExpand: newRecord.isPossibleToExpand ?? '',
+        possibleExtensionTime: newRecord.possibleExtensionTime ?? '',
+        status: newRecord.status ?? 'NO_ESPECIFICADO',
+        documentId: newRecord.documentId ?? 0,
+        summary: newRecord.summary ?? '',
+      });
+    } catch (error) {
+      console.error('Error creating record:', error);
+    }
+  };
 
-  const statusOptions = [
-    { label: 'Finalizado', value: ContractStatus.FINALIZADO },
-    { label: 'Vigente', value: ContractStatus.VIGENTE },
-    { label: 'No Especificado', value: ContractStatus.NO_ESPECIFICADO },
-  ];
+  const handleUpdate = async (updatedContracts: Contract) => {
+    try {
+      await updateContractsMutation.mutateAsync({
+        id: updatedContracts.id,
+        title: updatedContracts.title ?? '',
+        artists: updatedContracts.artists ?? '',
+        fileName: updatedContracts.fileName ?? undefined,
+        startDate: updatedContracts.startDate ?? new Date(),
+        endDate: updatedContracts.endDate ?? new Date(),
+        isPossibleToExpand: updatedContracts.isPossibleToExpand ?? undefined,
+        possibleExtensionTime: updatedContracts.possibleExtensionTime ?? undefined,
+        status: updatedContracts.status ?? undefined,
+        documentId: updatedContracts.documentId ?? undefined,
+        summary: updatedContracts.summary ?? undefined,
+      });
+    } catch (error) {
+      console.error('Error updating record:', error);
+    }
+  };
 
   return (
-    <div className="mx-auto max-w-6xl py-2">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="">
-          <Card className="border-border dark:bg-background relative p-6">
-            <div className="h-min-20 h-fit">
-              <h1 className="text-xl font-semibold md:text-2xl">Información del Contrato</h1>
-              <p className="text-muted-foreground mt-2 text-xs md:text-sm">
-                Esta información es esencial para la gestión de contratos.
-              </p>
-            </div>
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+      <SheetTrigger asChild>
+        <Button
+          onClick={() => setInitialData?.(null)}
+          className="w-full sm:w-fit"
+          disabled={updateContractsMutation.isPending || createContractsMutation.isPending}
+        >
+          <Trans>New Record</Trans>
+        </Button>
+      </SheetTrigger>
 
-            <ScrollArea className="h-[60vh] w-full">
-              <hr className="-mx-6 my-4" />
-              <CardContent className="gap-4 px-1 pb-0">
-                <fieldset disabled={isSubmitting} className="">
+      <SheetContent
+        autoFocus={false}
+        showOverlay={true}
+        style={{ containerType: 'size' }}
+        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-between overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
+      >
+        <div className="flex flex-col gap-4">
+          <SheetHeader>
+            <SheetTitle>
+              <Trans>{initialData ? _(msg`Update Contract`) : _(msg`Add Contract`)}</Trans>
+            </SheetTitle>
+            <SheetDescription>
+              {initialData
+                ? _(msg`Update your contract details.`)
+                : _(msg`Create a new contract with details.`)}
+            </SheetDescription>
+          </SheetHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="">
+              <ScrollArea className="h-[80cqh] w-full px-1">
+                <fieldset
+                  disabled={updateContractsMutation.isPending || createContractsMutation.isPending}
+                  className=""
+                >
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-12 md:col-span-6">
                       <FormField
                         control={form.control}
                         name="title"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
                           <FormItem className="space-y-0">
                             <FormLabel>Título</FormLabel>
@@ -184,6 +316,9 @@ export default function ContractForm({
                       <FormField
                         control={form.control}
                         name="documentId"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
                           <FormItem className="flex h-full w-full flex-col space-y-2.5">
                             <FormLabel>Document</FormLabel>
@@ -195,13 +330,10 @@ export default function ContractForm({
                                     role="combobox"
                                     className={cn(
                                       'justify-between',
-                                      !field.value && 'text-muted-foreground',
+                                      !selectedDocument && 'text-muted-foreground',
                                     )}
                                   >
-                                    {field.value
-                                      ? documents.find((document) => document.id === field.value)
-                                          ?.id
-                                      : 'Select document'}
+                                    {selectedDocument?.title || 'Select document'}
                                     <ChevronsUpDown className="opacity-50" />
                                   </Button>
                                 </FormControl>
@@ -212,25 +344,27 @@ export default function ContractForm({
                                   <CommandList>
                                     <CommandEmpty>No document found.</CommandEmpty>
                                     <CommandGroup>
-                                      {documents.map((document) => (
-                                        <CommandItem
-                                          value={document.title}
-                                          key={document.id}
-                                          onSelect={() => {
-                                            form.setValue('documentId', document.id);
-                                          }}
-                                        >
-                                          {document.title}
-                                          <Check
-                                            className={cn(
-                                              'ml-auto',
-                                              document.id === field.value
-                                                ? 'opacity-100'
-                                                : 'opacity-0',
-                                            )}
-                                          />
-                                        </CommandItem>
-                                      ))}
+                                      {documents &&
+                                        documents.map((document) => (
+                                          <CommandItem
+                                            value={document.title}
+                                            key={document.id}
+                                            onSelect={() => {
+                                              setSelectedDocument(document);
+                                              form.setValue('documentId', document.id);
+                                            }}
+                                          >
+                                            {document.title}
+                                            <Check
+                                              className={cn(
+                                                'ml-auto',
+                                                selectedDocument?.id === document.id
+                                                  ? 'opacity-100'
+                                                  : 'opacity-0',
+                                              )}
+                                            />
+                                          </CommandItem>
+                                        ))}
                                     </CommandGroup>
                                   </CommandList>
                                 </Command>
@@ -246,27 +380,10 @@ export default function ContractForm({
                     <div className="col-span-12 md:col-span-6">
                       <FormField
                         control={form.control}
-                        name="fileName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Nombre del Archivo</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Nombre del archivo"
-                                {...field}
-                                value={field.value || ''}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <div className="col-span-12 md:col-span-6">
-                      <FormField
-                        control={form.control}
                         name="artists"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Artistas</FormLabel>
@@ -287,16 +404,19 @@ export default function ContractForm({
                       <FormField
                         control={form.control}
                         name="startDate"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>Original Release Date</FormLabel>
+                          <FormItem className="flex h-full flex-col justify-between pt-1">
+                            <FormLabel>Fecha de inicio</FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
                                   <Button
                                     variant={'outline'}
                                     className={cn(
-                                      'w-[240px] pl-3 text-left font-normal',
+                                      'w-full pl-3 text-left font-normal',
                                       !field.value && 'text-muted-foreground',
                                     )}
                                   >
@@ -346,12 +466,18 @@ export default function ContractForm({
                           </FormItem>
                         )}
                       />
-                      {/* <FormField
+                    </div>
+
+                    <div className="col-span-12 md:col-span-6">
+                      <FormField
                         control={form.control}
-                        name="startDate"
+                        name="endDate"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>Fecha de Inicio</FormLabel>
+                          <FormItem className="flex h-full flex-col justify-between pt-1">
+                            <FormLabel>Fecha de terminación</FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
@@ -359,50 +485,6 @@ export default function ContractForm({
                                     variant={'outline'}
                                     className={cn(
                                       'w-full pl-3 text-left font-normal',
-                                      !field.value && 'text-muted-foreground',
-                                    )}
-                                  >
-                                    {field.value ? (
-                                      formatDateForDisplay(field.value)
-                                    ) : (
-                                      <span>Seleccione una fecha</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className="z-9999 w-auto p-0" align="start">
-                                <Calendar
-                                  mode="single"
-                                  selected={parseDate(field.value)}
-                                  onSelect={(date) =>
-                                    field.onChange(date ? formatDateForApi(date) : '')
-                                  }
-                                  disabled={(date) => date < new Date('1900-01-01')}
-                                  initialFocus
-                                />
-                              </PopoverContent>
-                            </Popover>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      /> */}
-                    </div>
-
-                    <div className="col-span-12 md:col-span-6">
-                      <FormField
-                        control={form.control}
-                        name="endDate"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>Original Release Date</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={'outline'}
-                                    className={cn(
-                                      'w-[240px] pl-3 text-left font-normal',
                                       !field.value && 'text-muted-foreground',
                                     )}
                                   >
@@ -453,52 +535,14 @@ export default function ContractForm({
                           </FormItem>
                         )}
                       />
-                      {/* <FormField
-                        control={form.control}
-                        name="endDate"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>Fecha de finalización</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={'outline'}
-                                    className={cn(
-                                      'w-full pl-3 text-left font-normal',
-                                      !field.value && 'text-muted-foreground',
-                                    )}
-                                  >
-                                    {field.value ? (
-                                      formatDateForDisplay(field.value)
-                                    ) : (
-                                      <span>Seleccione una fecha</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className="z-9999 w-auto p-0" align="start">
-                                <Calendar
-                                  mode="single"
-                                  selected={parseDate(field.value)}
-                                  onSelect={(date) =>
-                                    field.onChange(date ? formatDateForApi(date) : '')
-                                  }
-                                  disabled={(date) => date < new Date('1900-01-01')}
-                                  initialFocus
-                                />
-                              </PopoverContent>
-                            </Popover>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      /> */}
                     </div>
 
                     <div className="col-span-12 md:col-span-6">
                       <FormField
                         control={form.control}
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         name="isPossibleToExpand"
                         render={({ field }) => (
                           <FormItem>
@@ -533,6 +577,9 @@ export default function ContractForm({
                       <FormField
                         control={form.control}
                         name="possibleExtensionTime"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Tiempo posible de extensión</FormLabel>
@@ -541,9 +588,9 @@ export default function ContractForm({
                                 placeholder="Ej: 6 meses"
                                 {...field}
                                 value={field.value || ''}
-                                disabled={
-                                  form.watch('isPossibleToExpand') !== ExpansionPossibility.SI
-                                }
+                                // disabled={
+                                //   form.watch('isPossibleToExpand') !== ExpansionPossibility.SI
+                                // }
                               />
                             </FormControl>
                             <FormMessage />
@@ -556,6 +603,9 @@ export default function ContractForm({
                       <FormField
                         control={form.control}
                         name="status"
+                        disabled={
+                          updateContractsMutation.isPending || createContractsMutation.isPending
+                        }
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Estado</FormLabel>
@@ -605,30 +655,49 @@ export default function ContractForm({
                     </div>
                   </div>
                 </fieldset>
-              </CardContent>
-            </ScrollArea>
-
-            <div className="mt-6 flex items-center gap-x-4 px-6">
-              <Button
-                disabled={isLoading || isSubmitting}
-                loading={isLoading}
-                type="button"
-                size="lg"
-                className="flex-1"
-                onClick={() => {
-                  // Trigger validation before submitting
-                  void form.trigger().then((isValid) => {
-                    const values = form.getValues();
-                    void handleSubmit(values);
-                  });
-                }}
-              >
-                {initialData?.id ? 'Actualizar' : 'Agregar'}
-              </Button>
-            </div>
-          </Card>
-        </form>
-      </Form>
-    </div>
+              </ScrollArea>
+              <SheetFooter>
+                <div className="flex w-full gap-5">
+                  <SheetClose asChild>
+                    <Button
+                      disabled={
+                        updateContractsMutation.isPending || createContractsMutation.isPending
+                      }
+                      className="w-full"
+                      size="lg"
+                      variant="secondary"
+                    >
+                      Cancel
+                    </Button>
+                  </SheetClose>
+                  <Button
+                    disabled={
+                      updateContractsMutation.isPending || createContractsMutation.isPending
+                    }
+                    loading={updateContractsMutation.isPending || createContractsMutation.isPending}
+                    type="submit"
+                    size="lg"
+                    className="w-full"
+                    // onClick={() => {
+                    //   void form.trigger().then(() => {
+                    //     console.log('Form state:', form.formState);
+                    //     const errores = form.formState.errors;
+                    //     if (Object.keys(errores).length > 0) {
+                    //       return;
+                    //     }
+                    //     const values = form.getValues();
+                    //     void handleSubmit(values);
+                    //   });
+                    // }}
+                  >
+                    {initialData?.id ? 'Actualizar' : 'Agregar'}
+                  </Button>
+                </div>
+              </SheetFooter>
+            </form>
+          </Form>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

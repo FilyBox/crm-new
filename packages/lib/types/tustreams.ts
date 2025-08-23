@@ -1,47 +1,45 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 
-import { ContractSchema } from '@documenso/prisma/generated/zod/modelSchema/ContractSchema';
 import { TaskSchema } from '@documenso/prisma/generated/zod/modelSchema/TaskSchema';
 import { TeamSchema } from '@documenso/prisma/generated/zod/modelSchema/TeamSchema';
 import { UserSchema } from '@documenso/prisma/generated/zod/modelSchema/UserSchema';
+import { tuStreamsSchema } from '@documenso/prisma/generated/zod/modelSchema/tuStreamsSchema';
 
 /**
  * The full document response schema.
  *
  * Mainly used for returning a single document from the API.
  */
-export const ZContractsSchema = ContractSchema.pick({
-  id: true,
-  artists: true,
-  startDate: true,
-  endDate: true,
-  isPossibleToExpand: true,
-  possibleExtensionTime: true,
-  status: true,
-  documentId: true,
-  summary: true,
-  fileName: true,
-  createdAt: true,
-  updatedAt: true,
-  teamId: true,
-  userId: true,
-  title: true,
-  collectionPeriod: true,
-  collectionPeriodDescription: true,
-  collectionPeriodDuration: true,
-  contractType: true,
-  folderId: true,
-  retentionPeriod: true,
-  retentionPeriodDescription: true,
-  retentionPeriodDuration: true,
-  deletedAt: true,
-});
 
-export type TContracts = z.infer<typeof ZContractsSchema>;
+const ZArtistSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+export const ZtuStreamsSchema = tuStreamsSchema
+  .pick({
+    id: true,
+    date: true,
+    artist: true,
+    title: true,
+    UPC: true,
+    createdAt: true,
+    type: true,
+    total: true,
+    teamId: true,
+    userId: true,
+  })
+  .extend({
+    artists: z.array(ZArtistSchema).optional(),
+    tuStreamsArtists: z.array(ZArtistSchema).optional(),
+    artistsToUpdate: z.array(z.string()).optional(),
+  });
+
+export type TtuStreams = z.infer<typeof ZtuStreamsSchema>;
 
 /**
  * A lite version of the document response schema without relations.
  */
+
 export const ZDocumentLiteSchema = TaskSchema.pick({
   id: true,
   externalId: true,
@@ -63,9 +61,6 @@ export const ZDocumentLiteSchema = TaskSchema.pick({
 
 export type TTaskLite = z.infer<typeof ZDocumentLiteSchema>;
 
-/**
- * A version of the document response schema when returning multiple documents at once from a single API endpoint.
- */
 export const ZTaskManySchema = TaskSchema.pick({
   id: true,
   externalId: true,
