@@ -16,9 +16,6 @@ const google = createGoogleGenerativeAI({
 });
 
 export const generateQuery = async (input: string) => {
-  console.log('pepe');
-
-  console.log('GOOGLE_GENERATIVE_AI_API_KEY', env('GOOGLE_GENERATIVE_AI_API_KEY'));
   ('use server');
   try {
     const result = await generateObject({
@@ -130,10 +127,8 @@ export const runGenerateSQLQuery = async (query: string) => {
   ) {
     throw new Error('Only SELECT queries are allowed');
   }
-  console.log('postgres connectionString', env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_CONTENTS'));
 
   let data: QueryResult;
-  console.log('e');
   try {
     console.log('Using Vercel Postgres connection string');
     data = await sql.query(query);

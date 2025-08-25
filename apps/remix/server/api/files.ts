@@ -112,7 +112,6 @@ export const filesRoute = new Hono<HonoEnv>()
 
     try {
       const { url } = await getPresignGetUrl(key || '');
-      console.log('Presigned URL:', url);
       return c.json({ url } satisfies TGetPresignedGetUrlResponse);
     } catch (err) {
       console.error(err);
