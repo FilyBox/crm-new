@@ -307,8 +307,8 @@ export default function ContractsPage() {
   };
 
   const hanleOnNavegate = (row: Contract) => {
-    const { documentId } = row;
-    const documentPath = `${documentRootPath}/${documentId}`;
+    const { id } = row;
+    const documentPath = `${documentRootPath}/${id}`;
     window.location.href = documentPath;
   };
 

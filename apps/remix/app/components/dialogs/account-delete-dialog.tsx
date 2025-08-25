@@ -109,10 +109,9 @@ export const AccountDeleteDialog = ({ className }: AccountDeleteDialogProps) => 
 
                 <DialogDescription>
                   <Trans>
-                    Documenso will delete{' '}
-                    <span className="font-semibold">all of your documents</span>, along with all of
+                    <span className="font-semibold">All of your documents</span>, along with all of
                     your completed documents, signatures, and all other resources belonging to your
-                    Account.
+                    account will be deleted.
                   </Trans>
                 </DialogDescription>
               </DialogHeader>

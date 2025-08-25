@@ -12,10 +12,8 @@ import {
   EyeIcon,
   FileDown,
   FolderInput,
-  Loader,
   MoreHorizontal,
   Pencil,
-  Share,
   Trash2,
 } from 'lucide-react';
 import { Link } from 'react-router';
@@ -26,7 +24,6 @@ import type { TDocumentMany as TDocumentRow } from '@documenso/lib/types/documen
 import { isDocumentCompleted } from '@documenso/lib/utils/document';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
 import { trpc as trpcClient } from '@documenso/trpc/client';
-import { DocumentShareButton } from '@documenso/ui/components/document/document-share-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -226,7 +223,7 @@ export const DocumentsTableActionDropdown = ({
 
         <DocumentResendDialog document={row} recipients={nonSignedRecipients} />
 
-        <DocumentShareButton
+        {/* <DocumentShareButton
           documentId={row.id}
           token={isOwner ? undefined : recipient?.token}
           trigger={({ loading, disabled }) => (
@@ -237,7 +234,7 @@ export const DocumentsTableActionDropdown = ({
               </div>
             </DropdownMenuItem>
           )}
-        />
+        /> */}
       </DropdownMenuContent>
 
       <DocumentDeleteDialog

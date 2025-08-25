@@ -78,7 +78,7 @@ export default function Layout() {
   // Note: We use a key to force a re-render if the team context changes.
   // This is required otherwise you would see the wrong page content.
   return (
-    <div key={team.url}>
+    <div key={team.url} style={{ scrollbarGutter: 'stable' }}>
       <TrpcProvider headers={trpcHeaders}>
         <LimitsProvider initialValue={limits} teamId={team.id}>
           <NuqsAdapter>

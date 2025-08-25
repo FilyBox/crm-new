@@ -3,7 +3,7 @@ import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { InfoIcon } from 'lucide-react';
 
-import { DOCUMENT_AUTH_TYPES } from '@documenso/lib/constants/document-auth';
+import { useDocumentAuthTypes } from '@documenso/lib/constants/document-auth';
 import { DocumentActionAuth, DocumentAuth } from '@documenso/lib/types/document-auth';
 import { MultiSelect, type Option } from '@documenso/ui/primitives/multiselect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@documenso/ui/primitives/tooltip';
@@ -24,6 +24,7 @@ export const DocumentGlobalAuthActionSelect = ({
   placeholder,
 }: DocumentGlobalAuthActionSelectProps) => {
   const { _ } = useLingui();
+  const DOCUMENT_AUTH_TYPES = useDocumentAuthTypes();
 
   // Convert auth types to MultiSelect options
   const authOptions: Option[] = [

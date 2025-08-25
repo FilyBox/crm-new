@@ -33,6 +33,7 @@ export const ZDocumentSchema = DocumentSchema.pick({
   teamId: true,
   templateId: true,
   folderId: true,
+  useToChat: true,
 }).extend({
   // Todo: Maybe we want to alter this a bit since this returns a lot of data.
   documentData: DocumentDataSchema.pick({
@@ -101,6 +102,7 @@ export const ZDocumentLiteSchema = DocumentSchema.pick({
   templateId: true,
   folderId: true,
   useLegacyFieldInsertion: true,
+  useToChat: true,
 });
 
 export type TDocumentLite = z.infer<typeof ZDocumentLiteSchema>;
@@ -127,6 +129,7 @@ export const ZDocumentManySchema = DocumentSchema.pick({
   templateId: true,
   folderId: true,
   useLegacyFieldInsertion: true,
+  useToChat: true,
 }).extend({
   user: UserSchema.pick({
     id: true,

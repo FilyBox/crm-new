@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { DATE_FORMATS } from '@documenso/lib/constants/date-formats';
 import { DOCUMENT_SIGNATURE_TYPES } from '@documenso/lib/constants/document';
-import { SUPPORTED_LANGUAGES } from '@documenso/lib/constants/i18n';
+// import { SUPPORTED_LANGUAGES } from '@documenso/lib/constants/i18n';
 import { TIME_ZONES } from '@documenso/lib/constants/time-zones';
 import { DocumentEmailCheckboxes } from '@documenso/ui/components/document/document-email-checkboxes';
 import { DocumentSendEmailMessageHelper } from '@documenso/ui/components/document/document-send-email-message-helper';
@@ -136,7 +136,7 @@ export const ConfigureDocumentAdvancedSettings = ({
               />
             )}
 
-            {features.allowConfigureLanguage && (
+            {/* {features.allowConfigureLanguage && (
               <FormField
                 control={control}
                 name="meta.language"
@@ -163,7 +163,7 @@ export const ConfigureDocumentAdvancedSettings = ({
                   </FormItem>
                 )}
               />
-            )}
+            )} */}
 
             {features.allowConfigureDateFormat && (
               <FormField

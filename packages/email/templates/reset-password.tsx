@@ -11,8 +11,8 @@ import { TemplateResetPassword } from '../template-components/template-reset-pas
 export type ResetPasswordTemplateProps = Partial<TemplateResetPasswordProps>;
 
 export const ResetPasswordTemplate = ({
-  userName = 'Lucas Smith',
-  userEmail = 'lucas@documenso.com',
+  userName = 'nombre',
+  userEmail = 'email@gmail.com',
   assetBaseUrl = 'http://localhost:3002',
 }: ResetPasswordTemplateProps) => {
   const { _ } = useLingui();
@@ -36,11 +36,7 @@ export const ResetPasswordTemplate = ({
               {branding.brandingEnabled && branding.brandingLogo ? (
                 <Img src={branding.brandingLogo} alt="Branding Logo" className="mb-4 h-6" />
               ) : (
-                <Img
-                  src={getAssetUrl('/static/logo.png')}
-                  alt="Documenso Logo"
-                  className="mb-4 h-6"
-                />
+                <Img src={getAssetUrl('/static/logo.png')} alt="Logo" className="mb-4 h-6" />
               )}
 
               <TemplateResetPassword
@@ -68,7 +64,7 @@ export const ResetPasswordTemplate = ({
                   password.
                 </Trans>
               </Text>
-              <Text className="mt-2 text-base text-slate-400">
+              {/* <Text className="mt-2 text-base text-slate-400">
                 <Trans>
                   Didn't request a password change? We are here to help you secure your account,
                   just{' '}
@@ -76,7 +72,7 @@ export const ResetPasswordTemplate = ({
                     contact us.
                   </Link>
                 </Trans>
-              </Text>
+              </Text> */}
             </Section>
           </Container>
 

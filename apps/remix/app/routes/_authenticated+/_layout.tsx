@@ -112,7 +112,7 @@ export default function Layout({ loaderData, params }: Route.ComponentProps) {
 
         <Header />
 
-        <main style={{ scrollbarGutter: 'stable' }} className="mt-5 h-fit overflow-x-hidden">
+        <main style={{ scrollbarGutter: 'stable' }} className="mt-5 h-fit">
           <Outlet />
         </main>
       </TeamProvider>

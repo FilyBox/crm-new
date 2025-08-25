@@ -56,7 +56,7 @@ export default function TemplateEditPage() {
   const { template, templateRootPath } = useSuperLoaderData<typeof loader>();
 
   return (
-    <div className="mx-auto -mt-4 max-w-screen-xl px-4 md:px-8">
+    <div className="mx-auto mt-4 max-w-screen-xl px-4 md:px-8">
       <div className="flex flex-col justify-between sm:flex-row">
         <div>
           <Link

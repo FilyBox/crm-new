@@ -217,7 +217,7 @@ export default function SigningPage() {
             </Link>
           ) : (
             <p className="text-muted-foreground/60 mt-36 text-sm">
-              <Trans>
+              {/* <Trans>
                 Want to send slick signing links like this one?{' '}
                 <Link
                   to="https://documenso.com"
@@ -225,7 +225,7 @@ export default function SigningPage() {
                 >
                   Check out Documenso.
                 </Link>
-              </Trans>
+              </Trans> */}
             </p>
           )}
         </div>

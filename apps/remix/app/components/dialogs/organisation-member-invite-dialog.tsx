@@ -249,9 +249,9 @@ export const OrganisationMemberInviteDialog = ({
 
   const downloadTemplate = () => {
     const data = [
-      { email: 'admin@documenso.com', role: 'Admin' },
-      { email: 'manager@documenso.com', role: 'Manager' },
-      { email: 'member@documenso.com', role: 'Member' },
+      { email: 'admin@gmail.com', role: 'Admin' },
+      { email: 'manager@gmail.com', role: 'Manager' },
+      { email: 'member@gmail.com', role: 'Member' },
     ];
 
     const csvContent =
@@ -262,7 +262,7 @@ export const OrganisationMemberInviteDialog = ({
     });
 
     downloadFile({
-      filename: 'documenso-organisation-member-invites-template.csv',
+      filename: 'organisation-member-invites-template.csv',
       data: blob,
     });
   };
