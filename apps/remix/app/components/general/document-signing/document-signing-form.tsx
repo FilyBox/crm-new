@@ -9,9 +9,12 @@ import { useNavigate } from 'react-router';
 
 import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
 import { useOptionalSession } from '@documenso/lib/client-only/providers/session';
+import { deleteFile } from '@documenso/lib/server-only/document/DeleteObjectS3';
 import type { DocumentAndSender } from '@documenso/lib/server-only/document/get-document-by-token';
 import type { TRecipientActionAuth } from '@documenso/lib/types/document-auth';
+import { putFile } from '@documenso/lib/universal/upload/put-file';
 import { isFieldUnsignedAndRequired } from '@documenso/lib/utils/advanced-fields-helpers';
+import { fieldsContainUnsignedRequiredField } from '@documenso/lib/utils/advanced-fields-helpers';
 import { sortFieldsByPosition, validateFieldsInserted } from '@documenso/lib/utils/fields';
 import type { RecipientWithFields } from '@documenso/prisma/types/recipient-with-fields';
 import { trpc } from '@documenso/trpc/react';
@@ -27,6 +30,7 @@ import {
   AssistantConfirmationDialog,
   type NextSigner,
 } from '../../dialogs/assistant-confirmation-dialog';
+import InputImage from '../input-image';
 import { DocumentSigningCompleteDialog } from './document-signing-complete-dialog';
 import { useRequiredDocumentSigningContext } from './document-signing-provider';
 
@@ -65,12 +69,16 @@ export const DocumentSigningForm = ({
   const [validateUninsertedFields, setValidateUninsertedFields] = useState(false);
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
   const [isAssistantSubmitting, setIsAssistantSubmitting] = useState(false);
+  const [images, setImages] = useState<File[] | null>(null);
 
   const {
     mutateAsync: completeDocumentWithToken,
     isPending,
     isSuccess,
   } = trpc.recipient.completeDocumentWithToken.useMutation();
+
+  const { mutateAsync: updateImagesRecipient, isSuccess: isImagesUpdated } =
+    trpc.recipient.updateImagesRecipient.useMutation();
 
   const assistantForm = useForm<{ selectedSignerId: number | undefined }>({
     defaultValues: {
@@ -137,6 +145,65 @@ export const DocumentSigningForm = ({
       ...(nextSigner?.email && nextSigner?.name ? { nextSigner } : {}),
     };
 
+    if (images) {
+      const formData = new FormData();
+      images.forEach((image) => {
+        formData.append('images', image);
+      });
+
+      const imagesData: string[] = [];
+      for (const image of images) {
+        const parts = image.name.split('.');
+        const ext = parts.length > 1 ? '.' + parts.pop() : '';
+        let base = parts.join('.');
+        if (base.length > 50) base = base.slice(0, 50);
+        const safeName = base + ext;
+
+        const truncatedFile = new File([image], safeName, { type: image.type });
+
+        const result = await putFile(truncatedFile);
+        imagesData.push(result.data);
+      }
+
+      try {
+        await updateImagesRecipient({
+          id: recipient.id,
+          documentId: document.id,
+          images: imagesData,
+        });
+        console.log('Images recipient updated successfully');
+      } catch (error) {
+        for (const imagePath of imagesData) {
+          await deleteFile(imagePath);
+        }
+        console.error('Error updating images recipient:', error);
+      }
+      console.log('isImagesUpdated', isImagesUpdated);
+      // await updateImagesRecipient({
+      //   id: recipient.id,
+      //   documentId: document.id,
+      //   images: imagesData,
+      // });
+
+      await completeDocumentWithToken(payload);
+      console.log('completedocumentwithtoken');
+
+      analytics.capture('App: Recipient has completed signing', {
+        signerId: recipient.id,
+        documentId: document.id,
+        timestamp: new Date().toISOString(),
+      });
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        await navigate(`/sign/${recipient.token}/complete`);
+      }
+
+      console.log('isImagesUpdated', isImagesUpdated);
+
+      return;
+    }
     await completeDocumentWithToken(payload);
 
     analytics.capture('App: Recipient has completed signing', {
@@ -175,6 +242,16 @@ export const DocumentSigningForm = ({
       : undefined;
   }, [document.documentMeta?.signingOrder, allRecipients, recipient.id]);
 
+  const isComplete = useMemo(() => !fieldsContainUnsignedRequiredField(fields), [fields]);
+
+  const onlyMissingImages = useMemo((): boolean => {
+    const fieldsValid = !fieldsContainUnsignedRequiredField(fields);
+    const hasSignatureField = fields.some((field) => field.type === FieldType.SIGNATURE);
+    const imagesValid = !hasSignatureField || (images && images.length > 0);
+
+    return fieldsValid && hasSignatureField && !imagesValid;
+  }, [fields, images]);
+
   return (
     <div className="flex h-full flex-col">
       {validateUninsertedFields && uninsertedFields[0] && (
@@ -204,6 +281,7 @@ export const DocumentSigningForm = ({
                   <DocumentSigningCompleteDialog
                     isSubmitting={isSubmitting}
                     documentTitle={document.title}
+                    disabled={isComplete && onlyMissingImages}
                     fields={fields}
                     fieldsValidated={fieldsValidated}
                     onSignatureComplete={async (nextSigner) => {
@@ -333,7 +411,6 @@ export const DocumentSigningForm = ({
                       <Label htmlFor="Signature">
                         <Trans>Signature</Trans>
                       </Label>
-
                       <SignaturePadDialog
                         className="mt-2"
                         disabled={isSubmitting}
@@ -343,6 +420,20 @@ export const DocumentSigningForm = ({
                         uploadSignatureEnabled={document.documentMeta?.uploadSignatureEnabled}
                         drawSignatureEnabled={document.documentMeta?.drawSignatureEnabled}
                       />
+                      <div className="mt-2 flex flex-col gap-2">
+                        <Label htmlFor="Signature" className="mb-2 mt-2">
+                          <Trans>Legal Identification picture</Trans>
+                        </Label>
+                        <InputImage
+                          multiple={true}
+                          onMultipleUpload={(files) => setImages(files)}
+                        />
+                        {isComplete && onlyMissingImages && (
+                          <Label className="text-destructive text-xs">
+                            <Trans>Add the missing images.</Trans>
+                          </Label>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -364,8 +455,9 @@ export const DocumentSigningForm = ({
                   isSubmitting={isSubmitting || isAssistantSubmitting}
                   documentTitle={document.title}
                   fields={fields}
+                  images={images}
                   fieldsValidated={fieldsValidated}
-                  disabled={!isRecipientsTurn}
+                  disabled={!isRecipientsTurn || (isComplete && onlyMissingImages)}
                   onSignatureComplete={async (nextSigner) => {
                     await completeDocument(undefined, nextSigner);
                   }}

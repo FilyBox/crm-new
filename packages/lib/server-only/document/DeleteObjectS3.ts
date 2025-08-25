@@ -26,7 +26,7 @@ const getKeyFromUrl = (url: string): string => {
 
 export const deleteFile = async (Location: string) => {
   try {
-    const keyname = getKeyFromUrl(Location);
+    const keyname = Location;
 
     const params = {
       Bucket: env('NEXT_PRIVATE_UPLOAD_BUCKET'),

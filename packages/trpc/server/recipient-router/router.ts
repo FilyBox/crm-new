@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import { completeDocumentWithToken } from '@documenso/lib/server-only/document/complete-document-with-token';
 import { rejectDocumentWithToken } from '@documenso/lib/server-only/document/reject-document-with-token';
 import { createDocumentRecipients } from '@documenso/lib/server-only/recipient/create-document-recipients';
@@ -9,6 +11,7 @@ import { setDocumentRecipients } from '@documenso/lib/server-only/recipient/set-
 import { setTemplateRecipients } from '@documenso/lib/server-only/recipient/set-template-recipients';
 import { updateDocumentRecipients } from '@documenso/lib/server-only/recipient/update-document-recipients';
 import { updateTemplateRecipients } from '@documenso/lib/server-only/recipient/update-template-recipients';
+import { prisma } from '@documenso/prisma';
 
 import { ZGenericSuccessResponse, ZSuccessResponseSchema } from '../document-router/schema';
 import { authenticatedProcedure, procedure, router } from '../trpc';
@@ -541,6 +544,34 @@ export const recipientRouter = router({
   /**
    * @private
    */
+
+  updateImagesRecipient: procedure
+    .input(
+      z.object({
+        id: z.number(),
+        documentId: z.number(),
+        images: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { documentId, images, id } = input;
+
+      return await prisma.recipient.update({
+        where: {
+          id: id,
+        },
+        data: {
+          images: {
+            createMany: {
+              data: images.map((image) => ({
+                data: image,
+              })),
+            },
+          },
+        },
+      });
+    }),
+
   rejectDocumentWithToken: procedure
     .input(ZRejectDocumentWithTokenMutationSchema)
     .mutation(async ({ input, ctx }) => {

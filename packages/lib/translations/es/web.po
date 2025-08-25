@@ -1020,6 +1020,10 @@ msgstr "Agregar texto"
 msgid "Add text to the field"
 msgstr "Agregar texto al campo"
 
+#: apps/remix/app/components/general/document-signing/document-signing-form.tsx
+msgid "Add the missing images."
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 msgid "Add the people who will sign the document."
 msgstr "Agrega a las personas que firmarán el documento."
@@ -4673,6 +4677,10 @@ msgstr "Deja en blanco para heredar de la organización."
 #: apps/remix/app/components/dialogs/organisation-leave-dialog.tsx
 msgid "Leave organisation"
 msgstr "Dejar la organización"
+
+#: apps/remix/app/components/general/document-signing/document-signing-form.tsx
+msgid "Legal Identification picture"
+msgstr ""
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Legality of Electronic Signatures"

@@ -16,6 +16,7 @@ import type { RequestMetadata } from '../../universal/extract-request-metadata';
 import { createDocumentAuditLogData } from '../../utils/document-audit-logs';
 import { renderEmailWithI18N } from '../../utils/render-email-with-i18n';
 import { getEmailContext } from '../email/get-email-context';
+import { deleteFile } from './DeleteObjectS3';
 
 export type SuperDeleteDocumentOptions = {
   id: number;
@@ -101,6 +102,22 @@ export const superDeleteDocument = async ({ id, requestMetadata }: SuperDeleteDo
         });
       }),
     );
+  }
+
+  const recipients = await prisma.recipient.findMany({
+    where: {
+      documentId: document.id,
+    },
+    include: {
+      images: true,
+    },
+  });
+
+  for (const recipient of recipients) {
+    for (const image of recipient.images) {
+      console.log('deleting image', image.data);
+      await deleteFile(image.data);
+    }
   }
 
   // always hard delete if deleted from admin

@@ -11,6 +11,7 @@ import { sendCompletedEmail } from '../../../server-only/document/send-completed
 import PostHogServerClient from '../../../server-only/feature-flags/get-post-hog-server-client';
 import { getAuditLogsPdf } from '../../../server-only/htmltopdf/get-audit-logs-pdf';
 import { getCertificatePdf } from '../../../server-only/htmltopdf/get-certificate-pdf';
+import { getRecipientImagesPdf } from '../../../server-only/htmltopdf/get-recipient-images-pdf';
 import { addRejectionStampToPdf } from '../../../server-only/pdf/add-rejection-stamp-to-pdf';
 import { flattenAnnotations } from '../../../server-only/pdf/flatten-annotations';
 import { flattenForm } from '../../../server-only/pdf/flatten-form';
@@ -154,6 +155,11 @@ export const run = async ({
       })
     : null;
 
+  const recipientImagesData = await getRecipientImagesPdf({
+    documentId,
+    language: document.documentMeta?.language,
+  }).catch(() => null);
+
   const auditLogData = settings.includeAuditLog
     ? await getAuditLogsPdf({
         documentId,
@@ -188,6 +194,17 @@ export const run = async ({
       );
 
       certificatePages.forEach((page) => {
+        pdfDoc.addPage(page);
+      });
+    }
+
+    if (recipientImagesData) {
+      const recipientImagesDoc = await PDFDocument.load(recipientImagesData);
+      const recipientImagesPages = await pdfDoc.copyPages(
+        recipientImagesDoc,
+        recipientImagesDoc.getPageIndices(),
+      );
+      recipientImagesPages.forEach((page) => {
         pdfDoc.addPage(page);
       });
     }
