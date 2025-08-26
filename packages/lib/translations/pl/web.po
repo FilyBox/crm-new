@@ -820,6 +820,7 @@ msgid "Acknowledgment"
 msgstr "Potwierdzenie"
 
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/document-logs-table.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
@@ -831,6 +832,7 @@ msgstr "Akcja"
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
+#: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
@@ -864,6 +866,10 @@ msgstr "Aktywne sesje"
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Active Subscriptions"
 msgstr "Aktywne subskrypcje"
+
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Ada"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
 msgid "Add"
@@ -1273,6 +1279,8 @@ msgstr "Wystąpił błąd podczas wyłączania użytkownika."
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/share-document-download-button.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -1379,6 +1387,7 @@ msgstr "Wystąpił błąd podczas aktualizowania podpisu."
 msgid "An error occurred while updating your profile."
 msgstr "Wystąpił błąd podczas aktualizowania profilu."
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "An error occurred while uploading your document."
@@ -1481,6 +1490,8 @@ msgstr "Wersja aplikacji"
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
@@ -1956,7 +1967,12 @@ msgstr "Wykresy"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 msgid "Chat"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
+msgid "Chat with documents"
 msgstr ""
 
 #: packages/ui/primitives/document-flow/types.ts
@@ -2596,6 +2612,10 @@ msgstr "Utworzone w"
 msgid "Created on {0}"
 msgstr "Utworzono {0}"
 
+#: apps/remix/app/components/tables/documents-chatspace-table.tsx
+msgid "createdAt"
+msgstr ""
+
 #: apps/remix/app/components/tables/files-table.tsx
 msgid "CreatedAt"
 msgstr ""
@@ -2727,6 +2747,7 @@ msgstr "usuń"
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/folder/folder-card.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
@@ -2976,10 +2997,6 @@ msgstr "Wyświetl swoją nazwę i adres e-mail w dokumentach"
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 msgid "Distribute Document"
 msgstr "Rozprowadź dokument"
-
-#: apps/remix/app/components/general/app-nav-desktop.tsx
-msgid "Distribution"
-msgstr ""
 
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 msgid "Distribution Method"
@@ -3287,6 +3304,7 @@ msgstr "Dokument został pomyślnie zaktualizowany"
 msgid "Document upload disabled due to unpaid invoices"
 msgstr "Przesyłanie dokumentu wyłączone z powodu nieopłaconych faktur"
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "Document uploaded"
@@ -3371,6 +3389,7 @@ msgstr "Nie masz konta? <0>Zarejestruj się</0>"
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/share-document-download-button.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
@@ -3433,6 +3452,7 @@ msgstr "Przeciągnij i upuść lub kliknij, aby przesłać"
 msgid "Drag and drop your file here"
 msgstr ""
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/template/template-drop-zone-wrapper.tsx
 msgid "Drag and drop your PDF file here"
@@ -3473,6 +3493,7 @@ msgstr "Powiel na wszystkich stronach"
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
@@ -3789,6 +3810,7 @@ msgstr ""
 #: apps/remix/app/components/general/document-signing/document-signing-signature-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
@@ -4025,6 +4047,7 @@ msgid "Fields updated"
 msgstr "Pola zaktualizowane"
 
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 #: apps/remix/app/components/general/files/files-document-upload.tsx
@@ -4331,10 +4354,6 @@ msgstr "Tutaj możesz ustawić ogólne preferencje dokumentów"
 msgid "Here's how it works:"
 msgstr "Oto jak to działa:"
 
-#: apps/remix/app/components/general/user-profile-timur.tsx
-msgid "Hey I’m Timur"
-msgstr "Cześć, jestem Timur"
-
 #: packages/email/templates/bulk-send-complete.tsx
 msgid "Hi {userName},"
 msgstr "Cześć, {userName},"
@@ -4345,6 +4364,7 @@ msgstr "Cześć, {userName} <0>({userEmail})</0>"
 
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/files-delete-dialog.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
 msgid "Hide"
@@ -5001,6 +5021,7 @@ msgstr "Przenieś folder"
 msgid "Move Template to Folder"
 msgstr "Przenieś szablon do folderu"
 
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
@@ -5010,10 +5031,6 @@ msgstr "Przenieś do folderu"
 #: packages/ui/components/document/document-global-auth-access-select.tsx
 msgid "Multiple access methods can be selected."
 msgstr "Możesz wybrać wiele metod dostępu."
-
-#: apps/remix/app/components/general/app-nav-desktop.tsx
-msgid "Music"
-msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "My Folder"
@@ -5662,10 +5679,6 @@ msgstr "Wybierz numer"
 msgid "Pick a password"
 msgstr "Wybierz hasło"
 
-#: apps/remix/app/components/general/user-profile-timur.tsx
-msgid "Pick any of the following agreements below and start signing to get started"
-msgstr "Wybierz umowę i zacznij podpisywanie"
-
 #: apps/remix/app/components/general/folder/folder-card.tsx
 msgid "Pin"
 msgstr "Przypnij"
@@ -6260,6 +6273,7 @@ msgid "Retention of Documents"
 msgstr "Przechowywanie dokumentów"
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 msgid "Retry"
 msgstr "Spróbuj ponownie"
@@ -6723,6 +6737,8 @@ msgstr "Pokaż szablony w profilu publicznym, aby szybko podpisać dokument"
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/user-profile-skeleton.tsx
 #: apps/remix/app/components/general/user-profile-timur.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
@@ -6981,6 +6997,8 @@ msgstr "Niektórzy sygnatariusze nie zostali przypisani do pola podpisu. Przypis
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
 #: apps/remix/app/components/general/template/template-drop-zone-wrapper.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -7060,6 +7078,7 @@ msgstr "Statystyki"
 
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
+#: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/organisation-billing-invoices-table.tsx
@@ -8052,6 +8071,7 @@ msgstr "Strefa czasowa"
 
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
+#: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
@@ -8527,6 +8547,7 @@ msgstr "Ulepsz"
 msgid "Upgrade <0>{0}</0> to {planName}"
 msgstr "Ulepsz <0>{0}</0> do {planName}"
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 msgid "Upgrade your plan to upload more documents"
 msgstr "Zaktualizuj swój plan, aby przesłać więcej dokumentów"
@@ -8565,6 +8586,7 @@ msgid "Upload custom document"
 msgstr "Prześlij niestandardowy dokument"
 
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: packages/ui/primitives/document-upload.tsx
 msgid "Upload Document"
@@ -8612,6 +8634,11 @@ msgstr "Przesłany plik nie jest dozwolonym typem pliku"
 msgid "uploader"
 msgstr ""
 
+#: apps/remix/app/components/tables/documents-chatspace-table.tsx
+msgid "Uploader"
+msgstr ""
+
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 msgid "Uploading document..."
 msgstr "Przesyłanie dokumentu..."
@@ -8740,6 +8767,9 @@ msgstr "Pionowo"
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
+#: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -8873,6 +8903,10 @@ msgstr ""
 #: apps/remix/app/components/general/task/contracts-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
 msgid "Vigente"
+msgstr ""
+
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Virgin"
 msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
@@ -9505,6 +9539,7 @@ msgstr "Nie możesz usuwać członków z tego zespołu, jeśli funkcja dziedzicz
 msgid "You cannot upload documents at this time."
 msgstr "Nie możesz przesyłać dokumentów w tej chwili."
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "You cannot upload encrypted PDFs"
@@ -9599,6 +9634,7 @@ msgstr "Osiągnąłeś maksymalny limit {0} bezpośrednich szablonów. <0>Ulepsz
 msgid "You have reached the maximum number of teams for your plan. Please contact sales at <0>{SUPPORT_EMAIL}</0> if you would like to adjust your plan."
 msgstr "Osiągnąłeś maksymalną liczbę zespołów w swoim planie. Skontaktuj się z działem sprzedaży pod adresem <0>{SUPPORT_EMAIL}</0>, jeśli chcesz dostosować swój plan."
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "You have reached your document limit for this month. Please upgrade your plan."
@@ -9797,6 +9833,7 @@ msgid "Your direct signing templates"
 msgstr "Twoje bezpośrednie szablony podpisu"
 
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "Your document failed to upload."
@@ -9826,6 +9863,7 @@ msgstr "Dokument został wysłany."
 msgid "Your document has been successfully duplicated."
 msgstr "Dokument został zduplikowany."
 
+#: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-upload.tsx
 msgid "Your document has been uploaded successfully."

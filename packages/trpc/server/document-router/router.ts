@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import { DocumentDataType } from '@prisma/client';
 import { DocumentSource } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
@@ -15,7 +16,10 @@ import { createDocumentV2 } from '@documenso/lib/server-only/document/create-doc
 import { deleteDocument } from '@documenso/lib/server-only/document/delete-document';
 import { duplicateDocument } from '@documenso/lib/server-only/document/duplicate-document-by-id';
 import { findDocumentAuditLogs } from '@documenso/lib/server-only/document/find-document-audit-logs';
-import { findDocuments } from '@documenso/lib/server-only/document/find-documents';
+import {
+  findDocuments,
+  findDocumentsChat,
+} from '@documenso/lib/server-only/document/find-documents';
 import { getDocumentById } from '@documenso/lib/server-only/document/get-document-by-id';
 import { getDocumentAndSenderByToken } from '@documenso/lib/server-only/document/get-document-by-token';
 import { getDocumentWithDetailsById } from '@documenso/lib/server-only/document/get-document-with-details-by-id';
@@ -40,6 +44,8 @@ import {
 } from '@documenso/lib/universal/upload/server-actions';
 import { isDocumentCompleted } from '@documenso/lib/utils/document';
 import { prisma } from '@documenso/prisma';
+import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-document-status';
+import { type FilterStructure, filterColumns } from '@documenso/ui/lib/filter-columns';
 
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { downloadDocumentRoute } from './download-document';
@@ -361,7 +367,7 @@ export const documentRouter = router({
     .input(ZCreateDocumentRequestSchema)
     .mutation(async ({ input, ctx }) => {
       const { user, teamId } = ctx;
-      const { title, documentDataId, timezone, folderId } = input;
+      const { title, documentDataId, timezone, folderId, useToChat, source } = input;
 
       ctx.logger.info({
         input: {
@@ -387,6 +393,8 @@ export const documentRouter = router({
         userTimezone: timezone,
         requestMetadata: ctx.metadata,
         folderId,
+        useToChat,
+        source,
       });
     }),
 
@@ -813,6 +821,110 @@ export const documentRouter = router({
       } catch (e) {
         return { query: '', companies: [], generation: undefined };
       }
+    }),
+
+  findDocumentsInternalUseToChat: authenticatedProcedure
+    .input(
+      z.object({
+        status: z.nativeEnum(ExtendedDocumentStatus).optional(),
+        query: z.string().optional(),
+        page: z.number().optional(),
+        perPage: z.number().optional(),
+        period: z.enum(['7d', '14d', '30d']).optional(),
+        orderBy: z.enum(['endDate', 'updatedAt']).optional(),
+        orderByDirection: z.enum(['asc', 'desc']).optional().default('desc'),
+        folderId: z.string().optional(),
+        orderByColumn: z.enum(['id', 'createdAt', 'title']).optional(),
+        filterStructure: z
+          .array(
+            z
+              .custom<FilterStructure>(
+                (val) => val === null || val === undefined || typeof val === 'object',
+              )
+              .optional()
+              .nullable(),
+          )
+          .optional(),
+        joinOperator: z.enum(['and', 'or']).optional().default('and'),
+        senderIds: z.array(z.number()).optional(),
+      }),
+    )
+    // .output(ZFindDocumentsInternalResponseSchema)
+    .query(async ({ input, ctx }) => {
+      const { user, teamId } = ctx;
+      const {
+        query,
+        page,
+        perPage,
+        orderByDirection,
+        orderByColumn,
+        // source,
+        status,
+        period,
+        senderIds,
+        folderId,
+        filterStructure,
+        joinOperator,
+      } = input;
+
+      let where: Prisma.DocumentWhereInput = {};
+
+      if (filterStructure) {
+        const advancedWhere = filterColumns({
+          filters: filterStructure.filter(
+            (filter): filter is FilterStructure => filter !== null && filter !== undefined,
+          ),
+          joinOperator: joinOperator,
+        });
+
+        where = advancedWhere;
+      }
+
+      const getStatOptions: GetStatsInput = {
+        user,
+        period,
+        search: query,
+        folderId,
+      };
+
+      if (teamId) {
+        const team = await getTeamById({ userId: user.id, teamId });
+
+        getStatOptions.team = {
+          teamId: team.id,
+          teamEmail: team.teamEmail?.email,
+          senderIds,
+          currentTeamMemberRole: team.currentTeamRole,
+          currentUserEmail: user.email,
+          userId: user.id,
+        };
+      }
+
+      const [documents] = await Promise.all([
+        // getStatsChat(getStatOptions),
+        findDocumentsChat({
+          userId: user.id,
+          teamId,
+          query,
+          page,
+          perPage,
+          where,
+          source: 'CHAT',
+          status,
+          period,
+          useToChat: true,
+          senderIds,
+          folderId,
+          orderBy: orderByColumn
+            ? { column: orderByColumn, direction: orderByDirection }
+            : undefined,
+        }),
+      ]);
+
+      return {
+        ...documents,
+        // stats,
+      };
     }),
 
   findAllDocumentsInternalUseToChat: authenticatedProcedure

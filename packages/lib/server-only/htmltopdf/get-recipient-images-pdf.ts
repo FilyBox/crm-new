@@ -101,20 +101,22 @@ export const getRecipientImagesPdf = async ({
           h3 {   
             margin-bottom: 15px;   
             color: #555;  
-            border-left: 4px solid #007bff;  
-            padding-left: 10px;  
+            font-size: 0.875rem
+            line-height: 1.25rem
           }  
           .images-container {  
-            display: flex;  
-            flex-direction: column;  
-            align-items: center;  
+            display: grid;  
+            grid-template-columns: 1fr 1fr;  
+            gap: 20px;  
+            justify-items: center;  
+
           }  
           img {   
             display: block;   
             margin: 10px 0;  
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);  
           }  
-        </style>  
+        </style>
       </head>  
       <body>  
         ${recipientSections.join('')}  
