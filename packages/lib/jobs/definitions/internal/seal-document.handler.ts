@@ -158,7 +158,12 @@ export const run = async ({
   const recipientImagesData = await getRecipientImagesPdf({
     documentId,
     language: document.documentMeta?.language,
-  }).catch(() => null);
+  }).catch((e) => {
+    console.log('Failed to get recipient images PDF');
+    console.error(e);
+
+    return null;
+  });
 
   const auditLogData = settings.includeAuditLog
     ? await getAuditLogsPdf({

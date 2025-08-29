@@ -15,6 +15,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { Link } from 'react-router';
+import { toast } from 'sonner';
 
 import { downloadPDF } from '@documenso/lib/client-only/download-pdf';
 import { useSession } from '@documenso/lib/client-only/providers/session';
@@ -29,7 +30,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@documenso/ui/primitives/dropdown-menu';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { DocumentDeleteDialog } from '~/components/dialogs/document-delete-dialog';
 import { DocumentDuplicateDialog } from '~/components/dialogs/document-duplicate-dialog';
@@ -50,7 +50,6 @@ export const ChatTableActionDropdown = ({
   const { user } = useSession();
   const team = useCurrentTeam();
 
-  const { toast } = useToast();
   const { _ } = useLingui();
 
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -102,13 +101,9 @@ export const ChatTableActionDropdown = ({
 
   const onDownloadOriginalClick = async () => {
     try {
-      const document = !recipient
-        ? await trpcClient.document.getDocumentById.query({
-            documentId: row.id,
-          })
-        : await trpcClient.document.getDocumentByToken.query({
-            token: recipient.token,
-          });
+      const document = await trpcClient.document.getChatDocumentById.query({
+        documentId: row.id,
+      });
 
       const documentData = document?.documentData;
 
@@ -118,10 +113,11 @@ export const ChatTableActionDropdown = ({
 
       await downloadPDF({ documentData, fileName: row.title, version: 'original' });
     } catch (err) {
-      toast({
-        title: _(msg`Something went wrong`),
+      console.log('err', err);
+      toast.error(_(msg`Something went wrong`), {
+        position: 'bottom-center',
         description: _(msg`An error occurred while downloading your document.`),
-        variant: 'destructive',
+        className: 'mb-16',
       });
     }
   };

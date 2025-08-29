@@ -35,6 +35,8 @@ RUN apk add --no-cache jq
 # Required for node_modules/aws-crt
 RUN apk add --no-cache make cmake g++ openssl bash
 
+RUN npx playwright install chromium --with-deps
+
 WORKDIR /app
 
 # Disable husky from installing hooks

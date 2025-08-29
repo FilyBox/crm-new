@@ -4,6 +4,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { DocumentStatus } from '@prisma/client';
+import { toast } from 'sonner';
 import { P, match } from 'ts-pattern';
 
 import { useLimits } from '@documenso/ee/server-only/limits/provider/client';
@@ -19,7 +20,6 @@ import {
   DialogTitle,
 } from '@documenso/ui/primitives/dialog';
 import { Input } from '@documenso/ui/primitives/input';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 type DocumentDeleteDialogProps = {
   id: number;
@@ -40,7 +40,6 @@ export const DocumentDeleteDialog = ({
   documentTitle,
   canManageDocument,
 }: DocumentDeleteDialogProps) => {
-  const { toast } = useToast();
   const { refreshLimits } = useLimits();
   const { _ } = useLingui();
 
@@ -52,25 +51,27 @@ export const DocumentDeleteDialog = ({
   const { mutateAsync: deleteDocument, isPending } = trpcReact.document.deleteDocument.useMutation({
     onSuccess: async () => {
       void refreshLimits();
-
-      toast({
-        title: _(msg`Document deleted`),
+      toast.success(_(msg`Document deleted`), {
         description: _(msg`"${documentTitle}" has been successfully deleted`),
-        duration: 5000,
+        className: 'mb-16',
+        position: 'bottom-center',
       });
+      // toast({
+      //   title: _(msg`Document deleted`),
+      //   description: _(msg`"${documentTitle}" has been successfully deleted`),
+      //   duration: 5000,
+      // });
 
       await onDelete?.();
-
-      onOpenChange(false);
     },
     onError: () => {
-      toast({
-        title: _(msg`Something went wrong`),
-        description: _(msg`This document could not be deleted at this time. Please try again.`),
-        variant: 'destructive',
-        duration: 7500,
+      toast.success(_(msg`Document deleted`), {
+        description: _(msg`"${documentTitle}" has been successfully deleted`),
+        className: 'mb-16',
+        position: 'bottom-center',
       });
     },
+    onSettled: () => onOpenChange(false),
   });
 
   useEffect(() => {

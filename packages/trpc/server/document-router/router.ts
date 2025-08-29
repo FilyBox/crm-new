@@ -113,6 +113,34 @@ export const documentRouter = router({
       });
     }),
 
+  getChatDocumentById: authenticatedProcedure
+    .input(ZGetDocumentByIdQuerySchema)
+    .query(async ({ input, ctx }) => {
+      const { teamId } = ctx;
+      const { documentId } = input;
+
+      ctx.logger.info({
+        input: {
+          documentId,
+        },
+      });
+
+      return await prisma.document.findUnique({
+        where: {
+          id: documentId,
+        },
+        include: {
+          documentData: true,
+        },
+      });
+
+      // return await getDocumentById({
+      //   userId: ctx.user.id,
+      //   teamId,
+      //   documentId,
+      // });
+    }),
+
   /**
    * @private
    */
