@@ -45,6 +45,7 @@ msgid "“{documentName}” was signed by all signers"
 msgstr "“{documentName}” è stato firmato da tutti i firmatari"
 
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "\"{documentTitle}\" has been successfully deleted"
 msgstr "\"{documentTitle}\" è stato eliminato con successo"
 
@@ -3122,6 +3123,7 @@ msgid "Document Creation"
 msgstr "Creazione del documento"
 
 #: apps/remix/app/components/dialogs/admin-document-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 msgid "Document deleted"
@@ -6963,7 +6965,6 @@ msgstr "Impostazioni del sito"
 msgid "Some signers have not been assigned a signature field. Please assign at least 1 signature field to each signer before proceeding."
 msgstr "Alcuni firmatari non hanno un campo firma assegnato. Assegna almeno 1 campo di firma a ciascun firmatario prima di procedere."
 
-#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 #: apps/remix/app/components/dialogs/document-resend-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-member-invite-dialog.tsx
@@ -7887,10 +7888,6 @@ msgstr "Questo documento non può essere recuperato, se vuoi contestare la ragio
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "This document cannot be changed"
 msgstr "Questo documento non può essere modificato"
-
-#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
-msgid "This document could not be deleted at this time. Please try again."
-msgstr "Questo documento non può essere eliminato in questo momento. Riprova."
 
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 msgid "This document could not be duplicated at this time. Please try again."

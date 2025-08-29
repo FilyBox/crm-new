@@ -45,6 +45,7 @@ msgid "“{documentName}” was signed by all signers"
 msgstr "„{documentName}“ wurde von allen Unterzeichnern signiert"
 
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 msgid "\"{documentTitle}\" has been successfully deleted"
 msgstr "\"{documentTitle}\" wurde erfolgreich gelöscht"
 
@@ -3122,6 +3123,7 @@ msgid "Document Creation"
 msgstr "Dokumenterstellung"
 
 #: apps/remix/app/components/dialogs/admin-document-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 msgid "Document deleted"
@@ -6963,7 +6965,6 @@ msgstr "Website Einstellungen"
 msgid "Some signers have not been assigned a signature field. Please assign at least 1 signature field to each signer before proceeding."
 msgstr "Einige Unterzeichner haben noch kein Unterschriftsfeld zugewiesen bekommen. Bitte weisen Sie jedem Unterzeichner mindestens ein Unterschriftsfeld zu, bevor Sie fortfahren."
 
-#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 #: apps/remix/app/components/dialogs/document-resend-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-member-invite-dialog.tsx
@@ -7871,10 +7872,6 @@ msgstr "Dieses Dokument kann nicht wiederhergestellt werden. Wenn du den Grund f
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "This document cannot be changed"
 msgstr "Dieses Dokument kann nicht geändert werden"
-
-#: apps/remix/app/components/dialogs/document-delete-dialog.tsx
-msgid "This document could not be deleted at this time. Please try again."
-msgstr "Dieses Dokument konnte derzeit nicht gelöscht werden. Bitte versuchen Sie es erneut."
 
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 msgid "This document could not be duplicated at this time. Please try again."
