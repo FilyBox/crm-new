@@ -15,6 +15,7 @@ export const getRecipientImagesPdf = async ({
   language,
 }: GetRecipientImagesPdfOptions) => {
   // Obtener recipients del documento con sus imágenes
+  console.log('Obteniendo recipients del documento:', documentId);
   const recipients = await prisma.recipient.findMany({
     where: {
       documentId: documentId,

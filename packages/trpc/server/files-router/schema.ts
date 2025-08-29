@@ -192,7 +192,7 @@ export const ZFindDocumentsInternalResponseChatSchema = ZFindResultResponse.exte
     [ExtendedDocumentStatus.COMPLETED]: z.number(),
     [ExtendedDocumentStatus.REJECTED]: z.number(),
     [ExtendedDocumentStatus.ERROR]: z.number(),
-
+    [ExtendedDocumentStatus.PROCESSING]: z.number().optional(),
     [ExtendedDocumentStatus.INBOX]: z.number(),
     [ExtendedDocumentStatus.ALL]: z.number(),
   }),

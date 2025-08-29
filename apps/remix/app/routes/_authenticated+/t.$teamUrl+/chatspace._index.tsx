@@ -63,18 +63,6 @@ export default function DocumentsPage() {
   const [editingUser, setEditingUser] = useState<Document | null>(null);
 
   const team = useOptionalCurrentTeam();
-  const { mutateAsync: pinFolder } = trpc.folder.pinFolder.useMutation();
-  const { mutateAsync: unpinFolder } = trpc.folder.unpinFolder.useMutation();
-
-  // const [stats, setStats] = useState<TFindDocumentsInternalResponseChat['stats']>({
-  //   [ExtendedDocumentStatus.DRAFT]: 0,
-  //   [ExtendedDocumentStatus.PENDING]: 0,
-  //   [ExtendedDocumentStatus.COMPLETED]: 0,
-  //   [ExtendedDocumentStatus.REJECTED]: 0,
-  //   [ExtendedDocumentStatus.ERROR]: 0,
-  //   [ExtendedDocumentStatus.INBOX]: 0,
-  //   [ExtendedDocumentStatus.ALL]: 0,
-  // });
 
   const findDocumentSearchParams = useMemo(
     () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
@@ -128,12 +116,6 @@ export default function DocumentsPage() {
 
     return `${formatChatPath(team?.url)}?${params.toString()}`;
   };
-
-  // useEffect(() => {
-  //   if (data?.stats) {
-  //     setStats(data.stats);
-  //   }
-  // }, [data?.stats]);
 
   const navigateToFolder = (folderId?: string | null) => {
     const documentsPath = formatChatPath(team?.url);

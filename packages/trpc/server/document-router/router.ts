@@ -25,6 +25,10 @@ import { getDocumentAndSenderByToken } from '@documenso/lib/server-only/document
 import { getDocumentWithDetailsById } from '@documenso/lib/server-only/document/get-document-with-details-by-id';
 import type { GetStatsInput } from '@documenso/lib/server-only/document/get-stats';
 import { getStats } from '@documenso/lib/server-only/document/get-stats';
+import {
+  type GetStatsInputChat,
+  getStatsChat,
+} from '@documenso/lib/server-only/document/get-stats-chat';
 import { resendDocument } from '@documenso/lib/server-only/document/resend-document';
 import { searchDocumentsWithKeyword } from '@documenso/lib/server-only/document/search-documents-with-keyword';
 import { sendDocument } from '@documenso/lib/server-only/document/send-document';
@@ -849,7 +853,7 @@ export const documentRouter = router({
         senderIds: z.array(z.number()).optional(),
       }),
     )
-    // .output(ZFindDocumentsInternalResponseSchema)
+    .output(ZFindDocumentsInternalResponseSchema)
     .query(async ({ input, ctx }) => {
       const { user, teamId } = ctx;
       const {
@@ -880,28 +884,27 @@ export const documentRouter = router({
         where = advancedWhere;
       }
 
-      const getStatOptions: GetStatsInput = {
+      const team = await getTeamById({ userId: user.id, teamId });
+
+      const teamCountsOption = {
+        ...team,
+        teamId: team.id,
+        currentUserEmail: user.email,
+        userId: user.id,
+        teamEmail: team.teamEmail?.email ?? undefined,
+      };
+
+      const getStatOptions: GetStatsInputChat = {
         user,
         period,
         search: query,
         folderId,
+        where,
+        team: teamCountsOption,
       };
 
-      if (teamId) {
-        const team = await getTeamById({ userId: user.id, teamId });
-
-        getStatOptions.team = {
-          teamId: team.id,
-          teamEmail: team.teamEmail?.email,
-          senderIds,
-          currentTeamMemberRole: team.currentTeamRole,
-          currentUserEmail: user.email,
-          userId: user.id,
-        };
-      }
-
-      const [documents] = await Promise.all([
-        // getStatsChat(getStatOptions),
+      const [stats, documents] = await Promise.all([
+        getStatsChat(getStatOptions),
         findDocumentsChat({
           userId: user.id,
           teamId,
@@ -923,7 +926,7 @@ export const documentRouter = router({
 
       return {
         ...documents,
-        // stats,
+        stats,
       };
     }),
 
