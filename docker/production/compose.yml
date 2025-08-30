@@ -26,7 +26,13 @@ services:
     restart: unless-stopped
 
   documenso:
-    image: documenso/documenso:latest
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        - NEXT_PRIVATE_ENCRYPTION_KEY=${NEXT_PRIVATE_ENCRYPTION_KEY}
+        - NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY=${NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY}
     depends_on:
       database:
         condition: service_healthy
