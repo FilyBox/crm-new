@@ -1,19 +1,10 @@
 name: documenso-production
 
 services:
-  database:
-    image: postgres:15
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER:?err}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}
-      - POSTGRES_DB=${POSTGRES_DB:?err}
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - database:/var/lib/postgresql/data
+  chrome:
+    image: browserless/chrome:latest
+    container_name: Chrome
+    hostname: headless
 
   documenso:
     image: documenso/documenso:latest
@@ -60,6 +51,7 @@ services:
       - NEXT_PUBLIC_DISABLE_SIGNUP=${NEXT_PUBLIC_DISABLE_SIGNUP}
       - NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH=${NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH:-/opt/documenso/cert.p12}
       - NEXT_PRIVATE_SIGNING_PASSPHRASE=${NEXT_PRIVATE_SIGNING_PASSPHRASE}
+      - NEXT_PRIVATE_BROWSERLESS_URL=ws://headless:3000
     ports:
       - ${PORT:-3000}:${PORT:-3000}
     volumes:
