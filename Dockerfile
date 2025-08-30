@@ -95,6 +95,7 @@ COPY --from=builder --chown=nodejs:nodejs /app/out/json/ .
 COPY --from=builder --chown=nodejs:nodejs /app/out/full/packages/tailwind-config ./packages/tailwind-config
 
 # RUN npm ci --only=production
+RUN npm i
 
 # Automatically leverage output traces to reduce image size
 # https://nodejs.org/docs/advanced-features/output-file-tracing
@@ -108,7 +109,6 @@ COPY --from=installer --chown=nodejs:nodejs /app/packages/prisma/migrations ./pa
 # Generate the prisma client again
 RUN npx prisma generate --schema ./packages/prisma/schema.prisma
 
-RUN npm i
 
 # Get the start script from docker/start.sh
 COPY --chown=nodejs:nodejs ./docker/start.sh /app/apps/remix/start.sh
