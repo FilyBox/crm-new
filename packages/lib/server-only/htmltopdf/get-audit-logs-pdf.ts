@@ -23,8 +23,9 @@ export const getAuditLogsPdf = async ({ documentId, language }: GetAuditLogsPdfO
   let browser: Browser;
 
   const browserlessUrl = env('NEXT_PRIVATE_BROWSERLESS_URL');
-
+  console.log('browserlessUrl env', browserlessUrl);
   if (browserlessUrl) {
+    console.log('si hay url');
     // !: Use CDP rather than the default `connect` method to avoid coupling to the playwright version.
     // !: Previously we would have to keep the playwright version in sync with the browserless version to avoid errors.
     browser = await chromium.connectOverCDP(browserlessUrl);
