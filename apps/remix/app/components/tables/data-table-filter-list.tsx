@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import type { Column, ColumnMeta, Table } from '@tanstack/react-table';
 import {
   CalendarIcon,
@@ -93,6 +93,7 @@ export function DataTableFilterList<TData>({
   const descriptionId = React.useId();
   const [open, setOpen] = React.useState(false);
   const addButtonRef = React.useRef<HTMLButtonElement>(null);
+  const { t } = useLingui();
 
   const columns = React.useMemo(() => {
     return table.getAllColumns().filter((column) => column.columnDef.enableColumnFilter);
@@ -240,15 +241,15 @@ export function DataTableFilterList<TData>({
         >
           <div className="flex flex-col gap-1">
             <h4 id={labelId} className="font-medium leading-none">
-              {filters.length > 0 ? 'Filters' : 'No filters applied'}
+              {filters.length > 0 ? t`Filters` : t`No filters applied`}
             </h4>
             <p
               id={descriptionId}
               className={cn('text-muted-foreground text-sm', filters.length > 0 && 'sr-only')}
             >
               {filters.length > 0
-                ? 'Modify filters to refine your rows.'
-                : 'Add filters to refine your rows.'}
+                ? t`Modify filters to refine your rows.`
+                : t`Add filters to refine your rows.`}
             </p>
           </div>
           {filters.length > 0 ? (
@@ -443,7 +444,9 @@ function DataTableFilterItem<TData>({
             <Command>
               <CommandInput placeholder="Search fields..." />
               <CommandList>
-                <CommandEmpty>No fields found.</CommandEmpty>
+                <CommandEmpty>
+                  <Trans>No fields found.</Trans>
+                </CommandEmpty>
                 <CommandGroup>
                   {columns.map((column) => (
                     <CommandItem

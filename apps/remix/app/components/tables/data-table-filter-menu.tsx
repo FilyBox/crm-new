@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Trans, useLingui } from '@lingui/react/macro';
 import type { Column, Table } from '@tanstack/react-table';
 import { BadgeCheck, CalendarIcon, Check, ListFilter, Text, X } from 'lucide-react';
 import { useQueryState } from 'nuqs';
@@ -55,6 +56,7 @@ export function DataTableFilterMenu<TData>({
   ...props
 }: DataTableFilterMenuProps<TData>) {
   const id = React.useId();
+  const { t } = useLingui();
 
   const columns = React.useMemo(() => {
     return table.getAllColumns().filter((column) => column.columnDef.enableColumnFilter);
@@ -235,7 +237,7 @@ export function DataTableFilterMenu<TData>({
             onKeyDown={onTriggerKeyDown}
           >
             <ListFilter />
-            {filters.length > 0 ? null : 'Filter'}
+            {filters.length > 0 ? null : t`Filter`}
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -249,7 +251,7 @@ export function DataTableFilterMenu<TData>({
               placeholder={
                 selectedColumn
                   ? (selectedColumn.columnDef.meta?.label ?? selectedColumn.id)
-                  : 'Search fields...'
+                  : t`Search fields...`
               }
               value={inputValue}
               onValueChange={setInputValue}
@@ -259,7 +261,9 @@ export function DataTableFilterMenu<TData>({
               {selectedColumn ? (
                 <>
                   {selectedColumn.columnDef.meta?.options && (
-                    <CommandEmpty>No options found.</CommandEmpty>
+                    <CommandEmpty>
+                      <Trans>No options found.</Trans>
+                    </CommandEmpty>
                   )}
                   <FilterValueSelector
                     column={selectedColumn}
@@ -269,7 +273,9 @@ export function DataTableFilterMenu<TData>({
                 </>
               ) : (
                 <>
-                  <CommandEmpty>No fields found.</CommandEmpty>
+                  <CommandEmpty>
+                    <Trans>No fields found.</Trans>
+                  </CommandEmpty>
                   <CommandGroup>
                     {columns.map((column) => (
                       <CommandItem

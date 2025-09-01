@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import type { ColumnSort, SortDirection, Table } from '@tanstack/react-table';
 import { ArrowDownUp, ChevronsUpDown, GripVertical, Trash2 } from 'lucide-react';
 
@@ -163,7 +164,7 @@ export function DataTableSortList<TData>({
             onKeyDown={onTriggerKeyDown}
           >
             <ArrowDownUp className="size-4" />
-            Sort
+            <Trans>Sort</Trans>
             {sorting.length > 0 && (
               <Badge
                 variant="secondary"
@@ -218,11 +219,11 @@ export function DataTableSortList<TData>({
               onClick={onSortAdd}
               disabled={columns.length === 0 || sorting.length >= 1}
             >
-              Add sort
+              <Trans>Add sorting</Trans>
             </Button>
             {sorting.length > 0 && (
               <Button variant="outline" size="sm" className="rounded" onClick={onSortingReset}>
-                Reset sorting
+                <Trans>Reset sorting</Trans>
               </Button>
             )}
 

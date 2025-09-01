@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react/macro';
 import { queryOptions } from '@tanstack/react-query';
 import { useParams, useSearchParams } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
@@ -15,7 +17,6 @@ import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-documen
 import { trpc } from '@documenso/trpc/react';
 import { ZFindDocumentsInternalRequestSchema } from '@documenso/trpc/server/document-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { DocumentMoveToFolderDialog } from '~/components/dialogs/document-move-to-folder-dialog';
 import { DocumentDropZoneWrapper } from '~/components/general/document/chatspace-drop-zone-wrapper';
@@ -44,6 +45,7 @@ const sortColumns = z.enum(['createdAt', 'title']);
 export default function DocumentsPage() {
   const [searchParams] = useSearchParams();
   const { folderId } = useParams();
+  const { t } = useLingui();
 
   const {
     filters,
@@ -57,7 +59,6 @@ export default function DocumentsPage() {
     columnDirection,
   } = useSortParams({ sortColumns });
 
-  const { toast } = useToast();
   const [isMovingDocument, setIsMovingDocument] = useState(false);
   const [documentToMove, setDocumentToMove] = useState<number | null>(null);
   const [editingUser, setEditingUser] = useState<Document | null>(null);
@@ -140,22 +141,21 @@ export default function DocumentsPage() {
   }
 
   const handleRetry = async (documenDataId: string, documentId: number) => {
-    try {
-      await retryDocument.mutateAsync({
+    await retryDocument.mutateAsync(
+      {
         documenDataId: documenDataId,
         documentId: documentId,
-      });
-
-      toast({
-        description: 'Attempting to retry',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        description: 'Error',
-      });
-      console.error('Error:', error);
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t`Document retried successfully`);
+        },
+        onError: (error) => {
+          toast.error(t`Error retrying document`);
+          console.error('Error:', error);
+        },
+      },
+    );
   };
 
   return (

@@ -949,6 +949,10 @@ msgstr "Agregar Campos"
 msgid "Add filter"
 msgstr "Agregar filtro"
 
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Add filters to refine your rows."
+msgstr "Agrega filtros para refinar tu busqueda"
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Add group roles"
 msgstr "Agregar roles de grupo"
@@ -1018,6 +1022,10 @@ msgstr "Agregar Firmantes"
 #: apps/remix/app/components/embed/authoring/configure-document-recipients.tsx
 msgid "Add signers and configure signing preferences"
 msgstr "Agregar firmantes y configurar preferencias de firma"
+
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "Add sorting"
+msgstr "Agregar orden"
 
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
 msgid "Add team email"
@@ -3264,6 +3272,10 @@ msgstr "Documento Rechazado"
 msgid "Document resealed"
 msgstr "Documento sellado nuevamente"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
+msgid "Document retried successfully"
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 msgid "Document sent"
 msgstr "Documento enviado"
@@ -3868,6 +3880,10 @@ msgstr ""
 msgid "Error downloading files"
 msgstr "Error al descargar archivos"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
+msgid "Error retrying document"
+msgstr ""
+
 #: apps/remix/app/components/general/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/general/sheets/contracts-sheet.tsx
 msgid "Error updating record"
@@ -4098,8 +4114,13 @@ msgid "Fill in the details to create a new subscription claim."
 msgstr "Rellena los detalles para crear una nueva reclamación de suscripción."
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: apps/remix/app/components/tables/data-table-filter-menu.tsx
 msgid "Filter"
 msgstr ""
+
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Filters"
+msgstr "Filtros"
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
@@ -4991,6 +5012,10 @@ msgstr "Mensaje <0>(Opcional)</0>"
 msgid "Min"
 msgstr "Mín"
 
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Modify filters to refine your rows."
+msgstr "Modifica los filtros para refinar tu busqueda."
+
 #: apps/remix/app/components/general/document/document-page-view-recipients.tsx
 #: apps/remix/app/components/general/template/template-page-view-recipients.tsx
 msgid "Modify recipients"
@@ -5036,6 +5061,7 @@ msgstr "Mover Carpeta"
 msgid "Move Template to Folder"
 msgstr "Mover Plantilla a Carpeta"
 
+#: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
@@ -5168,6 +5194,15 @@ msgstr ""
 msgid "No Especificado  "
 msgstr ""
 
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: apps/remix/app/components/tables/data-table-filter-menu.tsx
+msgid "No fields found."
+msgstr "Campos no encontrados"
+
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "No filters applied"
+msgstr "Sin filtros"
+
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/template-move-to-folder-dialog.tsx
 msgid "No folders found"
@@ -5189,6 +5224,7 @@ msgstr "No further action is required from you at this time."
 #: apps/remix/app/components/general/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/general/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/tables/data-table-filter-menu.tsx
 msgid "No options found."
 msgstr ""
 
@@ -6267,6 +6303,10 @@ msgstr "Limpiar filtros"
 msgid "Reset Password"
 msgstr "Restablecer contraseña"
 
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "Reset sorting"
+msgstr "Reiniciar orden"
+
 #: apps/remix/app/components/forms/reset-password.tsx
 msgid "Resetting Password..."
 msgstr "Restableciendo contraseña..."
@@ -6400,6 +6440,10 @@ msgstr "Buscar por ID de organización, nombre, ID de cliente o correo electrón
 #: apps/remix/app/components/general/document/document-search.tsx
 msgid "Search documents..."
 msgstr "Buscar documentos..."
+
+#: apps/remix/app/components/tables/data-table-filter-menu.tsx
+msgid "Search fields..."
+msgstr "Buscar campos..."
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
@@ -7084,6 +7128,10 @@ msgstr "Lo sentimos, no pudimos descargar los registros de auditoría. Por favor
 #: apps/remix/app/components/general/document/document-certificate-download-button.tsx
 msgid "Sorry, we were unable to download the certificate. Please try again later."
 msgstr "Lo sentimos, no pudimos descargar el certificado. Por favor, intenta de nuevo más tarde."
+
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "Sort"
+msgstr "Ordenar"
 
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/team-members-table.tsx
