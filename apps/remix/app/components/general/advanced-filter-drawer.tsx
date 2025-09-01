@@ -138,7 +138,7 @@ export const AdvancedFilterDialog = ({
         )}
       </DrawerTrigger>
       <DrawerContent className="z-9999 h-[90vh] !max-h-screen w-full">
-        <DrawerHeader>
+        <DrawerHeader className="mx-4">
           <DrawerTitle>
             <Trans>AI Filters</Trans>
           </DrawerTitle>

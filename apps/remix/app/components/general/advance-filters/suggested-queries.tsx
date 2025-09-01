@@ -98,7 +98,7 @@ export const SuggestedQueries = ({
       exit={{ opacity: 0 }}
       className="h-full overflow-y-auto"
     >
-      <h2 className="text-foreground mb-4 text-lg font-semibold sm:text-xl">Try these queries:</h2>
+      {/* <h2 className="text-foreground mb-4 text-lg font-semibold sm:text-xl">Try these queries:</h2> */}
       <div className="flex flex-wrap gap-2">
         {pepe.suggestionQueries.map((suggestion, index) => (
           <Button

@@ -3,6 +3,7 @@ import { apiTokenRouter } from './api-token-router/router';
 import { artistRouter } from './artist-router/router';
 import { authRouter } from './auth-router/router';
 import { contractsRouter } from './contracts-router/router';
+import { distributionRouter } from './distributionStatement-router/router';
 import { documentRouter } from './document-router/router';
 import { embeddingPresignRouter } from './embedding-router/_router';
 import { enterpriseRouter } from './enterprise-router/router';
@@ -41,6 +42,7 @@ export const appRouter = router({
   lpm: lpmRouter,
   artist: artistRouter,
   tuStreams: tuStreamsRouter,
+  distribution: distributionRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -1790,10 +1790,10 @@ model Territories {
   avatarImageId                    String?
   disabled                         Boolean?                           @default(false)
   userId                           Int?
-  teamId                           Int
+  teamId                           Int?
   distributionStatementTerritories DistributionStatementTerritories[]
   user                             User?                              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team                             Team                               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team                             Team?                              @relation(fields: [teamId], references: [id], onDelete: SetNull)
 }
 
 model DistributionStatementTerritories {
@@ -1833,11 +1833,11 @@ model MusicPlatforms {
   disabled                            Boolean?                              @default(false)
   url                                 String?                               @unique
   userId                              Int?
-  teamId                              Int
+  teamId                              Int?
   distributionStatementMusicPlatforms DistributionStatementMusicPlatforms[]
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team Team  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team Team? @relation(fields: [teamId], references: [id], onDelete: SetNull)
 }
 
 model DistributionStatement {
