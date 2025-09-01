@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
 import NumberFlow from '@number-flow/react';
 import { TeamMemberRole } from '@prisma/client';
 import type { Table } from '@tanstack/react-table';
@@ -18,7 +19,6 @@ import { toast as sonnertoast, useSonner } from 'sonner';
 import { toast } from 'sonner';
 import { match } from 'ts-pattern';
 
-import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
 import { trpc } from '@documenso/trpc/react';
 import { exportTableToCSV } from '@documenso/ui/lib/export';
 import { Button } from '@documenso/ui/primitives/button';
@@ -154,20 +154,20 @@ export function TableActionBar<TData extends { id: number }>({
 
   const { _ } = useLingui();
 
-  async function handleDownload() {
-    try {
-      const files = await getFiles.mutateAsync({
-        fileIds: rows.map((row) => row.original.id),
-      });
+  // async function handleDownload() {
+  //   try {
+  //     const files = await getFiles.mutateAsync({
+  //       fileIds: rows.map((row) => row.original.id),
+  //     });
 
-      if (files) {
-        await downloadAnyFileMultiple({ multipleFiles: files });
-      }
-    } catch (error) {
-      console.log('error downloading files:', error);
-      throw new Error('Error downloading files');
-    }
-  }
+  //     if (files) {
+  //       await downloadAnyFileMultiple({ multipleFiles: files });
+  //     }
+  //   } catch (error) {
+  //     console.log('error downloading files:', error);
+  //     throw new Error('Error downloading files');
+  //   }
+  // }
 
   const handleMultipleDownload = () => {
     try {
@@ -244,7 +244,9 @@ export function TableActionBar<TData extends { id: number }>({
     <DataTableActionBar className="z-[55] min-h-[57px]" table={table} visible={true}>
       <div className="flex flex-col items-center gap-1.5 sm:flex-row">
         <div className="flex w-full items-center justify-between space-x-2 sm:w-fit sm:justify-center">
-          <p className="whitespace-nowrap text-sm font-medium">Per page</p>
+          <p className="whitespace-nowrap text-sm font-medium">
+            <Trans>Per page</Trans>
+          </p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -379,7 +381,7 @@ export function TableActionBar<TData extends { id: number }>({
                       transition={LABEL_TRANSITION}
                       className="invisible text-sm"
                     >
-                      Delete
+                      <Trans>Delete</Trans>
                     </motion.span>
                   </motion.button>
                 </motion.div>

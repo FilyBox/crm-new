@@ -1041,7 +1041,7 @@ msgstr "Agregar texto al campo"
 
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 msgid "Add the missing images."
-msgstr ""
+msgstr "Agrega las imagenes faltantes."
 
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 msgid "Add the people who will sign the document."
@@ -2046,6 +2046,10 @@ msgstr "Limpiar archivo"
 msgid "Clear filters"
 msgstr "Limpiar filtros"
 
+#: packages/ui/primitives/data-table-action-bar.tsx
+msgid "Clear selection"
+msgstr "Limpiar selección"
+
 #: packages/ui/primitives/signature-pad/signature-pad-draw.tsx
 msgid "Clear Signature"
 msgstr "Limpiar firma"
@@ -2772,6 +2776,7 @@ msgstr "eliminar"
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
+#: apps/remix/app/components/tables/table-action-bar.tsx
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
@@ -4736,7 +4741,7 @@ msgstr "Dejar la organización"
 
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 msgid "Legal Identification picture"
-msgstr ""
+msgstr "Foto de documento de identificación legal"
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Legality of Electronic Signatures"
@@ -5701,6 +5706,10 @@ msgstr "Invitaciones pendientes"
 msgid "per month"
 msgstr "al mes"
 
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Per page"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
 msgid "per year"
@@ -6625,9 +6634,13 @@ msgstr "Seleccionar activaciones"
 msgid "Select visibility"
 msgstr "Seleccionar visibilidad"
 
+#: packages/ui/primitives/data-table-action-bar.tsx
+msgid "selected"
+msgstr "seleccionado"
+
 #: packages/lib/advanced-fields-validation/validate-checkbox.ts
 msgid "Selecting an option is required"
-msgstr ""
+msgstr "Seleccionar una opción es obligatorio"
 
 #: apps/remix/app/components/general/task/release-type.tsx
 #: apps/remix/app/components/general/task/release-type.tsx

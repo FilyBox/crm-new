@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import NumberFlow from '@number-flow/react';
 import type { Table } from '@tanstack/react-table';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -130,7 +131,7 @@ function DataTableActionBarSelection<TData>({ table }: DataTableActionBarSelecti
     <div className="flex h-8 items-center rounded-md border pl-2.5 pr-1">
       <span className="flex items-center gap-2 whitespace-nowrap text-xs">
         <NumberFlow value={table.getFilteredSelectedRowModel().rows.length} />
-        selected
+        <Trans>selected</Trans>
       </span>
       <Separator orientation="vertical" className="ml-2 mr-1 data-[orientation=vertical]:h-4" />
       <Tooltip>
@@ -143,7 +144,9 @@ function DataTableActionBarSelection<TData>({ table }: DataTableActionBarSelecti
           sideOffset={10}
           className="bg-accent text-foreground flex items-center gap-2 border px-2 py-1 font-semibold dark:bg-zinc-900 [&>span]:hidden"
         >
-          <p>Clear selection</p>
+          <p>
+            <Trans>Clear selection</Trans>
+          </p>
           <kbd className="bg-background text-foreground shadow-xs select-none rounded border px-1.5 py-px font-mono text-[0.7rem] font-normal">
             <abbr title="Escape" className="no-underline">
               Esc

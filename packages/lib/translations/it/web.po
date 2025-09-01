@@ -2046,6 +2046,10 @@ msgstr "Rimuovi file"
 msgid "Clear filters"
 msgstr "Cancella filtri"
 
+#: packages/ui/primitives/data-table-action-bar.tsx
+msgid "Clear selection"
+msgstr ""
+
 #: packages/ui/primitives/signature-pad/signature-pad-draw.tsx
 msgid "Clear Signature"
 msgstr "Cancella firma"
@@ -2772,6 +2776,7 @@ msgstr "elimina"
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
+#: apps/remix/app/components/tables/table-action-bar.tsx
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
@@ -5701,6 +5706,10 @@ msgstr "Inviti in sospeso"
 msgid "per month"
 msgstr "al mese"
 
+#: apps/remix/app/components/tables/table-action-bar.tsx
+msgid "Per page"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
 msgid "per year"
@@ -6624,6 +6633,10 @@ msgstr "Seleziona trigger"
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 msgid "Select visibility"
 msgstr "Seleziona visibilità"
+
+#: packages/ui/primitives/data-table-action-bar.tsx
+msgid "selected"
+msgstr ""
 
 #: packages/lib/advanced-fields-validation/validate-checkbox.ts
 msgid "Selecting an option is required"
