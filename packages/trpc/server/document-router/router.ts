@@ -23,6 +23,7 @@ import {
 import { getDocumentById } from '@documenso/lib/server-only/document/get-document-by-id';
 import { getDocumentAndSenderByToken } from '@documenso/lib/server-only/document/get-document-by-token';
 import { getDocumentWithDetailsById } from '@documenso/lib/server-only/document/get-document-with-details-by-id';
+import { getMultipleDocumentFilesById } from '@documenso/lib/server-only/document/get-multiple-document-files-by-id';
 import type { GetStatsInput } from '@documenso/lib/server-only/document/get-stats';
 import { getStats } from '@documenso/lib/server-only/document/get-stats';
 import {
@@ -780,6 +781,20 @@ export const documentRouter = router({
       }
 
       return documentData;
+    }),
+
+  getMultipleDocumentById: authenticatedProcedure
+    .input(z.object({ fileIds: z.array(z.number()) }))
+    .mutation(async ({ input, ctx }) => {
+      const { teamId } = ctx;
+      const { fileIds } = input;
+
+      const files = await getMultipleDocumentFilesById({
+        userId: ctx.user.id,
+        teamId,
+        documentsId: fileIds,
+      });
+      return files;
     }),
 
   retryContractData: authenticatedProcedure

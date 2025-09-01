@@ -35,6 +35,7 @@ export type DocumentsTableProps = {
   data?: TFindDocumentsResponse;
   isLoading?: boolean;
   isLoadingError?: boolean;
+  onMultipleDownload?: (ids: number[]) => Promise<void>;
   onMoveDocument?: (data: DocumentsTableRow) => void;
   onHandleRetry?: (documenDataId: string, documentId: number) => void;
 };
@@ -46,6 +47,7 @@ export const DocumentsChatSpaceTable = ({
   isLoading,
   isLoadingError,
   onMoveDocument,
+  onMultipleDownload,
   onHandleRetry,
 }: DocumentsTableProps) => {
   const { _ } = useLingui();
@@ -226,6 +228,7 @@ export const DocumentsChatSpaceTable = ({
         actionBar={
           <TableActionBar
             table={table}
+            onMultipleDownload={onMultipleDownload}
             loading={isLoading || false}
             currentTeamMemberRole={team?.currentTeamRole}
           />
@@ -234,7 +237,7 @@ export const DocumentsChatSpaceTable = ({
         <DataTableAdvancedToolbar loading={false} table={table}>
           <DataTableSortList table={table} align="start" loading={false} />
           <DataTableFilterList
-            loading={false}
+            loading={isLoading || false}
             table={table}
             shallow={shallow}
             debounceMs={debounceMs}

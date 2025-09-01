@@ -4,6 +4,7 @@ import { Trans } from '@lingui/react/macro';
 import { queryOptions } from '@tanstack/react-query';
 import { useParams, useSearchParams } from 'react-router';
 
+import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
 import { FolderType } from '@documenso/lib/types/folder-type';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { queryClient, trpc } from '@documenso/trpc/react';
@@ -50,6 +51,7 @@ export default function FilesPage() {
       refetchOnWindowFocus: false,
     }),
   );
+  const getFiles = trpc.files.getMultipleDocumentById.useMutation();
 
   const { mutateAsync: deleteDocumentMutation } = trpc.files.deleteSoftMultipleByIds.useMutation({
     onSuccess: async () => {
@@ -60,6 +62,21 @@ export default function FilesPage() {
   const handleMultipleDelete = async (ids: number[]) => {
     await deleteDocumentMutation({ ids });
   };
+
+  async function handleDownload(ids: number[]) {
+    try {
+      const files = await getFiles.mutateAsync({
+        fileIds: ids,
+      });
+
+      if (files) {
+        await downloadAnyFileMultiple({ multipleFiles: files });
+      }
+    } catch (error) {
+      console.log('error downloading files:', error);
+      throw new Error('Error downloading files');
+    }
+  }
 
   useEffect(() => {
     void refetch();
@@ -103,6 +120,8 @@ export default function FilesPage() {
               isLoading={isLoading}
               isLoadingError={isLoadingError}
               onMultipleDelete={handleMultipleDelete}
+              onMultipleDownload={handleDownload}
+
               //   setDocumentToMove(documentId);
               //   setIsMovingDocument(true);
               // }}

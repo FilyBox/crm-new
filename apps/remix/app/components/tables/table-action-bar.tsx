@@ -105,6 +105,7 @@ export function TableActionBar<TData extends { id: number }>({
   download,
   currentTeamMemberRole,
   onMultipleDelete,
+  onMultipleDownload,
 }: DataTablePaginationProps<TData>) {
   const { toasts } = useSonner();
 
@@ -167,6 +168,31 @@ export function TableActionBar<TData extends { id: number }>({
       throw new Error('Error downloading files');
     }
   }
+
+  const handleMultipleDownload = () => {
+    try {
+      const ids = rows.map((row) => row.original.id);
+      if (onMultipleDownload) {
+        setIsDownloading(true);
+        toast.promise(onMultipleDownload(ids), {
+          loading: _(msg`Downloading files...`),
+          success: () => {
+            setIsDownloading(false);
+            return _(msg`Files downloaded successfully`);
+          },
+          error: () => {
+            setIsDownloading(false);
+            return _(msg`Error downloading files`);
+          },
+          position: 'bottom-center',
+          className: 'mb-16',
+        });
+      }
+    } catch (error) {
+      toast.error(_(msg`Error downloading files`));
+      console.error('Error downloading files:', error);
+    }
+  };
 
   const handleMultipleDelete = () => {
     try {
@@ -366,26 +392,7 @@ export function TableActionBar<TData extends { id: number }>({
                     className={`bg-secondary/50 ${isOperationPending ? '!text-primary/50 cursor-not-allowed' : ''} hover:bg-secondary/70 text-primary flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg p-2`}
                     aria-label="Reject"
                     disabled={isOperationPending}
-                    onClick={
-                      download
-                        ? () => {
-                            setIsDownloading(true);
-                            toast.promise(handleDownload(), {
-                              loading: _(msg`Downloading files...`),
-                              success: () => {
-                                setIsDownloading(false);
-                                return _(msg`Files downloaded successfully`);
-                              },
-                              error: () => {
-                                setIsDownloading(false);
-                                return _(msg`Error downloading files`);
-                              },
-                              position: 'bottom-center',
-                              className: 'mb-16',
-                            });
-                          }
-                        : onTaskExport
-                    }
+                    onClick={onMultipleDownload ? handleMultipleDownload : onTaskExport}
                   >
                     <Download size={16} className="shrink-0" />
                     <motion.span
@@ -393,7 +400,7 @@ export function TableActionBar<TData extends { id: number }>({
                       transition={LABEL_TRANSITION}
                       className="invisible text-sm"
                     >
-                      {download ? _(msg`Download`) : _(msg`Export`)}
+                      {onMultipleDownload ? _(msg`Download`) : _(msg`Export`)}
                     </motion.span>
                   </motion.button>
                 </motion.div>

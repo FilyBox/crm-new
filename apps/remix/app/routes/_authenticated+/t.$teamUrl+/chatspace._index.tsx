@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
+import { queryOptions } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { z } from 'zod';
 
+import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
 import { FolderType } from '@documenso/lib/types/folder-type';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
@@ -74,31 +76,39 @@ export default function DocumentsPage() {
   console.log('columnOrder', columnOrder);
   console.log('columnDirection', columnDirection);
 
-  const { data, isLoading, isLoadingError, refetch } =
-    trpc.document.findDocumentsInternalUseToChat.useQuery({
-      page: page,
-      perPage: perPage,
-      senderIds: findDocumentSearchParams.senderIds,
-      orderByColumn: columnOrder,
-      orderByDirection: columnDirection as 'asc' | 'desc',
-      filterStructure: applyFilters ? filters : [],
-      joinOperator: joinOperator,
-    });
+  const { data, isLoading, isFetching, isLoadingError, refetch } =
+    trpc.document.findDocumentsInternalUseToChat.useQuery(
+      {
+        page: page,
+        perPage: perPage,
+        senderIds: findDocumentSearchParams.senderIds,
+        orderByColumn: columnOrder,
+        orderByDirection: columnDirection as 'asc' | 'desc',
+        filterStructure: applyFilters ? filters : [],
+        joinOperator: joinOperator,
+      },
+      queryOptions({
+        queryKey: [
+          'chatDocuments',
+          page,
+          perPage,
+          query,
+          statusParams,
+          columnDirection,
+          joinOperator,
+          filters,
+        ],
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
+        placeholderData: (previousData) => previousData,
+      }),
+    );
+  const getFiles = trpc.document.getMultipleDocumentById.useMutation();
 
   const retryDocument = trpc.document.retryChatDocument.useMutation();
 
-  const {
-    data: foldersData,
-    isLoading: isFoldersLoading,
-    refetch: refetchFolders,
-  } = trpc.folder.getFolders.useQuery({
-    type: FolderType.CHAT,
-    parentId: null,
-  });
-
   useEffect(() => {
     void refetch();
-    void refetchFolders();
   }, [team?.url]);
 
   const getTabHref = (value: keyof typeof ExtendedDocumentStatus) => {
@@ -117,15 +127,20 @@ export default function DocumentsPage() {
     return `${formatChatPath(team?.url)}?${params.toString()}`;
   };
 
-  const navigateToFolder = (folderId?: string | null) => {
-    const documentsPath = formatChatPath(team?.url);
+  async function handleMultipleDownload(ids: number[]) {
+    try {
+      const files = await getFiles.mutateAsync({
+        fileIds: ids,
+      });
 
-    if (folderId) {
-      void navigate(`${formatChatPath(team?.url)}/f/${folderId}`);
-    } else {
-      void navigate(documentsPath);
+      if (files) {
+        await downloadAnyFileMultiple({ multipleFiles: files });
+      }
+    } catch (error) {
+      console.log('error downloading files:', error);
+      throw new Error('Error downloading files');
     }
-  };
+  }
 
   const handleRetry = async (documenDataId: string, documentId: number) => {
     try {
@@ -144,10 +159,6 @@ export default function DocumentsPage() {
       });
       console.error('Error:', error);
     }
-  };
-
-  const handleViewAllFolders = () => {
-    void navigate(`${formatChatPath(team?.url)}/folders`);
   };
 
   return (
@@ -185,7 +196,8 @@ export default function DocumentsPage() {
           <div>
             <DocumentsChatSpaceTable
               data={data}
-              isLoading={isLoading}
+              onMultipleDownload={handleMultipleDownload}
+              isLoading={isLoading || isFetching}
               isLoadingError={isLoadingError}
               onHandleRetry={async (documentDataId: string, documentId: number) =>
                 handleRetry(documentDataId, documentId)

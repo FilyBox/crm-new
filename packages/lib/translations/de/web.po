@@ -945,6 +945,10 @@ msgstr "E-Mail-Domain hinzufügen"
 msgid "Add Fields"
 msgstr "Felder hinzufügen"
 
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Add filter"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Add group roles"
 msgstr "Gruppenrollen hinzufügen"
@@ -1487,6 +1491,10 @@ msgstr "API-Token"
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "App Version"
 msgstr "App-Version"
+
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Apply filters"
+msgstr ""
 
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
@@ -3856,6 +3864,7 @@ msgstr ""
 
 #: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
+#: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Error downloading files"
 msgstr ""
 
@@ -4087,6 +4096,10 @@ msgstr ""
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
 msgstr "Füllen Sie die Details aus, um einen neuen Abonnementsanspruch zu erstellen."
+
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Filter"
+msgstr ""
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
@@ -6242,6 +6255,10 @@ msgstr "Zurücksetzen"
 #: apps/remix/app/components/forms/forgot-password.tsx
 msgid "Reset email sent"
 msgstr "Zurücksetzungs-E-Mail gesendet"
+
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Reset filters"
+msgstr ""
 
 #: apps/remix/app/components/forms/forgot-password.tsx
 #: apps/remix/app/components/forms/reset-password.tsx
@@ -9300,6 +9317,10 @@ msgstr "Wenn Sie ein Dokument unterschreiben, können wir die folgenden Felder a
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 msgstr "Wenn Sie unsere Plattform nutzen, um Ihre elektronische Unterschrift auf Dokumente anzubringen, stimmen Sie zu, dies unter dem Gesetz über elektronische Unterschriften im globalen und nationalen Handel (E-Sign-Gesetz) und anderen anwendbaren Gesetzen zu tun. Diese Handlung zeigt Ihre Zustimmung zur Verwendung elektronischer Mittel zum Unterzeichnen von Dokumenten und zum Empfang von Benachrichtigungen an."
+
+#: apps/remix/app/components/tables/data-table-filter-list.tsx
+msgid "Where"
+msgstr ""
 
 #: apps/remix/app/routes/_profile+/p.$url.tsx
 msgid "While waiting for them to do so you can create your own account and get started with document signing right away."

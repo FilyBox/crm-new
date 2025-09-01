@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import type { Column, ColumnMeta, Table } from '@tanstack/react-table';
 import {
   CalendarIcon,
@@ -49,7 +50,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@documenso/ui/primitives/select';
-import { Skeleton } from '@documenso/ui/primitives/skeleton';
 import {
   Sortable,
   SortableContent,
@@ -210,10 +210,6 @@ export function DataTableFilterList<TData>({
     [filters, onFilterRemove],
   );
 
-  if (loading) {
-    return <Skeleton className="h-9 w-[85px] rounded-md" />;
-  }
-
   return (
     <Sortable value={filters} onValueChange={setFilters} getItemValue={(item) => item.filterId}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -225,7 +221,7 @@ export function DataTableFilterList<TData>({
             onKeyDown={onTriggerKeyDown}
           >
             <ListFilter className="size-4" />
-            Filter
+            <Trans>Filter</Trans>
             {filters.length > 0 && (
               <Badge
                 variant="secondary"
@@ -281,12 +277,19 @@ export function DataTableFilterList<TData>({
               // disabled={filters.length >= 1}
               ref={addButtonRef}
               onClick={onFilterAdd}
+              disabled={loading}
             >
-              Add filter
+              <Trans>Add filter</Trans>
             </Button>
             {filters.length > 0 ? (
-              <Button variant="outline" size="sm" className="rounded" onClick={onFiltersReset}>
-                Reset filters
+              <Button
+                disabled={loading}
+                variant="outline"
+                size="sm"
+                className="rounded"
+                onClick={onFiltersReset}
+              >
+                <Trans>Reset filters</Trans>
               </Button>
             ) : null}
             {filters.length > 0 ? (
@@ -294,9 +297,11 @@ export function DataTableFilterList<TData>({
                 variant="outline"
                 size="sm"
                 className="rounded"
+                loading={loading}
+                disabled={loading || applyFilters === 'true'}
                 onClick={async () => setApplyFilters('true')}
               >
-                Apply filters
+                <Trans>Apply filters</Trans>
               </Button>
             ) : null}
           </div>
@@ -384,7 +389,9 @@ function DataTableFilterItem<TData>({
       >
         <div className="min-w-[72px] text-center">
           {index === 0 ? (
-            <span className="text-muted-foreground text-sm">Where</span>
+            <span className="text-muted-foreground text-sm">
+              <Trans>Where</Trans>
+            </span>
           ) : index === 1 ? (
             <Select
               value={joinOperator}

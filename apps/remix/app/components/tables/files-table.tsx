@@ -30,6 +30,7 @@ interface DataTableProps<TData, TValue> {
   onEdit?: (data: DocumentsTableRow) => void;
   onDelete?: (data: DocumentsTableRow) => void;
   onMultipleDelete?: (ids: number[]) => Promise<void>;
+  onMultipleDownload?: (ids: number[]) => Promise<void>;
   isMultipleDelete?: boolean;
   setIsMultipleDelete?: (value: boolean) => void;
   onMoveDocument?: (documentId: number) => void;
@@ -47,6 +48,7 @@ export const FilesTable = ({
   onMoveDocument,
   onHandleRetry,
   onMultipleDelete,
+  onMultipleDownload,
   isMultipleDelete = false,
   setIsMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
@@ -200,6 +202,7 @@ export const FilesTable = ({
         table={table}
         actionBar={
           <TableActionBar
+            onMultipleDownload={onMultipleDownload}
             onMultipleDelete={onMultipleDelete}
             table={table}
             download={true}
