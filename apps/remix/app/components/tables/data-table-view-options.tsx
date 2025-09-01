@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import type { Table } from '@tanstack/react-table';
 import { Check, ChevronsUpDown, Settings2 } from 'lucide-react';
 
@@ -39,7 +40,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
           className="ml-auto hidden h-8 gap-2 lg:flex"
         >
           <Settings2 className="size-4" />
-          View
+          <Trans>View</Trans>
           <ChevronsUpDown className="ml-auto size-4 opacity-50" />
         </Button>
       </PopoverTrigger>

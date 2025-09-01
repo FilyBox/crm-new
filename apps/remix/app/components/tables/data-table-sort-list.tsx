@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import type { ColumnSort, SortDirection, Table } from '@tanstack/react-table';
 import { ArrowDownUp, ChevronsUpDown, GripVertical, Trash2 } from 'lucide-react';
 
@@ -50,6 +50,7 @@ export function DataTableSortList<TData>({
   const descriptionId = React.useId();
   const [open, setOpen] = React.useState(false);
   const addButtonRef = React.useRef<HTMLButtonElement>(null);
+  const { t } = useLingui();
 
   const sorting = table.getState().sorting;
   const onSortingChange = table.setSorting;
@@ -183,15 +184,15 @@ export function DataTableSortList<TData>({
         >
           <div className="flex flex-col gap-1">
             <h4 id={labelId} className="font-medium leading-none">
-              {sorting.length > 0 ? 'Sort by' : 'No sorting applied'}
+              {sorting.length > 0 ? t`Sort by` : t`No sorting applied`}
             </h4>
             <p
               id={descriptionId}
               className={cn('text-muted-foreground text-sm', sorting.length > 0 && 'sr-only')}
             >
               {sorting.length > 0
-                ? 'Modify sorting to organize your rows.'
-                : 'Add sorting to organize your rows.'}
+                ? t`Modify sorting to organize your rows.`
+                : t`Add sorting to organize your rows.`}
             </p>
           </div>
           {sorting.length > 0 && (

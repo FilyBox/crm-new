@@ -25,9 +25,8 @@ import { TemplateCreateDialog } from '~/components/dialogs/template-create-dialo
 import { DocumentUploadDropzone } from '~/components/general/document/document-upload';
 import { FilesUploadDropzone } from '~/components/general/files/files-document-upload';
 import { FolderCard, FolderCardEmpty } from '~/components/general/folder/folder-card';
+import ContractsSheet from '~/components/sheets/contracts-sheet';
 import { useCurrentTeam } from '~/providers/team';
-
-import ContractsSheet from '../sheets/contracts-sheet';
 
 export type FolderGridProps = {
   type: FolderType;

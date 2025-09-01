@@ -108,12 +108,12 @@ msgstr "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}
 #. placeholder {0}: initialData ? _(msg`Update Contract`) : _(msg`Add Contract`)
 #. placeholder {0}: initialData ? _(msg`Update Distribution Record`) : _(msg`Add Distribution Record`)
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
-#: apps/remix/app/components/general/sheets/distribution-sheet.tsx
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings._layout.tsx
 msgid "{0}"
@@ -444,6 +444,10 @@ msgstr "<0>{teamName}</0> has requested to use your email address for their team
 msgid "<0>All of your documents</0>, along with all of your completed documents, signatures, and all other resources belonging to your account will be deleted."
 msgstr "<0>All of your documents</0>, along with all of your completed documents, signatures, and all other resources belonging to your account will be deleted."
 
+#: apps/remix/app/components/tables/lpm-table-artist-filter.tsx
+msgid "<0>Artist:</0> All"
+msgstr "<0>Artist:</0> All"
+
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "<0>Click to upload</0> or drag and drop"
 msgstr "<0>Click to upload</0> or drag and drop"
@@ -736,6 +740,10 @@ msgstr "A stable internet connection"
 msgid "A team you were a part of has been deleted"
 msgstr "A team you were a part of has been deleted"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "A total of {data} records created successfully"
+msgstr "A total of {data} records created successfully"
+
 #: apps/remix/app/components/forms/public-profile-form.tsx
 msgid "A unique URL to access your profile"
 msgstr "A unique URL to access your profile"
@@ -911,7 +919,7 @@ msgstr "Add another option"
 msgid "Add another value"
 msgstr "Add another value"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
 msgid "Add Contract"
 msgstr "Add Contract"
 
@@ -919,7 +927,7 @@ msgstr "Add Contract"
 msgid "Add Custom Email Domain"
 msgstr "Add Custom Email Domain"
 
-#: apps/remix/app/components/general/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/distribution-sheet.tsx
 msgid "Add Distribution Record"
 msgstr "Add Distribution Record"
 
@@ -957,9 +965,9 @@ msgstr "Add group roles"
 msgid "Add groups"
 msgstr "Add groups"
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
 msgid "Add Isrc Record"
 msgstr "Add Isrc Record"
 
@@ -1022,6 +1030,10 @@ msgstr "Add signers and configure signing preferences"
 msgid "Add sorting"
 msgstr "Add sorting"
 
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "Add sorting to organize your rows."
+msgstr "Add sorting to organize your rows."
+
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
 msgid "Add team email"
 msgstr "Add team email"
@@ -1050,13 +1062,21 @@ msgstr "Add the recipients to create the document with"
 msgid "Add these DNS records to verify your domain ownership"
 msgstr "Add these DNS records to verify your domain ownership"
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Add Virgin Record"
 msgstr "Add Virgin Record"
 
 #: apps/remix/app/components/forms/branding-preferences-form.tsx
 msgid "Additional brand information to display at the bottom of emails"
 msgstr "Additional brand information to display at the bottom of emails"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Additional Contributors (Non-Performing)"
+msgstr "Additional Contributors (Non-Performing)"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Additional Contributors (Performing)"
+msgstr "Additional Contributors (Performing)"
 
 #: packages/lib/constants/organisations-translations.ts
 #: packages/lib/constants/teams-translations.ts
@@ -1112,6 +1132,10 @@ msgstr "After submission, a document will be automatically generated and added t
 #: apps/remix/app/components/general/task/tustreams-type.tsx
 msgid "Album"
 msgstr "Album"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Album Only"
+msgstr "Album Only"
 
 #: apps/remix/app/components/general/document/document-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
@@ -1216,6 +1240,10 @@ msgstr "Amount"
 #: packages/email/templates/document-super-delete.tsx
 msgid "An admin has deleted your document \"{documentName}\"."
 msgstr "An admin has deleted your document \"{documentName}\"."
+
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "An artist with this name already exists."
+msgstr "An artist with this name already exists."
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "An electronic signature provided by you on our platform, achieved through clicking through to a document and entering your name, or any other electronic signing method we provide, is legally binding. It carries the same weight and enforceability as a manual signature written with ink on paper."
@@ -1594,10 +1622,14 @@ msgstr "Are you sure you wish to delete this team?"
 msgid "Are you sure?"
 msgstr "Are you sure?"
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "Artist created successfully"
+msgstr "Artist created successfully"
+
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Artists"
 msgstr "Artists"
 
@@ -1669,6 +1701,10 @@ msgstr "Attempting to retry"
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 msgid "Attempts sealing the document again, useful for after a code change has occurred to resolve an erroneous document."
 msgstr "Attempts sealing the document again, useful for after a code change has occurred to resolve an erroneous document."
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Audio Language"
+msgstr "Audio Language"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 msgid "Audit Log"
@@ -1850,6 +1886,7 @@ msgid "Can prepare"
 msgstr "Can prepare"
 
 #: apps/remix/app/components/dialogs/admin-organisation-create-dialog.tsx
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
 #: apps/remix/app/components/dialogs/assistant-confirmation-dialog.tsx
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 #: apps/remix/app/components/dialogs/claim-delete-dialog.tsx
@@ -1943,6 +1980,10 @@ msgstr "Cannot remove document"
 #: packages/ui/primitives/document-flow/add-signers.tsx
 msgid "Cannot remove signer"
 msgstr "Cannot remove signer"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Catalog"
+msgstr "Catalog"
 
 #: packages/lib/constants/recipient-roles.ts
 msgctxt "Recipient role name"
@@ -2101,6 +2142,10 @@ msgstr "Communication"
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 msgid "Compare all plans and features in detail"
 msgstr "Compare all plans and features in detail"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Compilation"
+msgstr "Compilation"
 
 #: apps/remix/app/components/embed/embed-direct-template-client-page.tsx
 #: apps/remix/app/components/embed/embed-document-signing-page.tsx
@@ -2309,6 +2354,14 @@ msgstr "Continue by viewing the document."
 msgid "Continue to login"
 msgstr "Continue to login"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Continuous Mix"
+msgstr "Continuous Mix"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Continuously Mixed Individual Song"
+msgstr "Continuously Mixed Individual Song"
+
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
@@ -2406,11 +2459,15 @@ msgstr "Create a <0>account</0> to access your signed documents at any time."
 msgid "Create a new account"
 msgstr "Create a new account"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "Create a new artist with details like name, roles, events, songs, and url."
+msgstr "Create a new artist with details like name, roles, events, songs, and url."
+
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
 msgid "Create a new contract with details."
 msgstr "Create a new contract with details."
 
-#: apps/remix/app/components/general/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/distribution-sheet.tsx
 msgid "Create a new Distribution record with details."
 msgstr "Create a new Distribution record with details."
 
@@ -2419,9 +2476,9 @@ msgstr "Create a new Distribution record with details."
 msgid "Create a new email address for your organisation using the domain <0>{0}</0>."
 msgstr "Create a new email address for your organisation using the domain <0>{0}</0>."
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
 msgid "Create a new Isrc record with details."
 msgstr "Create a new Isrc record with details."
 
@@ -2429,7 +2486,7 @@ msgstr "Create a new Isrc record with details."
 msgid "Create a new organisation with {planName} plan. Keep your current organisation on it's current plan"
 msgstr "Create a new organisation with {planName} plan. Keep your current organisation on it's current plan"
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Create a new Virgin record with details."
 msgstr "Create a new Virgin record with details."
 
@@ -2456,6 +2513,10 @@ msgstr "Create an organisation to get started."
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "Create and send"
 msgstr "Create and send"
+
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "Create Artist"
+msgstr "Create Artist"
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "Create as draft"
@@ -2509,6 +2570,10 @@ msgstr "Create group"
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Create Groups"
 msgstr "Create Groups"
+
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "Create New Artist"
+msgstr "Create New Artist"
 
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "Create New Folder"
@@ -2617,6 +2682,10 @@ msgstr "Created At"
 msgid "Created by"
 msgstr "Created by"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Created By"
+msgstr "Created By"
+
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 msgid "Created on"
 msgstr "Created on"
@@ -2635,6 +2704,14 @@ msgstr "createdAt"
 #: apps/remix/app/components/tables/files-table.tsx
 msgid "CreatedAt"
 msgstr "CreatedAt"
+
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "Creating artists..."
+msgstr "Creating artists..."
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Creating record..."
+msgstr "Creating record..."
 
 #: apps/remix/app/components/general/task/task-priority.tsx
 msgid "Critical"
@@ -2887,11 +2964,16 @@ msgstr "Delete your account and all its contents, including completed documents.
 msgid "Deleted"
 msgstr "Deleted"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Deleted record successfully"
+msgstr "Deleted record successfully"
+
 #: apps/remix/app/components/dialogs/account-delete-dialog.tsx
 msgid "Deleting account..."
 msgstr "Deleting account..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Deleting record..."
 msgstr "Deleting record..."
 
@@ -3512,6 +3594,10 @@ msgstr "Duplicate"
 msgid "Duplicate on all pages"
 msgstr "Duplicate on all pages"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Duration"
+msgstr "Duration"
+
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
@@ -3864,7 +3950,12 @@ msgstr "Error"
 msgid "Error al reintentar"
 msgstr "Error al reintentar"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Error creating records"
+msgstr "Error creating records"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Error deleting record"
 msgstr "Error deleting record"
 
@@ -3880,12 +3971,17 @@ msgstr "Error deleting records"
 msgid "Error downloading files"
 msgstr "Error downloading files"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Error processing file"
+msgstr "Error processing file"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
 msgid "Error retrying document"
 msgstr "Error retrying document"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Error updating record"
 msgstr "Error updating record"
 
@@ -3928,6 +4024,10 @@ msgstr "Everyone has signed! You will receive an Email copy of the signed docume
 msgid "Exceeded timeout"
 msgstr "Exceeded timeout"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Exclusives"
+msgstr "Exclusives"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings._index.tsx
 msgid "Expired"
 msgstr "Expired"
@@ -3936,6 +4036,14 @@ msgstr "Expired"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "Expires on {0}"
 msgstr "Expires on {0}"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Explicit Lyrics"
+msgstr "Explicit Lyrics"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Explicit Lyrics Track"
+msgstr "Explicit Lyrics Track"
 
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Export"
@@ -3948,6 +4056,11 @@ msgstr "Export All"
 #: apps/remix/app/components/tables/data-table-export-all-data.tsx
 msgid "Exporting"
 msgstr "Exporting"
+
+#. placeholder {0}: error.message
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "Fail to create artist: {0}"
+msgstr "Fail to create artist: {0}"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 msgid "Failed not found"
@@ -4478,6 +4591,10 @@ msgstr "If you don't find the confirmation link in your inbox, you can request a
 msgid "If your authenticator app does not support QR codes, you can use the following code instead:"
 msgstr "If your authenticator app does not support QR codes, you can use the following code instead:"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Import Date"
+msgstr "Import Date"
+
 #: apps/remix/app/components/general/task/task-status.tsx
 msgid "In Progress"
 msgstr "In Progress"
@@ -4544,6 +4661,10 @@ msgstr "Inserted"
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Instance Stats"
 msgstr "Instance Stats"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Instant Gratification Date"
+msgstr "Instant Gratification Date"
 
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx
 msgid "Invalid code. Please try again."
@@ -4622,6 +4743,7 @@ msgid "IP Address"
 msgstr "IP Address"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/tables/lpm-table.tsx
 msgid "ISRC"
 msgstr "ISRC"
 
@@ -4664,6 +4786,7 @@ msgstr "Join {organisationName} on {0}"
 msgid "Joined {0}"
 msgstr "Joined {0}"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/checkbox-field.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/number-field.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/number-field.tsx
@@ -4697,6 +4820,14 @@ msgstr "Last Active"
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
 msgid "Last modified"
 msgstr "Last modified"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Last Modified"
+msgstr "Last Modified"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Last Process Date"
+msgstr "Last Process Date"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id.logs.tsx
 msgid "Last updated"
@@ -4750,6 +4881,10 @@ msgstr "Light Mode"
 msgid "Like to have your own public profile with agreements?"
 msgstr "Like to have your own public profile with agreements?"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Liner Notes"
+msgstr "Liner Notes"
+
 #: packages/email/templates/confirm-team-email.tsx
 msgid "Link expires in 1 hour."
 msgstr "Link expires in 1 hour."
@@ -4799,6 +4934,10 @@ msgstr "Login"
 #: apps/remix/app/components/general/task/task-priority.tsx
 msgid "Low"
 msgstr "Low"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Lyrics"
+msgstr "Lyrics"
 
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
@@ -5021,6 +5160,10 @@ msgstr "Modify filters to refine your rows."
 msgid "Modify recipients"
 msgstr "Modify recipients"
 
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "Modify sorting to organize your rows."
+msgstr "Modify sorting to organize your rows."
+
 #: apps/remix/app/components/dialogs/claim-update-dialog.tsx
 msgid "Modify the details of the subscription claim."
 msgstr "Modify the details of the subscription claim."
@@ -5081,6 +5224,7 @@ msgstr "My Folder"
 msgid "N/A"
 msgstr "N/A"
 
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
 #: apps/remix/app/components/dialogs/assistant-confirmation-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
@@ -5139,16 +5283,20 @@ msgstr "Never"
 msgid "Never expire"
 msgstr "Never expire"
 
+#: apps/remix/app/components/dialogs/artist-create-dialog.tsx
+msgid "New Artist"
+msgstr "New Artist"
+
 #: apps/remix/app/components/forms/password.tsx
 msgid "New Password"
 msgstr "New Password"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
-#: apps/remix/app/components/general/sheets/distribution-sheet.tsx
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "New Record"
 msgstr "New Record"
 
@@ -5218,12 +5366,12 @@ msgstr "No folders found matching \"{searchTerm}\""
 msgid "No further action is required from you at this time."
 msgstr "No further action is required from you at this time."
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
 msgid "No options found."
 msgstr "No options found."
@@ -5277,6 +5425,10 @@ msgstr "No results found."
 #: packages/ui/primitives/document-flow/missing-signature-field-dialog.tsx
 msgid "No signature field found"
 msgstr "No signature field found"
+
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "No sorting applied"
+msgstr "No sorting applied"
 
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 msgid "No Stripe customer attached"
@@ -5557,6 +5709,10 @@ msgstr "Organise your templates"
 msgid "Organize your documents and templates"
 msgstr "Organize your documents and templates"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Original Release Date"
+msgstr "Original Release Date"
+
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "Otherwise, the document will be created as a draft."
 msgstr "Otherwise, the document will be created as a draft."
@@ -5586,6 +5742,10 @@ msgstr "Page {0} of {1}"
 #: packages/ui/primitives/pdf-viewer.tsx
 msgid "Page {0} of {numPages}"
 msgstr "Page {0} of {numPages}"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Parent Label"
+msgstr "Parent Label"
 
 #: apps/remix/app/components/forms/signin.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
@@ -5668,6 +5828,10 @@ msgstr "Password updated!"
 #: apps/remix/app/components/general/organisations/organisation-billing-banner.tsx
 msgid "Payment overdue"
 msgstr "Payment overdue"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "PDF Booklet"
+msgstr "PDF Booklet"
 
 #: apps/remix/app/components/general/document/document-page-view-recipients.tsx
 #: apps/remix/app/components/general/document/document-status.tsx
@@ -5911,6 +6075,14 @@ msgstr "Pre-formatted CSV template with example data."
 msgid "Preferences"
 msgstr "Preferences"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "PreOrder Date"
+msgstr "PreOrder Date"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "PreOrder Type"
+msgstr "PreOrder Type"
+
 #: apps/remix/app/components/forms/document-preferences-form.tsx
 msgid "Preview"
 msgstr "Preview"
@@ -5918,6 +6090,10 @@ msgstr "Preview"
 #: apps/remix/app/components/general/direct-template/direct-template-page.tsx
 msgid "Preview and configure template."
 msgstr "Preview and configure template."
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Primary Metadata Language"
+msgstr "Primary Metadata Language"
 
 #: apps/remix/app/components/general/template/template-type.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
@@ -5936,6 +6112,54 @@ msgstr "Proceed"
 #: packages/lib/constants/document.ts
 msgid "Processing"
 msgstr "Processing"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Processing file..."
+msgstr "Processing file..."
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Producers"
+msgstr "Producers"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product C Line"
+msgstr "Product C Line"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Display Artist"
+msgstr "Product Display Artist"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Genre"
+msgstr "Product Genre"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product ID"
+msgstr "Product ID"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product P Line"
+msgstr "Product P Line"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Play Link"
+msgstr "Product Play Link"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Price Tier"
+msgstr "Product Price Tier"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Title"
+msgstr "Product Title"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Type"
+msgstr "Product Type"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Product Version"
+msgstr "Product Version"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
 #: apps/remix/app/components/general/settings-nav-desktop.tsx
@@ -5980,6 +6204,10 @@ msgstr "Public profile URL"
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
 msgstr "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Publishers/Collection Societies"
+msgstr "Publishers/Collection Societies"
 
 #: packages/ui/primitives/document-flow/types.ts
 msgid "Radio"
@@ -6090,6 +6318,10 @@ msgstr "Recipients metrics"
 msgid "Recipients will still retain their copy of the document"
 msgstr "Recipients will still retain their copy of the document"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Record created successfully"
+msgstr "Record created successfully"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 msgid "Record deleted successfully"
 msgstr "Record deleted successfully"
@@ -6102,8 +6334,9 @@ msgstr "Record Name"
 msgid "Record Type"
 msgstr "Record Type"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Record updated successfully"
 msgstr "Record updated successfully"
 
@@ -6161,6 +6394,10 @@ msgstr "Rejection Confirmed"
 #: packages/email/template-components/template-document-rejection-confirmed.tsx
 msgid "Rejection reason: {reason}"
 msgstr "Rejection reason: {reason}"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Release Date"
+msgstr "Release Date"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 msgid "Releases"
@@ -6394,6 +6631,10 @@ msgstr "Roles"
 msgid "Rows per page"
 msgstr "Rows per page"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Sample Start Time"
+msgstr "Sample Start Time"
+
 #: apps/remix/app/components/dialogs/template-direct-link-dialog.tsx
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
@@ -6413,6 +6654,7 @@ msgid "Se han creado {0} registros exitosament"
 msgstr "Se han creado {0} registros exitosament"
 
 #: apps/remix/app/components/tables/documents-table-sender-filter.tsx
+#: apps/remix/app/components/tables/lpm-table-artist-filter.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.members.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.teams.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.groups.tsx
@@ -6457,13 +6699,13 @@ msgstr "Search fields..."
 msgid "Search folders..."
 msgstr "Search folders..."
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search for genre..."
 msgstr "Search for genre..."
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search genre"
 msgstr "Search genre"
 
@@ -6471,17 +6713,17 @@ msgstr "Search genre"
 msgid "Search languages..."
 msgstr "Search languages..."
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search options"
 msgstr "Search options"
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search options..."
 msgstr "Search options..."
 
@@ -6549,10 +6791,10 @@ msgstr "Select an option"
 msgid "Select an organisation to view teams"
 msgstr "Select an organisation to view teams"
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Select artists..."
 msgstr "Select artists..."
 
@@ -6607,8 +6849,8 @@ msgstr "Select passkey"
 msgid "Select signature types"
 msgstr "Select signature types"
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Select some genres..."
 msgstr "Select some genres..."
 
@@ -7141,6 +7383,10 @@ msgstr "Sorry, we were unable to download the certificate. Please try again late
 msgid "Sort"
 msgstr "Sort"
 
+#: apps/remix/app/components/tables/data-table-sort-list.tsx
+msgid "Sort by"
+msgstr "Sort by"
+
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/team-members-table.tsx
 msgid "Source"
@@ -7186,6 +7432,18 @@ msgstr "Subject"
 #: packages/ui/primitives/template-flow/add-template-settings.tsx
 msgid "Subject <0>(Optional)</0>"
 msgstr "Subject <0>(Optional)</0>"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Submission Status"
+msgstr "Submission Status"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Submitted At"
+msgstr "Submitted At"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Submitted By"
+msgstr "Submitted By"
 
 #: apps/remix/app/components/general/billing-plans.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
@@ -8155,6 +8413,14 @@ msgstr "Time zone"
 msgid "Time Zone"
 msgstr "Time Zone"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Timed Release Date"
+msgstr "Timed Release Date"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Timed Release Music Services"
+msgstr "Timed Release Music Services"
+
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
@@ -8283,6 +8549,54 @@ msgstr "Total Signers that Signed Up"
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Total Users"
 msgstr "Total Users"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track C Line"
+msgstr "Track C Line"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Display Artist"
+msgstr "Track Display Artist"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Genre"
+msgstr "Track Genre"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track ID"
+msgstr "Track ID"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Name"
+msgstr "Track Name"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Number"
+msgstr "Track Number"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track P Line"
+msgstr "Track P Line"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Play Link"
+msgstr "Track Play Link"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Price Tier"
+msgstr "Track Price Tier"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Type"
+msgstr "Track Type"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Version"
+msgstr "Track Version"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Track Volume"
+msgstr "Track Volume"
 
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id.tsx
@@ -8460,6 +8774,10 @@ msgstr "Unpin"
 msgid "Untitled Group"
 msgstr "Untitled Group"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "UPC"
+msgstr "UPC"
+
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-email-update-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-member-update-dialog.tsx
@@ -8498,7 +8816,7 @@ msgstr "Update Billing"
 msgid "Update Claim"
 msgstr "Update Claim"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
 msgid "Update Contract"
 msgstr "Update Contract"
 
@@ -8506,7 +8824,7 @@ msgstr "Update Contract"
 msgid "Update current organisation"
 msgstr "Update current organisation"
 
-#: apps/remix/app/components/general/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/distribution-sheet.tsx
 msgid "Update Distribution Record"
 msgstr "Update Distribution Record"
 
@@ -8518,9 +8836,9 @@ msgstr "Update email"
 msgid "Update Fields"
 msgstr "Update Fields"
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
 msgid "Update Isrc Record"
 msgstr "Update Isrc Record"
 
@@ -8588,7 +8906,7 @@ msgstr "Update the role and add fields as required for the direct recipient. The
 msgid "Update user"
 msgstr "Update user"
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Update Virgin Record"
 msgstr "Update Virgin Record"
 
@@ -8596,27 +8914,31 @@ msgstr "Update Virgin Record"
 msgid "Update webhook"
 msgstr "Update webhook"
 
-#: apps/remix/app/components/general/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/contracts-sheet.tsx
 msgid "Update your contract details."
 msgstr "Update your contract details."
 
-#: apps/remix/app/components/general/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/distribution-sheet.tsx
 msgid "Update your Distribution record details."
 msgstr "Update your Distribution record details."
 
-#: apps/remix/app/components/general/sheets/isrc-sheet.tsx
-#: apps/remix/app/components/general/sheets/releases-sheet.tsx
-#: apps/remix/app/components/general/sheets/tustreams-sheet.tsx
+#: apps/remix/app/components/sheets/isrc-sheet.tsx
+#: apps/remix/app/components/sheets/releases-sheet.tsx
+#: apps/remix/app/components/sheets/tustreams-sheet.tsx
 msgid "Update your Isrc record details."
 msgstr "Update your Isrc record details."
 
-#: apps/remix/app/components/general/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Update your Virgin record details."
 msgstr "Update your Virgin record details."
 
 #: apps/remix/app/components/forms/password.tsx
 msgid "Updating password..."
 msgstr "Updating password..."
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+msgid "Updating record..."
+msgstr "Updating record..."
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Updating Your Information"
@@ -8850,12 +9172,17 @@ msgstr "Verify your team email address"
 msgid "Vertical"
 msgstr "Vertical"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Vevo Channel"
+msgstr "Vevo Channel"
+
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/chatspace-table-action-button.tsx
+#: apps/remix/app/components/tables/data-table-view-options.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -8992,6 +9319,7 @@ msgid "Vigente"
 msgstr "Vigente"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Virgin"
 msgstr "Virgin"
 
@@ -9410,9 +9738,17 @@ msgstr "Who do you want to remind?"
 msgid "Withdrawing Consent"
 msgstr "Withdrawing Consent"
 
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Withhold Mechanicals"
+msgstr "Withhold Mechanicals"
+
 #: apps/remix/app/components/forms/public-profile-form.tsx
 msgid "Write a description to display on your public profile"
 msgstr "Write a description to display on your public profile"
+
+#: apps/remix/app/components/tables/lpm-table.tsx
+msgid "Writers/Composers"
+msgstr "Writers/Composers"
 
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
