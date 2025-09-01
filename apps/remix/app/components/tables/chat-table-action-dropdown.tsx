@@ -8,6 +8,7 @@ import {
   CheckCircle,
   Download,
   EyeIcon,
+  FolderInput,
   MoreHorizontal,
   MoveRight,
   Pencil,
@@ -199,6 +200,13 @@ export const ChatTableActionDropdown = ({
             <Trans>Move to Team</Trans>
           </DropdownMenuItem>
         ) */}
+
+        {onMoveDocument && canManageDocument && (
+          <DropdownMenuItem onClick={onMoveDocument} onSelect={(e) => e.preventDefault()}>
+            <FolderInput className="mr-2 h-4 w-4" />
+            <Trans>Move to Folder</Trans>
+          </DropdownMenuItem>
+        )}
 
         {onMoveDocument && (
           <DropdownMenuItem

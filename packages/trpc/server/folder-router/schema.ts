@@ -78,6 +78,18 @@ export const ZMoveFolderSchema = z.object({
   type: ZFolderTypeSchema.optional(),
 });
 
+export const ZMoveToFolderSchema = z.object({
+  documentId: z.number(),
+  folderId: z.string().nullable().optional(),
+  type: ZFolderTypeSchema.optional(),
+});
+
+export const ZMoveMultipleToFolderSchema = z.object({
+  documentIds: z.array(z.number()),
+  folderId: z.string().nullable().optional(),
+  type: ZFolderTypeSchema.optional(),
+});
+
 export const ZMoveDocumentToFolderSchema = z.object({
   documentId: z.number(),
   folderId: z.string().nullable().optional(),

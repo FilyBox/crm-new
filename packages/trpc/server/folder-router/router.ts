@@ -6,6 +6,7 @@ import { getFolderBreadcrumbs } from '@documenso/lib/server-only/folder/get-fold
 import { getFolderById } from '@documenso/lib/server-only/folder/get-folder-by-id';
 import { moveDocumentToFolder } from '@documenso/lib/server-only/folder/move-document-to-folder';
 import { moveFolder } from '@documenso/lib/server-only/folder/move-folder';
+import { moveMultipleDocumentToFolder } from '@documenso/lib/server-only/folder/move-multiple-document-to-folder';
 import { moveTemplateToFolder } from '@documenso/lib/server-only/folder/move-template-to-folder';
 import { pinFolder } from '@documenso/lib/server-only/folder/pin-folder';
 import { unpinFolder } from '@documenso/lib/server-only/folder/unpin-folder';
@@ -21,9 +22,10 @@ import {
   ZGenericSuccessResponse,
   ZGetFoldersResponseSchema,
   ZGetFoldersSchema,
-  ZMoveDocumentToFolderSchema,
   ZMoveFolderSchema,
+  ZMoveMultipleToFolderSchema,
   ZMoveTemplateToFolderSchema,
+  ZMoveToFolderSchema,
   ZPinFolderSchema,
   ZSuccessResponseSchema,
   ZUnpinFolderSchema,
@@ -270,10 +272,10 @@ export const folderRouter = router({
    * @private
    */
   moveDocumentToFolder: authenticatedProcedure
-    .input(ZMoveDocumentToFolderSchema)
+    .input(ZMoveToFolderSchema)
     .mutation(async ({ input, ctx }) => {
       const { teamId, user } = ctx;
-      const { documentId, folderId } = input;
+      const { documentId, folderId, type } = input;
 
       ctx.logger.info({
         input: {
@@ -288,7 +290,7 @@ export const folderRouter = router({
             userId: user.id,
             teamId,
             folderId,
-            type: FolderType.DOCUMENT,
+            type: type ?? FolderType.DOCUMENT,
           });
         } catch (error) {
           throw new AppError(AppErrorCode.NOT_FOUND, {
@@ -303,11 +305,58 @@ export const folderRouter = router({
         documentId,
         folderId,
         requestMetadata: ctx.metadata,
+        type: type ?? FolderType.DOCUMENT,
       });
 
       return {
         ...result,
-        type: FolderType.DOCUMENT,
+        type: type ?? FolderType.DOCUMENT,
+      };
+    }),
+
+  /**
+   * @private
+   */
+  moveMultipleDocumentToFolder: authenticatedProcedure
+    .input(ZMoveMultipleToFolderSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { teamId, user } = ctx;
+      const { documentIds, folderId, type } = input;
+
+      ctx.logger.info({
+        input: {
+          documentIds,
+          folderId,
+        },
+      });
+
+      if (folderId !== null) {
+        try {
+          await getFolderById({
+            userId: user.id,
+            teamId,
+            folderId,
+            type: type ?? FolderType.DOCUMENT,
+          });
+        } catch (error) {
+          throw new AppError(AppErrorCode.NOT_FOUND, {
+            message: 'Folder not found',
+          });
+        }
+      }
+
+      const result = await moveMultipleDocumentToFolder({
+        userId: user.id,
+        teamId,
+        documentIds,
+        folderId,
+        requestMetadata: ctx.metadata,
+        type: type ?? FolderType.DOCUMENT,
+      });
+
+      return {
+        ...result,
+        type: type ?? FolderType.DOCUMENT,
       };
     }),
 

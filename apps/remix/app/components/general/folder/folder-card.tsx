@@ -14,6 +14,8 @@ import {
 import { Link } from 'react-router';
 
 import {
+  formatChatPath,
+  formatContractsPath,
   formatDocumentsPath,
   formatFilesPath,
   formatTemplatesPath,
@@ -52,12 +54,27 @@ export const FolderCard = ({
   const { _ } = useLingui();
 
   const formatPath = () => {
-    const rootPath =
-      folder.type === FolderType.DOCUMENT
-        ? formatDocumentsPath(team.url)
-        : folder.type === FolderType.TEMPLATE
-          ? formatTemplatesPath(team.url)
-          : formatFilesPath(team.url);
+    let rootPath;
+    switch (folder.type) {
+      case FolderType.DOCUMENT:
+        rootPath = formatDocumentsPath(team.url);
+        break;
+      case FolderType.TEMPLATE:
+        rootPath = formatTemplatesPath(team.url);
+        break;
+      case FolderType.CHAT:
+        rootPath = formatChatPath(team.url);
+        break;
+      case FolderType.CONTRACT:
+        rootPath = formatContractsPath(team.url);
+        break;
+      case FolderType.FILE:
+        rootPath = formatFilesPath(team.url);
+        break;
+      default:
+        rootPath = formatDocumentsPath(team.url);
+        break;
+    }
 
     return `${rootPath}/f/${folder.id}`;
   };

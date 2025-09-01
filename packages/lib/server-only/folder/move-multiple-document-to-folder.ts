@@ -12,16 +12,16 @@ import { getTeamById } from '../team/get-team';
 export interface MoveDocumentToFolderOptions {
   userId: number;
   teamId: number;
-  documentId: number;
+  documentIds: number[];
   folderId?: string | null;
   requestMetadata?: ApiRequestMetadata;
   type?: TFolderType;
 }
 
-export const moveDocumentToFolder = async ({
+export const moveMultipleDocumentToFolder = async ({
   userId,
   teamId,
-  documentId,
+  documentIds,
   folderId,
   type,
 }: MoveDocumentToFolderOptions) => {
@@ -45,7 +45,9 @@ export const moveDocumentToFolder = async ({
     .otherwise(() => ({ visibility: DocumentVisibility.EVERYONE }));
 
   const documentWhereClause = {
-    id: documentId,
+    id: {
+      in: documentIds,
+    },
     OR: [
       { teamId, ...visibilityFilters },
       { userId, teamId },
@@ -53,7 +55,9 @@ export const moveDocumentToFolder = async ({
   };
 
   const generalWhereClause = {
-    id: documentId,
+    id: {
+      in: documentIds,
+    },
     OR: [{ teamId }, { userId, teamId }],
   };
 
@@ -121,45 +125,55 @@ export const moveDocumentToFolder = async ({
 
   switch (folderType) {
     case FolderType.DOCUMENT:
-      return await prisma.document.update({
+      return await prisma.document.updateMany({
         where: {
-          id: documentId,
+          id: {
+            in: documentIds,
+          },
         },
         data: {
           folderId,
         },
       });
     case FolderType.TEMPLATE:
-      return await prisma.template.update({
+      return await prisma.template.updateMany({
         where: {
-          id: documentId,
+          id: {
+            in: documentIds,
+          },
         },
         data: {
           folderId,
         },
       });
     case FolderType.CHAT:
-      return await prisma.document.update({
+      return await prisma.document.updateMany({
         where: {
-          id: documentId,
+          id: {
+            in: documentIds,
+          },
         },
         data: {
           folderId,
         },
       });
     case FolderType.CONTRACT:
-      return await prisma.contract.update({
+      return await prisma.contract.updateMany({
         where: {
-          id: documentId,
+          id: {
+            in: documentIds,
+          },
         },
         data: {
           folderId,
         },
       });
     case FolderType.FILE:
-      return await prisma.files.update({
+      return await prisma.files.updateMany({
         where: {
-          id: documentId,
+          id: {
+            in: documentIds,
+          },
         },
         data: {
           folderId,

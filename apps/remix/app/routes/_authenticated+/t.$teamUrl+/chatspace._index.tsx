@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
 import { queryOptions } from '@tanstack/react-query';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { z } from 'zod';
 
 import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
@@ -17,6 +17,7 @@ import { ZFindDocumentsInternalRequestSchema } from '@documenso/trpc/server/docu
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 import { useToast } from '@documenso/ui/primitives/use-toast';
 
+import { DocumentMoveToFolderDialog } from '~/components/dialogs/document-move-to-folder-dialog';
 import { DocumentDropZoneWrapper } from '~/components/general/document/chatspace-drop-zone-wrapper';
 import { FolderGrid } from '~/components/general/folder/folder-grid';
 import { DocumentsChatSpaceTable } from '~/components/tables/documents-chatspace-table';
@@ -56,9 +57,6 @@ export default function DocumentsPage() {
     columnDirection,
   } = useSortParams({ sortColumns });
 
-  console.log('page', page, 'perPage', perPage, 'query', query, 'statusParams', statusParams);
-
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [isMovingDocument, setIsMovingDocument] = useState(false);
   const [documentToMove, setDocumentToMove] = useState<number | null>(null);
@@ -71,11 +69,8 @@ export default function DocumentsPage() {
     [searchParams],
   );
 
-  // console.log
-
-  console.log('columnOrder', columnOrder);
-  console.log('columnDirection', columnDirection);
-
+  console.log('folderId', folderId);
+  console.log('hola');
   const { data, isLoading, isFetching, isLoadingError, refetch } =
     trpc.document.findDocumentsInternalUseToChat.useQuery(
       {
@@ -86,6 +81,7 @@ export default function DocumentsPage() {
         orderByDirection: columnDirection as 'asc' | 'desc',
         filterStructure: applyFilters ? filters : [],
         joinOperator: joinOperator,
+        folderId,
       },
       queryOptions({
         queryKey: [
@@ -97,6 +93,7 @@ export default function DocumentsPage() {
           columnDirection,
           joinOperator,
           filters,
+          folderId,
         ],
         staleTime: Infinity,
         refetchOnWindowFocus: false,
@@ -144,7 +141,7 @@ export default function DocumentsPage() {
 
   const handleRetry = async (documenDataId: string, documentId: number) => {
     try {
-      const result = await retryDocument.mutateAsync({
+      await retryDocument.mutateAsync({
         documenDataId: documenDataId,
         documentId: documentId,
       });
@@ -210,6 +207,22 @@ export default function DocumentsPage() {
             />
           </div>
         </div>
+
+        {documentToMove && (
+          <DocumentMoveToFolderDialog
+            documentId={documentToMove}
+            type={FolderType.CHAT}
+            open={isMovingDocument}
+            currentFolderId={folderId}
+            onOpenChange={(open) => {
+              setIsMovingDocument(open);
+
+              if (!open) {
+                setDocumentToMove(null);
+              }
+            }}
+          />
+        )}
       </div>
     </DocumentDropZoneWrapper>
   );

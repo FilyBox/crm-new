@@ -117,7 +117,6 @@ export const documentRouter = router({
   getChatDocumentById: authenticatedProcedure
     .input(ZGetDocumentByIdQuerySchema)
     .query(async ({ input, ctx }) => {
-      const { teamId } = ctx;
       const { documentId } = input;
 
       ctx.logger.info({
@@ -913,7 +912,7 @@ export const documentRouter = router({
         filterStructure,
         joinOperator,
       } = input;
-
+      console.log('folderId', folderId);
       let where: Prisma.DocumentWhereInput = {};
 
       if (filterStructure) {
