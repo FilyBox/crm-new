@@ -193,6 +193,10 @@ msgstr "{charactersRemaining, plural, one {1 character remaining} other {{charac
 msgid "{count, plural, one {{one}} other {{other}}}"
 msgstr "{count, plural, one {{one}} other {{other}}}"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
+msgid "{data} records created successfully"
+msgstr "{data} records created successfully"
+
 #: packages/email/templates/document-invite.tsx
 msgid "{inviterName} <0>({inviterEmail})</0>"
 msgstr "{inviterName} <0>({inviterEmail})</0>"
@@ -1126,6 +1130,11 @@ msgstr "After signing a document electronically, you will be provided the opport
 msgid "After submission, a document will be automatically generated and added to your documents page. You will also receive a notification via email."
 msgstr "After submission, a document will be automatically generated and added to your documents page. You will also receive a notification via email."
 
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
+msgid "AI Filters"
+msgstr "AI Filters"
+
 #: apps/remix/app/components/general/task/release-type.tsx
 #: apps/remix/app/components/general/task/release-type.tsx
 #: apps/remix/app/components/general/task/tustreams-type.tsx
@@ -1630,6 +1639,7 @@ msgstr "Artist created successfully"
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/tables/tustreams-table.tsx
 msgid "Artists"
 msgstr "Artists"
 
@@ -1942,6 +1952,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/dialogs/webhook-test-dialog.tsx
 #: apps/remix/app/components/forms/2fa/enable-authenticator-app-dialog.tsx
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-2fa.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-account.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
@@ -2702,6 +2713,7 @@ msgid "createdAt"
 msgstr "createdAt"
 
 #: apps/remix/app/components/tables/files-table.tsx
+#: apps/remix/app/components/tables/tustreams-table.tsx
 msgid "CreatedAt"
 msgstr "CreatedAt"
 
@@ -2710,6 +2722,7 @@ msgid "Creating artists..."
 msgstr "Creating artists..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Creating record..."
 msgstr "Creating record..."
 
@@ -2767,6 +2780,7 @@ msgstr "Dashboard"
 
 #: apps/remix/app/components/general/document-signing/document-signing-date-field.tsx
 #: apps/remix/app/components/tables/settings-security-activity-table.tsx
+#: apps/remix/app/components/tables/tustreams-table.tsx
 #: packages/ui/primitives/document-flow/add-fields.tsx
 #: packages/ui/primitives/document-flow/types.ts
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
@@ -2974,6 +2988,7 @@ msgstr "Deleting account..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Deleting record..."
 msgstr "Deleting record..."
 
@@ -3951,6 +3966,7 @@ msgid "Error al reintentar"
 msgstr "Error al reintentar"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error creating records"
 msgstr "Error creating records"
 
@@ -3962,6 +3978,7 @@ msgstr "Error deleting record"
 #: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error deleting records"
 msgstr "Error deleting records"
 
@@ -3972,6 +3989,7 @@ msgid "Error downloading files"
 msgstr "Error downloading files"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error processing file"
 msgstr "Error processing file"
 
@@ -3984,6 +4002,10 @@ msgstr "Error retrying document"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Error updating record"
 msgstr "Error updating record"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
+msgid "Error updating records"
+msgstr "Error updating records"
 
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Error uploading file"
@@ -6114,6 +6136,7 @@ msgid "Processing"
 msgstr "Processing"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Processing file..."
 msgstr "Processing file..."
 
@@ -6319,10 +6342,12 @@ msgid "Recipients will still retain their copy of the document"
 msgstr "Recipients will still retain their copy of the document"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record created successfully"
 msgstr "Record created successfully"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record deleted successfully"
 msgstr "Record deleted successfully"
 
@@ -6337,6 +6362,7 @@ msgstr "Record Type"
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record updated successfully"
 msgstr "Record updated successfully"
 
@@ -8428,6 +8454,7 @@ msgstr "Timed Release Music Services"
 #: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
+#: apps/remix/app/components/tables/tustreams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Title"
@@ -8530,6 +8557,10 @@ msgstr "Token has expired. Please try again."
 msgid "Token name"
 msgstr "Token name"
 
+#: apps/remix/app/components/tables/tustreams-table.tsx
+msgid "total"
+msgstr "total"
+
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Total Documents"
 msgstr "Total Documents"
@@ -8604,6 +8635,7 @@ msgid "Triggers"
 msgstr "Triggers"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "TuStreams"
 msgstr "TuStreams"
 
@@ -8637,6 +8669,7 @@ msgstr "Two-Factor Re-Authentication"
 
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
+#: apps/remix/app/components/tables/tustreams-table.tsx
 msgid "Type"
 msgstr "Type"
 
@@ -8775,6 +8808,7 @@ msgid "Untitled Group"
 msgstr "Untitled Group"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
+#: apps/remix/app/components/tables/tustreams-table.tsx
 msgid "UPC"
 msgstr "UPC"
 
@@ -8937,6 +8971,7 @@ msgid "Updating password..."
 msgstr "Updating password..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Updating record..."
 msgstr "Updating record..."
 
@@ -9076,6 +9111,10 @@ msgstr "Use Backup Code"
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "Use Template"
 msgstr "Use Template"
+
+#: apps/remix/app/components/general/advanced-filter-drawer.tsx
+msgid "Use the input below to refine your search results."
+msgstr "Use the input below to refine your search results."
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-dialog.tsx
 msgid "Use your passkey for authentication"

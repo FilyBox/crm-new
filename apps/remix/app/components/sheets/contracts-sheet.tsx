@@ -667,7 +667,7 @@ export default function ContractsSheet({
                       size="lg"
                       variant="secondary"
                     >
-                      Cancel
+                      <Trans>Cancel</Trans>
                     </Button>
                   </SheetClose>
                   <Button

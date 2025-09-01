@@ -17,6 +17,7 @@ import { shareLinkRouter } from './share-link-router/router';
 import { teamRouter } from './team-router/router';
 import { templateRouter } from './template-router/router';
 import { router } from './trpc';
+import { tuStreamsRouter } from './tustreams-router/router';
 import { webhookRouter } from './webhook-router/router';
 
 export const appRouter = router({
@@ -39,6 +40,7 @@ export const appRouter = router({
   contracts: contractsRouter,
   lpm: lpmRouter,
   artist: artistRouter,
+  tuStreams: tuStreamsRouter,
 });
 
 export type AppRouter = typeof appRouter;

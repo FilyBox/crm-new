@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
 import type * as DialogPrimitive from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ListFilter, Loader2 } from 'lucide-react';
@@ -130,15 +131,19 @@ export const AdvancedFilterDialog = ({
         {trigger ?? (
           <Button variant="outline" className="flex w-full items-center gap-2 sm:w-fit">
             <ListFilter className="h-4 w-4" />
-            <span>Advanced Filters</span>
+            <span>
+              <Trans>AI Filters</Trans>
+            </span>
           </Button>
         )}
       </DrawerTrigger>
       <DrawerContent className="z-9999 h-[90vh] !max-h-screen w-full">
         <DrawerHeader>
-          <DrawerTitle>Advanced Filters</DrawerTitle>
+          <DrawerTitle>
+            <Trans>AI Filters</Trans>
+          </DrawerTitle>
           <DrawerDescription>
-            Use the filters below to refine your search results.
+            <Trans>Use the input below to refine your search results.</Trans>
           </DrawerDescription>
         </DrawerHeader>
         <ScrollArea className="h-[90vh] w-full">
@@ -188,7 +193,9 @@ export const AdvancedFilterDialog = ({
                           </div>
                         ) : results.length === 0 ? (
                           <div className="flex flex-grow items-center justify-center">
-                            <p className="text-muted-foreground text-center">No results found.</p>
+                            <p className="text-muted-foreground text-center">
+                              <Trans>No results found.</Trans>
+                            </p>
                           </div>
                         ) : (
                           <Results
@@ -210,7 +217,7 @@ export const AdvancedFilterDialog = ({
         <DrawerFooter>
           <DrawerClose asChild>
             <Button className="w-full" variant="outline">
-              Cancel
+              <Trans>Cancel</Trans>
             </Button>
           </DrawerClose>
         </DrawerFooter>

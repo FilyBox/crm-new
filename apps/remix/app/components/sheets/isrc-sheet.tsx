@@ -376,7 +376,7 @@ export default function IsrcSheet({
           <div className="flex w-full gap-5">
             <SheetClose asChild>
               <Button disabled={isLoading} className="w-full" size="lg" variant="secondary">
-                Cancel
+                <Trans>Cancel</Trans>
               </Button>
             </SheetClose>
             <Button

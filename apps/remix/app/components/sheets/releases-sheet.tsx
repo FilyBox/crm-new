@@ -708,7 +708,7 @@ export default function ReleasesSheet({
           <div className="flex w-full gap-5">
             <SheetClose asChild>
               <Button className="w-full" size="lg" variant="secondary">
-                Cancel
+                <Trans>Cancel</Trans>
               </Button>
             </SheetClose>
             <Button
