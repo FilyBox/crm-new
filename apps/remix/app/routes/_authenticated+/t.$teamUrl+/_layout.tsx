@@ -11,6 +11,7 @@ import { LimitsProvider } from '@documenso/ee/server-only/limits/provider/client
 import { useOptionalCurrentOrganisation } from '@documenso/lib/client-only/providers/organisation';
 import { TrpcProvider } from '@documenso/trpc/react';
 import { Button } from '@documenso/ui/primitives/button';
+import { CalendarProvider } from '@documenso/ui/primitives/event-calendar/calendar-context';
 
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
 import { useOptionalCurrentTeam } from '~/providers/team';
@@ -75,14 +76,14 @@ export default function Layout() {
     'x-team-Id': team.id.toString(),
   };
 
-  // Note: We use a key to force a re-render if the team context changes.
-  // This is required otherwise you would see the wrong page content.
   return (
     <div key={team.url} style={{ scrollbarGutter: 'stable' }}>
       <TrpcProvider headers={trpcHeaders}>
         <LimitsProvider initialValue={limits} teamId={team.id}>
           <NuqsAdapter>
-            <Outlet />
+            <CalendarProvider>
+              <Outlet />
+            </CalendarProvider>
           </NuqsAdapter>
         </LimitsProvider>
       </TrpcProvider>

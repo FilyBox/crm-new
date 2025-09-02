@@ -23,7 +23,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '../dropdown-menu';
-import { SidebarTrigger, useSidebar } from '../sidebar';
 import { AgendaView } from './agenda-view';
 import { useCalendarContext } from './calendar-context';
 import { CalendarDndProvider } from './calendar-dnd-context';
@@ -31,6 +30,7 @@ import { AgendaDaysToShow, EventGap, EventHeight, WeekCellsHeight } from './cons
 import { DayView } from './day-view';
 import { EventDialog } from './event-dialog';
 import { MonthView } from './month-view';
+import SidebarCalendar from './sidebar-calendar';
 // import {
 //   addHoursToDate,
 //   AgendaDaysToShow,
@@ -72,7 +72,6 @@ export function EventCalendar({
   const [view, setView] = useState<CalendarView>(initialView);
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
-  const { open } = useSidebar();
 
   // Add keyboard shortcuts for view switching
   useEffect(() => {
@@ -282,11 +281,7 @@ export function EventCalendar({
         >
           <div className="flex justify-between gap-1.5 max-sm:items-center sm:flex-col">
             <div className="flex items-center gap-1.5">
-              <SidebarTrigger
-                data-state={open ? 'invisible' : 'visible'}
-                className="text-muted-foreground/80 hover:text-foreground/80 hover:bg-transparent! peer size-7 transition-opacity duration-200 ease-in-out sm:-ms-1.5 lg:data-[state=invisible]:pointer-events-none lg:data-[state=invisible]:opacity-0"
-                isOutsideSidebar
-              />
+              <SidebarCalendar />
               <h2 className="lg:peer-data-[state=invisible]:-translate-x-7.5 text-xl font-semibold transition-transform duration-300 ease-in-out">
                 {viewTitle}
               </h2>

@@ -19,6 +19,7 @@ import { Input } from '../input';
 import { Label } from '../label';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 import { RadioGroup, RadioGroupItem } from '../radio-group';
+import { ScrollArea } from '../scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
 import { Textarea } from '../textarea';
 import { DefaultEndHour, DefaultStartHour, EndHour, StartHour } from './constants';
@@ -232,7 +233,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
           <div className="flex gap-4">
             <div className="*:not-first:mt-1.5 flex-1">
               <Label htmlFor="start-date">Start Date</Label>
-              <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
+              <Popover modal={true} open={startDateOpen} onOpenChange={setStartDateOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     id="start-date"
@@ -252,8 +253,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                     />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-2" align="start">
+                <PopoverContent className="z-9999 w-auto p-2" align="start">
                   <Calendar
+                    captionLayout="dropdown"
                     mode="single"
                     selected={startDate}
                     defaultMonth={startDate}
@@ -281,11 +283,13 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                     <SelectValue placeholder="Select time" />
                   </SelectTrigger>
                   <SelectContent>
-                    {timeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
+                    <ScrollArea className="h-48">
+                      {timeOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
                   </SelectContent>
                 </Select>
               </div>
@@ -295,7 +299,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
           <div className="flex gap-4">
             <div className="*:not-first:mt-1.5 flex-1">
               <Label htmlFor="end-date">End Date</Label>
-              <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
+              <Popover modal={true} open={endDateOpen} onOpenChange={setEndDateOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     id="end-date"
@@ -315,9 +319,10 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                     />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-2" align="start">
+                <PopoverContent className="z-9999 w-auto p-2" align="start">
                   <Calendar
                     mode="single"
+                    captionLayout="dropdown"
                     selected={endDate}
                     defaultMonth={endDate}
                     disabled={{ before: startDate }}

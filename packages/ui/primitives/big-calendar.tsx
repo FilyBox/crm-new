@@ -373,11 +373,10 @@ const sampleEvents: CalendarEvent[] = [
   },
 ];
 
-export default function Component() {
+export default function BigCalendar() {
   const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
   const { isColorVisible } = useCalendarContext();
 
-  // Filter events based on visible colors
   const visibleEvents = useMemo(() => {
     return events.filter((event) => isColorVisible(event.color));
   }, [events, isColorVisible]);

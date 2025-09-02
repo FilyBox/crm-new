@@ -1358,12 +1358,24 @@ model Event {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   deletedAt    DateTime?
+  allDay       Boolean       @default(false)
+  color        EventColor?
   queues       Queue[]
   team         Team          @relation(fields: [teamId], references: [id])
   user         User?         @relation(fields: [userId], references: [id])
   eventDates   EventDate[]
   ticketTypes  TicketType[]
   ticketBuyers TicketBuyer[]
+}
+
+enum EventColor {
+  blue
+  orange
+  violet
+  rose
+  emerald
+
+  @@map("event_colors")
 }
 
 model EventDate {
