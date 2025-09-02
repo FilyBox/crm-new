@@ -20,23 +20,9 @@ import { CalendarDndProvider } from './calendar-dnd-context';
 import { AgendaDaysToShow, EventGap, EventHeight, WeekCellsHeight } from './constants';
 import { DayView } from './day-view';
 import { EventDialog } from './event-dialog';
+import { EventsFilters } from './events-filters';
 import { MonthView } from './month-view';
 import SidebarCalendar from './sidebar-calendar';
-// import {
-//   addHoursToDate,
-//   AgendaDaysToShow,
-//   AgendaView,
-//   CalendarDndProvider,
-//   CalendarEvent,
-//   CalendarView,
-//   DayView,
-//   EventDialog,
-//   EventGap,
-//   EventHeight,
-//   MonthView,
-//   WeekCellsHeight,
-//   WeekView,
-// } from "@/components/event-calendar";
 import type { CalendarEvent, CalendarView } from './types';
 import { addHoursToDate } from './utils';
 import { WeekView } from './week-view';
@@ -48,6 +34,7 @@ export interface EventCalendarProps {
   onEventDelete?: (eventId: string) => void;
   className?: string;
   initialView?: CalendarView;
+  isLoading: boolean;
 }
 
 export function EventCalendar({
@@ -56,6 +43,7 @@ export function EventCalendar({
   onEventUpdate,
   onEventDelete,
   className,
+  isLoading = false,
   initialView = 'month',
 }: EventCalendarProps) {
   // Use the shared calendar context instead of local state
@@ -132,14 +120,11 @@ export function EventCalendar({
   };
 
   const handleEventSelect = (event: CalendarEvent) => {
-    console.log('Event selected:', event); // Debug log
     setSelectedEvent(event);
     setIsEventDialogOpen(true);
   };
 
   const handleEventCreate = (startTime: Date) => {
-    console.log('Creating new event at:', startTime); // Debug log
-
     // Snap to 15-minute intervals
     const minutes = startTime.getMinutes();
     const remainder = minutes % 15;
@@ -232,8 +217,9 @@ export function EventCalendar({
             className,
           )}
         >
-          <div className="flex justify-between gap-1.5">
+          <div className="flex items-center justify-start gap-2">
             <SidebarCalendar />
+            <EventsFilters isLoading={isLoading} />
           </div>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center justify-between gap-2">

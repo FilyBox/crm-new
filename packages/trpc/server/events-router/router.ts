@@ -5,7 +5,7 @@ import { getFileUrl } from '@documenso/lib/universal/upload/get-file-url';
 import { getPresignGetUrl } from '@documenso/lib/universal/upload/server-actions';
 import { prisma } from '@documenso/prisma';
 import type { Prisma } from '@documenso/prisma/client';
-import { type FilterStructure } from '@documenso/ui/lib/filter-columns';
+import { type FilterStructure, filterColumns } from '@documenso/ui/lib/filter-columns';
 
 import { authenticatedProcedure, router } from '../trpc';
 
@@ -308,6 +308,133 @@ export const eventRouter = router({
         totalCount,
         totalPages: Math.ceil(totalCount / limit),
         currentPage: page,
+        artists,
+      };
+    }),
+
+  getAllEventsNoPagination: authenticatedProcedure
+    .input(
+      z.object({
+        query: z.string().optional(),
+        perPage: z.number().optional(),
+        period: z.enum(['7d', '14d', '30d']).optional(),
+        orderBy: z.enum(['id']).optional(),
+        orderByDirection: z.enum(['asc', 'desc']).optional().default('desc'),
+        orderByColumn: z.enum(['id']).optional(),
+        artistIds: z.array(z.number()).optional(),
+        filterStructure: z
+          .array(
+            z
+              .custom<FilterStructure>(
+                (val) => val === null || val === undefined || typeof val === 'object',
+              )
+              .optional()
+              .nullable(),
+          )
+          .optional(),
+        joinOperator: z.enum(['and', 'or']).optional().default('and'),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { teamId } = ctx;
+      const { artistIds, joinOperator, filterStructure } = input;
+
+      let whereInput: Prisma.EventWhereInput = {};
+
+      if (filterStructure) {
+        const advancedWhere = filterColumns({
+          filters: filterStructure.filter(
+            (filter): filter is FilterStructure => filter !== null && filter !== undefined,
+          ),
+          joinOperator: joinOperator,
+        });
+        whereInput = advancedWhere;
+      }
+
+      const [events, totalCount] = await Promise.all([
+        prisma.event.findMany({
+          select: {
+            artists: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+
+            id: true,
+            end: true,
+            description: true,
+            beginning: true,
+            image: true,
+            name: true,
+            venue: true,
+            deletedAt: true,
+            published: true,
+            updatedAt: true,
+            createdAt: true,
+            allDay: true,
+            color: true,
+          },
+          where: { ...whereInput, deletedAt: null, teamId },
+          orderBy: {
+            id: 'asc',
+          },
+        }),
+        prisma.event.count(),
+      ]);
+      console.log('Events found:', events.length);
+      const tickets = await prisma.ticketType.findMany({
+        where: {
+          eventId: {
+            in: events.map((event) => event.id),
+          },
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          quantity: true,
+          maxQuantityPerUser: true,
+          description: true,
+          seatNumber: true,
+          eventId: true,
+        },
+      });
+
+      const eventsWithTickets = events.map((event) => {
+        const eventTickets = tickets.filter((ticket) => ticket.eventId === event.id);
+        return { ...event, ticketTypes: eventTickets };
+      });
+
+      const eventsWithImages = await Promise.all(
+        eventsWithTickets.map(async (event) => {
+          if (event.image) {
+            try {
+              const url = await getFileUrl(event.image);
+              return { ...event, image: url };
+            } catch (error) {
+              console.error(`Error loading image for event ${event.id}:`, error);
+              return event;
+            }
+          }
+          return event;
+        }),
+      );
+
+      const artists = await prisma.artist.findMany({
+        where: {
+          teamId,
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+      });
+
+      return {
+        events: eventsWithImages,
+        totalCount,
         artists,
       };
     }),

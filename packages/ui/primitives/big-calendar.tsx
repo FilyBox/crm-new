@@ -373,7 +373,7 @@ const sampleEvents: CalendarEvent[] = [
   },
 ];
 
-export default function BigCalendar() {
+export default function BigCalendar({ isLoading }: { isLoading: boolean }) {
   const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
   const { isColorVisible } = useCalendarContext();
 
@@ -395,6 +395,7 @@ export default function BigCalendar() {
 
   return (
     <EventCalendar
+      isLoading={isLoading}
       events={visibleEvents}
       onEventAdd={handleEventAdd}
       onEventUpdate={handleEventUpdate}

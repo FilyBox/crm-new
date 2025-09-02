@@ -1,55 +1,66 @@
 import { useMemo } from 'react';
 
-import { CheckCircle, X } from 'lucide-react';
+import { useLingui } from '@lingui/react/macro';
+import { useSearchParams } from 'react-router';
+import { z } from 'zod';
 
-import { Checkbox } from '@documenso/ui/primitives/checkbox';
+import { parseToIntegerArray } from '@documenso/lib/utils/params';
+import { ZFindEventInternalRequestSchema } from '@documenso/trpc/server/events-router/schema';
 import ErrorPage from '@documenso/ui/primitives/errorPage';
 import { type CalendarEvent, EventCalendar } from '@documenso/ui/primitives/event-calendar';
 import { useCalendarContext } from '@documenso/ui/primitives/event-calendar/calendar-context';
 
+// import { EventsFilters } from '~/components/tables/events-filters';
 import { useCalendarEvents } from '~/hooks/use-calendar-events';
 import { appMetaTags } from '~/utils/meta';
+import { useSortParams } from '~/utils/searchParams';
 
 export function meta() {
-  return appMetaTags('Task');
+  return appMetaTags('Events');
 }
 
-// Etiquettes data for calendar filtering
-const etiquettes = [
-  {
-    id: 'my-events',
-    name: 'Emerald',
-    color: 'emerald' as const,
-    isActive: true,
-  },
-  {
-    id: 'marketing-team',
-    name: 'Orange',
-    color: 'orange' as const,
-    isActive: true,
-  },
-  {
-    id: 'interviews',
-    name: 'Violet',
-    color: 'violet' as const,
-    isActive: true,
-  },
-  {
-    id: 'events-planning',
-    name: 'Blue',
-    color: 'blue' as const,
-    isActive: true,
-  },
-  {
-    id: 'holidays',
-    name: 'Rose',
-    color: 'rose' as const,
-    isActive: true,
-  },
-];
+const sortColumns = z.enum([
+  'id',
+  'createdAt',
+  'date',
+  'lanzamiento',
+  'typeOfRelease',
+  'release',
+  'uploaded',
+  'streamingLink',
+  'assets',
+  'canvas',
+  'cover',
+  'audioWAV',
+  'video',
+  'banners',
+  'pitch',
+  'EPKUpdates',
+  'WebSiteUpdates',
+  'Biography',
+]);
 
-export default function TasksPage() {
+const ZSearchParamsSchema = ZFindEventInternalRequestSchema.pick({
+  period: true,
+  page: true,
+  perPage: true,
+  query: true,
+}).extend({
+  artistIds: z.string().transform(parseToIntegerArray).optional().catch([]),
+});
+
+export default function EventsPage() {
   const { isColorVisible, toggleColorVisibility } = useCalendarContext();
+  const [searchParams] = useSearchParams();
+  const { t } = useLingui();
+
+  const { filters, applyFilters, query, joinOperator, columnOrder, columnDirection } =
+    useSortParams({ sortColumns });
+
+  const findDocumentSearchParams = useMemo(
+    () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
+    [searchParams],
+  );
 
   const {
     events,
@@ -61,7 +72,14 @@ export default function TasksPage() {
     isCreating,
     isUpdating,
     isDeleting,
-  } = useCalendarEvents();
+  } = useCalendarEvents({
+    query: query,
+    artistIds: findDocumentSearchParams.artistIds,
+    orderByColumn: columnOrder,
+    orderByDirection: columnDirection as 'asc' | 'desc',
+    filterStructure: applyFilters ? filters : [],
+    joinOperator: joinOperator,
+  });
 
   const visibleEvents = useMemo(() => {
     return events.filter((event: CalendarEvent) => isColorVisible(event.color || 'blue'));
@@ -98,7 +116,7 @@ export default function TasksPage() {
   return (
     <div className="mx-auto max-w-screen-xl gap-y-8 px-4 md:px-8">
       {/* Etiquettes Filter */}
-      <div className="mb-6 flex flex-wrap gap-3">
+      {/* <div className="mb-6 flex flex-wrap gap-3">
         {etiquettes.map((item) => (
           <div key={item.id} className="flex items-center gap-2">
             <Checkbox
@@ -112,40 +130,30 @@ export default function TasksPage() {
                 !isColorVisible(item.color) ? 'text-muted-foreground line-through' : ''
               }`}
             >
-              <span
-                className="size-3 rounded-full"
-                style={{
-                  backgroundColor: `var(--color-${item.color}-400)`,
-                }}
-              />
+              <span className={cn('size-3 rounded-full shadow-none', item.bgClass)} />
               {item.name}
-              {isColorVisible(item.color) ? (
-                <CheckCircle className="size-4 text-green-500" />
-              ) : (
-                <X className="text-muted-foreground size-4" />
-              )}
             </label>
           </div>
         ))}
-      </div>
-
-      {/* Calendar */}
+      </div> */}
+      {/* <EventsFilters isLoading={isLoading} /> */}
       <div className="relative">
         {(isLoading || isCreating || isUpdating || isDeleting) && (
           <div className="bg-background/50 absolute inset-0 z-10 flex items-center justify-center">
             <div className="flex items-center gap-2">
               <div className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
               <span className="text-muted-foreground z-20 text-sm">
-                {isLoading && 'Loading events...'}
-                {isCreating && 'Creating event...'}
-                {isUpdating && 'Updating event...'}
-                {isDeleting && 'Deleting event...'}
+                {isLoading && t`Loading events...`}
+                {isCreating && t`Creating event...`}
+                {isUpdating && t`Updating event...`}
+                {isDeleting && t`Deleting event...`}
               </span>
             </div>
           </div>
         )}
 
         <EventCalendar
+          isLoading={isLoading}
           events={visibleEvents}
           onEventAdd={onEventAdd}
           onEventUpdate={onEventUpdate}

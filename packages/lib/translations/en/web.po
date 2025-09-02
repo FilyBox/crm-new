@@ -965,10 +965,12 @@ msgid "Add Fields"
 msgstr "Add Fields"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Add filter"
 msgstr "Add filter"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Add filters to refine your rows."
 msgstr "Add filters to refine your rows."
 
@@ -1173,6 +1175,11 @@ msgstr "Album Only"
 #: apps/remix/app/components/general/task/tustreams-type.tsx
 msgid "All"
 msgstr "All"
+
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "All Day"
+msgstr "All Day"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
 msgid "All documents"
@@ -1549,6 +1556,7 @@ msgid "App Version"
 msgstr "App Version"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Apply filters"
 msgstr "Apply filters"
 
@@ -1806,6 +1814,11 @@ msgstr "Banners"
 #: packages/email/template-components/template-confirmation-email.tsx
 msgid "Before you get started, please confirm your email address by clicking the button below:"
 msgstr "Before you get started, please confirm your email address by clicking the button below:"
+
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "Beginning"
+msgstr "Beginning"
 
 #: apps/remix/app/components/general/settings-nav-desktop.tsx
 #: apps/remix/app/components/general/settings-nav-mobile.tsx
@@ -2189,6 +2202,11 @@ msgstr "Close"
 #: apps/remix/app/components/tables/distribution-table.tsx
 msgid "Código del Territorio"
 msgstr "Código del Territorio"
+
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "Color"
+msgstr "Color"
 
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 msgid "Communication"
@@ -2735,6 +2753,7 @@ msgstr "Create your account and start using state-of-the-art document signing. O
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
 #: apps/remix/app/components/tables/admin-leaderboard-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
+#: apps/remix/app/components/tables/events-filters.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/components/tables/releases-table.tsx
@@ -2742,6 +2761,7 @@ msgstr "Create your account and start using state-of-the-art document signing. O
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Created"
 msgstr "Created"
 
@@ -2782,6 +2802,10 @@ msgstr "CreatedAt"
 #: apps/remix/app/components/dialogs/artist-create-dialog.tsx
 msgid "Creating artists..."
 msgstr "Creating artists..."
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
+msgid "Creating event..."
+msgstr "Creating event..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
@@ -3062,6 +3086,10 @@ msgstr "Deleted record successfully"
 msgid "Deleting account..."
 msgstr "Deleting account..."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
+msgid "Deleting event..."
+msgstr "Deleting event..."
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
@@ -3074,6 +3102,11 @@ msgstr "Deleting record..."
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Deleting records..."
 msgstr "Deleting records..."
+
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "Description"
+msgstr "Description"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 msgid "Details"
@@ -3695,6 +3728,7 @@ msgstr "Duration"
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
+#: apps/remix/app/components/general/tickets-add.tsx
 #: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-button.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -3924,6 +3958,11 @@ msgstr "Enabling the account results in the user being able to use the account a
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 msgid "Enclosed Document"
 msgstr "Enclosed Document"
+
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "End"
+msgstr "End"
 
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "Enter a name for your new folder. Folders help you organise your items."
@@ -4349,10 +4388,12 @@ msgstr "Fill in the details to create a new subscription claim."
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Filter"
 msgstr "Filter"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Filters"
 msgstr "Filters"
 
@@ -5052,6 +5093,10 @@ msgstr "Loading document..."
 msgid "Loading Document..."
 msgstr "Loading Document..."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
+msgid "Loading events..."
+msgstr "Loading events..."
+
 #: apps/remix/app/components/general/document/document-page-view-recent-activity.tsx
 msgid "Loading..."
 msgstr "Loading..."
@@ -5299,6 +5344,7 @@ msgid "Min"
 msgstr "Min"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Modify filters to refine your rows."
 msgstr "Modify filters to refine your rows."
 
@@ -5396,6 +5442,7 @@ msgstr "N/A"
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
 #: apps/remix/app/components/tables/admin-leaderboard-table.tsx
+#: apps/remix/app/components/tables/events-filters.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
@@ -5404,6 +5451,7 @@ msgstr "N/A"
 #: packages/ui/primitives/document-flow/add-signers.tsx
 #: packages/ui/primitives/document-flow/add-signers.tsx
 #: packages/ui/primitives/document-flow/types.ts
+#: packages/ui/primitives/event-calendar/events-filters.tsx
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
@@ -5503,10 +5551,12 @@ msgstr "No Especificado  "
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "No fields found."
 msgstr "No fields found."
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "No filters applied"
 msgstr "No filters applied"
 
@@ -6397,6 +6447,11 @@ msgstr "Public profile URL"
 msgid "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
 msgstr "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
 
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "Published"
+msgstr "Published"
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Publishers/Collection Societies"
 msgstr "Publishers/Collection Societies"
@@ -6748,6 +6803,7 @@ msgid "Reset email sent"
 msgstr "Reset email sent"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Reset filters"
 msgstr "Reset filters"
 
@@ -8626,6 +8682,11 @@ msgstr "This will remove all emails associated with this email domain"
 msgid "This will sign you out of all other devices. You will need to sign in again on those devices to continue using your account."
 msgstr "This will sign you out of all other devices. You will need to sign in again on those devices to continue using your account."
 
+#: apps/remix/app/components/general/tickets-add.tsx
+#: apps/remix/app/components/general/tickets-add.tsx
+msgid "ticket"
+msgstr "ticket"
+
 #: apps/remix/app/components/tables/document-logs-table.tsx
 msgid "Time"
 msgstr "Time"
@@ -9194,6 +9255,10 @@ msgstr "Update your Isrc record details."
 msgid "Update your Virgin record details."
 msgstr "Update your Virgin record details."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
+msgid "Updating event..."
+msgstr "Updating event..."
+
 #: apps/remix/app/components/forms/password.tsx
 msgid "Updating password..."
 msgstr "Updating password..."
@@ -9413,6 +9478,11 @@ msgstr "Value"
 #: apps/remix/app/components/tables/distribution-table.tsx
 msgid "Venta"
 msgstr "Venta"
+
+#: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/events-filters.tsx
+msgid "Venue"
+msgstr "Venue"
 
 #: apps/remix/app/components/general/verify-email-banner.tsx
 msgid "Verification Email Sent"
@@ -10010,6 +10080,7 @@ msgid "When you use our platform to affix your electronic signature to documents
 msgstr "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
+#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Where"
 msgstr "Where"
 

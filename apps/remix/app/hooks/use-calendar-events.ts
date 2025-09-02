@@ -1,7 +1,12 @@
 import { useMemo } from 'react';
 
+import { queryOptions } from '@tanstack/react-query';
+
 import { trpc } from '@documenso/trpc/react';
+import type { FilterStructure } from '@documenso/ui/lib/filter-columns';
 import { type CalendarEvent, type EventColor } from '@documenso/ui/primitives/event-calendar';
+
+import { useCurrentTeam } from '~/providers/team';
 
 export interface DatabaseEvent {
   id: number;
@@ -51,37 +56,62 @@ export const mapCalendarEventToDatabaseEvent = (calendarEvent: CalendarEvent) =>
   };
 };
 
-export const useCalendarEvents = () => {
+export const useCalendarEvents = ({
+  query,
+  orderByColumn,
+  orderByDirection,
+  filterStructure,
+  joinOperator,
+  artistIds,
+}: {
+  query?: string | undefined;
+  orderByColumn?: 'id' | undefined;
+  orderByDirection?: 'asc' | 'desc' | undefined;
+  period?: '7d' | '14d' | '30d' | undefined;
+  filterStructure?: (FilterStructure | null | undefined)[] | undefined;
+  joinOperator?: 'and' | 'or' | undefined;
+  artistIds?: number[] | undefined;
+}) => {
   const utils = trpc.useUtils();
 
-  // Fetch events from the database
+  const team = useCurrentTeam();
   const {
     data: eventsData,
     isLoading,
     error,
-  } = trpc.events.getAllEventsWithPagination.useQuery({
-    page: 1,
-    limit: 500, // Get more events for calendar view
-  });
+  } = trpc.events.getAllEventsNoPagination.useQuery(
+    {
+      orderByColumn,
+      orderByDirection,
+      filterStructure,
+      joinOperator,
+      artistIds,
+    },
+    queryOptions({
+      queryKey: ['events', team.id, query, artistIds, filterStructure, joinOperator],
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+    }),
+  );
 
   // Create event mutation
   const createEventMutation = trpc.events.createEvent.useMutation({
     onSuccess: async () => {
-      await utils.events.getAllEventsWithPagination.invalidate();
+      await utils.events.getAllEventsNoPagination.invalidate();
     },
   });
 
   // Update event mutation
   const updateEventMutation = trpc.events.updateEventById.useMutation({
     onSuccess: async () => {
-      await utils.events.getAllEventsWithPagination.invalidate();
+      await utils.events.getAllEventsNoPagination.invalidate();
     },
   });
 
   // Delete event mutation
   const deleteEventMutation = trpc.events.deleteEventById.useMutation({
     onSuccess: async () => {
-      await utils.events.getAllEventsWithPagination.invalidate();
+      await utils.events.getAllEventsNoPagination.invalidate();
     },
   });
 
