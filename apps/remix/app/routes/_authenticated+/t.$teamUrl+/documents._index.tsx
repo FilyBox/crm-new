@@ -12,13 +12,13 @@ import { useCurrentOrganisation } from '@documenso/lib/client-only/providers/org
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
-import { type Document } from '@documenso/prisma/client';
 import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-document-status';
 import { trpc } from '@documenso/trpc/react';
 import {
   type TFindDocumentsInternalResponse,
   ZFindDocumentsInternalRequestSchema,
 } from '@documenso/trpc/server/document-router/schema';
+import type { TFindDocumentsResponse } from '@documenso/trpc/server/document-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 import { Tabs, TabsList, TabsTrigger } from '@documenso/ui/primitives/tabs';
 
@@ -154,9 +154,8 @@ export default function DocumentsPage() {
   }
   const documentRootPath = formatDocumentsPath(team?.url);
 
-  const hanleOnNavegate = (row: Document) => {
-    const { id } = row;
-    const documentPath = `${documentRootPath}/${id}`;
+  const handleOnNavigate = (document: TFindDocumentsResponse['data'][number]) => {
+    const documentPath = `${documentRootPath}/${document.id}`;
     window.location.href = documentPath;
   };
 
@@ -238,7 +237,7 @@ export default function DocumentsPage() {
                 setDocumentToMove(documentRow.id);
                 setIsMovingDocument(true);
               }}
-              onNavegate={hanleOnNavegate}
+              onNavegate={handleOnNavigate}
             />
           </div>
         </div>

@@ -855,6 +855,8 @@ msgstr "Action"
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/new-documents-table.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 #: apps/remix/app/components/tables/organisation-groups-table.tsx
 #: apps/remix/app/components/tables/organisation-member-invites-table.tsx
@@ -2755,6 +2757,7 @@ msgstr "Create your account and start using state-of-the-art document signing. O
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/components/tables/releases-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table.tsx
@@ -2791,6 +2794,7 @@ msgid "Created on {0}"
 msgstr "Created on {0}"
 
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
+#: apps/remix/app/components/tables/new-documents-table.tsx
 msgid "createdAt"
 msgstr "createdAt"
 
@@ -3119,6 +3123,7 @@ msgid "Device"
 msgstr "Device"
 
 #: apps/remix/app/components/general/template/template-direct-link-badge.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "direct link"
 msgstr "direct link"
@@ -3153,6 +3158,7 @@ msgstr "Direct link signing has been disabled"
 msgid "Direct link signing has been enabled"
 msgstr "Direct link signing has been enabled"
 
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Direct link templates contain one dynamic recipient placeholder. Anyone with access to this link can sign the document, and it will then appear on your documents page."
 msgstr "Direct link templates contain one dynamic recipient placeholder. Anyone with access to this link can sign the document, and it will then appear on your documents page."
@@ -6330,10 +6336,12 @@ msgid "Primary Metadata Language"
 msgstr "Primary Metadata Language"
 
 #: apps/remix/app/components/general/template/template-type.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Private"
 msgstr "Private"
 
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Private templates can only be modified and viewed by you."
 msgstr "Private templates can only be modified and viewed by you."
@@ -6428,6 +6436,7 @@ msgid "Proyecto"
 msgstr "Proyecto"
 
 #: apps/remix/app/components/general/template/template-type.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Public"
 msgstr "Public"
@@ -6443,6 +6452,7 @@ msgstr "Public Profile"
 msgid "Public profile URL"
 msgstr "Public profile URL"
 
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
 msgstr "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
@@ -6844,7 +6854,6 @@ msgstr "Retention of Documents"
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
-#: apps/remix/app/components/tables/files-table-action-dropdown.tsx
 msgid "Retry"
 msgstr "Retry"
 
@@ -7677,6 +7686,7 @@ msgstr "Stats"
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/new-documents-table.tsx
 #: apps/remix/app/components/tables/organisation-billing-invoices-table.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
@@ -7942,10 +7952,12 @@ msgstr "Team Name"
 msgid "Team not found"
 msgstr "Team not found"
 
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Team Only"
 msgstr "Team Only"
 
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Team only templates are not linked anywhere and are visible only to your team."
 msgstr "Team only templates are not linked anywhere and are visible only to your team."
@@ -8728,6 +8740,8 @@ msgstr "Tipo de Precio"
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/new-documents-table.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
@@ -8951,6 +8965,7 @@ msgid "Two-Factor Re-Authentication"
 msgstr "Two-Factor Re-Authentication"
 
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
+#: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/releases-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
@@ -9375,6 +9390,7 @@ msgid "uploader"
 msgstr "uploader"
 
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
+#: apps/remix/app/components/tables/new-documents-table.tsx
 msgid "Uploader"
 msgstr "Uploader"
 
@@ -9985,7 +10001,6 @@ msgstr "We won't send anything to notify recipients."
 
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 #: apps/remix/app/components/tables/general-table-empty-state.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
 msgid "We're all empty"
 msgstr "We're all empty"
 
@@ -10404,10 +10419,6 @@ msgstr "You have initiated the document {0} that requires you to {recipientActio
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "You have no webhooks yet. Your webhooks will be shown here once you create them."
 msgstr "You have no webhooks yet. Your webhooks will be shown here once you create them."
-
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
-msgid "You have not yet created any templates. To create a template please upload one."
-msgstr "You have not yet created any templates. To create a template please upload one."
 
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "You have not yet created or received any documents. To create a document please upload one."

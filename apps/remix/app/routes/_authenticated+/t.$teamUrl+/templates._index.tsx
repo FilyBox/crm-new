@@ -1,18 +1,19 @@
 import { Trans } from '@lingui/react/macro';
-import { Bird } from 'lucide-react';
 import { useParams, useSearchParams } from 'react-router';
 
+import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
 import { FolderType } from '@documenso/lib/types/folder-type';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { formatDocumentsPath, formatTemplatesPath } from '@documenso/lib/utils/teams';
 import { trpc } from '@documenso/trpc/react';
+import type { TFindTemplatesResponse } from '@documenso/trpc/server/template-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 
 import { FolderGrid } from '~/components/general/folder/folder-grid';
-import { TemplatesTable } from '~/components/tables/templates-table';
+import { TemplateDropZoneWrapper } from '~/components/general/template/template-drop-zone-wrapper';
+import { TemplatesTable } from '~/components/tables/new-templates-table';
 import { useCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
-import { TemplateDropZoneWrapper } from '~/components/general/template/template-drop-zone-wrapper';
 
 export function meta() {
   return appMetaTags('Templates');
@@ -30,11 +31,32 @@ export default function TemplatesPage() {
   const documentRootPath = formatDocumentsPath(team.url);
   const templateRootPath = formatTemplatesPath(team.url);
 
-  const { data, isLoading, isLoadingError } = trpc.template.findTemplates.useQuery({
+  const { data, isLoading, isFetching, isLoadingError } = trpc.template.findTemplates.useQuery({
     page: page,
     perPage: perPage,
     folderId,
   });
+
+  const getFiles = trpc.document.getMultipleDocumentById.useMutation();
+
+  async function handleMultipleDownload(ids: number[]) {
+    try {
+      const files = await getFiles.mutateAsync({
+        fileIds: ids,
+      });
+      if (files) {
+        await downloadAnyFileMultiple({ multipleFiles: files });
+      }
+    } catch (error) {
+      console.log('error downloading files:', error);
+      throw new Error('Error downloading files');
+    }
+  }
+
+  const handleOnNavigate = (template: TFindTemplatesResponse['data'][number]) => {
+    const documentPath = `${templateRootPath}/${template.id}`;
+    window.location.href = documentPath;
+  };
 
   return (
     <TemplateDropZoneWrapper>
@@ -56,6 +78,20 @@ export default function TemplatesPage() {
           </div>
 
           <div className="mt-8">
+            <div>
+              <TemplatesTable
+                data={data}
+                onMultipleDownload={handleMultipleDownload}
+                isLoading={isLoading || isFetching}
+                isLoadingError={isLoadingError}
+                onNavegate={handleOnNavigate}
+                documentRootPath={documentRootPath}
+                templateRootPath={templateRootPath}
+              />
+            </div>
+          </div>
+
+          {/* <div className="mt-8">
             {data && data.count === 0 ? (
               <div className="text-muted-foreground/60 flex h-96 flex-col items-center justify-center gap-y-4">
                 <Bird className="h-12 w-12" strokeWidth={1.5} />
@@ -82,7 +118,7 @@ export default function TemplatesPage() {
                 templateRootPath={templateRootPath}
               />
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </TemplateDropZoneWrapper>
