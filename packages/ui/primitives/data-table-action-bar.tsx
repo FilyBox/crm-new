@@ -60,7 +60,7 @@ function DataTableActionBar<TData>({
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.2, ease: 'easeInOut' }}
         className={cn(
-          'dark:bg-backgroundDark text-foreground fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-zinc-100 p-2 shadow-sm',
+          'dark:bg-backgroundDark text-foreground bg-card fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border p-2 shadow-sm',
           className,
         )}
         {...props}

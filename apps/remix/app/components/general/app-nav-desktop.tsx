@@ -162,7 +162,7 @@ export const AppNavDesktop = ({
                     <NavigationMenuItem>
                       <NavigationMenuTrigger
                         className={cn(
-                          'dark:text-muted-foreground/60 dark:hover:text-foreground m-0 p-0',
+                          'dark:text-muted-foreground/60 text-muted-foreground dark:hover:text-foreground m-0 p-0',
                           {
                             'text-foreground dark:text-muted-foreground':
                               menuNavigationLinksMusic.some((link) =>
@@ -197,7 +197,7 @@ export const AppNavDesktop = ({
                     <NavigationMenuItem>
                       <NavigationMenuTrigger
                         className={cn(
-                          'dark:text-muted-foreground/60 dark:hover:text-foreground m-0 p-0',
+                          'dark:text-muted-foreground/60 text-muted-foreground dark:hover:text-foreground m-0 p-0',
                           {
                             'text-foreground dark:text-muted-foreground':
                               menuNavigationLinksContracts.some((link) =>

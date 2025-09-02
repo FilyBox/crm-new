@@ -4169,7 +4169,7 @@ msgstr ""
 
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: apps/remix/app/components/tables/data-table-export-all-data.tsx
 msgid "Export All"

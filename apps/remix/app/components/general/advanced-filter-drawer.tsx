@@ -65,12 +65,13 @@ export const AdvancedFilterDialog = ({
     setLoadingStep(1);
     setActiveQuery('');
     try {
-      const { query, companies, generation } = await aiQuery.mutateAsync({
+      const { query, companies } = await aiQuery.mutateAsync({
         question,
         tableToConsult,
       });
 
-      // const query = await generateQuery(question);
+      console.log('AI Query Result:', { query, companies });
+
       if (query === undefined) {
         toast({
           description: _(msg`An error occurred. Please try again.`),
@@ -87,9 +88,9 @@ export const AdvancedFilterDialog = ({
       setColumns(columns);
       setLoading(false);
       // const generation = await generateChartConfig(companies, question);
-      if (generation && generation.config) {
-        setChartConfig(generation.config);
-      }
+      // if (generation && generation.config) {
+      //   setChartConfig(generation.config);
+      // }
     } catch (e) {
       console.error('Error generating query or running SQL:', e);
       toast({

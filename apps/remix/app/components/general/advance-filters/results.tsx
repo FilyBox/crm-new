@@ -17,9 +17,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@documenso/ui/primitives/tabs';
 import type { LpmData } from '@documenso/ui/types/tables-types';
 
-import { DynamicChart } from './dynamic-chart';
-import { SkeletonCard } from './skeleton-card';
-
 type enhancedArtists = {
   artistName: string | null;
   id: number;
@@ -193,13 +190,13 @@ export const Results = ({
           <TabsTrigger className="w-full" value="table">
             Table
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             className="w-full"
             value="charts"
             disabled={Object.keys(results[0] || {}).length <= 1 || results.length < 2}
           >
             Chart
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="table" className="flex flex-grow">
           <div className="relative w-full sm:min-h-[10px]">
@@ -273,7 +270,7 @@ export const Results = ({
             )}
           </div>
         </TabsContent>
-        <TabsContent value="charts" className="flex-grow overflow-auto">
+        {/* <TabsContent value="charts" className="flex-grow overflow-auto">
           <div className="mt-4">
             {chartConfig && results.length > 0 ? (
               <DynamicChart chartData={results} chartConfig={chartConfig} />
@@ -281,7 +278,7 @@ export const Results = ({
               <SkeletonCard />
             )}
           </div>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

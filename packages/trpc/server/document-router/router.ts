@@ -39,7 +39,6 @@ import {
   getExtractBodyContractTask,
 } from '@documenso/lib/server-only/trigger';
 import {
-  generateChartConfig,
   generateQuery,
   runGenerateSQLQuery,
 } from '@documenso/lib/universal/ai/queries-proccessing';
@@ -862,10 +861,11 @@ export const documentRouter = router({
 
         const companies = await runGenerateSQLQuery(query);
 
-        const generation = await generateChartConfig(companies, question);
-        return { query, companies, generation };
+        // const generation = await generateChartConfig(companies, question);
+        return { query, companies };
       } catch (e) {
-        return { query: '', companies: [], generation: undefined };
+        console.log('Error generating AI query:', e);
+        return { query: '', companies: [] };
       }
     }),
 

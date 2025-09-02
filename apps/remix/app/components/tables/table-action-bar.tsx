@@ -391,7 +391,7 @@ export function TableActionBar<TData extends { id: number }>({
                 <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
                   <motion.button
                     {...BUTTON_MOTION_CONFIG}
-                    className={`bg-secondary/50 ${isOperationPending ? '!text-primary/50 cursor-not-allowed' : ''} hover:bg-secondary/70 text-primary flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg p-2`}
+                    className={`bg-secondary/50 ${isOperationPending ? 'dark:text-primary/50 text-foreground cursor-not-allowed' : ''} hover:bg-secondary/70 dark:!text-primary text-foreground flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg p-2`}
                     aria-label="Reject"
                     disabled={isOperationPending}
                     onClick={onMultipleDownload ? handleMultipleDownload : onTaskExport}
