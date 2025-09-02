@@ -238,7 +238,7 @@ export const DistributionTable = ({
         accessorKey: 'venta',
         cell: ({ row }) => (row.original.venta !== null ? String(row.original.venta) : '-'),
         meta: {
-          label: 'total',
+          label: 'venta',
           variant: 'number',
         },
         enableHiding: true,
@@ -249,7 +249,7 @@ export const DistributionTable = ({
         accessorKey: 'rtl',
         cell: ({ row }) => (row.original.rtl !== null ? row.original.rtl : '-'),
         meta: {
-          label: 'total',
+          label: 'rtl',
           variant: 'number',
         },
         enableHiding: true,
@@ -260,7 +260,7 @@ export const DistributionTable = ({
         accessorKey: 'ppd',
         cell: ({ row }) => (row.original.ppd !== null ? row.original.ppd : '-'),
         meta: {
-          label: 'total',
+          label: 'ppd',
           variant: 'number',
         },
         enableHiding: true,
@@ -271,7 +271,7 @@ export const DistributionTable = ({
         accessorKey: 'rbp',
         cell: ({ row }) => (row.original.rbp !== null ? row.original.rbp : '-'),
         meta: {
-          label: 'total',
+          label: 'rbp',
           variant: 'number',
         },
         enableHiding: true,
@@ -284,7 +284,7 @@ export const DistributionTable = ({
         accessorKey: 'tipoDeCambio',
         cell: ({ row }) => (row.original.tipoDeCambio !== null ? row.original.tipoDeCambio : '-'),
         meta: {
-          label: 'total',
+          label: 'tipoDeCambio',
           variant: 'number',
         },
         enableHiding: true,
@@ -297,7 +297,7 @@ export const DistributionTable = ({
         accessorKey: 'valorRecibido',
         cell: ({ row }) => (row.original.valorRecibido !== null ? row.original.valorRecibido : '-'),
         meta: {
-          label: 'total',
+          label: 'valorRecibido',
           variant: 'number',
         },
         enableHiding: true,
@@ -311,7 +311,7 @@ export const DistributionTable = ({
         cell: ({ row }) =>
           row.original.regaliasArtisticas !== null ? String(row.original.regaliasArtisticas) : '-',
         meta: {
-          label: 'total',
+          label: 'regaliasArtisticas',
           variant: 'number',
         },
         enableHiding: true,
@@ -325,7 +325,7 @@ export const DistributionTable = ({
         cell: ({ row }) =>
           row.original.costoDistribucion !== null ? row.original.costoDistribucion : '-',
         meta: {
-          label: 'total',
+          label: 'costoDistribucion',
           variant: 'number',
         },
         enableHiding: true,
@@ -336,7 +336,7 @@ export const DistributionTable = ({
         accessorKey: 'copyright',
         cell: ({ row }) => (row.original.copyright !== null ? String(row.original.copyright) : '-'),
         meta: {
-          label: 'total',
+          label: 'copyright',
           variant: 'number',
         },
         enableHiding: true,
@@ -352,7 +352,7 @@ export const DistributionTable = ({
             ? String(row.original.cuotaAdministracion)
             : '-',
         meta: {
-          label: 'total',
+          label: 'cuotaAdministracion',
           variant: 'number',
         },
         enableHiding: true,
@@ -366,7 +366,7 @@ export const DistributionTable = ({
         cell: ({ row }) =>
           row.original.costoCarga !== null ? String(row.original.costoCarga) : '-',
         meta: {
-          label: 'total',
+          label: 'costoCarga',
           variant: 'number',
         },
         enableHiding: true,
@@ -379,6 +379,12 @@ export const DistributionTable = ({
         accessorKey: 'otrosCostos',
         cell: ({ row }) =>
           row.original.otrosCostos !== null ? String(row.original.otrosCostos) : '-',
+        meta: {
+          label: 'otrosCostos',
+          variant: 'number',
+        },
+        enableHiding: true,
+        enableColumnFilter: true,
       },
       {
         header: ({ column }) => (
@@ -388,7 +394,7 @@ export const DistributionTable = ({
         cell: ({ row }) =>
           row.original.ingresosRecibidos !== null ? row.original.ingresosRecibidos : '-',
         meta: {
-          label: 'total',
+          label: 'ingresosRecibidos',
           variant: 'number',
         },
         enableHiding: true,

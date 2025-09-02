@@ -146,7 +146,9 @@ export const OrgMenuSwitcher = () => {
         align="end"
         forceMount
       >
-        <div className="flex h-[400px] w-full max-w-[640px] divide-x">
+        <div
+          className={`flex ${currentTeam ? 'h-[410px]' : 'h-[360px]'} w-full max-w-[640px] divide-x`}
+        >
           {/* Organisations column */}
           <div className="flex w-full flex-col md:w-1/3">
             <div className="flex h-12 items-center border-b p-2">
@@ -329,9 +331,7 @@ export const OrgMenuSwitcher = () => {
               >
                 <Trans>Sign Out</Trans>
               </DropdownMenuItem>
-              <div
-                className={`flex ${currentTeam ? 'min-h-[80px]' : 'min-h-[140px]'} flex-col items-center justify-end gap-2`}
-              >
+              <div className={`$ flex flex-col items-center justify-end gap-2`}>
                 <DropdownMenuSeparator className="border-muted-foreground w-full" />
                 <ThemeSwitcher className="flex w-full items-center justify-center rounded-md py-1" />
               </div>

@@ -753,6 +753,7 @@ msgid "A team you were a part of has been deleted"
 msgstr "A team you were a part of has been deleted"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "A total of {data} records created successfully"
 msgstr "A total of {data} records created successfully"
@@ -2751,6 +2752,8 @@ msgstr "CreatedAt"
 msgid "Creating artists..."
 msgstr "Creating artists..."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Creating record..."
@@ -3012,6 +3015,7 @@ msgstr "Delete your account and all its contents, including completed documents.
 msgid "Deleted"
 msgstr "Deleted"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Deleted record successfully"
 msgstr "Deleted record successfully"
@@ -3022,6 +3026,7 @@ msgstr "Deleting account..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Deleting record..."
@@ -4000,6 +4005,8 @@ msgstr "Error"
 msgid "Error al reintentar"
 msgstr "Error al reintentar"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error creating records"
@@ -4009,6 +4016,7 @@ msgstr "Error creating records"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Error deleting record"
 msgstr "Error deleting record"
@@ -4027,6 +4035,7 @@ msgid "Error downloading files"
 msgstr "Error downloading files"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error processing file"
@@ -4811,6 +4820,10 @@ msgstr "Invoice"
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 msgid "IP Address"
 msgstr "IP Address"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
+msgid "Isrc"
+msgstr "Isrc"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/tables/distribution-table.tsx
@@ -6218,6 +6231,7 @@ msgid "Processing"
 msgstr "Processing"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Processing file..."
@@ -6432,6 +6446,8 @@ msgstr "Recipients metrics"
 msgid "Recipients will still retain their copy of the document"
 msgstr "Recipients will still retain their copy of the document"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record created successfully"

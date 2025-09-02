@@ -67,7 +67,7 @@ const formSchema = z.object({
   nombreDistribucion: z.string().optional(),
   proyecto: z.string().optional(),
   numeroDeCatalogo: z.string().optional(),
-  upc: z.string().optional(),
+  upc: z.string().nullable().optional(),
   localProductNumber: z.string().optional(),
   isrc: z.string().optional(),
   tituloCatalogo: z.string().optional(),
@@ -398,7 +398,11 @@ export default function DistributionSheet({
                             <FormItem>
                               <FormLabel>UPC</FormLabel>
                               <FormControl>
-                                <Input placeholder="Código UPC" {...field} />
+                                <Input
+                                  placeholder="Código UPC"
+                                  {...field}
+                                  value={field.value ?? ''}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
