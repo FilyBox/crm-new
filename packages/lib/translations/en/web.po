@@ -755,6 +755,7 @@ msgstr "A team you were a part of has been deleted"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 msgid "A total of {data} records created successfully"
 msgstr "A total of {data} records created successfully"
 
@@ -1654,6 +1655,10 @@ msgstr "Artist created successfully"
 msgid "Artists"
 msgstr "Artists"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Assets"
+msgstr "Assets"
+
 #: apps/remix/app/components/tables/organisation-groups-table.tsx
 msgid "Assigned Teams"
 msgstr "Assigned Teams"
@@ -1723,6 +1728,10 @@ msgstr "Attempting to retry"
 msgid "Attempts sealing the document again, useful for after a code change has occurred to resolve an erroneous document."
 msgstr "Attempts sealing the document again, useful for after a code change has occurred to resolve an erroneous document."
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Audio"
+msgstr "Audio"
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Audio Language"
 msgstr "Audio Language"
@@ -1786,6 +1795,10 @@ msgstr "Backup codes"
 msgid "Banner Updated"
 msgstr "Banner Updated"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Banners"
+msgstr "Banners"
+
 #: packages/email/template-components/template-confirmation-email.tsx
 msgid "Before you get started, please confirm your email address by clicking the button below:"
 msgstr "Before you get started, please confirm your email address by clicking the button below:"
@@ -1796,6 +1809,10 @@ msgstr "Before you get started, please confirm your email address by clicking th
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.billing.tsx
 msgid "Billing"
 msgstr "Billing"
+
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Biography"
+msgstr "Biography"
 
 #: packages/ui/primitives/signature-pad/signature-pad-color-picker.tsx
 msgid "Black"
@@ -2006,6 +2023,10 @@ msgstr "Cannot remove document"
 #: packages/ui/primitives/document-flow/add-signers.tsx
 msgid "Cannot remove signer"
 msgstr "Cannot remove signer"
+
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Canvas"
+msgstr "Canvas"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Catalog"
@@ -2484,6 +2505,10 @@ msgstr "Costo Carga"
 msgid "Costo Distribución"
 msgstr "Costo Distribución"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Cover"
+msgstr "Cover"
+
 #: apps/remix/app/components/dialogs/admin-organisation-create-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
@@ -2707,6 +2732,7 @@ msgstr "Create your account and start using state-of-the-art document signing. O
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
+#: apps/remix/app/components/tables/releases-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
@@ -2755,6 +2781,8 @@ msgstr "Creating artists..."
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Creating record..."
 msgstr "Creating record..."
@@ -2816,6 +2844,7 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: apps/remix/app/components/general/document-signing/document-signing-date-field.tsx
+#: apps/remix/app/components/tables/releases-table.tsx
 #: apps/remix/app/components/tables/settings-security-activity-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
 #: packages/ui/primitives/document-flow/add-fields.tsx
@@ -3028,6 +3057,7 @@ msgstr "Deleting account..."
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Deleting record..."
 msgstr "Deleting record..."
@@ -3937,6 +3967,10 @@ msgstr "Enterprise"
 msgid "EP"
 msgstr "EP"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "EPK"
+msgstr "EPK"
+
 #: apps/remix/app/components/dialogs/admin-user-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/admin-user-disable-dialog.tsx
 #: apps/remix/app/components/dialogs/admin-user-enable-dialog.tsx
@@ -4008,6 +4042,8 @@ msgstr "Error al reintentar"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error creating records"
 msgstr "Error creating records"
@@ -4024,6 +4060,7 @@ msgstr "Error deleting record"
 #: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
 #: apps/remix/app/components/tables/table-action-bar.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error deleting records"
 msgstr "Error deleting records"
@@ -4037,6 +4074,7 @@ msgstr "Error downloading files"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error processing file"
 msgstr "Error processing file"
@@ -4883,6 +4921,10 @@ msgstr "Label"
 #: apps/remix/app/components/general/org-menu-switcher.tsx
 msgid "Language"
 msgstr "Language"
+
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Lanzamiento"
+msgstr "Lanzamiento"
 
 #: apps/remix/app/components/general/period-selector.tsx
 msgid "Last 14 days"
@@ -6015,6 +6057,10 @@ msgstr "Pick a password"
 msgid "Pin"
 msgstr "Pin"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Pitch"
+msgstr "Pitch"
+
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/number-field.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/number-field.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/text-field.tsx
@@ -6233,6 +6279,7 @@ msgstr "Processing"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Processing file..."
 msgstr "Processing file..."
@@ -6449,12 +6496,15 @@ msgstr "Recipients will still retain their copy of the document"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record created successfully"
 msgstr "Record created successfully"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record deleted successfully"
 msgstr "Record deleted successfully"
@@ -6533,11 +6583,16 @@ msgstr "Rejection Confirmed"
 msgid "Rejection reason: {reason}"
 msgstr "Rejection reason: {reason}"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Release"
+msgstr "Release"
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Release Date"
 msgstr "Release Date"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 msgid "Releases"
 msgstr "Releases"
 
@@ -7555,6 +7610,10 @@ msgstr "Status"
 #: packages/ui/primitives/document-flow/document-flow-root.tsx
 msgid "Step <0>{step} of {maxStep}</0>"
 msgstr "Step <0>{step} of {maxStep}</0>"
+
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Streaming Link"
+msgstr "Streaming Link"
 
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 msgid "Stripe"
@@ -8806,6 +8865,7 @@ msgid "Two-Factor Re-Authentication"
 msgstr "Two-Factor Re-Authentication"
 
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
+#: apps/remix/app/components/tables/releases-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
 msgid "Type"
@@ -9199,6 +9259,10 @@ msgstr "Upload Template Document"
 msgid "Upload your brand logo (max 5MB, JPG, PNG, or WebP)"
 msgstr "Upload your brand logo (max 5MB, JPG, PNG, or WebP)"
 
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Uploaded"
+msgstr "Uploaded"
+
 #: apps/remix/app/components/general/document/document-page-view-information.tsx
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
 msgid "Uploaded by"
@@ -9365,6 +9429,10 @@ msgstr "Vertical"
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Vevo Channel"
 msgstr "Vevo Channel"
+
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "Video"
+msgstr "Video"
 
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx
@@ -9865,6 +9933,10 @@ msgstr "Webhook URL"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "Webhooks"
 msgstr "Webhooks"
+
+#: apps/remix/app/components/tables/releases-table.tsx
+msgid "WebSite Updates"
+msgstr "WebSite Updates"
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Welcome"

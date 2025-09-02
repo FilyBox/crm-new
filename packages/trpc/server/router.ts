@@ -15,6 +15,7 @@ import { lpmRouter } from './lpm-router/router';
 import { organisationRouter } from './organisation-router/router';
 import { profileRouter } from './profile-router/router';
 import { recipientRouter } from './recipient-router/router';
+import { releaseRouter } from './releases-router/router';
 import { shareLinkRouter } from './share-link-router/router';
 import { teamRouter } from './team-router/router';
 import { templateRouter } from './template-router/router';
@@ -45,6 +46,7 @@ export const appRouter = router({
   tuStreams: tuStreamsRouter,
   distribution: distributionRouter,
   isrcSongs: IsrcSongsRouter,
+  release: releaseRouter,
 });
 
 export type AppRouter = typeof appRouter;
