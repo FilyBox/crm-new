@@ -254,51 +254,6 @@ export const VirginSheet = ({
 
   const onNextClick = () => {
     setStep('TRACK_INFO');
-
-    // const productFields = [
-    //   'productId',
-    //   'productType',
-    //   'productTitle',
-    //   'productDisplayArtist',
-    //   'label',
-    //   'originalReleaseDate',
-    //   'releaseDate',
-    //   'upc',
-    //   'catalog',
-    //   'productGenre',
-    //   'submissionStatus',
-    //   'productCLine',
-    //   'productPLine',
-    //   'preOrderDate',
-    //   'exclusives',
-    //   'explicitLyrics',
-    //   'productPlayLink',
-    //   'linerNotes',
-    //   'primaryMetadataLanguage',
-    //   'compilation',
-    //   'pdfBooklet',
-    //   'timedReleaseDate',
-    //   'timedReleaseMusicServices',
-    //   'lastProcessDate',
-    //   'importDate',
-    //   'createdBy',
-    //   'lastModified',
-    //   'submittedAt',
-    //   'submittedBy',
-    //   'vevoChannel',
-    // ];
-
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    // const isValid = await form.trigger(productFields as any);
-
-    // if (isValid) {
-    //   setStep('TRACK_INFO');
-    // } else {
-    //   toast({
-    //     variant: 'destructive',
-    //     description: 'Por favor completa todos los campos requeridos.',
-    //   });
-    // }
   };
 
   const yesNoOptions = [

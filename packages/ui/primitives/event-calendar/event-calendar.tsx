@@ -1,16 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  addDays,
-  addMonths,
-  addWeeks,
-  endOfWeek,
-  format,
-  isSameMonth,
-  startOfWeek,
-  subMonths,
-  subWeeks,
-} from 'date-fns';
+import { Trans } from '@lingui/react/macro';
+import { addDays, addMonths, addWeeks, format, subMonths, subWeeks } from 'date-fns';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -181,7 +172,7 @@ export function EventCalendar({
       // Show toast notification when an event is updated
       toast(`Event "${event.title}" updated`, {
         description: format(new Date(event.start), 'MMM d, yyyy'),
-        position: 'bottom-left',
+        position: 'bottom-center',
       });
     } else {
       onEventAdd?.({
@@ -191,7 +182,7 @@ export function EventCalendar({
       // Show toast notification when an event is added
       toast(`Event "${event.title}" added`, {
         description: format(new Date(event.start), 'MMM d, yyyy'),
-        position: 'bottom-left',
+        position: 'bottom-center',
       });
     }
     setIsEventDialogOpen(false);
@@ -208,7 +199,7 @@ export function EventCalendar({
     if (deletedEvent) {
       toast(`Event "${deletedEvent.title}" deleted`, {
         description: format(new Date(deletedEvent.start), 'MMM d, yyyy'),
-        position: 'bottom-left',
+        position: 'bottom-center',
       });
     }
   };
@@ -219,47 +210,9 @@ export function EventCalendar({
     // Show toast notification when an event is updated via drag and drop
     toast(`Event "${updatedEvent.title}" moved`, {
       description: format(new Date(updatedEvent.start), 'MMM d, yyyy'),
-      position: 'bottom-left',
+      position: 'bottom-center',
     });
   };
-
-  const viewTitle = useMemo(() => {
-    if (view === 'month') {
-      return format(currentDate, 'MMMM yyyy');
-    } else if (view === 'week') {
-      const start = startOfWeek(currentDate, { weekStartsOn: 0 });
-      const end = endOfWeek(currentDate, { weekStartsOn: 0 });
-      if (isSameMonth(start, end)) {
-        return format(start, 'MMMM yyyy');
-      } else {
-        return `${format(start, 'MMM')} - ${format(end, 'MMM yyyy')}`;
-      }
-    } else if (view === 'day') {
-      return (
-        <>
-          <span className="min-sm:hidden" aria-hidden="true">
-            {format(currentDate, 'MMM d, yyyy')}
-          </span>
-          <span className="min-md:hidden max-sm:hidden" aria-hidden="true">
-            {format(currentDate, 'MMMM d, yyyy')}
-          </span>
-          <span className="max-md:hidden">{format(currentDate, 'EEE MMMM d, yyyy')}</span>
-        </>
-      );
-    } else if (view === 'agenda') {
-      // Show the month range for agenda view
-      const start = currentDate;
-      const end = addDays(currentDate, AgendaDaysToShow - 1);
-
-      if (isSameMonth(start, end)) {
-        return format(start, 'MMMM yyyy');
-      } else {
-        return `${format(start, 'MMM')} - ${format(end, 'MMM yyyy')}`;
-      }
-    } else {
-      return format(currentDate, 'MMMM yyyy');
-    }
-  }, [currentDate, view]);
 
   return (
     <div
@@ -275,17 +228,12 @@ export function EventCalendar({
       <CalendarDndProvider onEventUpdate={handleEventUpdate}>
         <div
           className={cn(
-            'flex flex-col justify-between gap-2 py-5 sm:flex-row sm:items-center sm:px-4',
+            'flex flex-col justify-between gap-2 py-5 sm:flex-row sm:items-center',
             className,
           )}
         >
-          <div className="flex justify-between gap-1.5 max-sm:items-center sm:flex-col">
-            <div className="flex items-center gap-1.5">
-              <SidebarCalendar />
-              <h2 className="lg:peer-data-[state=invisible]:-translate-x-7.5 text-xl font-semibold transition-transform duration-300 ease-in-out">
-                {viewTitle}
-              </h2>
-            </div>
+          <div className="flex justify-between gap-1.5">
+            <SidebarCalendar />
           </div>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center justify-between gap-2">
@@ -310,7 +258,7 @@ export function EventCalendar({
                 </Button>
               </div>
               <Button className="max-sm:px-2.5! max-sm:h-8" onClick={handleToday}>
-                Today
+                <Trans>Today</Trans>
               </Button>
             </div>
             <div className="flex items-center justify-between gap-2">
@@ -322,7 +270,7 @@ export function EventCalendar({
                   setIsEventDialogOpen(true);
                 }}
               >
-                New Event
+                <Trans>New Event</Trans>
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -336,16 +284,16 @@ export function EventCalendar({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-32">
                   <DropdownMenuItem onClick={() => setView('month')}>
-                    Month <DropdownMenuShortcut>M</DropdownMenuShortcut>
+                    <Trans>Month</Trans> <DropdownMenuShortcut>M</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setView('week')}>
-                    Week <DropdownMenuShortcut>W</DropdownMenuShortcut>
+                    <Trans>Week</Trans> <DropdownMenuShortcut>W</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setView('day')}>
-                    Day <DropdownMenuShortcut>D</DropdownMenuShortcut>
+                    <Trans>Day</Trans> <DropdownMenuShortcut>D</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setView('agenda')}>
-                    Agenda <DropdownMenuShortcut>A</DropdownMenuShortcut>
+                    <Trans>Agenda</Trans> <DropdownMenuShortcut>A</DropdownMenuShortcut>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

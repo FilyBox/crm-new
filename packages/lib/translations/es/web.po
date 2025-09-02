@@ -1147,6 +1147,10 @@ msgstr "Después de firmar un documento electrónicamente, se le dará la oportu
 msgid "After submission, a document will be automatically generated and added to your documents page. You will also receive a notification via email."
 msgstr "Después de la presentación, se generará automáticamente un documento y se agregará a su página de documentos. También recibirá una notificación por correo electrónico."
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Agenda"
+msgstr "Agenda"
+
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
 msgid "AI Filters"
@@ -2419,6 +2423,7 @@ msgid "Continuously Mixed Individual Song"
 msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 msgid "Contracts"
@@ -2867,6 +2872,10 @@ msgstr "Fecha de creación"
 #: packages/ui/primitives/template-flow/add-template-settings.tsx
 msgid "Date Format"
 msgstr "Formato de fecha"
+
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Day"
+msgstr "Día"
 
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: packages/email/templates/organisation-invite.tsx
@@ -5311,6 +5320,10 @@ msgstr "Modifica el orden para organizar tus datos"
 msgid "Modify the details of the subscription claim."
 msgstr "Modifica los detalles de la reclamación de suscripción."
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Month"
+msgstr "Mes"
+
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
 msgid "Monthly"
@@ -5358,6 +5371,10 @@ msgstr "Mover a Carpeta"
 #: packages/ui/components/document/document-global-auth-access-select.tsx
 msgid "Multiple access methods can be selected."
 msgstr "Se pueden seleccionar varios métodos de acceso."
+
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Music"
+msgstr "Música"
 
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "My Folder"
@@ -5430,6 +5447,10 @@ msgstr "Nunca expira"
 msgid "New Artist"
 msgstr "Nuevo Artista"
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "New Event"
+msgstr "Nuevo evento"
+
 #: apps/remix/app/components/forms/password.tsx
 msgid "New Password"
 msgstr "Nueva Contraseña"
@@ -5479,11 +5500,11 @@ msgstr "Sin datos que mostrar"
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 msgid "No Especificado"
-msgstr ""
+msgstr "No Especificado"
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 msgid "No Especificado  "
-msgstr ""
+msgstr "No Especificado"
 
 #: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
@@ -5517,7 +5538,7 @@ msgstr "No further action is required from you at this time."
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
 msgid "No options found."
-msgstr ""
+msgstr "Opciones no encontradas"
 
 #: apps/remix/app/routes/_authenticated+/dashboard.tsx
 msgid "No organisations found"
@@ -5620,7 +5641,7 @@ msgstr "Ninguno"
 
 #: packages/lib/constants/document-auth.ts
 msgid "None (Overrides global settings)"
-msgstr ""
+msgstr "Ninguno (Sobrescribir configuraciones globales)"
 
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Not supported"
@@ -5867,7 +5888,7 @@ msgstr "Organiza tus documentos y plantillas"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Original Release Date"
-msgstr ""
+msgstr "Fecha original de lanzamiento"
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "Otherwise, the document will be created as a draft."
@@ -6279,7 +6300,7 @@ msgstr "Proceder"
 #: apps/remix/app/components/general/document/document-status.tsx
 #: packages/lib/constants/document.ts
 msgid "Processing"
-msgstr ""
+msgstr "Procesando"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
@@ -6287,7 +6308,7 @@ msgstr ""
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Processing file..."
-msgstr ""
+msgstr "Procesando archivo..."
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Producers"
@@ -6512,7 +6533,7 @@ msgstr ""
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record deleted successfully"
-msgstr ""
+msgstr "Elementos eliminados exitosamente"
 
 #: apps/remix/app/components/dialogs/organisation-email-domain-records-dialog.tsx
 msgid "Record Name"
@@ -6527,7 +6548,7 @@ msgstr "Tipo de registro"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record updated successfully"
-msgstr ""
+msgstr "Elementos actualizados exitosamente"
 
 #: apps/remix/app/components/dialogs/organisation-email-domain-records-dialog.tsx
 msgid "Record Value"
@@ -6535,7 +6556,7 @@ msgstr "Valor del registro"
 
 #: apps/remix/app/components/tables/table-action-bar.tsx
 msgid "Records deleted successfully"
-msgstr ""
+msgstr "Elementos eliminados exitosamente"
 
 #: apps/remix/app/components/forms/2fa/recovery-code-list.tsx
 msgid "Recovery code copied"
@@ -8705,6 +8726,10 @@ msgstr "Para usar nuestro servicio de firma electrónica, debe tener acceso a:"
 msgid "To view this document you need to be signed into your account, please sign in to continue."
 msgstr "Para ver este documento debes iniciar sesión en tu cuenta, por favor inicia sesión para continuar."
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Today"
+msgstr "Hoy"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
 msgid "Toggle the switch to hide your profile from the public."
 msgstr "Activa el interruptor para ocultar tu perfil del público."
@@ -9928,6 +9953,10 @@ msgstr "Webhooks"
 #: apps/remix/app/components/tables/releases-table.tsx
 msgid "WebSite Updates"
 msgstr ""
+
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Week"
+msgstr "Semana"
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Welcome"

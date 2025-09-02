@@ -1147,6 +1147,10 @@ msgstr "Dopo aver firmato un documento elettronicamente, avrai la possibilità d
 msgid "After submission, a document will be automatically generated and added to your documents page. You will also receive a notification via email."
 msgstr "Dopo l'invio, un documento verrà generato automaticamente e aggiunto alla tua pagina dei documenti. Riceverai anche una notifica via email."
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Agenda"
+msgstr ""
+
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
 msgid "AI Filters"
@@ -2419,6 +2423,7 @@ msgid "Continuously Mixed Individual Song"
 msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 msgid "Contracts"
@@ -2867,6 +2872,10 @@ msgstr "Data di creazione"
 #: packages/ui/primitives/template-flow/add-template-settings.tsx
 msgid "Date Format"
 msgstr "Formato data"
+
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Day"
+msgstr ""
 
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: packages/email/templates/organisation-invite.tsx
@@ -5311,6 +5320,10 @@ msgstr ""
 msgid "Modify the details of the subscription claim."
 msgstr "Modifica i dettagli della rivendicazione di abbonamento."
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Month"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
 msgid "Monthly"
@@ -5358,6 +5371,10 @@ msgstr "Sposta nella cartella"
 #: packages/ui/components/document/document-global-auth-access-select.tsx
 msgid "Multiple access methods can be selected."
 msgstr "Possono essere selezionati più metodi di accesso."
+
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Music"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "My Folder"
@@ -5428,6 +5445,10 @@ msgstr "Mai scadere"
 
 #: apps/remix/app/components/dialogs/artist-create-dialog.tsx
 msgid "New Artist"
+msgstr ""
+
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "New Event"
 msgstr ""
 
 #: apps/remix/app/components/forms/password.tsx
@@ -8719,6 +8740,10 @@ msgstr "Per utilizzare il nostro servizio di firma elettronica, devi avere acces
 msgid "To view this document you need to be signed into your account, please sign in to continue."
 msgstr "Per visualizzare questo documento devi essere connesso al tuo account, per favore accedi per continuare."
 
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Today"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
 msgid "Toggle the switch to hide your profile from the public."
 msgstr "Attiva l'interruttore per nascondere il tuo profilo al pubblico."
@@ -9941,6 +9966,10 @@ msgstr "Webhook"
 
 #: apps/remix/app/components/tables/releases-table.tsx
 msgid "WebSite Updates"
+msgstr ""
+
+#: packages/ui/primitives/event-calendar/event-calendar.tsx
+msgid "Week"
 msgstr ""
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx

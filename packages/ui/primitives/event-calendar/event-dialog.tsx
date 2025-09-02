@@ -48,9 +48,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
   const [endDateOpen, setEndDateOpen] = useState(false);
 
   // Debug log to check what event is being passed
-  useEffect(() => {
-    console.log('EventDialog received event:', event);
-  }, [event]);
+  // useEffect(() => {
+  //   console.log('EventDialog received event:', event);
+  // }, [event]);
 
   useEffect(() => {
     if (event) {
@@ -66,7 +66,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       setEndTime(formatTimeForInput(end));
       setAllDay(event.allDay || false);
       setLocation(event.location || '');
-      setColor((event.color as EventColor) || 'sky');
+      setColor((event.color as EventColor) || 'orange');
       setError(null); // Reset error when opening dialog
     } else {
       resetForm();
@@ -346,11 +346,13 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                     <SelectValue placeholder="Select time" />
                   </SelectTrigger>
                   <SelectContent>
-                    {timeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
+                    <ScrollArea className="h-48">
+                      {timeOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
                   </SelectContent>
                 </Select>
               </div>

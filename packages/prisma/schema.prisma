@@ -1374,6 +1374,7 @@ enum EventColor {
   violet
   rose
   emerald
+  sky
 
   @@map("event_colors")
 }

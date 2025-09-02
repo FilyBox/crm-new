@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import { ChevronDownIcon } from 'lucide-react';
 
 import { Button } from '@documenso/ui/primitives/button';
@@ -8,15 +10,9 @@ import { Calendar } from '@documenso/ui/primitives/calendar';
 import { useCalendarContext } from '@documenso/ui/primitives/event-calendar/calendar-context';
 import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
 
-interface SidebarCalendarProps {
-  className?: string;
-}
-
-export default function SidebarCalendar({ className }: SidebarCalendarProps) {
-  // Use the shared calendar context
+export default function SidebarCalendar() {
   const { currentDate, setCurrentDate } = useCalendarContext();
   const [open, setOpen] = useState(false);
-  // Track the month to display in the calendar
   const [calendarMonth, setCalendarMonth] = useState<Date>(currentDate);
 
   // Update the calendar month whenever currentDate changes
@@ -34,8 +30,8 @@ export default function SidebarCalendar({ className }: SidebarCalendarProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-          {currentDate ? currentDate.toLocaleDateString() : 'Select date'}
+        <Button variant="outline" id="date" className="w-fit justify-between font-normal">
+          {currentDate ? format(currentDate, "d 'de' MMMM yyyy", { locale: es }) : 'Select date'}
           <ChevronDownIcon />
         </Button>
       </PopoverTrigger>

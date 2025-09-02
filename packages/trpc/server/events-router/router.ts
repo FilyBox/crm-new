@@ -35,6 +35,8 @@ export const eventRouter = router({
         beginning: z.date().optional(),
         end: z.date().optional(),
         published: z.boolean().optional(),
+        allDay: z.boolean().optional(),
+        color: z.enum(['blue', 'orange', 'violet', 'rose', 'emerald', 'sky']).optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -60,6 +62,8 @@ export const eventRouter = router({
             beginning: input.beginning ?? new Date(),
             end: input.end ?? new Date(),
             published: input.published ?? false,
+            allDay: input.allDay ?? false,
+            color: input.color ?? 'blue',
           },
         });
       } catch (error) {
@@ -89,6 +93,8 @@ export const eventRouter = router({
         updateArtists: z.array(z.string()).optional(),
         beginning: z.date().optional(),
         end: z.date().optional(),
+        allDay: z.boolean().optional(),
+        color: z.enum(['blue', 'orange', 'violet', 'rose', 'emerald', 'sky']).optional(),
         tickets: z
           .array(
             z.object({
@@ -181,7 +187,7 @@ export const eventRouter = router({
     .input(
       z.object({
         page: z.number().min(1).default(1),
-        limit: z.number().min(1).max(100).default(10),
+        limit: z.number().min(1).max(1000).default(10), // Increased limit for calendar view
         query: z.string().optional(),
         perPage: z.number().optional(),
         period: z.enum(['7d', '14d', '30d']).optional(),
@@ -204,9 +210,8 @@ export const eventRouter = router({
     )
     .query(async ({ input, ctx }) => {
       const { page, limit } = input;
-      const { teamId, user } = ctx;
+      const { teamId } = ctx;
 
-      const userId = user?.id;
       const whereInput: Prisma.EventWhereInput = {
         deletedAt: null,
       };
@@ -238,6 +243,8 @@ export const eventRouter = router({
             published: true,
             updatedAt: true,
             createdAt: true,
+            allDay: true,
+            color: true,
           },
           where: whereInput,
           orderBy: {
