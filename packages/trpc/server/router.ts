@@ -10,6 +10,7 @@ import { enterpriseRouter } from './enterprise-router/router';
 import { fieldRouter } from './field-router/router';
 import { filesRouter } from './files-router/router';
 import { folderRouter } from './folder-router/router';
+import { IsrcSongsRouter } from './isrcsong-router/router';
 import { lpmRouter } from './lpm-router/router';
 import { organisationRouter } from './organisation-router/router';
 import { profileRouter } from './profile-router/router';
@@ -43,6 +44,7 @@ export const appRouter = router({
   artist: artistRouter,
   tuStreams: tuStreamsRouter,
   distribution: distributionRouter,
+  isrcSongs: IsrcSongsRouter,
 });
 
 export type AppRouter = typeof appRouter;
