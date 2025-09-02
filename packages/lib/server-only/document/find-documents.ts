@@ -420,6 +420,7 @@ export const findDocuments = async ({
     { ...filters },
     { ...deletedFilter },
     { ...searchFilter },
+    ...(where ? [where] : []),
   ];
 
   if (templateId) {

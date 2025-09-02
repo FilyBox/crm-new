@@ -280,7 +280,7 @@ export function DataTable<TData>({
                       <TableRow
                         key={row.id}
                         data-state={row.getIsSelected() && 'selected'}
-                        className="hover:bg-muted/50 cursor-pointer"
+                        className="hover:bg-muted/50"
                       >
                         {row.getVisibleCells().map((cell) => (
                           <TableCell
@@ -297,15 +297,12 @@ export function DataTable<TData>({
                               ) : (
                                 <a
                                   href={cell.getValue() as string}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
                                   className="text-blue-600 hover:underline"
                                 >
                                   Link
                                 </a>
                               )
-                            ) : (cell.column.id === 'fileName' && cell.getValue()) ||
-                              (cell.column.id === 'title' && cell.getValue()) ? (
+                            ) : cell.column.id === 'fileName' && cell.getValue() ? (
                               <>
                                 <TooltipProvider>
                                   <Tooltip>
@@ -517,8 +514,6 @@ export function DataTable<TData>({
           <Bird className="h-12 w-12" strokeWidth={1.5} />
 
           <div className="text-center">
-            {/* <h3 className="text-lg font-semibold">{_(title)}</h3> */}
-
             <Trans>No data found</Trans>
           </div>
         </div>
@@ -531,8 +526,6 @@ export function DataTable<TData>({
             <Bird className="h-12 w-12" strokeWidth={1.5} />
 
             <div className="text-center">
-              {/* <h3 className="text-lg font-semibold">{_(title)}</h3> */}
-
               <p className="mt-2 max-w-[60ch]">Something went wrong</p>
             </div>
           </div>

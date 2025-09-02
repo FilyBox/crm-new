@@ -223,7 +223,22 @@ export const documentRouter = router({
         period,
         senderIds,
         folderId,
+        filterStructure,
+        joinOperator,
       } = input;
+
+      let where: Prisma.DocumentWhereInput = {};
+
+      if (filterStructure) {
+        const advancedWhere = filterColumns({
+          filters: filterStructure.filter(
+            (filter): filter is FilterStructure => filter !== null && filter !== undefined,
+          ),
+          joinOperator: joinOperator,
+        });
+
+        where = advancedWhere;
+      }
 
       const getStatOptions: GetStatsInput = {
         user,
@@ -255,6 +270,7 @@ export const documentRouter = router({
           page,
           perPage,
           source,
+          where,
           status,
           period,
           senderIds,

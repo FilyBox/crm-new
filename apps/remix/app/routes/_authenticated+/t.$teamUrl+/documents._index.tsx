@@ -2,14 +2,17 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
 import { DocumentSource, FolderType, OrganisationType } from '@prisma/client';
+import { queryOptions } from '@tanstack/react-query';
 import { useParams, useSearchParams } from 'react-router';
 import { Link } from 'react-router';
 import { z } from 'zod';
 
+import { downloadAnyFileMultiple } from '@documenso/lib/client-only/download-any-file-multiple';
 import { useCurrentOrganisation } from '@documenso/lib/client-only/providers/organisation';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
+import { type Document } from '@documenso/prisma/client';
 import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-document-status';
 import { trpc } from '@documenso/trpc/react';
 import {
@@ -25,11 +28,11 @@ import { DocumentSearch } from '~/components/general/document/document-search';
 import { DocumentStatus } from '~/components/general/document/document-status';
 import { FolderGrid } from '~/components/general/folder/folder-grid';
 import { PeriodSelector } from '~/components/general/period-selector';
-import { DocumentsTable } from '~/components/tables/documents-table';
-import { DocumentsTableEmptyState } from '~/components/tables/documents-table-empty-state';
 import { DocumentsTableSenderFilter } from '~/components/tables/documents-table-sender-filter';
+import { DocumentsTable } from '~/components/tables/new-documents-table';
 import { useCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
+import { useSortParams } from '~/utils/searchParams';
 
 export function meta() {
   return appMetaTags('Documents');
@@ -45,9 +48,13 @@ const ZSearchParamsSchema = ZFindDocumentsInternalRequestSchema.pick({
   senderIds: z.string().transform(parseToIntegerArray).optional().catch([]),
 });
 
+const sortColumns = z.enum(['createdAt', 'title']);
+
 export default function DocumentsPage() {
   const organisation = useCurrentOrganisation();
   const team = useCurrentTeam();
+
+  const { filters, applyFilters, joinOperator, columnDirection } = useSortParams({ sortColumns });
 
   const { folderId } = useParams();
   const [searchParams] = useSearchParams();
@@ -69,11 +76,32 @@ export default function DocumentsPage() {
     [searchParams],
   );
 
-  const { data, isLoading, isLoadingError } = trpc.document.findDocumentsInternal.useQuery({
-    ...findDocumentSearchParams,
-    folderId,
-    source: DocumentSource.DOCUMENT,
-  });
+  const { data, isLoading, isFetching, isLoadingError } =
+    trpc.document.findDocumentsInternal.useQuery(
+      {
+        ...findDocumentSearchParams,
+        folderId,
+        source: DocumentSource.DOCUMENT,
+        orderByDirection: columnDirection as 'asc' | 'desc',
+        filterStructure: applyFilters ? filters : [],
+        joinOperator: joinOperator,
+      },
+      queryOptions({
+        queryKey: [
+          'Documents',
+          findDocumentSearchParams,
+          columnDirection,
+          joinOperator,
+          filters,
+          folderId,
+        ],
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
+        placeholderData: (previousData) => previousData,
+      }),
+    );
+
+  const getFiles = trpc.document.getMultipleDocumentById.useMutation();
 
   const getTabHref = (value: keyof typeof ExtendedDocumentStatus) => {
     const params = new URLSearchParams(searchParams);
@@ -110,6 +138,27 @@ export default function DocumentsPage() {
       setStats(data.stats);
     }
   }, [data?.stats]);
+
+  async function handleMultipleDownload(ids: number[]) {
+    try {
+      const files = await getFiles.mutateAsync({
+        fileIds: ids,
+      });
+      if (files) {
+        await downloadAnyFileMultiple({ multipleFiles: files });
+      }
+    } catch (error) {
+      console.log('error downloading files:', error);
+      throw new Error('Error downloading files');
+    }
+  }
+  const documentRootPath = formatDocumentsPath(team?.url);
+
+  const hanleOnNavegate = (row: Document) => {
+    const { id } = row;
+    const documentPath = `${documentRootPath}/${id}`;
+    window.location.href = documentPath;
+  };
 
   return (
     <DocumentDropZoneWrapper>
@@ -179,6 +228,23 @@ export default function DocumentsPage() {
 
         <div className="mt-8">
           <div>
+            <DocumentsTable
+              data={data}
+              onMultipleDownload={handleMultipleDownload}
+              isLoading={isLoading || isFetching}
+              isLoadingError={isLoadingError}
+              onMoveDocument={(documentRow) => {
+                console.log('Moving document jiji:', documentRow.id);
+                setDocumentToMove(documentRow.id);
+                setIsMovingDocument(true);
+              }}
+              onNavegate={hanleOnNavegate}
+            />
+          </div>
+        </div>
+
+        {/* <div className="mt-8">
+          <div>
             {data && data.count === 0 ? (
               <DocumentsTableEmptyState
                 status={findDocumentSearchParams.status || ExtendedDocumentStatus.ALL}
@@ -195,7 +261,7 @@ export default function DocumentsPage() {
               />
             )}
           </div>
-        </div>
+        </div> */}
 
         {documentToMove && (
           <DocumentMoveToFolderDialog

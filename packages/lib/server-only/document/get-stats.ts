@@ -17,6 +17,7 @@ export type GetStatsInput = {
   search?: string;
   folderId?: string;
   source?: DocumentSource;
+  where?: Prisma.DocumentWhereInput;
 };
 
 export const getStats = async ({
@@ -25,6 +26,7 @@ export const getStats = async ({
   source,
   search = '',
   folderId,
+  where,
   ...options
 }: GetStatsInput) => {
   let createdAt: Prisma.DocumentWhereInput['createdAt'];

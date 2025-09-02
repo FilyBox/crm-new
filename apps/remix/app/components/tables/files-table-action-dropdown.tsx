@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { Download, MoreHorizontal, MoveRight, RefreshCcw, Trash2 } from 'lucide-react';
+import { Download, MoreHorizontal, MoveRight, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { downloadAnyFile } from '@documenso/lib/client-only/download-any-file';
@@ -102,13 +102,13 @@ export const TableActionDropdown = ({
           </Link>
         </DropdownMenuItem> */}
 
-        <DropdownMenuItem
+        {/* <DropdownMenuItem
           onClick={onHandleRetry}
           // disabled={!canManageDocument || isComplete}
         >
           <RefreshCcw className="mr-2 h-4 w-4" />
           <Trans>Retry</Trans>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         {canManageDocument && (
           <DropdownMenuItem onClick={onDownloadOriginalClick}>
             <Download className="mr-2 h-4 w-4" />

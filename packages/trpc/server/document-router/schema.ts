@@ -32,6 +32,7 @@ import { ZFieldAndMetaSchema } from '@documenso/lib/types/field-meta';
 import { ZFindResultResponse, ZFindSearchParamsSchema } from '@documenso/lib/types/search-params';
 import { isValidRedirectUrl } from '@documenso/lib/utils/is-valid-redirect-url';
 import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-document-status';
+import type { FilterStructure } from '@documenso/ui/lib/filter-columns';
 
 import { ZCreateRecipientSchema } from '../recipient-router/schema';
 
@@ -146,6 +147,18 @@ export const ZFindDocumentsInternalRequestSchema = ZFindDocumentsRequestSchema.e
   senderIds: z.array(z.number()).optional(),
   status: z.nativeEnum(ExtendedDocumentStatus).optional(),
   folderId: z.string().optional(),
+  orderByColumn: z.enum(['id', 'createdAt', 'title']).optional(),
+  filterStructure: z
+    .array(
+      z
+        .custom<FilterStructure>(
+          (val) => val === null || val === undefined || typeof val === 'object',
+        )
+        .optional()
+        .nullable(),
+    )
+    .optional(),
+  joinOperator: z.enum(['and', 'or']).optional().default('and'),
 });
 
 export const ZFindDocumentsInternalResponseSchema = ZFindResultResponse.extend({
