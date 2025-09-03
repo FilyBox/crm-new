@@ -118,34 +118,20 @@ export default function IsrcSheet({
     try {
       setIsLoading(true);
       const dataToSubmit = initialData?.id ? { ...values, id: initialData.id } : values;
-      console.log('Form submitted:', dataToSubmit);
       const dataToSend = {
         ...dataToSubmit,
         artistsToUpdate: selectedArtists,
         artists: initialData?.artists,
       };
-      console.log('Form submitted:', dataToSend);
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       await onSubmit(dataToSend as unknown as TIsrcSongs);
-      console.log('Form submitted successfully', values);
       form.reset();
     } catch (error) {
-      console.error('Form submission error', error);
+      throw new Error('Error submitting form');
     } finally {
       setIsLoading(false);
     }
   }
-  useEffect(() => {
-    console.log('Form errors use effect:', form.formState.errors);
-  }, [form.formState.errors]);
-  // Función para validar los campos del paso 1 y avanzar al paso 2
-
-  const productTypeOptions = [
-    { label: 'Álbum', value: 'Album' },
-    { label: 'Single', value: 'Single' },
-    { label: 'EP', value: 'EP' },
-    { label: 'Compilación', value: 'Compilation' },
-  ];
 
   return (
     <Sheet open={isDialogOpen} onOpenChange={setIsDialogOpen}>

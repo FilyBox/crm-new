@@ -126,8 +126,6 @@ export const eventRouter = router({
     .mutation(async ({ input }) => {
       const { id, updateArtists, updateTickets, tickets, image, ...data } = input;
 
-      console.log('Update tickets:', updateTickets);
-      console.log('tickets:', tickets);
       if (!id) {
         throw new Error('El ID del evento es obligatorio');
       }
@@ -138,15 +136,12 @@ export const eventRouter = router({
         include: { artists: true },
       });
 
-      console.log('Current event image:', currentEvent?.image);
-      console.log('New image:', image);
       let deleteImage = false;
 
       if (
         (currentEvent?.image && image && image !== 'nochange') ||
         (currentEvent?.image && !image)
       ) {
-        console.log('Deleting old image:', currentEvent.image);
         const { url } = await getPresignGetUrl(currentEvent.image);
         await deleteFile(url);
         deleteImage = true;
@@ -163,7 +158,6 @@ export const eventRouter = router({
         });
       }
 
-      console.log('deleteImage:', deleteImage);
       try {
         return await prisma.event.update({
           where: { id },
@@ -216,9 +210,6 @@ export const eventRouter = router({
         deletedAt: null,
       };
       whereInput.teamId = teamId;
-      console.log('Team ID:', teamId);
-      console.log('whereInput:', whereInput);
-      console.log('whereInput:', whereInput);
       const offset = (page - 1) * limit;
       const [events, totalCount] = await Promise.all([
         prisma.event.findMany({
@@ -253,7 +244,6 @@ export const eventRouter = router({
         }),
         prisma.event.count(),
       ]);
-      console.log('Events found:', events.length);
       const tickets = await prisma.ticketType.findMany({
         where: {
           eventId: {
@@ -337,7 +327,7 @@ export const eventRouter = router({
     )
     .query(async ({ input, ctx }) => {
       const { teamId } = ctx;
-      const { artistIds, joinOperator, filterStructure } = input;
+      const { joinOperator, filterStructure } = input;
 
       let whereInput: Prisma.EventWhereInput = {};
 
@@ -382,7 +372,6 @@ export const eventRouter = router({
         }),
         prisma.event.count(),
       ]);
-      console.log('Events found:', events.length);
       const tickets = await prisma.ticketType.findMany({
         where: {
           eventId: {

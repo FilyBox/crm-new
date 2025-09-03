@@ -180,11 +180,10 @@ export default function DistributionPage() {
         ingresosRecibidos: newRecord.ingresosRecibidos ?? undefined,
       });
 
-      console.log('Created Record ID:', id);
       await refetch();
       setIsDialogOpen(false);
     } catch (error) {
-      console.error('Error creating record:', error);
+      throw new Error('Error creating record');
     } finally {
       setIsSubmitting(false);
     }
@@ -225,8 +224,6 @@ export default function DistributionPage() {
   };
 
   const handleUpdate = async (updatedDistribution: TDistribution) => {
-    console.log('Updated Distribution:', updatedDistribution);
-    console.log('id', updatedDistribution.id);
     try {
       const { id } = await updateDistributionByIdMutation.mutateAsync({
         id: updatedDistribution.id,
@@ -267,8 +264,6 @@ export default function DistributionPage() {
         ingresosRecibidos: updatedDistribution.ingresosRecibidos ?? undefined,
       });
 
-      console.log('Updated Record ID:', id);
-
       setData(
         dataIntial.map((record) =>
           record.id === updatedDistribution.id ? updatedDistribution : record,
@@ -285,7 +280,6 @@ export default function DistributionPage() {
   const findAll = async () => {
     try {
       const { data } = await findData.mutateAsync({});
-      console.log('data aa', data);
 
       return data;
     } catch (error) {
@@ -364,8 +358,6 @@ export default function DistributionPage() {
       const csvData = await parseCsvFile(file);
 
       const validatedData = csvData.map((item) => {
-        console.log('CSV Item:', item);
-        console.log('item nombre del territorio:', item['Nombre del Territorio']);
         // Convert string values to number for numeric fields
         const convertToNumber = (value: string | undefined): number | undefined => {
           if (value === undefined || value === '') return undefined;

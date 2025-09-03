@@ -55,7 +55,6 @@ import {
   SheetTrigger,
 } from '@documenso/ui/primitives/sheet';
 import { Switch } from '@documenso/ui/primitives/switch';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 const TypeOfReleaseValues = {
   ALBUM: 'Album',
@@ -95,7 +94,6 @@ export default function ReleasesSheet({
   setIsDialogOpen,
   setInitialData,
 }: MyFormProps) {
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedArtists, setSelectedArtists] = useState<string[] | undefined>([]);
 
@@ -241,7 +239,6 @@ export default function ReleasesSheet({
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log('date', values.date);
       setIsLoading(true);
       const dataToSubmit = {
         ...values,
@@ -253,7 +250,7 @@ export default function ReleasesSheet({
 
       await onSubmit(dataToSubmit as unknown as TRelease);
     } catch (error) {
-      console.log('Error submitting form:', error);
+      throw new Error('Form submission error');
     } finally {
       setIsLoading(false);
     }

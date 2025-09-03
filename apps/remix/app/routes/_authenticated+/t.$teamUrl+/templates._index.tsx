@@ -48,7 +48,6 @@ export default function TemplatesPage() {
         await downloadAnyFileMultiple({ multipleFiles: files });
       }
     } catch (error) {
-      console.log('error downloading files:', error);
       throw new Error('Error downloading files');
     }
   }

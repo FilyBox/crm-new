@@ -7,7 +7,6 @@ import { Trans } from '@lingui/react/macro';
 import { es } from 'date-fns/locale';
 import { FilePlus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { useSession } from '@documenso/lib/client-only/providers/session';
@@ -243,10 +242,8 @@ export const VirginSheet = ({
       };
       // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       await onSubmit(dataToSend as unknown as TLpm);
-      console.log('Form submitted successfully', values);
     } catch (error) {
-      console.error('Form submission error', error);
-      toast.error('Error submitting data');
+      throw new Error('Form submission error');
     } finally {
       setIsLoading(false);
     }

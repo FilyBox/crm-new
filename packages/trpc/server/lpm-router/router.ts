@@ -317,7 +317,6 @@ export const lpmRouter = router({
           async (prismaClient) => {
             const createdRecords = [];
             for (const file of batch) {
-              console.log('Creating LPM record for:', file.productTitle);
               const { artists, ...fileData } = file;
               const result = await prismaClient.lpm.create({
                 data: {
@@ -353,8 +352,7 @@ export const lpmRouter = router({
     }),
 
   findLpmUniqueArtists: authenticatedProcedure.query(async ({ ctx }) => {
-    const { user, teamId } = ctx;
-    const userId = user.id;
+    const { teamId } = ctx;
 
     const [productDisplayArtist, artists] = await Promise.all([
       prisma.lpm.findMany({
@@ -665,8 +663,6 @@ export const lpmRouter = router({
     .mutation(async ({ input, ctx }) => {
       const {
         query,
-        page,
-        perPage,
         orderByColumn,
         artistIds,
         orderByDirection,

@@ -135,7 +135,7 @@ export default function TuStreamsSheet({
 
       await onSubmit(dataToSubmit as unknown as TtuStreams);
     } catch (error) {
-      console.log('Error submitting form:', error);
+      throw new Error('Error submitting form');
     } finally {
       setIsLoading(false);
     }

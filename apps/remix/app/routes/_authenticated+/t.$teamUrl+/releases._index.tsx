@@ -513,9 +513,8 @@ export default function TasksPage() {
   const handleMultipleDelete = async (ids: number[]) => {
     try {
       await deleteMultipleMutation.mutateAsync({ ids: ids });
-      console.log('Deleting records with IDs in index contracts:', ids);
     } catch (error) {
-      console.error('Error deleting record:', error);
+      throw new Error('Error deleting record');
     } finally {
       setIsMultipleDelete(false);
     }

@@ -148,7 +148,6 @@ export default function DocumentsPage() {
         await downloadAnyFileMultiple({ multipleFiles: files });
       }
     } catch (error) {
-      console.log('error downloading files:', error);
       throw new Error('Error downloading files');
     }
   }
@@ -233,7 +232,6 @@ export default function DocumentsPage() {
               isLoading={isLoading || isFetching}
               isLoadingError={isLoadingError}
               onMoveDocument={(documentRow) => {
-                console.log('Moving document jiji:', documentRow.id);
                 setDocumentToMove(documentRow.id);
                 setIsMovingDocument(true);
               }}

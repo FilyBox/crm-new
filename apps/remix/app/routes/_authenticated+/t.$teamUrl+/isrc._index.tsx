@@ -113,7 +113,6 @@ export default function IsrcPage() {
         filterStructure: applyFilters ? filters : [],
         joinOperator: joinOperator,
       });
-      console.log('data aa', result);
 
       // Transform the data to match the expected type
       if (Array.isArray(result)) {
@@ -238,15 +237,13 @@ export default function IsrcPage() {
       setIsDialogOpen(false);
       seteditingData(null);
     } catch (error) {
-      console.error('Error creating record:', error);
+      throw new Error('Error creating record');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleUpdate = async (updatedIsrcSongs: TIsrcSongs) => {
-    console.log('Updated User:', updatedIsrcSongs);
-    console.log('id', updatedIsrcSongs.id);
     setIsSubmitting(true);
     try {
       toast.promise(
@@ -307,7 +304,6 @@ export default function IsrcPage() {
 
   const handleMultipleDelete = async (ids: number[]) => {
     try {
-      console.log('Deleting records with IDs in index contracts:', ids);
       toast.promise(deleteMultipleMutation.mutateAsync({ ids: ids }), {
         position: 'bottom-center',
         className: 'mb-16',
@@ -315,7 +311,7 @@ export default function IsrcPage() {
 
       await refetch();
     } catch (error) {
-      console.error('Error deleting record:', error);
+      throw new Error('Error deleting record');
     } finally {
       setIsMultipleDelete(false);
     }

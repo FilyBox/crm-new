@@ -230,16 +230,13 @@ export default function DistributionSheet({
     try {
       setIsLoading(true);
       const dataToSubmit = initialData?.id ? { ...values, id: initialData.id } : values;
-      console.log('Form submitted:', dataToSubmit);
       const dataToSend = {
         ...dataToSubmit,
         distributionStatementTerritories: selectedTerritory ? [selectedTerritory] : [],
         distributionStatementMusicPlatforms: selectedPlatform ? [selectedPlatform] : [],
       };
 
-      console.log('Data to send:', dataToSend);
       await onSubmit(dataToSend as TDistribution);
-      console.log('Form submitted successfully', values);
       toast({
         description: 'Data submitted successfully',
       });
@@ -617,7 +614,6 @@ export default function DistributionSheet({
                             <Select
                               value={selectedPlatform?.name?.toString() || ''}
                               onValueChange={(value) => {
-                                console.log('Selected platform value:', value);
                                 if (value === '') {
                                   setSelectedPlatform(null);
                                   form.setValue('musicPlatform', []);

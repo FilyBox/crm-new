@@ -22,7 +22,6 @@ import { downloadPDF } from '@documenso/lib/client-only/download-pdf';
 import { useSession } from '@documenso/lib/client-only/providers/session';
 import type { TDocumentMany as TDocumentRow } from '@documenso/lib/types/document';
 import { isDocumentCompleted } from '@documenso/lib/utils/document';
-import { formatChatPath } from '@documenso/lib/utils/teams';
 import { trpc as trpcClient } from '@documenso/trpc/client';
 import {
   DropdownMenu,
@@ -55,7 +54,6 @@ export const ChatTableActionDropdown = ({
 
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDuplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
-  const [isMoveDialogOpen, setMoveDialogOpen] = useState(false);
 
   const recipient = row.recipients.find((recipient) => recipient.email === user.email);
 
@@ -68,37 +66,6 @@ export const ChatTableActionDropdown = ({
   // const isSigned = recipient?.signingStatus === SigningStatus.SIGNED;
   const isCurrentTeamDocument = team && row.team?.url === team.url;
   const canManageDocument = Boolean(isOwner || isCurrentTeamDocument);
-
-  const documentsPath = formatChatPath(team?.url);
-  // const formatPath = row.folderId
-  //   ? `${documentsPath}/f/${row.folderId}/${row.id}/edit`
-  //   : `${documentsPath}/${row.id}/edit`;
-
-  // const onDownloadClick = async () => {
-  //   try {
-  //     const document = !recipient
-  //       ? await trpcClient.document.getDocumentById.query({
-  //           documentId: row.id,
-  //         })
-  //       : await trpcClient.document.getDocumentByToken.query({
-  //           token: recipient.token,
-  //         });
-
-  //     const documentData = document?.documentData;
-
-  //     if (!documentData) {
-  //       return;
-  //     }
-
-  //     await downloadPDF({ documentData, fileName: row.title });
-  //   } catch (err) {
-  //     toast({
-  //       title: _(msg`Something went wrong`),
-  //       description: _(msg`An error occurred while downloading your document.`),
-  //       variant: 'destructive',
-  //     });
-  //   }
-  // };
 
   const onDownloadOriginalClick = async () => {
     try {
@@ -114,7 +81,6 @@ export const ChatTableActionDropdown = ({
 
       await downloadPDF({ documentData, fileName: row.title, version: 'original' });
     } catch (err) {
-      console.log('err', err);
       toast.error(_(msg`Something went wrong`), {
         position: 'bottom-center',
         description: _(msg`An error occurred while downloading your document.`),

@@ -73,7 +73,6 @@ export default function FilesPage() {
         await downloadAnyFileMultiple({ multipleFiles: files });
       }
     } catch (error) {
-      console.log('error downloading files:', error);
       throw new Error('Error downloading files');
     }
   }

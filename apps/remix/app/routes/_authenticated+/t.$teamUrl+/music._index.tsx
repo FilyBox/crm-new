@@ -167,7 +167,6 @@ export default function TablePage() {
   const findAll = async () => {
     try {
       const result = await findData.mutateAsync({});
-      console.log('data aa', result);
 
       // Transform the data to match the expected type
       if (Array.isArray(result)) {
@@ -320,7 +319,6 @@ export default function TablePage() {
   };
 
   const handleCreate = async (newRecord: Omit<TLpm, 'id'>) => {
-    console.log('artistsToUpdate', newRecord.artistsToUpdate);
     setIsSubmitting(true);
     try {
       toast.promise(
@@ -534,14 +532,12 @@ export default function TablePage() {
       });
       await refetch();
     } catch (error) {
-      console.error('Error deleting record:', error);
+      throw new Error('Error deleting record');
     }
   };
 
   const handleMultipleDelete = async (ids: number[]) => {
     try {
-      console.log('Deleting records with IDs in index contracts:', ids);
-
       toast.promise(deleteMultipleMutation.mutateAsync({ ids: ids }), {
         position: 'bottom-center',
         className: 'mb-16',
@@ -549,7 +545,7 @@ export default function TablePage() {
 
       await refetch();
     } catch (error) {
-      console.error('Error deleting record:', error);
+      throw new Error('Error deleting record');
     } finally {
       setIsMultipleDelete(false);
     }

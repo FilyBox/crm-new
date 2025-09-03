@@ -93,7 +93,6 @@ export const IsrcSongsRouter = router({
       // Process releases in batches to avoid transaction timeouts
       for (let i = 0; i < isrcSongs.length; i += BATCH_SIZE) {
         const batch = isrcSongs.slice(i, i + BATCH_SIZE);
-        console.log(`Processing batch: ${i}-${i + batch.length}`);
         // Process each batch in its own transaction
         const result = await prisma.$transaction(
           async (tx) => {
@@ -152,15 +151,13 @@ export const IsrcSongsRouter = router({
         );
 
         totalCreated += result.length;
-        console.log(`Batch processed: ${i}-${i + batch.length}, created: ${result.length}`);
       }
 
       return totalCreated;
     }),
 
   findIsrcUniqueArtists: authenticatedProcedure.query(async ({ ctx }) => {
-    const { user, teamId } = ctx;
-    const userId = user.id;
+    const { teamId } = ctx;
 
     const uniqueArtists = await prisma.artist.findMany({
       where: {
@@ -359,8 +356,6 @@ export const IsrcSongsRouter = router({
       const { id, artistsToUpdate, artists, ...data } = input;
 
       if (artists && artistsToUpdate) {
-        console.log('artists to disconnect', artists);
-        console.log('artists to connect', artistsToUpdate);
         await prisma.isrcSongs.update({
           where: { id },
           data: {
@@ -371,7 +366,6 @@ export const IsrcSongsRouter = router({
           },
         });
       } else if (artistsToUpdate) {
-        console.log('artists to connect', artistsToUpdate);
         await prisma.isrcSongs.update({
           where: { id },
           data: {
