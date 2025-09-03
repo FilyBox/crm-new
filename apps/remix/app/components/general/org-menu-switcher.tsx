@@ -147,7 +147,7 @@ export const OrgMenuSwitcher = () => {
         forceMount
       >
         <div
-          className={`flex ${currentTeam ? 'h-[410px]' : 'h-[360px]'} w-full max-w-[640px] divide-x`}
+          className={`flex ${currentTeam ? 'h-[450px]' : 'h-[360px]'} w-full max-w-[640px] divide-x`}
         >
           {/* Organisations column */}
           <div className="flex w-full flex-col md:w-1/3">
@@ -285,6 +285,14 @@ export const OrgMenuSwitcher = () => {
                   </Link>
                 </DropdownMenuItem>
               )}
+
+              {currentTeam ? (
+                <DropdownMenuItem className="text-muted-foreground px-4 py-2" asChild>
+                  <Link to={`/t/${currentTeam.url}/stats`}>
+                    <Trans>Stats</Trans>
+                  </Link>
+                </DropdownMenuItem>
+              ) : null}
 
               <DropdownMenuItem className="text-muted-foreground px-4 py-2" asChild>
                 <Link to="/inbox">

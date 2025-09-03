@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { findAllLpm } from '@documenso/lib/server-only/document/find-all-lpm';
 import { findLpm } from '@documenso/lib/server-only/document/find-lpm';
+import { getLpmStats } from '@documenso/lib/server-only/team/get-lpm-stats';
 import { prisma } from '@documenso/prisma';
 import { type FilterStructure, filterColumns } from '@documenso/ui/lib/filter-columns';
 
@@ -835,4 +836,10 @@ export const lpmRouter = router({
 
       return deleted;
     }),
+
+  findLpmStatsByCurrentTeam: authenticatedProcedure.query(async ({ ctx }) => {
+    const { teamId } = ctx;
+    const lpmStats = await getLpmStats(teamId);
+    return lpmStats;
+  }),
 });

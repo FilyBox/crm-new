@@ -1661,78 +1661,78 @@ model Songs {
 }
 
 model lpm {
-  id                                  Int       @id @default(autoincrement())
-  productId                           String?   @map("productId")
-  productType                         String?   @map("Product Type")
-  productTitle                        String?   @map("Product Title")
-  productVersion                      String?   @map("Product Version")
-  productDisplayArtist                String?   @map("Product Display Artist")
-  parentLabel                         String?   @map("Parent Label")
-  label                               String?   @map("label")
-  originalReleaseDate                 DateTime? @map("Original Release Date")
-  releaseDate                         DateTime? @map("Release Date")
-  upc                                 String?   @map("UPC")
-  catalog                             String?   @map("Catalog ")
-  productPriceTier                    String?   @map("Product Price Tier")
-  productGenre                        String?   @map("Product Genre")
-  submissionStatus                    String?   @map("Submission Status")
-  productCLine                        String?   @map("Product C Line")
-  productPLine                        String?   @map("Product P Line")
-  preOrderDate                        DateTime? @map("PreOrder Date")
-  exclusives                          String?   @map("Exclusives")
-  explicitLyrics                      String?   @map("ExplicitLyrics")
-  productPlayLink                     String?   @map("Product Play Link")
-  linerNotes                          String?   @map("Liner Notes")
-  primaryMetadataLanguage             String?   @map("Primary Metadata Language")
-  compilation                         String?   @map("Compilation")
-  pdfBooklet                          String?   @map("PDF Booklet")
-  timedReleaseDate                    DateTime? @map("Timed Release Date")
-  timedReleaseMusicServices           DateTime? @map("Timed Release Music Services")
-  lastProcessDate                     DateTime? @map("Last Process Date")
-  importDate                          DateTime? @map("Import Date")
-  createdBy                           String?   @map("Created By")
-  lastModified                        DateTime? @map("Last Modified")
-  submittedAt                         DateTime? @map("Submitted At")
-  submittedBy                         String?   @map("Submitted By")
-  vevoChannel                         String?   @map("Vevo Channel")
-  trackType                           String?   @map("TrackType")
-  trackId                             String?   @map("Track Id")
-  trackVolume                         Boolean?  @map("Track Volume")
-  trackNumber                         String?   @map("Track Number")
-  trackName                           String?   @map("Track Name")
-  trackVersion                        String?   @map("Track Version")
-  trackDisplayArtist                  String?   @map("Track Display Artist")
-  isrc                                String?   @map("Isrc")
-  trackPriceTier                      String?   @map("Track Price Tier")
-  trackGenre                          String?   @map("Track Genre")
-  audioLanguage                       String?   @map("Audio Language")
-  trackCLine                          String?   @map("Track C Line")
-  trackPLine                          String?   @map("Track P Line")
-  writersComposers                    String?   @map("WritersComposers")
-  publishersCollectionSocieties       String?   @map("PublishersCollection Societies")
-  withholdMechanicals                 String?   @map("Withhold Mechanicals")
-  preOrderType                        String?   @map("PreOrder Type")
-  instantGratificationDate            DateTime? @map("Instant Gratification Date")
-  duration                            String?   @map("Duration")
-  sampleStartTime                     String?   @map("Sample Start Time")
-  explicitLyricsTrack                 String?   @map("Explicit Lyrics")
-  albumOnly                           String?   @map("Album Only")
-  lyrics                              String?   @map("Lyrics")
-  additionalContributorsPerforming    String?   @map("AdditionalContributorsPerforming")
-  additionalContributorsNonPerforming String?   @map("AdditionalContributorsNonPerforming")
-  producers                           String?   @map("Producers")
-  continuousMix                       String?   @map("Continuous Mix")
-  continuouslyMixedIndividualSong     String?   @map("Continuously Mixed Individual Song")
-  trackPlayLink                       String?   @map("Track Play Link")
-
+  id                                  Int                        @id @default(autoincrement())
+  productId                           String?                    @map("productId")
+  productType                         String?                    @map("Product Type")
+  productTitle                        String?                    @map("Product Title")
+  productVersion                      String?                    @map("Product Version")
+  productDisplayArtist                String?                    @map("Product Display Artist")
+  parentLabel                         String?                    @map("Parent Label")
+  label                               String?                    @map("label")
+  originalReleaseDate                 DateTime?                  @map("Original Release Date")
+  releaseDate                         DateTime?                  @map("Release Date")
+  upc                                 String?                    @map("UPC")
+  catalog                             String?                    @map("Catalog ")
+  productPriceTier                    String?                    @map("Product Price Tier")
+  productGenre                        String?                    @map("Product Genre")
+  submissionStatus                    String?                    @map("Submission Status")
+  productCLine                        String?                    @map("Product C Line")
+  productPLine                        String?                    @map("Product P Line")
+  preOrderDate                        DateTime?                  @map("PreOrder Date")
+  exclusives                          String?                    @map("Exclusives")
+  explicitLyrics                      String?                    @map("ExplicitLyrics")
+  productPlayLink                     String?                    @map("Product Play Link")
+  linerNotes                          String?                    @map("Liner Notes")
+  primaryMetadataLanguage             String?                    @map("Primary Metadata Language")
+  compilation                         String?                    @map("Compilation")
+  pdfBooklet                          String?                    @map("PDF Booklet")
+  timedReleaseDate                    DateTime?                  @map("Timed Release Date")
+  timedReleaseMusicServices           DateTime?                  @map("Timed Release Music Services")
+  lastProcessDate                     DateTime?                  @map("Last Process Date")
+  importDate                          DateTime?                  @map("Import Date")
+  createdBy                           String?                    @map("Created By")
+  lastModified                        DateTime?                  @map("Last Modified")
+  submittedAt                         DateTime?                  @map("Submitted At")
+  submittedBy                         String?                    @map("Submitted By")
+  vevoChannel                         String?                    @map("Vevo Channel")
+  trackType                           String?                    @map("TrackType")
+  trackId                             String?                    @map("Track Id")
+  trackVolume                         Boolean?                   @map("Track Volume")
+  trackNumber                         String?                    @map("Track Number")
+  trackName                           String?                    @map("Track Name")
+  trackVersion                        String?                    @map("Track Version")
+  trackDisplayArtist                  String?                    @map("Track Display Artist")
+  isrc                                String?                    @map("Isrc")
+  trackPriceTier                      String?                    @map("Track Price Tier")
+  trackGenre                          String?                    @map("Track Genre")
+  audioLanguage                       String?                    @map("Audio Language")
+  trackCLine                          String?                    @map("Track C Line")
+  trackPLine                          String?                    @map("Track P Line")
+  writersComposers                    String?                    @map("WritersComposers")
+  publishersCollectionSocieties       String?                    @map("PublishersCollection Societies")
+  withholdMechanicals                 String?                    @map("Withhold Mechanicals")
+  preOrderType                        String?                    @map("PreOrder Type")
+  instantGratificationDate            DateTime?                  @map("Instant Gratification Date")
+  duration                            String?                    @map("Duration")
+  sampleStartTime                     String?                    @map("Sample Start Time")
+  explicitLyricsTrack                 String?                    @map("Explicit Lyrics")
+  albumOnly                           String?                    @map("Album Only")
+  lyrics                              String?                    @map("Lyrics")
+  additionalContributorsPerforming    String?                    @map("AdditionalContributorsPerforming")
+  additionalContributorsNonPerforming String?                    @map("AdditionalContributorsNonPerforming")
+  producers                           String?                    @map("Producers")
+  continuousMix                       String?                    @map("Continuous Mix")
+  continuouslyMixedIndividualSong     String?                    @map("Continuously Mixed Individual Song")
+  trackPlayLink                       String?                    @map("Track Play Link")
+  deletedAt                           DateTime?                  @map("Deleted At")
   // writerId   Int?
-  userId     Int?
-  teamId     Int
-  artists    Artist[]
-  lpmArtists lpmProductDisplayArtists[]
+  userId                              Int?
+  teamId                              Int
+  artists                             Artist[]
+  lpmArtists                          lpmProductDisplayArtists[]
   // writer     Writers?                   @relation(fields: [writerId], references: [id], onDelete: SetNull)
-  user       User?                      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team       Team                       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user                                User?                      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                                Team                       @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 enum ContractStatus {
@@ -1888,9 +1888,9 @@ model DistributionStatement {
   teamId                              Int
   distributionStatementMusicPlatforms DistributionStatementMusicPlatforms[]
   distributionStatementTerritories    DistributionStatementTerritories[]
-
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team Team  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  deletedAt                           DateTime?
+  user                                User?                                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                                Team                                  @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([teamId])
@@ -1935,6 +1935,7 @@ model Releases {
   team            Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now())
+  deletedAt       DateTime?
 }
 
 model IsrcArtists {
@@ -1964,11 +1965,11 @@ model IsrcSongs {
 
   isrcArtists IsrcArtists[]
 
-  createdAt DateTime @default(now())
-
-  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team    Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  artists Artist[]
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  artists   Artist[]
 }
 
 model tuStreamsArtists {
@@ -2005,6 +2006,7 @@ model tuStreams {
 
   tuStreamsArtists tuStreamsArtists[]
   createdAt        DateTime           @default(now())
+  deletedAt        DateTime?
   user             User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
   team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
   artists          Artist[]
@@ -2041,9 +2043,8 @@ model Files {
   useToChat    Boolean            @default(false)
   documentData DocumentData       @relation(fields: [fileDataId], references: [id], onDelete: Cascade)
   team         Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
-
-  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  folderId String?
+  folder       Folder?            @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId     String?
 
   @@unique([fileDataId])
   @@index([userId])
