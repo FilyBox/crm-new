@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { Trans, useLingui } from '@lingui/react/macro';
 import { format, isBefore } from 'date-fns';
 import { CalendarCheck, Trash2Icon } from 'lucide-react';
 
@@ -46,6 +47,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
   const [error, setError] = useState<string | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
+  const { t } = useLingui();
 
   // Debug log to check what event is being passed
   // useEffect(() => {
@@ -123,7 +125,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
         endHours < StartHour ||
         endHours > EndHour
       ) {
-        setError(`Selected time must be between ${StartHour}:00 and ${EndHour}:00`);
+        setError(t`Selected time must be between ${StartHour}:00 and ${EndHour}:00`);
         return;
       }
 
@@ -136,12 +138,12 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
     // Validate that end date is not before start date
     if (isBefore(end, start)) {
-      setError('End date cannot be before start date');
+      setError(t`End date cannot be before start date`);
       return;
     }
 
     // Use generic title if empty
-    const eventTitle = title.trim() ? title : '(no title)';
+    const eventTitle = title.trim() ? title : t`(no title)`;
 
     onSave({
       id: event?.id || '',
@@ -204,9 +206,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{event?.id ? 'Edit Event' : 'Create Event'}</DialogTitle>
+          <DialogTitle>{event?.id ? t`Edit Event` : t`Create Event`}</DialogTitle>
           <DialogDescription className="sr-only">
-            {event?.id ? 'Edit the details of this event' : 'Add a new event to your calendar'}
+            {event?.id ? t`Edit the details of this event` : t`Add a new event to your calendar`}
           </DialogDescription>
         </DialogHeader>
         {error && (
@@ -216,12 +218,16 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
         )}
         <div className="grid gap-4 py-4">
           <div className="*:not-first:mt-1.5">
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">
+              <Trans>Title</Trans>
+            </Label>
             <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
 
           <div className="*:not-first:mt-1.5">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">
+              <Trans>Description</Trans>
+            </Label>
             <Textarea
               id="description"
               value={description}
@@ -232,7 +238,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
           <div className="flex gap-4">
             <div className="*:not-first:mt-1.5 flex-1">
-              <Label htmlFor="start-date">Start Date</Label>
+              <Label htmlFor="start-date">
+                <Trans>Start Date</Trans>
+              </Label>
               <Popover modal={true} open={startDateOpen} onOpenChange={setStartDateOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -277,7 +285,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
             {!allDay && (
               <div className="*:not-first:mt-1.5 min-w-28">
-                <Label htmlFor="start-time">Start Time</Label>
+                <Label htmlFor="start-time">
+                  <Trans>Start Time</Trans>
+                </Label>
                 <Select value={startTime} onValueChange={setStartTime}>
                   <SelectTrigger id="start-time">
                     <SelectValue placeholder="Select time" />
@@ -298,7 +308,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
           <div className="flex gap-4">
             <div className="*:not-first:mt-1.5 flex-1">
-              <Label htmlFor="end-date">End Date</Label>
+              <Label htmlFor="end-date">
+                <Trans>End Date</Trans>
+              </Label>
               <Popover modal={true} open={endDateOpen} onOpenChange={setEndDateOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -340,7 +352,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
             {!allDay && (
               <div className="*:not-first:mt-1.5 min-w-28">
-                <Label htmlFor="end-time">End Time</Label>
+                <Label htmlFor="end-time">
+                  <Trans>End Time</Trans>
+                </Label>
                 <Select value={endTime} onValueChange={setEndTime}>
                   <SelectTrigger id="end-time">
                     <SelectValue placeholder="Select time" />
@@ -365,15 +379,21 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
               checked={allDay}
               onCheckedChange={(checked) => setAllDay(checked === true)}
             />
-            <Label htmlFor="all-day">All day</Label>
+            <Label htmlFor="all-day">
+              <Trans>All day</Trans>
+            </Label>
           </div>
 
           <div className="*:not-first:mt-1.5">
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="location">
+              <Trans>Location</Trans>
+            </Label>
             <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} />
           </div>
           <fieldset className="space-y-4">
-            <legend className="text-foreground text-sm font-medium leading-none">Etiquette</legend>
+            <legend className="text-foreground text-sm font-medium leading-none">
+              <Trans>Etiquette</Trans>
+            </legend>
             <RadioGroup
               className="flex gap-1.5"
               defaultValue={colorOptions[0]?.value}
@@ -406,9 +426,11 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
           )}
           <div className="flex flex-1 justify-end gap-2">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              <Trans>Cancel</Trans>
             </Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleSave}>
+              <Trans>Save</Trans>
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>

@@ -52,6 +52,10 @@ msgstr "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sig
 msgid "\"Team Name\" has invited you to sign \"example document\"."
 msgstr "\"Team Name\" has invited you to sign \"example document\"."
 
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "(no title)"
+msgstr "(no title)"
+
 #: apps/remix/app/components/embed/embed-document-signing-page.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-form.tsx
 msgid "(You)"
@@ -879,6 +883,10 @@ msgstr "Actions"
 msgid "Active"
 msgstr "Active"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Active Rate"
+msgstr "Active Rate"
+
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Active sessions"
@@ -904,6 +912,10 @@ msgstr "Add a custom domain to send emails on behalf of your organisation. We'll
 #: packages/ui/primitives/document-dropzone.tsx
 msgid "Add a document"
 msgstr "Add a document"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Add a new event to your calendar"
+msgstr "Add a new event to your calendar"
 
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
@@ -1166,6 +1178,10 @@ msgstr "Album"
 msgid "Album Only"
 msgstr "Album Only"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Albums"
+msgstr "Albums"
+
 #: apps/remix/app/components/general/document/document-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
@@ -1177,6 +1193,10 @@ msgstr "Album Only"
 #: apps/remix/app/components/general/task/tustreams-type.tsx
 msgid "All"
 msgstr "All"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "All day"
+msgstr "All day"
 
 #: apps/remix/app/components/tables/events-filters.tsx
 #: packages/ui/primitives/event-calendar/events-filters.tsx
@@ -1934,6 +1954,14 @@ msgstr "By proceeding with your electronic signature, you acknowledge and consen
 msgid "By proceeding, you agree to our <0>Terms of Service</0> and <1>Privacy Policy</1>."
 msgstr "By proceeding, you agree to our <0>Terms of Service</0> and <1>Privacy Policy</1>."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "By Product Type"
+msgstr "By Product Type"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "By Submission Status"
+msgstr "By Submission Status"
+
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "By using the electronic signature feature, you are consenting to conduct transactions and receive disclosures electronically. You acknowledge that your electronic signature on documents is binding and that you accept the terms outlined in the documents you are signing."
 msgstr "By using the electronic signature feature, you are consenting to conduct transactions and receive disclosures electronically. You acknowledge that your electronic signature on documents is binding and that you accept the terms outlined in the documents you are signing."
@@ -2023,6 +2051,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/document-flow/send-document-action-dialog.tsx
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
 #: packages/ui/primitives/signature-pad/signature-pad-dialog.tsx
 msgid "Cancel"
 msgstr "Cancel"
@@ -2441,8 +2470,13 @@ msgstr "Continuously Mixed Individual Song"
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
 msgid "Contracts"
 msgstr "Contracts"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Contracts Statistics"
+msgstr "Contracts Statistics"
 
 #: apps/remix/app/components/forms/email-preferences-form.tsx
 msgid "Controls the default email settings when new documents or templates are created"
@@ -2645,6 +2679,10 @@ msgstr "Create document from template"
 #: apps/remix/app/components/dialogs/organisation-email-create-dialog.tsx
 msgid "Create Email"
 msgstr "Create Email"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Create Event"
+msgstr "Create Event"
 
 #: apps/remix/app/components/general/folder/folder-card.tsx
 msgid "Create folder"
@@ -2875,6 +2913,11 @@ msgstr "Dark Mode"
 #: apps/remix/app/routes/_authenticated+/dashboard.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Data Tables"
+msgstr "Data Tables"
 
 #: apps/remix/app/components/general/document-signing/document-signing-date-field.tsx
 #: apps/remix/app/components/tables/releases-table.tsx
@@ -3108,6 +3151,7 @@ msgid "Deleting records..."
 msgstr "Deleting records..."
 
 #: apps/remix/app/components/tables/events-filters.tsx
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
 #: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Description"
 msgstr "Description"
@@ -3745,9 +3789,17 @@ msgstr "Duration"
 msgid "Edit"
 msgstr "Edit"
 
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Edit Event"
+msgstr "Edit Event"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
 msgid "Edit Template"
 msgstr "Edit Template"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Edit the details of this event"
+msgstr "Edit the details of this event"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id.tsx
 msgid "Edit webhook"
@@ -3970,6 +4022,18 @@ msgstr "Enclosed Document"
 msgid "End"
 msgstr "End"
 
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "End Date"
+msgstr "End Date"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "End date cannot be before start date"
+msgstr "End date cannot be before start date"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "End Time"
+msgstr "End Time"
+
 #: apps/remix/app/components/dialogs/folder-create-dialog.tsx
 msgid "Enter a name for your new folder. Folders help you organise your items."
 msgstr "Enter a name for your new folder. Folders help you organise your items."
@@ -4155,6 +4219,10 @@ msgstr "Error uploading file"
 msgid "Error while processing CSV"
 msgstr "Error while processing CSV"
 
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Etiquette"
+msgstr "Etiquette"
+
 #: apps/remix/app/components/dialogs/webhook-test-dialog.tsx
 msgid "Event Type"
 msgstr "Event Type"
@@ -4198,6 +4266,10 @@ msgstr "Expired"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "Expires on {0}"
 msgstr "Expires on {0}"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Explicit Content"
+msgstr "Explicit Content"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Explicit Lyrics"
@@ -4407,6 +4479,10 @@ msgstr "Filters"
 #: apps/remix/app/components/general/task/contracts-status.tsx
 msgid "Finalizado"
 msgstr "Finalizado"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Finalized Contracts"
+msgstr "Finalized Contracts"
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/template-move-to-folder-dialog.tsx
@@ -5115,6 +5191,10 @@ msgstr "Local Product Number"
 msgid "Local timezone"
 msgstr "Local timezone"
 
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Location"
+msgstr "Location"
+
 #: apps/remix/app/components/general/direct-template/direct-template-signing-auth-page.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-account.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-auth-page.tsx
@@ -5791,6 +5871,10 @@ msgstr "Once your template is set up, share the link anywhere you want. The pers
 msgid "One of the documents in the current bundle has a signing role that is not compatible with the current signing experience."
 msgstr "One of the documents in the current bundle has a signing role that is not compatible with the current signing experience."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Ongoing Contracts"
+msgstr "Ongoing Contracts"
+
 #: apps/remix/app/components/forms/document-preferences-form.tsx
 #: packages/ui/components/document/document-visibility-select.tsx
 msgid "Only admins can access and view the document"
@@ -6300,6 +6384,10 @@ msgstr "Please type <0>{0}</0> to confirm."
 msgid "Please upload a logo"
 msgstr "Please upload a logo"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Popular Genres"
+msgstr "Popular Genres"
+
 #: apps/remix/app/components/tables/distribution-table.tsx
 msgid "PPD"
 msgstr "PPD"
@@ -6527,9 +6615,17 @@ msgstr "Receives copy"
 msgid "Recent activity"
 msgstr "Recent activity"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Recent Contracts (Last 10 Records)"
+msgstr "Recent Contracts (Last 10 Records)"
+
 #: apps/remix/app/components/general/template/template-page-view-recent-activity.tsx
 msgid "Recent documents"
 msgstr "Recent documents"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Recent Releases"
+msgstr "Recent Releases"
 
 #: apps/remix/app/components/dialogs/template-direct-link-dialog.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
@@ -6924,6 +7020,7 @@ msgstr "Sample Start Time"
 #: apps/remix/app/components/general/document-signing/document-signing-number-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
 msgid "Save"
 msgstr "Save"
 
@@ -7159,6 +7256,10 @@ msgstr "Select visibility"
 #: packages/ui/primitives/data-table-action-bar.tsx
 msgid "selected"
 msgstr "selected"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Selected time must be between {StartHour}:00 and {EndHour}:00"
+msgstr "Selected time must be between {StartHour}:00 and {EndHour}:00"
 
 #: packages/lib/advanced-fields-validation/validate-checkbox.ts
 msgid "Selecting an option is required"
@@ -7548,6 +7649,10 @@ msgstr "Since {0}"
 msgid "Single"
 msgstr "Single"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Singles"
+msgstr "Singles"
+
 #: apps/remix/app/routes/_authenticated+/admin+/site-settings.tsx
 msgid "Site Banner"
 msgstr "Site Banner"
@@ -7677,6 +7782,15 @@ msgstr "Sort by"
 msgid "Source"
 msgstr "Source"
 
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Start Date"
+msgstr "Start Date"
+
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
+msgid "Start Time"
+msgstr "Start Time"
+
+#: apps/remix/app/components/general/org-menu-switcher.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/_layout.tsx
 msgid "Stats"
 msgstr "Stats"
@@ -7723,6 +7837,10 @@ msgstr "Subject"
 msgid "Subject <0>(Optional)</0>"
 msgstr "Subject <0>(Optional)</0>"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Submission Rate"
+msgstr "Submission Rate"
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Submission Status"
 msgstr "Submission Status"
@@ -7734,6 +7852,10 @@ msgstr "Submitted At"
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Submitted By"
 msgstr "Submitted By"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Submitted Records"
+msgstr "Submitted Records"
 
 #: apps/remix/app/components/general/billing-plans.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
@@ -7975,6 +8097,10 @@ msgstr "Team settings"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings._layout.tsx
 msgid "Team Settings"
 msgstr "Team Settings"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Team Stats"
+msgstr "Team Stats"
 
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 msgid "Team url"
@@ -8746,6 +8872,7 @@ msgstr "Tipo de Precio"
 #: apps/remix/app/components/tables/tustreams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
+#: packages/ui/primitives/event-calendar/event-dialog.tsx
 msgid "Title"
 msgstr "Title"
 
@@ -8858,9 +8985,21 @@ msgstr "Token name"
 msgid "total"
 msgstr "total"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Total"
+msgstr "Total"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Total Contracts"
+msgstr "Total Contracts"
+
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Total Documents"
 msgstr "Total Documents"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Total LPM Records"
+msgstr "Total LPM Records"
 
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Total Recipients"
@@ -8869,6 +9008,10 @@ msgstr "Total Recipients"
 #: packages/email/templates/bulk-send-complete.tsx
 msgid "Total rows processed: {totalProcessed}"
 msgstr "Total rows processed: {totalProcessed}"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Total Rows TuStreams"
+msgstr "Total Rows TuStreams"
 
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Total Signers that Signed Up"
@@ -8932,9 +9075,18 @@ msgid "Triggers"
 msgstr "Triggers"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "TuStreams"
 msgstr "TuStreams"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "TuStreams Data"
+msgstr "TuStreams Data"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "TuStreams Statistics"
+msgstr "TuStreams Statistics"
 
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 msgid "Two factor authentication"
@@ -9082,6 +9234,14 @@ msgstr "Unauthorized"
 #: apps/remix/app/components/general/stack-avatars-with-tooltip.tsx
 msgid "Uncompleted"
 msgstr "Uncompleted"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Unique Products"
+msgstr "Unique Products"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Unique Tracks"
+msgstr "Unique Tracks"
 
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
@@ -9689,8 +9849,17 @@ msgstr "Vigente"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
 msgid "Virgin"
 msgstr "Virgin"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Virgin Recent Data (Last 10 Records)"
+msgstr "Virgin Recent Data (Last 10 Records)"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
+msgid "Virgin Statistics"
+msgstr "Virgin Statistics"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
 msgid "Visibility"

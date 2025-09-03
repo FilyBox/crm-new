@@ -27,6 +27,7 @@ export const ZIsrcSongsSchema = IsrcSongsSchema.pick({
   teamId: true,
   userId: true,
   createdAt: true,
+  deletedAt: true,
 }).extend({
   artists: z.array(ZArtistSchema).optional(),
   artistsToUpdate: z.array(z.string()).optional(),

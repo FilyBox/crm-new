@@ -53,6 +53,7 @@ export const ZDistributionSchema = DistributionStatementSchema.pick({
   valorRecibido: true,
   venta: true,
   createdAt: true,
+  deletedAt: true,
 }).extend({
   distributionStatementMusicPlatforms: z.array(ZMusicPlatformSchema).optional(),
   distributionStatementTerritories: z.array(ZTerritorySchema).optional(),

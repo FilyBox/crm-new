@@ -81,6 +81,7 @@ export const ZLpmSchema = lpmSchema
     withholdMechanicals: true,
     teamId: true,
     userId: true,
+    deletedAt: true,
   })
   .extend({
     productDisplayArtist: z.array(ZArtistSchema).optional(),

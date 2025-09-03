@@ -35,6 +35,7 @@ export const ZReleaseSchema = ReleasesSchema.pick({
   streamingLink: true,
   typeOfRelease: true,
   WebSiteUpdates: true,
+  deletedAt: true,
 }).extend({
   artists: z.array(ZArtistSchema).optional(),
   artistsToUpdate: z.array(z.string()).optional(),
