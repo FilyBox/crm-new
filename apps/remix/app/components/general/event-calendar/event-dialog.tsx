@@ -8,14 +8,6 @@ import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
 import { Calendar } from '@documenso/ui/primitives/calendar';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@documenso/ui/primitives/dialog';
 import { Input } from '@documenso/ui/primitives/input';
 import { Label } from '@documenso/ui/primitives/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
@@ -28,10 +20,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@documenso/ui/primitives/select';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from '@documenso/ui/primitives/sheet';
 import { Textarea } from '@documenso/ui/primitives/textarea';
 
 import { DefaultEndHour, DefaultStartHour, EndHour, StartHour } from './constants';
 import type { CalendarEvent, EventColor } from './types';
+
+type artistData = {
+  id: number;
+  name: string;
+}[];
+
+type tickets = {
+  id: number;
+  name: string | null;
+  price: number | null;
+  quantity: number | null;
+  maxQuantityPerUser: number | null;
+  seatNumber?: number | null;
+  description?: string | null;
+};
 
 interface EventDialogProps {
   event: CalendarEvent | null;
@@ -39,6 +54,8 @@ interface EventDialogProps {
   onClose: () => void;
   onSave: (event: CalendarEvent) => void;
   onDelete: (eventId: string) => void;
+  artistData?: artistData;
+  tickets?: tickets[];
 }
 
 export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventDialogProps) {
@@ -210,14 +227,18 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
   ];
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{event?.id ? t`Edit Event` : t`Create Event`}</DialogTitle>
-          <DialogDescription className="sr-only">
+    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent
+        autoFocus={false}
+        showOverlay={true}
+        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-between overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
+      >
+        <SheetHeader>
+          <SheetTitle>{event?.id ? t`Edit Event` : t`Create Event`}</SheetTitle>
+          <SheetDescription className="sr-only">
             {event?.id ? t`Edit the details of this event` : t`Add a new event to your calendar`}
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
         {error && (
           <div className="bg-destructive/15 text-destructive rounded-md px-3 py-2 text-sm">
             {error}
@@ -419,7 +440,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
             </RadioGroup>
           </fieldset>
         </div>
-        <DialogFooter className="flex-row sm:justify-between">
+        <SheetFooter className="flex-row sm:justify-between">
           {event?.id && (
             <Button
               variant="outline"
@@ -439,8 +460,8 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
               <Trans>Save</Trans>
             </Button>
           </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }

@@ -1,21 +1,11 @@
 import type { HTMLAttributes } from 'react';
 
 import { Trans } from '@lingui/react/macro';
-import {
-  BracesIcon,
-  CreditCardIcon,
-  Globe2Icon,
-  Lock,
-  Settings2Icon,
-  User,
-  Users,
-  WebhookIcon,
-} from 'lucide-react';
+import { Globe2Icon, Lock, Settings2Icon, User, Users } from 'lucide-react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router';
 
 import { useSession } from '@documenso/lib/client-only/providers/session';
-import { IS_BILLING_ENABLED } from '@documenso/lib/constants/app';
 import { isPersonalLayout } from '@documenso/lib/utils/organisations';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -102,7 +92,7 @@ export const SettingsDesktopNav = ({ className, ...props }: SettingsDesktopNavPr
             </Button>
           </Link>
 
-          <Link to="/settings/tokens">
+          {/* <Link to="/settings/tokens">
             <Button
               variant="ghost"
               className={cn(
@@ -141,7 +131,7 @@ export const SettingsDesktopNav = ({ className, ...props }: SettingsDesktopNavPr
                 <Trans>Billing</Trans>
               </Button>
             </Link>
-          )}
+          )} */}
         </>
       )}
 

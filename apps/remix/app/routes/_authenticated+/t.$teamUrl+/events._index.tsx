@@ -116,28 +116,6 @@ export default function EventsPage() {
 
   return (
     <div className="mx-auto max-w-screen-xl gap-y-8 px-4 md:px-8">
-      {/* Etiquettes Filter */}
-      {/* <div className="mb-6 flex flex-wrap gap-3">
-        {etiquettes.map((item) => (
-          <div key={item.id} className="flex items-center gap-2">
-            <Checkbox
-              id={item.id}
-              checked={isColorVisible(item.color)}
-              onCheckedChange={() => toggleColorVisibility(item.color)}
-            />
-            <label
-              htmlFor={item.id}
-              className={`flex cursor-pointer items-center gap-2 text-sm font-medium ${
-                !isColorVisible(item.color) ? 'text-muted-foreground line-through' : ''
-              }`}
-            >
-              <span className={cn('size-3 rounded-full shadow-none', item.bgClass)} />
-              {item.name}
-            </label>
-          </div>
-        ))}
-      </div> */}
-      {/* <EventsFilters isLoading={isLoading} /> */}
       <div className="relative">
         {(isLoading || isCreating || isUpdating || isDeleting) && (
           <div className="bg-background/50 absolute inset-0 z-10 flex items-center justify-center">

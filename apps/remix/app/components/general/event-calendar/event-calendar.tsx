@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
 import { addDays, addMonths, addWeeks, format, subMonths, subWeeks } from 'date-fns';
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, LoaderIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { cn } from '@documenso/ui/lib/utils';
@@ -221,6 +221,7 @@ export function EventCalendar({
           <div className="flex items-center justify-start gap-2">
             <SidebarCalendar />
             <EventsFilters isLoading={isLoading} />
+            {isLoading && <LoaderIcon className="text-primary animate-spin" />}
           </div>
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center justify-between gap-2">

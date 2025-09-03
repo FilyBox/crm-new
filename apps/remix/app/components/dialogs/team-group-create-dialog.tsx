@@ -198,7 +198,7 @@ export const TeamGroupCreateDialog = ({ ...props }: TeamGroupCreateDialogProps) 
                                 })),
                               );
                             }}
-                            className="bg-background w-full"
+                            className="bg-background z-9999 w-full"
                             emptySelectionPlaceholder={t`Select groups`}
                           />
                         </FormControl>
@@ -266,7 +266,7 @@ export const TeamGroupCreateDialog = ({ ...props }: TeamGroupCreateDialogProps) 
                                     <SelectValue />
                                   </SelectTrigger>
 
-                                  <SelectContent position="popper">
+                                  <SelectContent className="z-9999" position="popper">
                                     {TEAM_MEMBER_ROLE_HIERARCHY[team.currentTeamRole].map(
                                       (role) => (
                                         <SelectItem key={role} value={role}>

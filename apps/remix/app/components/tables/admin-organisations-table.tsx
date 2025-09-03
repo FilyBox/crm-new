@@ -2,17 +2,10 @@ import { useMemo } from 'react';
 
 import { useLingui } from '@lingui/react/macro';
 import { Trans } from '@lingui/react/macro';
-import {
-  CreditCardIcon,
-  ExternalLinkIcon,
-  MoreHorizontalIcon,
-  SettingsIcon,
-  UserIcon,
-} from 'lucide-react';
+import { MoreHorizontalIcon, SettingsIcon, UserIcon } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router';
 
 import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
-import { SUBSCRIPTION_STATUS_MAP } from '@documenso/lib/constants/billing';
 import { ZUrlSearchParamsSchema } from '@documenso/lib/types/search-params';
 import { trpc } from '@documenso/trpc/react';
 import { Badge } from '@documenso/ui/primitives/badge';
@@ -100,22 +93,22 @@ export const AdminOrganisationsTable = ({
           </Badge>
         ),
       },
-      {
-        header: t`Subscription`,
-        cell: ({ row }) =>
-          row.original.subscription ? (
-            <Link
-              to={`https://dashboard.stripe.com/subscriptions/${row.original.subscription.planId}`}
-              target="_blank"
-              className="flex flex-row items-center gap-2"
-            >
-              {SUBSCRIPTION_STATUS_MAP[row.original.subscription.status]}
-              <ExternalLinkIcon className="h-4 w-4" />
-            </Link>
-          ) : (
-            'None'
-          ),
-      },
+      // {
+      //   header: t`Subscription`,
+      //   cell: ({ row }) =>
+      //     row.original.subscription ? (
+      //       <Link
+      //         to={`https://dashboard.stripe.com/subscriptions/${row.original.subscription.planId}`}
+      //         target="_blank"
+      //         className="flex flex-row items-center gap-2"
+      //       >
+      //         {SUBSCRIPTION_STATUS_MAP[row.original.subscription.status]}
+      //         <ExternalLinkIcon className="h-4 w-4" />
+      //       </Link>
+      //     ) : (
+      //       'None'
+      //     ),
+      // },
       {
         id: 'actions',
         cell: ({ row }) => (
@@ -143,13 +136,13 @@ export const AdminOrganisationsTable = ({
                 </Link>
               </DropdownMenuItem>
 
-              <DropdownMenuItem disabled={!row.original.customerId} asChild>
+              {/* <DropdownMenuItem disabled={!row.original.customerId} asChild>
                 <Link to={`https://dashboard.stripe.com/customers/${row.original.customerId}`}>
                   <CreditCardIcon className="mr-2 h-4 w-4" />
                   <Trans>Stripe</Trans>
                   {!row.original.customerId && <span>&nbsp;(N/A)</span>}
                 </Link>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         ),
