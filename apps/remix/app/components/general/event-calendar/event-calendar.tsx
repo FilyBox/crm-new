@@ -176,18 +176,10 @@ export function EventCalendar({
   };
 
   const handleEventDelete = (eventId: string) => {
-    const deletedEvent = events.find((e) => e.id === eventId);
+    // const deletedEvent = events.find((e) => e.id === eventId);
     onEventDelete?.(eventId);
     setIsEventDialogOpen(false);
     setSelectedEvent(null);
-
-    // Show toast notification when an event is deleted
-    if (deletedEvent) {
-      toast(`Event "${deletedEvent.title}" deleted`, {
-        description: format(new Date(deletedEvent.start), 'MMM d, yyyy'),
-        position: 'bottom-center',
-      });
-    }
   };
 
   const handleEventUpdate = (updatedEvent: CalendarEvent) => {

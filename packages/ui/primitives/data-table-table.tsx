@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
 import {
   type Table as TanstackTable,
@@ -8,7 +8,7 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { Bird } from 'lucide-react';
 import { Toaster } from 'sonner';
 import { toast as sonnertoast } from 'sonner';
@@ -171,7 +171,8 @@ export function DataTable<TData>({
     updatedAt?: Date;
     submissionStatus?: string;
   };
-
+  const { i18n } = useLingui();
+  const currentLanguage = i18n.locale;
   const isDesktop = useMediaQuery('(min-width: 640px)');
   const columns = React.useMemo(() => table.getAllColumns().length, [table]);
   const prepareCardData = (row: TData) => {
@@ -365,7 +366,7 @@ export function DataTable<TData>({
                               typeof cell.getValue() === 'string' ? (
                               `${(cell.getValue() as string).substring(0, 50)}${(cell.getValue() as string).length > 50 ? '...' : ''}`
                             ) : dateColumnIds.includes(cell.column.id) ? (
-                              `${cell.getValue() ? format(cell.getValue() as Date, 'd MMM yyyy', { locale: es }) : '-'}`
+                              `${cell.getValue() ? format(cell.getValue() as Date, 'd MMM yyyy', { locale: currentLanguage === 'es' ? es : enUS }) : '-'}`
                             ) : cell.column.id === 'writersComposers' &&
                               typeof cell.getValue() === 'string' ? (
                               `${(cell.getValue() as string).substring(0, 50)}${(cell.getValue() as string).length > 50 ? '...' : ''}`

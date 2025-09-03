@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { TypeOfTuStreams } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { CircleDashed } from 'lucide-react';
 
 import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
@@ -44,7 +44,6 @@ export const TuStreamsTable = ({
   data,
   isLoading,
   isLoadingError,
-  onAdd,
   onEdit,
   findAll,
   onDelete,
@@ -53,7 +52,7 @@ export const TuStreamsTable = ({
   setIsMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
   const { _, i18n } = useLingui();
-
+  const currentLanguage = i18n.locale;
   const team = useOptionalCurrentTeam();
   const [isPending, startTransition] = useTransition();
 
@@ -97,7 +96,11 @@ export const TuStreamsTable = ({
           variant: 'date',
         },
         cell: ({ row }) =>
-          row.original.date ? format(row.original.date, 'd MMM yyyy', { locale: es }) : '-',
+          row.original.date
+            ? format(row.original.date, 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
+            : '-',
       },
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title={_(msg`Title`)} />,
@@ -161,7 +164,9 @@ export const TuStreamsTable = ({
         },
         cell: ({ row }) =>
           row.original.createdAt
-            ? format(row.original.createdAt, 'd MMM yyyy', { locale: es })
+            ? format(row.original.createdAt, 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
     ];

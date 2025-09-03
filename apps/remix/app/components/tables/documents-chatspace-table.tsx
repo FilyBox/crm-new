@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { DocumentStatus as StatusOptions } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { CircleDashed } from 'lucide-react';
 import { Link } from 'react-router';
 import { match } from 'ts-pattern';
@@ -50,7 +50,8 @@ export const DocumentsChatSpaceTable = ({
   onMultipleDownload,
   onHandleRetry,
 }: DocumentsTableProps) => {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
+  const currentLanguage = i18n.locale;
 
   const team = useCurrentTeam();
   const [isPending, startTransition] = useTransition();
@@ -95,7 +96,9 @@ export const DocumentsChatSpaceTable = ({
         enableSorting: true,
         cell: ({ row }) =>
           row.original.createdAt
-            ? format(row.original.createdAt, 'd MMM yyyy', { locale: es })
+            ? format(row.original.createdAt, 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { ChevronLeft } from 'lucide-react';
 import { Link, redirect } from 'react-router';
 import { match } from 'ts-pattern';
@@ -128,7 +128,8 @@ export default function DocumentPage() {
   const loaderData = useSuperLoaderData<typeof loader>();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const { i18n } = useLingui();
+  const currentLanguage = i18n.locale;
   // const retryDocument = trpc.document.retryContractData.useMutation();
 
   const { document, documentRootPath, contract } = loaderData;
@@ -203,7 +204,9 @@ export default function DocumentPage() {
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-500">Start Date</span>
                         <span className="text-base">
-                          {format(contract.startDate as Date, 'd MMM yyyy', { locale: es })}
+                          {format(contract.startDate as Date, 'd MMM yyyy', {
+                            locale: currentLanguage === 'es' ? es : enUS,
+                          })}
                         </span>
                       </div>
                     )}
@@ -212,7 +215,9 @@ export default function DocumentPage() {
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-500">End Date</span>
                         <span className="text-base">
-                          {format(contract.endDate as Date, 'd MMM yyyy', { locale: es })}
+                          {format(contract.endDate as Date, 'd MMM yyyy', {
+                            locale: currentLanguage === 'es' ? es : enUS,
+                          })}
                         </span>
                       </div>
                     )}

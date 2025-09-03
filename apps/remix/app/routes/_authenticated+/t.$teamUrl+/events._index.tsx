@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
@@ -102,9 +103,16 @@ export default function EventsPage() {
     }
   };
 
-  const onEventDelete = async (eventId: string) => {
+  const onEventDelete = (eventId: string) => {
     try {
-      await handleEventDelete(eventId);
+      toast.promise(handleEventDelete(eventId), {
+        loading: t`Deleting event...`,
+        success: t`Event deleted successfully`,
+        error: t`Error deleting event`,
+        position: 'bottom-center',
+        className: 'z-9999 pointer-events-auto',
+      });
+      // await handleEventDelete(eventId);
     } catch (error) {
       console.error('Error deleting event:', error);
     }

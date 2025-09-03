@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format, isBefore } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
 import { CalendarCheck, Trash2Icon } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -71,8 +73,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
   const [error, setError] = useState<string | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
-  const { t } = useLingui();
-
+  const { t, i18n } = useLingui();
+  const currentLanguage = i18n.locale;
+  console.log('currentLanguage', currentLanguage);
   // Debug log to check what event is being passed
   // useEffect(() => {
   //   console.log('EventDialog received event:', event);
@@ -231,7 +234,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       <SheetContent
         autoFocus={false}
         showOverlay={true}
-        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-between overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
+        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-start overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
       >
         <SheetHeader>
           <SheetTitle>{event?.id ? t`Edit Event` : t`Create Event`}</SheetTitle>
@@ -280,7 +283,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                     )}
                   >
                     <span className={cn('truncate', !startDate && 'text-muted-foreground')}>
-                      {startDate ? format(startDate, 'PPP') : 'Pick a date'}
+                      {startDate
+                        ? format(startDate, 'PPP', { locale: currentLanguage === 'es' ? es : enUS })
+                        : 'Pick a date'}
                     </span>
                     <CalendarCheck
                       size={16}
@@ -312,7 +317,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
             </div>
 
             {!allDay && (
-              <div className="*:not-first:mt-1.5 min-w-28">
+              <div className="*:not-first:mt-1.5 min-w-40">
                 <Label htmlFor="start-time">
                   <Trans>Start Time</Trans>
                 </Label>
@@ -350,7 +355,9 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                     )}
                   >
                     <span className={cn('truncate', !endDate && 'text-muted-foreground')}>
-                      {endDate ? format(endDate, 'PPP') : 'Pick a date'}
+                      {endDate
+                        ? format(endDate, 'PPP', { locale: currentLanguage === 'es' ? es : enUS })
+                        : 'Pick a date'}
                     </span>
                     <CalendarCheck
                       size={16}
@@ -379,7 +386,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
             </div>
 
             {!allDay && (
-              <div className="*:not-first:mt-1.5 min-w-28">
+              <div className="*:not-first:mt-1.5 min-w-40">
                 <Label htmlFor="end-time">
                   <Trans>End Time</Trans>
                 </Label>
@@ -434,7 +441,11 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                   id={`color-${colorOption.value}`}
                   value={colorOption.value}
                   aria-label={colorOption.label}
-                  className={cn('size-6 shadow-none', colorOption.bgClass, colorOption.borderClass)}
+                  className={cn(
+                    'size-6 fill-white text-white shadow-none',
+                    colorOption.bgClass,
+                    colorOption.borderClass,
+                  )}
                 />
               ))}
             </RadioGroup>
@@ -446,7 +457,20 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
               variant="outline"
               className="text-destructive hover:text-destructive"
               size="icon"
-              onClick={handleDelete}
+              onClick={() =>
+                toast.warning(t`The event will be deleted`, {
+                  description: t`Are you sure you want to delete this event?`,
+                  position: 'bottom-center',
+                  className: 'z-9999 pointer-events-auto',
+                  closeButton: true,
+                  action: {
+                    label: t`Delete`,
+                    onClick: () => {
+                      handleDelete();
+                    },
+                  },
+                })
+              }
               aria-label="Delete event"
             >
               <Trash2Icon size={16} aria-hidden="true" />

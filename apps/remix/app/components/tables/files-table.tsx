@@ -4,7 +4,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 
 import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindFilesInternalResponse } from '@documenso/trpc/server/files-router/schema';
@@ -52,8 +52,8 @@ export const FilesTable = ({
   isMultipleDelete = false,
   setIsMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
-  const { _ } = useLingui();
-
+  const { _, i18n } = useLingui();
+  const currentLanguage = i18n.locale;
   const team = useOptionalCurrentTeam();
   const [isPending, startTransition] = useTransition();
 
@@ -108,7 +108,9 @@ export const FilesTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.createdAt
-            ? format(row.original.createdAt, 'd MMM yyyy', { locale: es })
+            ? format(row.original.createdAt, 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {

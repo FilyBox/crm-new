@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useCallback, useState } from 'react';
 
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSpring } from 'framer-motion';
 import { CalendarIcon, CalendarOff, CheckCircle2, User, Users, X } from 'lucide-react';
@@ -95,6 +95,8 @@ export function ExpandibleCard({
 }: ExpandibleCardProps) {
   const { isExpanded, toggleExpand, animatedHeight } = useExpandable();
   const contentRef = useRef<HTMLDivElement>(null);
+  const { i18n } = useLingui();
+  const currentLanguage = i18n.locale;
   useEffect(() => {
     if (contentRef.current) {
       animatedHeight.set(isExpanded ? contentRef.current.scrollHeight : 0);
@@ -407,7 +409,11 @@ export function ExpandibleCard({
             {startDate ? (
               <div className="flex items-center">
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                <span>{format(startDate, 'd MMM yyyy', { locale: es })}</span>
+                <span>
+                  {format(startDate, 'd MMM yyyy', {
+                    locale: currentLanguage === 'es' ? es : enUS,
+                  })}
+                </span>
               </div>
             ) : (
               <div className="flex items-center">
@@ -424,7 +430,9 @@ export function ExpandibleCard({
             {endDate && (
               <div className="flex items-center">
                 <CalendarOff className="mr-2 h-4 w-4" />
-                <span>{format(endDate, 'd MMM yyyy', { locale: es })}</span>
+                <span>
+                  {format(endDate, 'd MMM yyyy', { locale: currentLanguage === 'es' ? es : enUS })}
+                </span>
               </div>
             )}
           </div>

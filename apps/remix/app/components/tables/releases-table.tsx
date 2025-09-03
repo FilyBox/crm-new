@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { Release, TypeOfRelease } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { CheckIcon, CircleDashed, XIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -59,6 +59,7 @@ export const ReleasesTable = ({
   setIsMultipleDelete,
 }: DataTableProps<ReleaseTableRow, ReleaseTableRow>) => {
   const { _, i18n } = useLingui();
+  const currentLanguage = i18n.locale;
   const team = useCurrentTeam();
   const [isPending, startTransition] = useTransition();
 
@@ -102,7 +103,9 @@ export const ReleasesTable = ({
         },
         cell: ({ row }) =>
           row.original.createdAt
-            ? format(row.original.createdAt, 'd MMM yyyy HH:mm', { locale: es })
+            ? format(row.original.createdAt, 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -115,7 +118,11 @@ export const ReleasesTable = ({
           variant: 'dateRange',
         },
         cell: ({ row }) =>
-          row.original.date ? format(row.original.date, 'd MMM yyyy', { locale: es }) : '-',
+          row.original.date
+            ? format(row.original.date, 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
+            : '-',
       },
 
       {

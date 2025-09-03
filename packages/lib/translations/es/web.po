@@ -1199,12 +1199,12 @@ msgstr "Todos"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "All day"
-msgstr ""
+msgstr "Todo el día"
 
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
 msgid "All Day"
-msgstr ""
+msgstr "Todo el día"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
 msgid "All documents"
@@ -1630,6 +1630,10 @@ msgstr "¿Estás seguro de que quieres completar el documento? Esta acción no s
 #: apps/remix/app/components/dialogs/claim-delete-dialog.tsx
 msgid "Are you sure you want to delete the following claim?"
 msgstr "¿Estás seguro de que quieres eliminar la siguiente solicitud?"
+
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+msgid "Are you sure you want to delete this event?"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 msgid "Are you sure you want to delete this folder?"
@@ -3009,6 +3013,7 @@ msgstr "eliminar"
 #: apps/remix/app/components/dialogs/token-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/webhook-delete-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/folder/folder-card.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
@@ -3145,6 +3150,7 @@ msgstr ""
 msgid "Deleting account..."
 msgstr "Eliminando cuenta..."
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 msgid "Deleting event..."
 msgstr "Eliminando eventos..."
@@ -4184,6 +4190,10 @@ msgstr ""
 msgid "Error creating records"
 msgstr ""
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
+msgid "Error deleting event"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
@@ -4259,6 +4269,10 @@ msgstr "Etiqueta"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event created successfully"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
+msgid "Event deleted successfully"
 msgstr ""
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
@@ -7843,7 +7857,7 @@ msgstr "Fuente"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Start Date"
-msgstr "Fehca de inicio"
+msgstr "Fecha de inicio"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Start Time"
@@ -8388,6 +8402,10 @@ msgstr "El dominio de correo electrónico que estás buscando puede haber sido e
 #: apps/remix/app/components/forms/signin.tsx
 msgid "The email or password provided is incorrect"
 msgstr "El correo electrónico o la contraseña proporcionada es incorrecta"
+
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+msgid "The event will be deleted"
+msgstr ""
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "The event will be published"

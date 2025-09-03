@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import type { TeamMemberRole } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { enUS, es } from 'date-fns/locale';
 
 import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindLpmResponse } from '@documenso/trpc/server/lpm-router/schema';
@@ -55,7 +55,7 @@ export const LpmTable = ({
   onMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
   const { _, i18n } = useLingui();
-
+  const currentLanguage = i18n.locale;
   const team = useOptionalCurrentTeam();
   const [isPending, startTransition] = useTransition();
 
@@ -165,7 +165,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.originalReleaseDate
-            ? format(new Date(row.original.originalReleaseDate), 'd MMM yyyy', { locale: es })
+            ? format(new Date(row.original.originalReleaseDate), 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -177,7 +179,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.releaseDate
-            ? format(new Date(row.original.releaseDate), 'd MMM yyyy', { locale: es })
+            ? format(new Date(row.original.releaseDate), 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -248,7 +252,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.preOrderDate
-            ? format(new Date(row.original.preOrderDate), 'd MMM yyyy', { locale: es })
+            ? format(new Date(row.original.preOrderDate), 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -325,7 +331,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.timedReleaseDate
-            ? format(new Date(row.original.timedReleaseDate), 'd MMM yyyy', { locale: es })
+            ? format(new Date(row.original.timedReleaseDate), 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -346,7 +354,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.lastProcessDate
-            ? format(new Date(row.original.lastProcessDate), 'd MMM yyyy HH:mm', { locale: es })
+            ? format(new Date(row.original.lastProcessDate), 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -358,7 +368,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.importDate
-            ? format(new Date(row.original.importDate), 'd MMM yyyy HH:mm', { locale: es })
+            ? format(new Date(row.original.importDate), 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -379,7 +391,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.lastModified
-            ? format(new Date(row.original.lastModified), 'd MMM yyyy HH:mm', { locale: es })
+            ? format(new Date(row.original.lastModified), 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -391,7 +405,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.submittedAt
-            ? format(new Date(row.original.submittedAt), 'd MMM yyyy HH:mm', { locale: es })
+            ? format(new Date(row.original.submittedAt), 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -570,7 +586,9 @@ export const LpmTable = ({
         enableColumnFilter: true,
         cell: ({ row }) =>
           row.original.instantGratificationDate
-            ? format(new Date(row.original.instantGratificationDate), 'd MMM yyyy', { locale: es })
+            ? format(new Date(row.original.instantGratificationDate), 'd MMM yyyy', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {

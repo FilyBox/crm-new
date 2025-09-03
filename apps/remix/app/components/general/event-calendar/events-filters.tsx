@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { EventColor } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { enUS, es } from 'date-fns/locale';
 import { CheckIcon, CircleDashed, XIcon } from 'lucide-react';
 
 import type { TFindEventResponse } from '@documenso/trpc/server/events-router/schema';
@@ -22,7 +22,8 @@ interface EventsFiltersProps {
 }
 
 export function EventsFilters({ data, isLoading = false }: EventsFiltersProps) {
-  const { _ } = useLingui();
+  const { _, i18n } = useLingui();
+  const currentLanguage = i18n.locale;
 
   const createColumns = (): ColumnDef<EventTableRow>[] => {
     const columns: ColumnDef<EventTableRow>[] = [
@@ -60,7 +61,9 @@ export function EventsFilters({ data, isLoading = false }: EventsFiltersProps) {
         },
         cell: ({ row }) =>
           row.original.beginning
-            ? format(row.original.beginning, 'd MMM yyyy HH:mm', { locale: es })
+            ? format(row.original.beginning, 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
       {
@@ -73,7 +76,11 @@ export function EventsFilters({ data, isLoading = false }: EventsFiltersProps) {
           variant: 'dateRange',
         },
         cell: ({ row }) =>
-          row.original.end ? format(row.original.end, 'd MMM yyyy HH:mm', { locale: es }) : '-',
+          row.original.end
+            ? format(row.original.end, 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
+            : '-',
       },
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title={_(msg`Published`)} />,
@@ -162,7 +169,9 @@ export function EventsFilters({ data, isLoading = false }: EventsFiltersProps) {
         },
         cell: ({ row }) =>
           row.original.createdAt
-            ? format(row.original.createdAt, 'd MMM yyyy HH:mm', { locale: es })
+            ? format(row.original.createdAt, 'd MMM yyyy HH:mm', {
+                locale: currentLanguage === 'es' ? es : enUS,
+              })
             : '-',
       },
     ];
