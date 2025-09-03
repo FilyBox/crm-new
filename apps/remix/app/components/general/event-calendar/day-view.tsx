@@ -12,7 +12,8 @@ import {
   startOfDay,
 } from 'date-fns';
 
-import { cn } from '../../lib/utils';
+import { cn } from '@documenso/ui/lib/utils';
+
 import { EndHour, StartHour, WeekCellsHeight } from './constants';
 import { DraggableEvent } from './draggable-event';
 import { DroppableCell } from './droppable-cell';

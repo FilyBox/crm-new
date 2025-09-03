@@ -11,8 +11,8 @@ import { LimitsProvider } from '@documenso/ee/server-only/limits/provider/client
 import { useOptionalCurrentOrganisation } from '@documenso/lib/client-only/providers/organisation';
 import { TrpcProvider } from '@documenso/trpc/react';
 import { Button } from '@documenso/ui/primitives/button';
-import { CalendarProvider } from '@documenso/ui/primitives/event-calendar/calendar-context';
 
+import { CalendarProvider } from '~/components/general/event-calendar/calendar-context';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
 import { useOptionalCurrentTeam } from '~/providers/team';
 

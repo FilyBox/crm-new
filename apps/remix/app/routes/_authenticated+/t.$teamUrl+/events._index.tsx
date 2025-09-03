@@ -7,9 +7,10 @@ import { z } from 'zod';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
 import { ZFindEventInternalRequestSchema } from '@documenso/trpc/server/events-router/schema';
 import ErrorPage from '@documenso/ui/primitives/errorPage';
-import { type CalendarEvent, EventCalendar } from '@documenso/ui/primitives/event-calendar';
-import { useCalendarContext } from '@documenso/ui/primitives/event-calendar/calendar-context';
 
+import { useCalendarContext } from '~/components/general/event-calendar/calendar-context';
+import { EventCalendar } from '~/components/general/event-calendar/event-calendar';
+import type { CalendarEvent } from '~/components/general/event-calendar/types';
 // import { EventsFilters } from '~/components/tables/events-filters';
 import { useCalendarEvents } from '~/hooks/use-calendar-events';
 import { appMetaTags } from '~/utils/meta';

@@ -4,8 +4,8 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { trpc } from '@documenso/trpc/react';
 import type { FilterStructure } from '@documenso/ui/lib/filter-columns';
-import { type CalendarEvent, type EventColor } from '@documenso/ui/primitives/event-calendar';
 
+import type { CalendarEvent, EventColor } from '~/components/general/event-calendar/types';
 import { useCurrentTeam } from '~/providers/team';
 
 export interface DatabaseEvent {

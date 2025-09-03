@@ -5,15 +5,16 @@ import { addDays, addMonths, addWeeks, format, subMonths, subWeeks } from 'date-
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { cn } from '../../lib/utils';
-import { Button } from '../button';
+import { cn } from '@documenso/ui/lib/utils';
+import { Button } from '@documenso/ui/primitives/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from '../dropdown-menu';
+} from '@documenso/ui/primitives/dropdown-menu';
+
 import { AgendaView } from './agenda-view';
 import { useCalendarContext } from './calendar-context';
 import { CalendarDndProvider } from './calendar-dnd-context';

@@ -7,8 +7,9 @@ import { ChevronDownIcon } from 'lucide-react';
 
 import { Button } from '@documenso/ui/primitives/button';
 import { Calendar } from '@documenso/ui/primitives/calendar';
-import { useCalendarContext } from '@documenso/ui/primitives/event-calendar/calendar-context';
 import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
+
+import { useCalendarContext } from './calendar-context';
 
 export default function SidebarCalendar() {
   const { currentDate, setCurrentDate } = useCalendarContext();

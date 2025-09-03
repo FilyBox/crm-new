@@ -17,21 +17,13 @@ import {
   startOfWeek,
 } from 'date-fns';
 
-import { cn } from '../../lib/utils';
+import { cn } from '@documenso/ui/lib/utils';
+
 import { EndHour, StartHour, WeekCellsHeight } from './constants';
 import { DraggableEvent } from './draggable-event';
 import { DroppableCell } from './droppable-cell';
 import { EventItem } from './event-item';
 import { useCurrentTimeIndicator } from './hooks/use-current-time-indicator';
-// import {
-//   DraggableEvent,
-//   DroppableCell,
-//   EventItem,
-//   isMultiDayEvent,
-//   useCurrentTimeIndicator,
-//   WeekCellsHeight,
-//   type CalendarEvent,
-// } from "@/components/event-calendar";
 import type { CalendarEvent } from './types';
 import { isMultiDayEvent } from './utils';
 

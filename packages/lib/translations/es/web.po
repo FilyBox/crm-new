@@ -57,7 +57,7 @@ msgstr "\"{placeholderEmail}\" en nombre de \"Team Name\" te ha invitado a firma
 msgid "\"Team Name\" has invited you to sign \"example document\"."
 msgstr "\"Team Name\" te ha invitado a firmar \"example document\"."
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "(no title)"
 msgstr ""
 
@@ -114,11 +114,13 @@ msgid "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}}
 msgstr "{0, plural, one {Esperando 1 destinatario} other {Esperando # destinatarios}}"
 
 #. placeholder {0}: _(FRIENDLY_FIELD_TYPE[fieldType as FieldType])
+#. placeholder {0}: initialData ? _(msg`Update your event details like name, description, and artists.`) : _(msg`Create a new Event with details like name, description, and artists.`)
 #. placeholder {0}: initialData ? _(msg`Update Contract`) : _(msg`Add Contract`)
-#. placeholder {0}: initialData ? _(msg`Update Distribution Record`) : _(msg`Add Distribution Record`)
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/distribution-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -918,7 +920,7 @@ msgstr "Agrega un dominio personalizado para enviar correos electrónicos en nom
 msgid "Add a document"
 msgstr "Agregar un documento"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Add a new event to your calendar"
 msgstr ""
 
@@ -1163,7 +1165,7 @@ msgstr "Después de firmar un documento electrónicamente, se le dará la oportu
 msgid "After submission, a document will be automatically generated and added to your documents page. You will also receive a notification via email."
 msgstr "Después de la presentación, se generará automáticamente un documento y se agregará a su página de documentos. También recibirá una notificación por correo electrónico."
 
-#: packages/ui/primitives/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Agenda"
 msgstr "Agenda"
 
@@ -1199,12 +1201,12 @@ msgstr ""
 msgid "All"
 msgstr "Todos"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "All day"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "All Day"
 msgstr ""
 
@@ -1648,6 +1650,10 @@ msgstr "¿Está seguro de que quiere eliminar esta carpeta?"
 msgid "Are you sure you want to delete this token?"
 msgstr "¿Estás seguro de que deseas eliminar este token?"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Are you sure you want to publish this item?"
+msgstr ""
+
 #: apps/remix/app/components/general/document-signing/document-signing-reject-dialog.tsx
 msgid "Are you sure you want to reject this document? This action cannot be undone."
 msgstr "Are you sure you want to reject this document? This action cannot be undone."
@@ -1655,6 +1661,10 @@ msgstr "Are you sure you want to reject this document? This action cannot be und
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 msgid "Are you sure you want to remove the <0>{passkeyName}</0> passkey."
 msgstr "¿Está seguro de que desea eliminar la clave de acceso <0>{passkeyName}</0>?"
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Are you sure you want to unpublish this item?"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/organisation-delete-dialog.tsx
 msgid "Are you sure you wish to delete this organisation?"
@@ -1686,6 +1696,7 @@ msgstr "¿Estás seguro?"
 msgid "Artist created successfully"
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -1842,9 +1853,13 @@ msgstr ""
 msgid "Before you get started, please confirm your email address by clicking the button below:"
 msgstr "Antes de comenzar, por favor confirma tu dirección de correo electrónico haciendo clic en el botón de abajo:"
 
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Beginning"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Beginning Date"
 msgstr ""
 
 #: apps/remix/app/components/general/settings-nav-desktop.tsx
@@ -2047,8 +2062,10 @@ msgstr "Puede preparar"
 #: apps/remix/app/components/general/document-signing/document-signing-reject-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-signature-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -2056,7 +2073,6 @@ msgstr "Puede preparar"
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/document-flow/send-document-action-dialog.tsx
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
 #: packages/ui/primitives/signature-pad/signature-pad-dialog.tsx
 msgid "Cancel"
 msgstr "Cancelar"
@@ -2239,8 +2255,8 @@ msgstr "Cerrar"
 msgid "Código del Territorio"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Color"
 msgstr ""
 
@@ -2607,6 +2623,10 @@ msgstr ""
 msgid "Create a new email address for your organisation using the domain <0>{0}</0>."
 msgstr "Crea una nueva dirección de correo electrónico para tu organización usando el dominio <0>{0}</0>."
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Create a new Event with details like name, description, and artists."
+msgstr ""
+
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -2640,6 +2660,10 @@ msgstr "Crear una organización para colaborar con equipos"
 #: apps/remix/app/routes/_authenticated+/dashboard.tsx
 msgid "Create an organisation to get started."
 msgstr "Crear una organización para comenzar."
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Create And Publish"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "Create and send"
@@ -2685,7 +2709,9 @@ msgstr "Crear documento a partir de la plantilla"
 msgid "Create Email"
 msgstr "Crear correo electrónico"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Create Event"
 msgstr "Crear evento"
 
@@ -2794,6 +2820,7 @@ msgstr "Crea tu cuenta y comienza a utilizar la firma de documentos de última g
 
 #: apps/remix/app/components/dialogs/public-profile-template-manage-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-information.tsx
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
 #: apps/remix/app/components/tables/admin-leaderboard-table.tsx
@@ -2807,7 +2834,6 @@ msgstr "Crea tu cuenta y comienza a utilizar la firma de documentos de última g
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Created"
 msgstr "Creado"
 
@@ -2850,6 +2876,7 @@ msgstr ""
 msgid "Creating artists..."
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 msgid "Creating event..."
 msgstr "Creando evento:::"
@@ -2944,7 +2971,7 @@ msgstr "Fecha de creación"
 msgid "Date Format"
 msgstr "Formato de fecha"
 
-#: packages/ui/primitives/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Day"
 msgstr "Día"
 
@@ -3004,6 +3031,7 @@ msgstr "eliminar"
 #: apps/remix/app/components/dialogs/webhook-delete-dialog.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/folder/folder-card.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -3155,9 +3183,10 @@ msgstr ""
 msgid "Deleting records..."
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Description"
 msgstr ""
 
@@ -3794,7 +3823,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Editar"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Edit Event"
 msgstr "Editar evento"
 
@@ -3802,7 +3831,7 @@ msgstr "Editar evento"
 msgid "Edit Template"
 msgstr "Editar plantilla"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Edit the details of this event"
 msgstr "Edita los detalles de este evento"
 
@@ -4022,20 +4051,21 @@ msgstr "Habilitar la cuenta permite al usuario usar la cuenta de nuevo, junto co
 msgid "Enclosed Document"
 msgstr "Documento Adjunto"
 
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "End"
 msgstr "Final"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "End Date"
 msgstr "Fecha de finalización"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "End date cannot be before start date"
 msgstr "La fecha de finalización no puede ser aterior a la de inicio"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "End Time"
 msgstr "Hora de finalización"
 
@@ -4162,6 +4192,10 @@ msgstr "Error"
 msgid "Error al reintentar"
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Error creating event"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4202,8 +4236,24 @@ msgstr "Error al descargar archivos"
 msgid "Error processing file"
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Error publishing event"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
 msgid "Error retrying document"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Error submitting form"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Error unpublishing event"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Error updating event"
 msgstr ""
 
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
@@ -4224,13 +4274,43 @@ msgstr "Error al cargar el archivo"
 msgid "Error while processing CSV"
 msgstr ""
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Etiquette"
 msgstr "Etiqueta"
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event created successfully"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event Description"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event Name"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event published successfully"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/webhook-test-dialog.tsx
 msgid "Event Type"
 msgstr "Tipo de evento"
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event unpublished successfully"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event updated successfully"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Event Venue"
+msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 msgid "Events"
@@ -4841,6 +4921,10 @@ msgstr "Si no encuentras el enlace de confirmación en tu bandeja de entrada, pu
 msgid "If your authenticator app does not support QR codes, you can use the following code instead:"
 msgstr "Si tu aplicación de autenticación no admite códigos QR, puedes usar el siguiente código en su lugar:"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Image"
+msgstr ""
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Import Date"
 msgstr ""
@@ -5196,7 +5280,7 @@ msgstr ""
 msgid "Local timezone"
 msgstr "Zona horaria local"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Location"
 msgstr "Ubicación"
 
@@ -5452,7 +5536,7 @@ msgstr "Modifica el orden para organizar tus datos"
 msgid "Modify the details of the subscription claim."
 msgstr "Modifica los detalles de la reclamación de suscripción."
 
-#: packages/ui/primitives/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Month"
 msgstr "Mes"
 
@@ -5529,6 +5613,7 @@ msgstr "N/A"
 #: apps/remix/app/components/general/claim-account.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-name-field.tsx
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
@@ -5542,7 +5627,6 @@ msgstr "N/A"
 #: packages/ui/primitives/document-flow/add-signers.tsx
 #: packages/ui/primitives/document-flow/add-signers.tsx
 #: packages/ui/primitives/document-flow/types.ts
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
@@ -5581,7 +5665,8 @@ msgstr "Nunca expira"
 msgid "New Artist"
 msgstr "Nuevo Artista"
 
-#: packages/ui/primitives/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "New Event"
 msgstr "Nuevo evento"
 
@@ -5666,6 +5751,7 @@ msgstr "No se encontraron carpetas que coincidan con \"{searchTerm}\""
 msgid "No further action is required from you at this time."
 msgstr "No further action is required from you at this time."
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -6254,6 +6340,10 @@ msgstr "Por favor {recipientActionVerb} este documento creado a partir de tu pla
 msgid "Please {recipientActionVerb} your document"
 msgstr "Por favor {recipientActionVerb} tu documento"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Please check the console for more details."
+msgstr ""
+
 #: apps/remix/app/components/dialogs/organisation-member-invite-dialog.tsx
 msgid "Please check the CSV file and make sure it is according to our format"
 msgstr "Por favor, revisa el archivo CSV y asegúrate de que esté de acuerdo con nuestro formato"
@@ -6550,13 +6640,21 @@ msgstr "URL del perfil público"
 msgid "Public templates are connected to your public profile. Any modifications to public templates will also appear in your public profile."
 msgstr "Las plantillas públicas están conectadas a tu perfil público. Cualquier modificación a las plantillas públicas también aparecerá en tu perfil público."
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Publish"
+msgstr ""
+
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Published"
 msgstr ""
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Publishers/Collection Societies"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Publishing event..."
 msgstr ""
 
 #: packages/ui/primitives/document-flow/types.ts
@@ -7024,8 +7122,8 @@ msgstr ""
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-number-field.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-text-field.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
 msgid "Save"
 msgstr "Guardar"
 
@@ -7100,6 +7198,7 @@ msgstr ""
 msgid "Search languages..."
 msgstr "Buscar idiomas..."
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -7107,6 +7206,7 @@ msgstr "Buscar idiomas..."
 msgid "Search options"
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -7178,6 +7278,7 @@ msgstr "Seleccionar una opción"
 msgid "Select an organisation to view teams"
 msgstr "Seleccione una organización para ver los equipos"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -7262,7 +7363,7 @@ msgstr "Seleccionar visibilidad"
 msgid "selected"
 msgstr "seleccionado"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Selected time must be between {StartHour}:00 and {EndHour}:00"
 msgstr ""
 
@@ -7787,11 +7888,11 @@ msgstr "Ordenar por"
 msgid "Source"
 msgstr "Fuente"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Start Date"
 msgstr "Fehca de inicio"
 
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Start Time"
 msgstr "Hora de inicio"
 
@@ -8348,6 +8449,14 @@ msgstr "El dominio de correo electrónico que estás buscando puede haber sido e
 msgid "The email or password provided is incorrect"
 msgstr "El correo electrónico o la contraseña proporcionada es incorrecta"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "The event will be published"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "The event will be unpublished"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id.tsx
 msgid "The events that will trigger a webhook to be sent to your URL."
@@ -8816,6 +8925,10 @@ msgstr "Esto cerrará la sesión en todos los demás dispositivos. Necesitarás 
 msgid "ticket"
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Tickets"
+msgstr ""
+
 #: apps/remix/app/components/tables/document-logs-table.tsx
 msgid "Time"
 msgstr "Hora"
@@ -8852,6 +8965,7 @@ msgid "Tipo de Precio"
 msgstr ""
 
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
@@ -8863,7 +8977,6 @@ msgstr ""
 #: apps/remix/app/components/tables/tustreams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
-#: packages/ui/primitives/event-calendar/event-dialog.tsx
 msgid "Title"
 msgstr "Título"
 
@@ -8928,7 +9041,7 @@ msgstr "Para usar nuestro servicio de firma electrónica, debe tener acceso a:"
 msgid "To view this document you need to be signed into your account, please sign in to continue."
 msgstr "Para ver este documento debes iniciar sesión en tu cuenta, por favor inicia sesión para continuar."
 
-#: packages/ui/primitives/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Today"
 msgstr "Hoy"
 
@@ -9257,6 +9370,14 @@ msgstr "Documentos ilimitados, API y más"
 msgid "Unpin"
 msgstr "Desanclar"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Unpublish"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Unpublishing event..."
+msgstr ""
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Untitled Group"
 msgstr "Grupo sin título"
@@ -9292,6 +9413,14 @@ msgstr ""
 msgid "Update"
 msgstr "Actualizar"
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Update And Publish"
+msgstr ""
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Update and UnPublish"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/admin+/site-settings.tsx
 msgid "Update Banner"
 msgstr "Actualizar banner"
@@ -9320,6 +9449,11 @@ msgstr ""
 #: apps/remix/app/components/dialogs/organisation-email-update-dialog.tsx
 msgid "Update email"
 msgstr "Actualizar correo electrónico"
+
+#: apps/remix/app/components/sheets/event-sheet.tsx
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Update Event"
+msgstr ""
 
 #: apps/remix/app/components/general/legacy-field-warning-popover.tsx
 msgid "Update Fields"
@@ -9411,6 +9545,10 @@ msgstr ""
 msgid "Update your Distribution record details."
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
+msgid "Update your event details like name, description, and artists."
+msgstr ""
+
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -9421,6 +9559,7 @@ msgstr ""
 msgid "Update your Virgin record details."
 msgstr ""
 
+#: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 msgid "Updating event..."
 msgstr "Actualizando eventos..."
@@ -9646,8 +9785,8 @@ msgstr "Valor"
 msgid "Venta"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
-#: packages/ui/primitives/event-calendar/events-filters.tsx
 msgid "Venue"
 msgstr ""
 
@@ -10208,7 +10347,7 @@ msgstr "Webhooks"
 msgid "WebSite Updates"
 msgstr ""
 
-#: packages/ui/primitives/event-calendar/event-calendar.tsx
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Week"
 msgstr "Semana"
 

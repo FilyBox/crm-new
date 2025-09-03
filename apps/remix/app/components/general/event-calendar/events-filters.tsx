@@ -11,8 +11,8 @@ import { CheckIcon, CircleDashed, XIcon } from 'lucide-react';
 import type { TFindEventResponse } from '@documenso/trpc/server/events-router/schema';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 
-import { DataTableColumnHeader } from '../data-table-column-header';
-import { DataTableFilterList } from '../data-table-filter-list';
+import { DataTableColumnHeader } from '../../tables/data-table-column-header';
+import { DataTableFilterList } from '../../tables/data-table-filter-list';
 
 type EventTableRow = TFindEventResponse['data'][number];
 

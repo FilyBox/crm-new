@@ -1,5 +1,3 @@
-'use client';
-
 // Component exports
 export { AgendaView } from './agenda-view';
 export { DayView } from './day-view';

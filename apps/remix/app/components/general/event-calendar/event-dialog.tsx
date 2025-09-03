@@ -4,10 +4,10 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { format, isBefore } from 'date-fns';
 import { CalendarCheck, Trash2Icon } from 'lucide-react';
 
-import { cn } from '../../lib/utils';
-import { Button } from '../button';
-import { Calendar } from '../calendar';
-import { Checkbox } from '../checkbox';
+import { cn } from '@documenso/ui/lib/utils';
+import { Button } from '@documenso/ui/primitives/button';
+import { Calendar } from '@documenso/ui/primitives/calendar';
+import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -15,14 +15,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../dialog';
-import { Input } from '../input';
-import { Label } from '../label';
-import { Popover, PopoverContent, PopoverTrigger } from '../popover';
-import { RadioGroup, RadioGroupItem } from '../radio-group';
-import { ScrollArea } from '../scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
-import { Textarea } from '../textarea';
+} from '@documenso/ui/primitives/dialog';
+import { Input } from '@documenso/ui/primitives/input';
+import { Label } from '@documenso/ui/primitives/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
+import { RadioGroup, RadioGroupItem } from '@documenso/ui/primitives/radio-group';
+import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@documenso/ui/primitives/select';
+import { Textarea } from '@documenso/ui/primitives/textarea';
+
 import { DefaultEndHour, DefaultStartHour, EndHour, StartHour } from './constants';
 import type { CalendarEvent, EventColor } from './types';
 

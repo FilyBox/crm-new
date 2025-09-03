@@ -13,7 +13,8 @@ import {
   startOfWeek,
 } from 'date-fns';
 
-import { Popover, PopoverContent, PopoverTrigger } from '../popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
+
 // import {
 //   DraggableEvent,
 //   DroppableCell,
