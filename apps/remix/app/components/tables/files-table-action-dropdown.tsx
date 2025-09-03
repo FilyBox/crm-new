@@ -54,7 +54,6 @@ export const TableActionDropdown = ({
       const document = await trpcClient.files.getDocumentById.query({
         documentId: row.id,
       });
-      console.log('Document data:', document);
       const documentData = document?.documentData;
 
       if (!documentData) {

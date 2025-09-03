@@ -171,14 +171,11 @@ export const DocumentSigningForm = ({
           documentId: document.id,
           images: imagesData,
         });
-        console.log('Images recipient updated successfully');
       } catch (error) {
         for (const imagePath of imagesData) {
           await deleteFile(imagePath);
         }
-        console.error('Error updating images recipient:', error);
       }
-      console.log('isImagesUpdated', isImagesUpdated);
       // await updateImagesRecipient({
       //   id: recipient.id,
       //   documentId: document.id,
@@ -186,8 +183,6 @@ export const DocumentSigningForm = ({
       // });
 
       await completeDocumentWithToken(payload);
-      console.log('completedocumentwithtoken');
-
       analytics.capture('App: Recipient has completed signing', {
         signerId: recipient.id,
         documentId: document.id,
@@ -199,8 +194,6 @@ export const DocumentSigningForm = ({
       } else {
         await navigate(`/sign/${recipient.token}/complete`);
       }
-
-      console.log('isImagesUpdated', isImagesUpdated);
 
       return;
     }

@@ -313,8 +313,6 @@ export default function ContractsPage() {
   };
 
   const handleDelete = (deleteData: Contract) => {
-    console.log('deletadata', deleteData);
-
     toast.promise(deleteContractsMutation.mutateAsync({ id: deleteData.id }), {
       loading: t`Deleting record...`,
       success: () => {

@@ -70,8 +70,6 @@ export const AdvancedFilterDialog = ({
         tableToConsult,
       });
 
-      console.log('AI Query Result:', { query, companies });
-
       if (query === undefined) {
         toast({
           description: _(msg`An error occurred. Please try again.`),

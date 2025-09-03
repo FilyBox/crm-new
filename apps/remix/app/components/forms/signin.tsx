@@ -214,8 +214,6 @@ export const SignInForm = ({
         redirectPath,
       });
     } catch (err) {
-      console.log(err);
-
       const error = AppError.parseError(err);
 
       if (error.code === 'TWO_FACTOR_MISSING_CREDENTIALS') {

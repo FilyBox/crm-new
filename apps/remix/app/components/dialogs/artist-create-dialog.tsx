@@ -95,7 +95,6 @@ export const ArtistCreateDialog = ({ teamId: _teamId }: ArtistCreateDialogProps)
         // url: artistData.url,
         // disabled: artistData.disabled,
       });
-      console.log('Artist created:', artist);
 
       setShowArtistCreateDialog(false);
       setIsCreatingArtist(false);

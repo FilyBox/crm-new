@@ -70,8 +70,6 @@ export default function DocumentsPage() {
     [searchParams],
   );
 
-  console.log('folderId', folderId);
-  console.log('hola');
   const { data, isLoading, isFetching, isLoadingError, refetch } =
     trpc.document.findDocumentsInternalUseToChat.useQuery(
       {
@@ -135,7 +133,6 @@ export default function DocumentsPage() {
         await downloadAnyFileMultiple({ multipleFiles: files });
       }
     } catch (error) {
-      console.log('error downloading files:', error);
       throw new Error('Error downloading files');
     }
   }
@@ -200,7 +197,6 @@ export default function DocumentsPage() {
                 handleRetry(documentDataId, documentId)
               }
               onMoveDocument={(documentRow) => {
-                console.log('Moving document jiji:', documentRow.id);
                 setDocumentToMove(documentRow.id);
                 setIsMovingDocument(true);
               }}

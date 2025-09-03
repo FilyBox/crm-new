@@ -49,8 +49,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   }).catch(() => null);
 
   if (!contract) {
-    console.log('no contract found');
-
     throw new AppError('NotFound', {
       message: 'Contract not found.',
       statusCode: 404,
@@ -58,7 +56,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   }
 
   if (!documentId || Number.isNaN(documentId)) {
-    console.log('no documentId found');
     throw redirect(documentRootPath);
   }
 
@@ -68,7 +65,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     teamId: team?.id,
   }).catch(() => null);
   if (document?.teamId && !team?.url) {
-    console.log('no team found for document');
     throw redirect(documentRootPath);
   }
 
@@ -94,12 +90,10 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   }
 
   if (!document || !document.documentData || (team && !canAccessDocument)) {
-    console.log('no document found or access denied');
     throw redirect(documentRootPath);
   }
 
   if (team && !canAccessDocument) {
-    console.log('User does not have access to the document');
     throw redirect(documentRootPath);
   }
 

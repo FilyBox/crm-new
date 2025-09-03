@@ -225,7 +225,6 @@ export default function TuStreamsPage() {
 
       const validatedData = csvData.map((item) => {
         const parsedDate = parseSpanishDate(item['Fecha'] || item['Date'] || '');
-        console.log('item', item);
         // Validate type to ensure it's one of the allowed TypeOfTuStreams values
         let type: 'EP' | 'Album' | 'Sencillo' | 'Single' | undefined = undefined;
         const typeValue = item['type'] || item['Tipo'] || item['Type'] || item['Tipo de Release'];
@@ -254,15 +253,9 @@ export default function TuStreamsPage() {
           date: parsedDate || undefined,
         };
       });
-      console.log('validatedData', validatedData);
-      // Filter out completely empty objects (in case there are empty rows in CSV)
       const filteredData = validatedData.filter((item) =>
         Object.values(item).some((value) => value !== undefined && value !== ''),
       );
-      console.log('filteredData', filteredData);
-      // const result = await createManyTuStreamsMutation.mutateAsync({
-      //   tuStreams: filteredData,
-      // });
 
       sonnertoast.promise(
         createManyTuStreamsMutation.mutateAsync({
@@ -294,8 +287,6 @@ export default function TuStreamsPage() {
   const findAll = async () => {
     try {
       const result = await findData.mutateAsync({});
-      console.log('data aa', result);
-
       // Transform the data to match the expected type
       if (Array.isArray(result)) {
         return result;

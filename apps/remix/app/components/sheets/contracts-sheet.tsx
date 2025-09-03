@@ -195,25 +195,21 @@ export default function ContractsSheet({
     try {
       const formData = initialData?.id ? { ...values, id: initialData.id } : values;
 
-      console.log('Form submitted:', formData);
       const dataToSubmit = {
         ...formData,
         documentId: selectedDocument?.id,
         fileName: selectedDocument?.title,
       };
 
-      console.log('Data to submit:', dataToSubmit);
-
       if (initialData?.id) {
         await handleUpdate(dataToSubmit as unknown as Contract);
       } else {
         await handleCreate(dataToSubmit as unknown as Omit<Contract, 'id'>);
       }
-      console.log('Form submitted successfully', values);
       form.reset();
       setSelectedDocument(null);
     } catch (error) {
-      console.error('Form submission error', error);
+      throw new Error('Form submission error');
     }
   }
 
