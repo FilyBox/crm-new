@@ -147,6 +147,10 @@ export function EventCalendar({
       start: startTime,
       end: addHoursToDate(startTime, 1),
       allDay: false,
+      color: 'blue',
+      description: '',
+      venue: '',
+      published: false,
     };
     setSelectedEvent(newEvent);
     setIsEventDialogOpen(true);

@@ -61,7 +61,7 @@ function EventWrapper({
     <button
       className={cn(
         'focus-visible:border-ring focus-visible:ring-ring/50 data-dragging:cursor-grabbing data-dragging:shadow-lg data-past-event:line-through flex h-full w-full select-none overflow-hidden px-1 text-left font-medium outline-none backdrop-blur-md transition focus-visible:ring-[3px] sm:px-2',
-        getEventColorClasses(event.color),
+        getEventColorClasses(event.color ?? undefined),
         getBorderRadiusClasses(isFirstDay, isLastDay),
         className,
       )}
@@ -222,7 +222,7 @@ export function EventItem({
     <button
       className={cn(
         'focus-visible:border-ring focus-visible:ring-ring/50 data-past-event:line-through data-past-event:opacity-90 flex w-full flex-col gap-1 rounded p-2 text-left outline-none transition focus-visible:ring-[3px]',
-        getEventColorClasses(eventColor),
+        getEventColorClasses(eventColor ?? undefined),
         className,
       )}
       data-past-event={isPast(new Date(event.end)) || undefined}
@@ -242,10 +242,10 @@ export function EventItem({
             {formatTimeWithOptionalMinutes(displayEnd)}
           </span>
         )}
-        {event.location && (
+        {event.venue && (
           <>
             <span className="px-1 opacity-35"> · </span>
-            <span>{event.location}</span>
+            <span>{event.venue}</span>
           </>
         )}
       </div>

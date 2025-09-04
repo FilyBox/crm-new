@@ -6606,6 +6606,7 @@ msgstr "Public templates are connected to your public profile. Any modifications
 msgid "Publish"
 msgstr "Publish"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
 msgid "Published"

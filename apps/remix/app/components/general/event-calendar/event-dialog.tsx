@@ -1,17 +1,27 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format, isBefore } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { CalendarCheck, Trash2Icon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import * as z from 'zod';
 
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
 import { Calendar } from '@documenso/ui/primitives/calendar';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@documenso/ui/primitives/form';
 import { Input } from '@documenso/ui/primitives/input';
-import { Label } from '@documenso/ui/primitives/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
 import { RadioGroup, RadioGroupItem } from '@documenso/ui/primitives/radio-group';
 import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
@@ -30,6 +40,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@documenso/ui/primitives/sheet';
+import { Switch } from '@documenso/ui/primitives/switch';
 import { Textarea } from '@documenso/ui/primitives/textarea';
 
 import { DefaultEndHour, DefaultStartHour, EndHour, StartHour } from './constants';
@@ -60,60 +71,73 @@ interface EventDialogProps {
   tickets?: tickets[];
 }
 
+const formSchema = z.object({
+  title: z.string().min(1, { message: 'Title cannot be empty' }),
+  description: z.string().optional(),
+  startDate: z.date(),
+  endDate: z.date(),
+  startTime: z.string(),
+  endTime: z.string(),
+  allDay: z.boolean(),
+  location: z.string().optional(),
+  color: z.string(),
+  published: z.boolean().optional(),
+});
+
 export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventDialogProps) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
-  const [startTime, setStartTime] = useState(`${DefaultStartHour}:00`);
-  const [endTime, setEndTime] = useState(`${DefaultEndHour}:00`);
-  const [allDay, setAllDay] = useState(false);
-  const [location, setLocation] = useState('');
-  const [color, setColor] = useState<EventColor>('blue');
   const [error, setError] = useState<string | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const { t, i18n } = useLingui();
   const currentLanguage = i18n.locale;
-  console.log('currentLanguage', currentLanguage);
-  // Debug log to check what event is being passed
-  // useEffect(() => {
-  //   console.log('EventDialog received event:', event);
-  // }, [event]);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      startTime: `${DefaultStartHour}:00`,
+      endTime: `${DefaultEndHour}:00`,
+      allDay: false,
+      location: '',
+      color: 'blue',
+    },
+  });
 
   useEffect(() => {
     if (event) {
-      setTitle(event.title || '');
-      setDescription(event.description || '');
-
       const start = new Date(event.start);
       const end = new Date(event.end);
 
-      setStartDate(start);
-      setEndDate(end);
-      setStartTime(formatTimeForInput(start));
-      setEndTime(formatTimeForInput(end));
-      setAllDay(event.allDay || false);
-      setLocation(event.location || '');
-      setColor((event.color as EventColor) || 'orange');
-      setError(null); // Reset error when opening dialog
+      form.reset({
+        title: event.title || '',
+        description: event.description || '',
+        startDate: start,
+        endDate: end,
+        startTime: formatTimeForInput(start),
+        endTime: formatTimeForInput(end),
+        allDay: event.allDay || false,
+        location: event.venue || '',
+        color: (event.color as EventColor) || 'orange',
+      });
+      setError(null);
     } else {
-      resetForm();
+      form.reset({
+        title: '',
+        description: '',
+        startDate: new Date(),
+        endDate: new Date(),
+        startTime: `${DefaultStartHour}:00`,
+        endTime: `${DefaultEndHour}:00`,
+        allDay: false,
+        location: '',
+        color: 'blue',
+      });
+      setError(null);
     }
-  }, [event]);
-
-  const resetForm = () => {
-    setTitle('');
-    setDescription('');
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setStartTime(`${DefaultStartHour}:00`);
-    setEndTime(`${DefaultEndHour}:00`);
-    setAllDay(false);
-    setLocation('');
-    setColor('blue');
-    setError(null);
-  };
+  }, [event, form]);
 
   const formatTimeForInput = (date: Date) => {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -138,13 +162,13 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
     return options;
   }, []); // Empty dependency array ensures this only runs once
 
-  const handleSave = () => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  const handleSave = async (values: z.infer<typeof formSchema>) => {
+    const start = new Date(values.startDate);
+    const end = new Date(values.endDate);
 
-    if (!allDay) {
-      const [startHours = 0, startMinutes = 0] = startTime.split(':').map(Number);
-      const [endHours = 0, endMinutes = 0] = endTime.split(':').map(Number);
+    if (!values.allDay) {
+      const [startHours = 0, startMinutes = 0] = values.startTime.split(':').map(Number);
+      const [endHours = 0, endMinutes = 0] = values.endTime.split(':').map(Number);
 
       if (
         startHours < StartHour ||
@@ -169,18 +193,19 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       return;
     }
 
-    // Use generic title if empty
-    const eventTitle = title.trim() ? title : t`(no title)`;
+    const eventTitle = values.title.trim() ? values.title : t`(no title)`;
 
     onSave({
       id: event?.id || '',
       title: eventTitle,
-      description,
-      start,
+      description: values.description || null,
+      start: start,
       end,
-      allDay,
-      location,
-      color,
+      allDay: values.allDay,
+      venue: values.location || null,
+      color: values.color as EventColor,
+      image: event?.image ?? null,
+      published: event?.published ?? false,
     });
   };
 
@@ -234,7 +259,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       <SheetContent
         autoFocus={false}
         showOverlay={true}
-        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-start overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
+        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-between overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
       >
         <SheetHeader>
           <SheetTitle>{event?.id ? t`Edit Event` : t`Create Event`}</SheetTitle>
@@ -247,210 +272,317 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
             {error}
           </div>
         )}
-        <div className="grid gap-4 py-4">
-          <div className="*:not-first:mt-1.5">
-            <Label htmlFor="title">
-              <Trans>Title</Trans>
-            </Label>
-            <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
 
-          <div className="*:not-first:mt-1.5">
-            <Label htmlFor="description">
-              <Trans>Description</Trans>
-            </Label>
-            <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-            />
-          </div>
+        <ScrollArea className="h-[58cqh] w-full sm:h-[75cqh]">
+          <Form {...form}>
+            <form className="grid gap-4 p-1 py-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <Trans>Title</Trans>
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="flex gap-4">
-            <div className="*:not-first:mt-1.5 flex-1">
-              <Label htmlFor="start-date">
-                <Trans>Start Date</Trans>
-              </Label>
-              <Popover modal={true} open={startDateOpen} onOpenChange={setStartDateOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    id="start-date"
-                    variant={'outline'}
-                    className={cn(
-                      'bg-background hover:bg-background border-input group w-full justify-between px-3 font-normal outline-none outline-offset-0 focus-visible:outline-[3px]',
-                      !startDate && 'text-muted-foreground',
-                    )}
-                  >
-                    <span className={cn('truncate', !startDate && 'text-muted-foreground')}>
-                      {startDate
-                        ? format(startDate, 'PPP', { locale: currentLanguage === 'es' ? es : enUS })
-                        : 'Pick a date'}
-                    </span>
-                    <CalendarCheck
-                      size={16}
-                      className="text-muted-foreground/80 shrink-0"
-                      aria-hidden="true"
-                    />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="z-9999 w-auto p-2" align="start">
-                  <Calendar
-                    captionLayout="dropdown"
-                    mode="single"
-                    selected={startDate}
-                    defaultMonth={startDate}
-                    onSelect={(date) => {
-                      if (date) {
-                        setStartDate(date);
-                        // If end date is before the new start date, update it to match the start date
-                        if (isBefore(endDate, date)) {
-                          setEndDate(date);
-                        }
-                        setError(null);
-                        setStartDateOpen(false);
-                      }
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <Trans>Description</Trans>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea {...field} rows={3} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {!allDay && (
-              <div className="*:not-first:mt-1.5 min-w-40">
-                <Label htmlFor="start-time">
-                  <Trans>Start Time</Trans>
-                </Label>
-                <Select value={startTime} onValueChange={setStartTime}>
-                  <SelectTrigger id="start-time">
-                    <SelectValue placeholder="Select time" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <ScrollArea className="h-48">
-                      {timeOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </ScrollArea>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-          </div>
-
-          <div className="flex gap-4">
-            <div className="*:not-first:mt-1.5 flex-1">
-              <Label htmlFor="end-date">
-                <Trans>End Date</Trans>
-              </Label>
-              <Popover modal={true} open={endDateOpen} onOpenChange={setEndDateOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    id="end-date"
-                    variant={'outline'}
-                    className={cn(
-                      'bg-background hover:bg-background border-input group w-full justify-between px-3 font-normal outline-none outline-offset-0 focus-visible:outline-[3px]',
-                      !endDate && 'text-muted-foreground',
-                    )}
-                  >
-                    <span className={cn('truncate', !endDate && 'text-muted-foreground')}>
-                      {endDate
-                        ? format(endDate, 'PPP', { locale: currentLanguage === 'es' ? es : enUS })
-                        : 'Pick a date'}
-                    </span>
-                    <CalendarCheck
-                      size={16}
-                      className="text-muted-foreground/80 shrink-0"
-                      aria-hidden="true"
-                    />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="z-9999 w-auto p-2" align="start">
-                  <Calendar
-                    mode="single"
-                    captionLayout="dropdown"
-                    selected={endDate}
-                    defaultMonth={endDate}
-                    disabled={{ before: startDate }}
-                    onSelect={(date) => {
-                      if (date) {
-                        setEndDate(date);
-                        setError(null);
-                        setEndDateOpen(false);
-                      }
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            {!allDay && (
-              <div className="*:not-first:mt-1.5 min-w-40">
-                <Label htmlFor="end-time">
-                  <Trans>End Time</Trans>
-                </Label>
-                <Select value={endTime} onValueChange={setEndTime}>
-                  <SelectTrigger id="end-time">
-                    <SelectValue placeholder="Select time" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <ScrollArea className="h-48">
-                      {timeOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </ScrollArea>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="all-day"
-              checked={allDay}
-              onCheckedChange={(checked) => setAllDay(checked === true)}
-            />
-            <Label htmlFor="all-day">
-              <Trans>All day</Trans>
-            </Label>
-          </div>
-
-          <div className="*:not-first:mt-1.5">
-            <Label htmlFor="location">
-              <Trans>Location</Trans>
-            </Label>
-            <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} />
-          </div>
-          <fieldset className="space-y-4">
-            <legend className="text-foreground text-sm font-medium leading-none">
-              <Trans>Etiquette</Trans>
-            </legend>
-            <RadioGroup
-              className="flex gap-1.5"
-              defaultValue={colorOptions[0]?.value}
-              value={color}
-              onValueChange={(value: EventColor) => setColor(value)}
-            >
-              {colorOptions.map((colorOption) => (
-                <RadioGroupItem
-                  key={colorOption.value}
-                  id={`color-${colorOption.value}`}
-                  value={colorOption.value}
-                  aria-label={colorOption.label}
-                  className={cn(
-                    'size-6 fill-white text-white shadow-none',
-                    colorOption.bgClass,
-                    colorOption.borderClass,
+              <div className="flex gap-4">
+                <FormField
+                  control={form.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>
+                        <Trans>Start Date</Trans>
+                      </FormLabel>
+                      <FormControl>
+                        <Popover modal={true} open={startDateOpen} onOpenChange={setStartDateOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={'outline'}
+                              className={cn(
+                                'bg-background hover:bg-background border-input group w-full justify-between px-3 font-normal outline-none outline-offset-0 focus-visible:outline-[3px]',
+                                !field.value && 'text-muted-foreground',
+                              )}
+                            >
+                              <span
+                                className={cn('truncate', !field.value && 'text-muted-foreground')}
+                              >
+                                {field.value
+                                  ? format(field.value, 'PPP', {
+                                      locale: currentLanguage === 'es' ? es : enUS,
+                                    })
+                                  : 'Pick a date'}
+                              </span>
+                              <CalendarCheck
+                                size={16}
+                                className="text-muted-foreground/80 shrink-0"
+                                aria-hidden="true"
+                              />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="z-9999 w-auto p-2" align="start">
+                            <Calendar
+                              captionLayout="dropdown"
+                              mode="single"
+                              selected={field.value}
+                              defaultMonth={field.value}
+                              onSelect={(date) => {
+                                if (date) {
+                                  field.onChange(date);
+                                  // If end date is before the new start date, update it to match the start date
+                                  const endDate = form.getValues('endDate');
+                                  if (isBefore(endDate, date)) {
+                                    form.setValue('endDate', date);
+                                  }
+                                  setError(null);
+                                  setStartDateOpen(false);
+                                }
+                              }}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
-              ))}
-            </RadioGroup>
-          </fieldset>
-        </div>
+
+                {!form.watch('allDay') && (
+                  <FormField
+                    control={form.control}
+                    name="startTime"
+                    render={({ field }) => (
+                      <FormItem className="min-w-40">
+                        <FormLabel>
+                          <Trans>Start Time</Trans>
+                        </FormLabel>
+                        <FormControl>
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <ScrollArea className="h-48">
+                                {timeOptions.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </ScrollArea>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+
+              <div className="flex gap-4">
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>
+                        <Trans>End Date</Trans>
+                      </FormLabel>
+                      <FormControl>
+                        <Popover modal={true} open={endDateOpen} onOpenChange={setEndDateOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={'outline'}
+                              className={cn(
+                                'bg-background hover:bg-background border-input group w-full justify-between px-3 font-normal outline-none outline-offset-0 focus-visible:outline-[3px]',
+                                !field.value && 'text-muted-foreground',
+                              )}
+                            >
+                              <span
+                                className={cn('truncate', !field.value && 'text-muted-foreground')}
+                              >
+                                {field.value
+                                  ? format(field.value, 'PPP', {
+                                      locale: currentLanguage === 'es' ? es : enUS,
+                                    })
+                                  : 'Pick a date'}
+                              </span>
+                              <CalendarCheck
+                                size={16}
+                                className="text-muted-foreground/80 shrink-0"
+                                aria-hidden="true"
+                              />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="z-9999 w-auto p-2" align="start">
+                            <Calendar
+                              mode="single"
+                              captionLayout="dropdown"
+                              selected={field.value}
+                              defaultMonth={field.value}
+                              disabled={{ before: form.getValues('startDate') }}
+                              onSelect={(date) => {
+                                if (date) {
+                                  field.onChange(date);
+                                  setError(null);
+                                  setEndDateOpen(false);
+                                }
+                              }}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {!form.watch('allDay') && (
+                  <FormField
+                    control={form.control}
+                    name="endTime"
+                    render={({ field }) => (
+                      <FormItem className="min-w-40">
+                        <FormLabel>
+                          <Trans>End Time</Trans>
+                        </FormLabel>
+                        <FormControl>
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <ScrollArea className="h-48">
+                                {timeOptions.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </ScrollArea>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+
+              <FormField
+                control={form.control}
+                name="allDay"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormLabel>
+                        <Trans>All day</Trans>
+                      </FormLabel>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <Trans>Location</Trans>
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex w-full items-center justify-start gap-6">
+                <FormField
+                  control={form.control}
+                  name="color"
+                  render={({ field }) => (
+                    <FormItem className="col-span-1 w-fit space-y-4">
+                      <FormLabel className="text-foreground text-sm font-medium leading-none">
+                        <Trans>Etiquette</Trans>
+                      </FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          className="flex items-center gap-1.5"
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          {colorOptions.map((colorOption) => (
+                            <RadioGroupItem
+                              key={colorOption.value}
+                              value={colorOption.value}
+                              aria-label={colorOption.label}
+                              className={cn(
+                                'size-6 fill-white text-white shadow-none',
+                                colorOption.bgClass,
+                                colorOption.borderClass,
+                              )}
+                            />
+                          ))}
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="published"
+                  render={({ field }) => (
+                    <FormItem className="col-span-1 mt-1 flex w-fit flex-col space-y-4">
+                      <FormLabel className="text-foreground text-sm font-medium leading-none">
+                        <Trans>Published</Trans>
+                      </FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={(checked) => field.onChange(checked as boolean)}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
+        </ScrollArea>
         <SheetFooter className="flex-row sm:justify-between">
           {event?.id && (
             <Button
@@ -480,7 +612,15 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
             <Button variant="outline" onClick={onClose}>
               <Trans>Cancel</Trans>
             </Button>
-            <Button onClick={handleSave}>
+            <Button
+              onClick={async () => {
+                const isValid = await form.trigger();
+                if (isValid) {
+                  const values = form.getValues();
+                  await handleSave(values);
+                }
+              }}
+            >
               <Trans>Save</Trans>
             </Button>
           </div>

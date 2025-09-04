@@ -52,8 +52,6 @@ export const ReleasesTable = ({
   isLoadingError,
   onEdit,
   onDelete,
-  releaseTyleCounts,
-  releasesCount,
   onMultipleDelete,
   isMultipleDelete = false,
   setIsMultipleDelete,

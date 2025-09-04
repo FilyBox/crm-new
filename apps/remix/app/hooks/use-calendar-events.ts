@@ -33,12 +33,13 @@ export const mapDatabaseEventToCalendarEvent = (dbEvent: DatabaseEvent): Calenda
   return {
     id: dbEvent.id.toString(),
     title: dbEvent.name,
-    description: dbEvent.description || undefined,
+    description: dbEvent.description || null,
     start: new Date(dbEvent.beginning),
     end: new Date(dbEvent.end),
     allDay: dbEvent.allDay || false,
     color: dbEvent.color || 'blue',
-    location: dbEvent.venue || undefined,
+    venue: dbEvent.venue || null,
+    published: dbEvent.published,
   };
 };
 
@@ -50,7 +51,7 @@ export const mapCalendarEventToDatabaseEvent = (calendarEvent: CalendarEvent) =>
     description: calendarEvent.description || null,
     beginning: calendarEvent.start,
     end: calendarEvent.end,
-    venue: calendarEvent.location || null,
+    venue: calendarEvent.venue || null,
     color: calendarEvent.color || 'blue',
     allDay: calendarEvent.allDay || false,
   };

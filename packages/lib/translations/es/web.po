@@ -6611,6 +6611,7 @@ msgstr "Las plantillas públicas están conectadas a tu perfil público. Cualqui
 msgid "Publish"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
 msgid "Published"
