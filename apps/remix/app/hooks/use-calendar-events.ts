@@ -8,6 +8,7 @@ import type { FilterStructure } from '@documenso/ui/lib/filter-columns';
 
 import type { CalendarEvent, EventColor } from '~/components/general/event-calendar/types';
 import { useCurrentTeam } from '~/providers/team';
+import { useRegistrationFormStore, useUpdateFormStore } from '~/storage/store-tickets';
 
 export interface DatabaseEvent {
   id: number;
@@ -46,6 +47,8 @@ export const useCalendarEvents = ({
   artistIds?: number[] | undefined;
 }) => {
   const utils = trpc.useUtils();
+  const { newType, addNewTicket } = useRegistrationFormStore();
+  const { type } = useUpdateFormStore();
 
   const team = useCurrentTeam();
   const {
@@ -80,6 +83,12 @@ export const useCalendarEvents = ({
       await utils.events.getAllEventsNoPagination.invalidate();
     },
   });
+
+  const { mutateAsync: createTicketType } = trpc.ticketType.createTicketType.useMutation();
+  const { mutateAsync: createMultipleTicketType } =
+    trpc.ticketType.createMultipleTicketType.useMutation();
+  const { mutateAsync: updateMultipleTicketType } =
+    trpc.ticketType.updateMultpleTicketTypeById.useMutation();
 
   // Delete event mutation
   const deleteEventMutation = trpc.events.deleteEventById.useMutation({
@@ -146,6 +155,33 @@ export const useCalendarEvents = ({
         });
       }
     }
+
+    if (newType.length > 0 && event) {
+      newType.forEach(async (type) => {
+        console.log('Creating ticket type for event:', event.id, type);
+
+        await createTicketType({
+          name: type.name ?? '',
+          price: type.price ?? 0,
+          quantity: type.quantity ?? 0,
+          maxQuantityPerUser: type.maxQuantityPerUser ?? 0,
+          description: type.description ?? '',
+          eventId: eventCreated.id,
+          // imageUrl: type.imageUrl,
+        });
+      });
+    }
+
+    newType.length = 0;
+    await addNewTicket({
+      id: crypto.randomUUID(),
+      name: '',
+      description: '',
+      quantity: 0,
+      price: 0,
+      maxQuantityPerUser: 0,
+      seatNumber: 0,
+    });
   };
 
   const handleEventUpdate = async (event: CalendarEvent) => {
@@ -183,6 +219,11 @@ export const useCalendarEvents = ({
       updateArtists: event.updateArtists,
       removeImage: event.removeImage,
     });
+
+    await Promise.allSettled([
+      createMultipleTicketType({ ticketTypes: newType, eventId: id }),
+      updateMultipleTicketType(type),
+    ]);
   };
 
   const handleEventDelete = async (eventId: string) => {

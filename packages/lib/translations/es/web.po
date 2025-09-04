@@ -4257,6 +4257,8 @@ msgid "Error updating event"
 msgstr "Error al actualizar evento"
 
 #. placeholder {0}: event.name
+#. placeholder {0}: updatedEvent.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Error updating event \"{0}\""
 msgstr "Error al actualizar evento \"{0}\""
@@ -4289,6 +4291,8 @@ msgid "Event \"{0}\" created"
 msgstr "Evento \"{0}\" actualizado"
 
 #. placeholder {0}: event.name
+#. placeholder {0}: updatedEvent.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Event \"{0}\" updated"
 msgstr "Evento \"{0}\" actualizado"
@@ -8924,6 +8928,7 @@ msgstr "Esto cerrará la sesión en todos los demás dispositivos. Necesitarás 
 msgid "ticket"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Tickets"
 msgstr ""
@@ -9559,6 +9564,8 @@ msgid "Update your Virgin record details."
 msgstr ""
 
 #. placeholder {0}: event.name
+#. placeholder {0}: updatedEvent.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Updating event \"{0}\"..."
 msgstr ""

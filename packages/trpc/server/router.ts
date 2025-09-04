@@ -20,6 +20,7 @@ import { releaseRouter } from './releases-router/router';
 import { shareLinkRouter } from './share-link-router/router';
 import { teamRouter } from './team-router/router';
 import { templateRouter } from './template-router/router';
+import { ticketTypeRouter } from './ticket-type-router/router';
 import { router } from './trpc';
 import { tuStreamsRouter } from './tustreams-router/router';
 import { webhookRouter } from './webhook-router/router';
@@ -49,6 +50,7 @@ export const appRouter = router({
   isrcSongs: IsrcSongsRouter,
   release: releaseRouter,
   events: eventRouter,
+  ticketType: ticketTypeRouter,
 });
 
 export type AppRouter = typeof appRouter;

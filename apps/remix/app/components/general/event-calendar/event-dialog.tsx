@@ -53,6 +53,9 @@ import {
 import { Switch } from '@documenso/ui/primitives/switch';
 import { Textarea } from '@documenso/ui/primitives/textarea';
 
+import { useRegistrationFormStore, useUpdateFormStore } from '~/storage/store-tickets';
+
+import TicketsAdd from '../tickets-add';
 import { DefaultEndHour, DefaultStartHour, EndHour, StartHour } from './constants';
 import InputImageEvent from './input-image-event';
 import type { CalendarEvent, EventColor } from './types';
@@ -111,6 +114,9 @@ export function EventDialog({
   const [selectedArtists, setSelectedArtists] = useState<string[] | undefined>([]);
   const [image, setImage] = useState<File | null>(null);
   const [isImageRemove, setIsImageRemove] = useState(false);
+  const { type, addMember } = useUpdateFormStore();
+  const { newType } = useRegistrationFormStore();
+  const [selectedTickets, setSelectedTickets] = useState<string[] | undefined>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -128,13 +134,40 @@ export function EventDialog({
   });
 
   useEffect(() => {
+    type.length = 0; // Clear the existing tickets
+
     if (event) {
+      newType.length = 0;
+
+      const ticketTypesData = event.ticketTypes?.map((ticket) => ticket.id.toString()) || [];
+      setSelectedTickets(ticketTypesData);
+
       const start = new Date(event.beginning);
       const end = new Date(event.end);
       if (event.artists) {
         const artistsData = event.artists?.map((artist) => artist.id.toString()) || [];
         setSelectedArtists(artistsData);
       }
+
+      event.ticketTypes?.forEach((ticket) => {
+        // Ensure ticket.id is a string
+        const ticketId = ticket.id.toString();
+        // Check if the ticket already exists in the store
+        const existingTicket = type.find((t) => t.id === ticketId);
+        if (!existingTicket) {
+          addMember({
+            id: ticketId,
+            name: ticket.name,
+            price: ticket.price,
+            quantity: ticket.quantity,
+            maxQuantityPerUser: ticket.maxQuantityPerUser,
+            seatNumber: ticket.seatNumber,
+            description: ticket.description,
+            deleted: false,
+            modified: false,
+          });
+        }
+      });
 
       form.reset({
         name: event.name || '',
@@ -234,6 +267,7 @@ export function EventDialog({
       published: values?.published ?? false,
       updateArtists: selectedArtists,
       removeImage: isImageRemove,
+      updateTickets: selectedTickets,
     });
   };
 
@@ -552,6 +586,12 @@ export function EventDialog({
                   image={typeof event?.image === 'string' ? event?.image : undefined}
                 />
               </div>
+              <div className="flex flex-col gap-1">
+                <Trans>Tickets</Trans>
+                <div className="flex gap-3">
+                  <TicketsAdd isLoading={false} />
+                </div>
+              </div>
 
               <section className="flex w-full items-center justify-between gap-6">
                 <div className="flex w-full flex-col gap-1">
@@ -672,24 +712,6 @@ export function EventDialog({
                       </FormItem>
                     )}
                   />
-                  {/* 
-                  <FormField
-                    control={form.control}
-                    name="allDay"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="mt-1 flex w-fit items-center gap-2">
-                          <FormControl>
-                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                          </FormControl>
-                          <FormLabel>
-                            <Trans>All day</Trans>
-                          </FormLabel>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
                 </div>
               </section>
             </form>

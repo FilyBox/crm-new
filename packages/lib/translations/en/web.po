@@ -4252,6 +4252,8 @@ msgid "Error updating event"
 msgstr "Error updating event"
 
 #. placeholder {0}: event.name
+#. placeholder {0}: updatedEvent.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Error updating event \"{0}\""
 msgstr "Error updating event \"{0}\""
@@ -4284,6 +4286,8 @@ msgid "Event \"{0}\" created"
 msgstr "Event \"{0}\" created"
 
 #. placeholder {0}: event.name
+#. placeholder {0}: updatedEvent.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Event \"{0}\" updated"
 msgstr "Event \"{0}\" updated"
@@ -8933,6 +8937,7 @@ msgstr "This will sign you out of all other devices. You will need to sign in ag
 msgid "ticket"
 msgstr "ticket"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Tickets"
 msgstr "Tickets"
@@ -9568,6 +9573,8 @@ msgid "Update your Virgin record details."
 msgstr "Update your Virgin record details."
 
 #. placeholder {0}: event.name
+#. placeholder {0}: updatedEvent.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Updating event \"{0}\"..."
 msgstr "Updating event \"{0}\"..."
