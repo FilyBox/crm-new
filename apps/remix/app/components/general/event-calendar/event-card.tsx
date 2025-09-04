@@ -37,17 +37,25 @@ export default function EventCard({
         <div className="flex h-full flex-col !justify-between">
           <div className="relative">
             {event_data.image ? (
-              <img
-                src={
-                  event_data.image instanceof File
-                    ? URL.createObjectURL(event_data.image)
-                    : event_data.image
-                }
-                className="flex h-40 w-full justify-start justify-items-end rounded-md bg-slate-300/15 object-contain align-bottom"
-                alt="imagen evento"
-              />
+              <div className="relative h-40 w-full">
+                <img
+                  src={
+                    event_data.image instanceof File
+                      ? URL.createObjectURL(event_data.image)
+                      : event_data.image
+                  }
+                  className="h-40 w-full rounded-md bg-slate-300/15 object-contain"
+                  alt="imagen evento"
+                />
+                <div
+                  className="absolute inset-0 rounded-md"
+                  style={{
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0))',
+                  }}
+                />
+              </div>
             ) : (
-              <div className="flex h-40 w-full animate-pulse justify-start justify-items-end rounded-md bg-slate-300/15 object-cover align-bottom" />
+              <div className="flex h-40 w-full justify-start justify-items-end rounded-md bg-slate-300/15 object-cover align-bottom" />
             )}
 
             <div className="absolute left-2 top-2 flex items-center justify-start gap-2">

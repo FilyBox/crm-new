@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { queryOptions } from '@tanstack/react-query';
 
+import { putFile } from '@documenso/lib/universal/upload/put-file';
 import { trpc } from '@documenso/trpc/react';
 import type { FilterStructure } from '@documenso/ui/lib/filter-columns';
 
@@ -110,7 +111,7 @@ export const useCalendarEvents = ({
   }, [eventsData?.events]);
 
   const handleEventAdd = async (event: CalendarEvent) => {
-    await createEventMutation.mutateAsync({
+    const eventCreated = await createEventMutation.mutateAsync({
       name: event.name,
       description: event.description ?? undefined,
       beginning: event.beginning,
@@ -121,12 +122,53 @@ export const useCalendarEvents = ({
       published: event.published,
       artists: event.updateArtists,
     });
+
+    const image = event.image instanceof File ? event.image : null;
+    let imageUrl: string | undefined = undefined;
+    if (image) {
+      const parts = image.name.split('.');
+      const ext = parts.length > 1 ? '.' + parts.pop() : '';
+      let base = parts.join('.');
+      if (base.length > 50) base = base.slice(0, 50);
+      const safeName = base + ext;
+
+      const truncatedFile = new File([image], safeName, { type: image.type });
+
+      const result = await putFile(truncatedFile);
+      imageUrl = result.data;
+      console.log('Image uploaded successfully:', result.data);
+      imageUrl = result.data;
+
+      if (imageUrl) {
+        await updateEventMutation.mutateAsync({
+          id: eventCreated.id,
+          image: imageUrl,
+        });
+      }
+    }
   };
 
   const handleEventUpdate = async (event: CalendarEvent) => {
     const id = parseInt(event.id);
     if (isNaN(id)) return;
+    console.log('event published', event.published);
 
+    const image = event.image instanceof File ? event.image : null;
+    let imageUrl: string | undefined = undefined;
+    if (image) {
+      const parts = image.name.split('.');
+      const ext = parts.length > 1 ? '.' + parts.pop() : '';
+      let base = parts.join('.');
+      if (base.length > 50) base = base.slice(0, 50);
+      const safeName = base + ext;
+
+      const truncatedFile = new File([image], safeName, { type: image.type });
+
+      const result = await putFile(truncatedFile);
+      imageUrl = result.data;
+      console.log('Image uploaded successfully:', result.data);
+      imageUrl = result.data;
+    }
     await updateEventMutation.mutateAsync({
       id,
       name: event.name,
@@ -137,8 +179,9 @@ export const useCalendarEvents = ({
       allDay: event.allDay,
       color: event.color ?? undefined,
       published: event.published,
-      image: typeof event.image === 'string' ? event.image : undefined,
+      image: imageUrl,
       updateArtists: event.updateArtists,
+      removeImage: event.removeImage,
     });
   };
 

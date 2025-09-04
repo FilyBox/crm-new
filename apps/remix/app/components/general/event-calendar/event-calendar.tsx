@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Trans } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { addDays, addMonths, addWeeks, subMonths, subWeeks } from 'date-fns';
 import {
   Bird,
@@ -57,7 +57,7 @@ export function EventCalendar({
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const { handleEventAdd, handleEventUpdate, handleEventDelete, artists } = useCalendarEvents({});
-  // Add keyboard shortcuts for view switching
+  const { t } = useLingui();
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Skip if user is typing in an input, textarea or contentEditable element
@@ -168,16 +168,16 @@ export function EventCalendar({
   const handleEventSave = (event: CalendarEvent) => {
     if (event.id) {
       toast.promise(handleEventUpdate(event), {
-        loading: `Updating event "${event.name}"...`,
-        success: `Event "${event.name}" updated`,
-        error: `Error updating event "${event.name}"`,
+        loading: t`Updating event "${event.name}"...`,
+        success: t`Event "${event.name}" updated`,
+        error: t`Error updating event "${event.name}"`,
         position: 'bottom-center',
       });
     } else {
       toast.promise(handleEventAdd(event), {
-        loading: `Creating event "${event.name}"...`,
-        success: `Event "${event.name}" created`,
-        error: `Error creating event "${event.name}"`,
+        loading: t`Creating event "${event.name}"...`,
+        success: t`Event "${event.name}" created`,
+        error: t`Error creating event "${event.name}"`,
         position: 'bottom-center',
       });
     }
@@ -187,9 +187,9 @@ export function EventCalendar({
 
   const eventDelete = (eventId: string) => {
     toast.promise(handleEventDelete(eventId), {
-      loading: `Deleting event...`,
-      success: `Event deleted successfully`,
-      error: `Error deleting event`,
+      loading: t`Deleting event...`,
+      success: t`Event deleted successfully`,
+      error: t`Error deleting event`,
       position: 'bottom-center',
     });
     // onEventDelete?.(eventId);
@@ -199,9 +199,9 @@ export function EventCalendar({
 
   const eventUpdate = (updatedEvent: CalendarEvent) => {
     toast.promise(handleEventUpdate(updatedEvent), {
-      loading: `Updating event "${updatedEvent.name}"...`,
-      success: `Event "${updatedEvent.name}" updated`,
-      error: `Error updating event "${updatedEvent.name}"`,
+      loading: t`Updating event "${updatedEvent.name}"...`,
+      success: t`Event "${updatedEvent.name}" updated`,
+      error: t`Error updating event "${updatedEvent.name}"`,
       position: 'bottom-center',
     });
   };

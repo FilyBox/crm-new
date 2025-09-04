@@ -95,6 +95,7 @@ export const eventRouter = router({
         beginning: z.date().optional(),
         end: z.date().optional(),
         allDay: z.boolean().optional(),
+        removeImage: z.boolean().optional(),
         color: z.enum(['blue', 'orange', 'violet', 'rose', 'emerald', 'sky']).optional(),
         tickets: z
           .array(
@@ -125,7 +126,7 @@ export const eventRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      const { id, updateArtists, updateTickets, tickets, image, ...data } = input;
+      const { id, updateArtists, updateTickets, tickets, image, removeImage, ...data } = input;
       console.log('updateArtists', updateArtists);
       if (!id) {
         throw new Error('El ID del evento es obligatorio');
@@ -137,15 +138,9 @@ export const eventRouter = router({
         include: { artists: true },
       });
 
-      let deleteImage = false;
-
-      if (
-        (currentEvent?.image && image && image !== 'nochange') ||
-        (currentEvent?.image && !image)
-      ) {
+      if (currentEvent?.image && removeImage) {
         const { url } = await getPresignGetUrl(currentEvent.image);
         await deleteFile(url);
-        deleteImage = true;
       }
 
       if (currentEvent?.artists.length) {
@@ -163,7 +158,7 @@ export const eventRouter = router({
         return await prisma.event.update({
           where: { id },
           data: {
-            image: image && image !== 'nochange' ? image : deleteImage ? null : currentEvent?.image,
+            image: image ? image : removeImage ? null : currentEvent?.image,
             ...data,
             artists: updateArtists
               ? {

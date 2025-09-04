@@ -12,7 +12,6 @@ import * as z from 'zod';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
 import { Calendar } from '@documenso/ui/primitives/calendar';
-import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import {
   Faceted,
   FacetedBadgeList,
@@ -55,6 +54,7 @@ import { Switch } from '@documenso/ui/primitives/switch';
 import { Textarea } from '@documenso/ui/primitives/textarea';
 
 import { DefaultEndHour, DefaultStartHour, EndHour, StartHour } from './constants';
+import InputImageEvent from './input-image-event';
 import type { CalendarEvent, EventColor } from './types';
 
 type artistData = {
@@ -109,6 +109,8 @@ export function EventDialog({
   const { t, i18n } = useLingui();
   const currentLanguage = i18n.locale;
   const [selectedArtists, setSelectedArtists] = useState<string[] | undefined>([]);
+  const [image, setImage] = useState<File | null>(null);
+  const [isImageRemove, setIsImageRemove] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -213,14 +215,12 @@ export function EventDialog({
       end.setHours(23, 59, 59, 999);
     }
 
-    // Validate that end date is not before start date
     if (isBefore(end, start)) {
       setError(t`End date cannot be before start date`);
       return;
     }
 
     const eventName = values.name.trim() ? values.name : t`(no title)`;
-    console.log('event published', values.published);
     onSave({
       id: event?.id || '',
       name: eventName,
@@ -230,9 +230,10 @@ export function EventDialog({
       allDay: values.allDay,
       venue: values.venue || null,
       color: values.color as EventColor,
-      image: event?.image ?? null,
-      published: event?.published ?? false,
+      image: image,
+      published: values?.published ?? false,
       updateArtists: selectedArtists,
+      removeImage: isImageRemove,
     });
   };
 
@@ -527,24 +528,6 @@ export function EventDialog({
 
               <FormField
                 control={form.control}
-                name="allDay"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="-mb-2 flex items-center gap-2">
-                      <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                      <FormLabel>
-                        <Trans>All day</Trans>
-                      </FormLabel>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="venue"
                 render={({ field }) => (
                   <FormItem>
@@ -558,6 +541,17 @@ export function EventDialog({
                   </FormItem>
                 )}
               />
+              <div className="flex w-full flex-col gap-1">
+                <Trans>Image</Trans>
+                <InputImageEvent
+                  setIsImageRemove={(remove) => setIsImageRemove(remove)}
+                  multiple={false}
+                  onUpload={(data: File | null) => {
+                    setImage(data);
+                  }}
+                  image={typeof event?.image === 'string' ? event?.image : undefined}
+                />
+              </div>
 
               <section className="flex w-full items-center justify-between gap-6">
                 <div className="flex w-full flex-col gap-1">
@@ -658,6 +652,44 @@ export function EventDialog({
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="allDay"
+                    render={({ field }) => (
+                      <FormItem className="col-span-1 mt-1 flex w-fit min-w-52 flex-col space-y-4">
+                        <FormLabel className="text-foreground text-sm font-medium leading-none">
+                          <Trans>All day</Trans>
+                        </FormLabel>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={(checked) => field.onChange(checked as boolean)}
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {/* 
+                  <FormField
+                    control={form.control}
+                    name="allDay"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="mt-1 flex w-fit items-center gap-2">
+                          <FormControl>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                          <FormLabel>
+                            <Trans>All day</Trans>
+                          </FormLabel>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  /> */}
                 </div>
               </section>
             </form>

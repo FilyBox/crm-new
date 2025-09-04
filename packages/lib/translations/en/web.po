@@ -2856,6 +2856,11 @@ msgstr "CreatedAt"
 msgid "Creating artists..."
 msgstr "Creating artists..."
 
+#. placeholder {0}: event.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Creating event \"{0}\"..."
+msgstr "Creating event \"{0}\"..."
+
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Creating event..."
 msgstr "Creating event..."
@@ -3145,6 +3150,10 @@ msgstr "Deleted record successfully"
 #: apps/remix/app/components/dialogs/account-delete-dialog.tsx
 msgid "Deleting account..."
 msgstr "Deleting account..."
+
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Deleting event..."
+msgstr "Deleting event..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
@@ -4173,6 +4182,11 @@ msgstr "Error al reintentar"
 msgid "Error creating event"
 msgstr "Error creating event"
 
+#. placeholder {0}: event.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Error creating event \"{0}\""
+msgstr "Error creating event \"{0}\""
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4181,6 +4195,10 @@ msgstr "Error creating event"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error creating records"
 msgstr "Error creating records"
+
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Error deleting event"
+msgstr "Error deleting event"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
@@ -4233,6 +4251,11 @@ msgstr "Error unpublishing event"
 msgid "Error updating event"
 msgstr "Error updating event"
 
+#. placeholder {0}: event.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Error updating event \"{0}\""
+msgstr "Error updating event \"{0}\""
+
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4255,9 +4278,23 @@ msgstr "Error while processing CSV"
 msgid "Etiquette"
 msgstr "Etiquette"
 
+#. placeholder {0}: event.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Event \"{0}\" created"
+msgstr "Event \"{0}\" created"
+
+#. placeholder {0}: event.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Event \"{0}\" updated"
+msgstr "Event \"{0}\" updated"
+
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event created successfully"
 msgstr "Event created successfully"
+
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Event deleted successfully"
+msgstr "Event deleted successfully"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event Description"
@@ -4893,6 +4930,7 @@ msgstr "If you don't find the confirmation link in your inbox, you can request a
 msgid "If your authenticator app does not support QR codes, you can use the following code instead:"
 msgstr "If your authenticator app does not support QR codes, you can use the following code instead:"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Image"
 msgstr "Image"
@@ -9528,6 +9566,11 @@ msgstr "Update your Isrc record details."
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Update your Virgin record details."
 msgstr "Update your Virgin record details."
+
+#. placeholder {0}: event.name
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "Updating event \"{0}\"..."
+msgstr "Updating event \"{0}\"..."
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Updating event..."
