@@ -1685,6 +1685,7 @@ msgstr "Are you sure?"
 msgid "Artist created successfully"
 msgstr "Artist created successfully"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -3145,10 +3146,6 @@ msgstr "Deleted record successfully"
 msgid "Deleting account..."
 msgstr "Deleting account..."
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Deleting event..."
-msgstr "Deleting event..."
-
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
@@ -4185,10 +4182,6 @@ msgstr "Error creating event"
 msgid "Error creating records"
 msgstr "Error creating records"
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Error deleting event"
-msgstr "Error deleting event"
-
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
@@ -4265,10 +4258,6 @@ msgstr "Etiquette"
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event created successfully"
 msgstr "Event created successfully"
-
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Event deleted successfully"
-msgstr "Event deleted successfully"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event Description"
@@ -5687,6 +5676,10 @@ msgstr "No artists specified"
 msgid "No data found"
 msgstr "No data found"
 
+#: apps/remix/app/components/general/event-calendar/event-card.tsx
+msgid "No description"
+msgstr "No description"
+
 #: apps/remix/app/components/general/task/contracts-status.tsx
 msgid "No Especificado"
 msgstr "No Especificado"
@@ -5729,6 +5722,7 @@ msgstr "No has creado ningun evento todavía. Crea una nuevo evento para comenza
 msgid "No hay eventos"
 msgstr "No hay eventos"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -7174,6 +7168,7 @@ msgstr "Search genre"
 msgid "Search languages..."
 msgstr "Search languages..."
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -7182,6 +7177,7 @@ msgstr "Search languages..."
 msgid "Search options"
 msgstr "Search options"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -7254,6 +7250,7 @@ msgstr "Select an option"
 msgid "Select an organisation to view teams"
 msgstr "Select an organisation to view teams"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx

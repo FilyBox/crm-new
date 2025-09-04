@@ -44,6 +44,7 @@ export const eventRouter = router({
       if (!input.name) {
         throw new Error('El nombre del evento es obligatorio');
       }
+      console.log('artists', input.artists);
 
       try {
         return await prisma.event.create({
@@ -125,7 +126,7 @@ export const eventRouter = router({
     )
     .mutation(async ({ input }) => {
       const { id, updateArtists, updateTickets, tickets, image, ...data } = input;
-
+      console.log('updateArtists', updateArtists);
       if (!id) {
         throw new Error('El ID del evento es obligatorio');
       }
@@ -293,6 +294,8 @@ export const eventRouter = router({
         },
       });
 
+      console.log('eventsWithImages', eventsWithImages);
+
       return {
         events: eventsWithImages,
         totalCount,
@@ -438,10 +441,27 @@ export const eventRouter = router({
       }
 
       try {
-        const currentEvent = await prisma.event.findUnique({
-          where: { id },
-          include: { artists: true },
-        });
+        const [currentEvent, isThereTicketsSold] = await Promise.all([
+          prisma.event.findUnique({
+            where: { id },
+          }),
+          prisma.ticketBuyer.findFirst({
+            where: {
+              eventId: id,
+            },
+          }),
+        ]);
+
+        if (isThereTicketsSold) {
+          await prisma.event.update({
+            where: { id },
+            data: {
+              deletedAt: new Date(),
+              published: false,
+            },
+          });
+          return;
+        }
 
         if (!currentEvent) {
           throw new Error('Evento no encontrado');

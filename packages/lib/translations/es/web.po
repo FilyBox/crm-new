@@ -1690,6 +1690,7 @@ msgstr "¿Estás seguro?"
 msgid "Artist created successfully"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -3150,10 +3151,6 @@ msgstr ""
 msgid "Deleting account..."
 msgstr "Eliminando cuenta..."
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Deleting event..."
-msgstr "Eliminando eventos..."
-
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
@@ -4190,10 +4187,6 @@ msgstr ""
 msgid "Error creating records"
 msgstr ""
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Error deleting event"
-msgstr ""
-
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
@@ -4271,22 +4264,18 @@ msgstr "Etiqueta"
 msgid "Event created successfully"
 msgstr ""
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Event deleted successfully"
-msgstr ""
-
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event Description"
-msgstr ""
+msgstr "Descripción del evento"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event Name"
-msgstr ""
+msgstr "Nombre del evento"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event published successfully"
-msgstr ""
+msgstr "Evento publicado exitosamente"
 
 #: apps/remix/app/components/dialogs/webhook-test-dialog.tsx
 msgid "Event Type"
@@ -4294,16 +4283,16 @@ msgstr "Tipo de evento"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event unpublished successfully"
-msgstr ""
+msgstr "Evento deslistado exitosamente"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event updated successfully"
-msgstr ""
+msgstr "Evento actualizado exitosamente"
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 msgid "Event Venue"
-msgstr ""
+msgstr "Ubicación del evento"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 msgid "Events"
@@ -5227,7 +5216,7 @@ msgstr "Enlaces generados"
 
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #. placeholder {0}: webhook.eventTriggers .map((trigger) => toFriendlyWebhookEventName(trigger)) .join(', ')
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
@@ -5686,11 +5675,15 @@ msgstr "No hay borradores activos"
 
 #: apps/remix/app/components/general/event-calendar/stack-avatars-tasks-with-tooltip.tsx
 msgid "No artists specified"
-msgstr ""
+msgstr "Sin artistas registrados"
 
 #: packages/ui/primitives/data-table-table.tsx
 msgid "No data found"
 msgstr "Sin datos que mostrar"
+
+#: apps/remix/app/components/general/event-calendar/event-card.tsx
+msgid "No description"
+msgstr ""
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 msgid "No Especificado"
@@ -5734,6 +5727,7 @@ msgstr ""
 msgid "No hay eventos"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -7179,6 +7173,7 @@ msgstr ""
 msgid "Search languages..."
 msgstr "Buscar idiomas..."
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -7187,6 +7182,7 @@ msgstr "Buscar idiomas..."
 msgid "Search options"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -7259,13 +7255,14 @@ msgstr "Seleccionar una opción"
 msgid "Select an organisation to view teams"
 msgstr "Seleccione una organización para ver los equipos"
 
+#: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Select artists..."
-msgstr ""
+msgstr "Selecciona un artista..."
 
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/checkbox-field.tsx
 msgid "Select at least"
@@ -9534,7 +9531,7 @@ msgstr "Actualizando contraseña..."
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Updating record..."
-msgstr ""
+msgstr "Actualizando elemento..."
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Updating Your Information"

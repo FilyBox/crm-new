@@ -4260,11 +4260,11 @@ msgstr ""
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 msgid "Error updating record"
-msgstr ""
+msgstr "Error al actualizar registro"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error updating records"
-msgstr ""
+msgstr "Error al actualizar registro"
 
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Error uploading file"

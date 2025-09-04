@@ -102,6 +102,9 @@ export const useCalendarEvents = ({
         color: event.color,
         allDay: event.allDay,
         published: event.published,
+        image: event.image,
+        artists: event.artists,
+        ticketTypes: event.ticketTypes,
       }),
     );
   }, [eventsData?.events]);
@@ -116,6 +119,7 @@ export const useCalendarEvents = ({
       allDay: event.allDay,
       color: event.color ?? undefined,
       published: event.published,
+      artists: event.updateArtists,
     });
   };
 
@@ -134,6 +138,7 @@ export const useCalendarEvents = ({
       color: event.color ?? undefined,
       published: event.published,
       image: typeof event.image === 'string' ? event.image : undefined,
+      updateArtists: event.updateArtists,
     });
   };
 
@@ -143,11 +148,11 @@ export const useCalendarEvents = ({
 
     await deleteEventMutation.mutateAsync({ id });
   };
-
   return {
     events: calendarEvents,
     isLoading,
     error,
+    artists: eventsData?.artists,
     handleEventAdd,
     handleEventUpdate,
     handleEventDelete,

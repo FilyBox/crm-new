@@ -40,9 +40,6 @@ import { WeekView } from './week-view';
 
 export interface EventCalendarProps {
   events?: CalendarEvent[];
-  onEventAdd?: (event: CalendarEvent) => void;
-  onEventUpdate?: (event: CalendarEvent) => void;
-  onEventDelete?: (eventId: string) => void;
   className?: string;
   initialView?: CalendarView;
   isLoading: boolean;
@@ -50,9 +47,6 @@ export interface EventCalendarProps {
 
 export function EventCalendar({
   events = [],
-  onEventAdd,
-  onEventUpdate,
-  onEventDelete,
   className,
   isLoading = false,
   initialView = 'list',
@@ -62,7 +56,7 @@ export function EventCalendar({
   const [view, setView] = useState<CalendarView>(initialView);
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
-  const { handleEventAdd, handleEventUpdate, handleEventDelete } = useCalendarEvents({});
+  const { handleEventAdd, handleEventUpdate, handleEventDelete, artists } = useCalendarEvents({});
   // Add keyboard shortcuts for view switching
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -178,7 +172,6 @@ export function EventCalendar({
         success: `Event "${event.name}" updated`,
         error: `Error updating event "${event.name}"`,
         position: 'bottom-center',
-        className: 'mb-16',
       });
     } else {
       toast.promise(handleEventAdd(event), {
@@ -186,7 +179,6 @@ export function EventCalendar({
         success: `Event "${event.name}" created`,
         error: `Error creating event "${event.name}"`,
         position: 'bottom-center',
-        className: 'mb-16',
       });
     }
     setIsEventDialogOpen(false);
@@ -198,9 +190,7 @@ export function EventCalendar({
       loading: `Deleting event...`,
       success: `Event deleted successfully`,
       error: `Error deleting event`,
-
       position: 'bottom-center',
-      className: 'mb-16',
     });
     // onEventDelete?.(eventId);
     setIsEventDialogOpen(false);
@@ -213,7 +203,6 @@ export function EventCalendar({
       success: `Event "${updatedEvent.name}" updated`,
       error: `Error updating event "${updatedEvent.name}"`,
       position: 'bottom-center',
-      className: 'mb-16',
     });
   };
 
@@ -383,6 +372,7 @@ export function EventCalendar({
         <EventDialog
           event={selectedEvent}
           isOpen={isEventDialogOpen}
+          artistData={artists}
           onClose={() => {
             setIsEventDialogOpen(false);
             setSelectedEvent(null);

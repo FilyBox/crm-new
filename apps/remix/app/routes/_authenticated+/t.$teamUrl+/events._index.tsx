@@ -2,16 +2,16 @@ import { useMemo } from 'react';
 
 import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
 import { ZFindEventInternalRequestSchema } from '@documenso/trpc/server/events-router/schema';
+import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import ErrorPage from '@documenso/ui/primitives/errorPage';
 
 import { useCalendarContext } from '~/components/general/event-calendar/calendar-context';
 import { EventCalendar } from '~/components/general/event-calendar/event-calendar';
-import type { CalendarEvent } from '~/components/general/event-calendar/types';
+import type { CalendarEvent, EventColor } from '~/components/general/event-calendar/types';
 // import { EventsFilters } from '~/components/tables/events-filters';
 import { useCalendarEvents } from '~/hooks/use-calendar-events';
 import { appMetaTags } from '~/utils/meta';
@@ -51,6 +51,64 @@ const ZSearchParamsSchema = ZFindEventInternalRequestSchema.pick({
   artistIds: z.string().transform(parseToIntegerArray).optional().catch([]),
 });
 
+const colorOptions: Array<{
+  id: string;
+  value: EventColor;
+  label: string;
+  isActive: boolean;
+  bgClass: string;
+  borderClass: string;
+}> = [
+  {
+    id: 'blue',
+    value: 'blue',
+    label: 'Blue',
+    isActive: true,
+    bgClass: 'bg-blue-400 data-[state=checked]:bg-blue-400',
+    borderClass: 'border-blue-400 data-[state=checked]:border-blue-400',
+  },
+  {
+    id: 'violet',
+    value: 'violet',
+    label: 'Violet',
+    isActive: true,
+    bgClass: 'bg-violet-400 data-[state=checked]:bg-violet-400',
+    borderClass: 'border-violet-400 data-[state=checked]:border-violet-400',
+  },
+  {
+    id: 'rose',
+    value: 'rose',
+    label: 'Rose',
+    isActive: true,
+    bgClass: 'bg-rose-400 data-[state=checked]:bg-rose-400',
+    borderClass: 'border-rose-400 data-[state=checked]:border-rose-400',
+  },
+  {
+    id: 'emerald',
+    label: 'Emerald',
+    value: 'emerald',
+    isActive: true,
+    bgClass: 'bg-emerald-400 data-[state=checked]:bg-emerald-400',
+    borderClass: 'border-emerald-400 data-[state=checked]:border-emerald-400',
+  },
+  {
+    id: 'orange',
+    label: 'Orange',
+    value: 'orange',
+    isActive: true,
+    bgClass: 'bg-orange-400 data-[state=checked]:bg-orange-400',
+    borderClass: 'border-orange-400 data-[state=checked]:border-orange-400',
+  },
+  {
+    id: 'sky',
+    label: 'Sky',
+    value: 'sky',
+    isActive: true,
+    bgClass: 'bg-sky-400 data-[state=checked]:bg-sky-400',
+    borderClass: 'border-sky-400 data-[state=checked]:border-sky-400',
+  },
+];
+
 export default function EventsPage() {
   const { isColorVisible, toggleColorVisibility } = useCalendarContext();
   const [searchParams] = useSearchParams();
@@ -64,17 +122,7 @@ export default function EventsPage() {
     [searchParams],
   );
 
-  const {
-    events,
-    isLoading,
-    error,
-    handleEventAdd,
-    handleEventUpdate,
-    handleEventDelete,
-    isCreating,
-    isUpdating,
-    isDeleting,
-  } = useCalendarEvents({
+  const { events, isLoading, error, isCreating, isUpdating, isDeleting } = useCalendarEvents({
     query: query,
     artistIds: findDocumentSearchParams.artistIds,
     orderByColumn: columnOrder,
@@ -86,38 +134,6 @@ export default function EventsPage() {
   const visibleEvents = useMemo(() => {
     return events.filter((event: CalendarEvent) => isColorVisible(event.color || 'blue'));
   }, [events, isColorVisible]);
-
-  const onEventAdd = async (event: CalendarEvent) => {
-    try {
-      await handleEventAdd(event);
-    } catch (error) {
-      console.error('Error adding event:', error);
-    }
-  };
-
-  const onEventUpdate = async (updatedEvent: CalendarEvent) => {
-    try {
-      await handleEventUpdate(updatedEvent);
-    } catch (error) {
-      console.error('Error updating event:', error);
-    }
-  };
-
-  const onEventDelete = (eventId: string) => {
-    try {
-      toast.promise(handleEventDelete(eventId), {
-        loading: t`Deleting event...`,
-        success: t`Event deleted successfully`,
-        error: t`Error deleting event`,
-        position: 'bottom-center',
-        className: 'z-9999 pointer-events-auto',
-      });
-      // await handleEventDelete(eventId);
-    } catch (error) {
-      console.error('Error deleting event:', error);
-    }
-  };
-
   if (error) {
     return <ErrorPage error={error.message} />;
   }
@@ -139,14 +155,31 @@ export default function EventsPage() {
           </div>
         )}
 
-        <EventCalendar
-          isLoading={isLoading}
-          events={visibleEvents}
-          onEventAdd={onEventAdd}
-          onEventUpdate={onEventUpdate}
-          onEventDelete={onEventDelete}
-          initialView="list"
-        />
+        <div className="mb-6 flex flex-wrap gap-3">
+          {colorOptions.map((item) => (
+            <div key={item.id} className="flex items-center gap-2">
+              <Checkbox
+                id={item.id}
+                checked={isColorVisible(item.value)}
+                onCheckedChange={() => toggleColorVisibility(item.value)}
+              />
+              <label
+                htmlFor={item.id}
+                className={`flex cursor-pointer items-center gap-2 text-sm font-medium ${
+                  !isColorVisible(item.value) ? 'text-muted-foreground line-through' : ''
+                }`}
+              >
+                <span
+                  className={`inline-block h-3 w-3 rounded-full ${item.bgClass} ${item.borderClass}`}
+                />
+                {item.label}
+              </label>
+            </div>
+          ))}
+        </div>
+        {/* <EventsFilters isLoading={isLoading} /> */}
+
+        <EventCalendar isLoading={isLoading} events={visibleEvents} initialView="list" />
       </div>
     </div>
   );

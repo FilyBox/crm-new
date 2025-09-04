@@ -14,6 +14,17 @@ import { Button } from '@documenso/ui/primitives/button';
 import { Calendar } from '@documenso/ui/primitives/calendar';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import {
+  Faceted,
+  FacetedBadgeList,
+  FacetedContent,
+  FacetedEmpty,
+  FacetedGroup,
+  FacetedInput,
+  FacetedItem,
+  FacetedList,
+  FacetedTrigger,
+} from '@documenso/ui/primitives/faceted-hover-badge';
+import {
   Form,
   FormControl,
   FormField,
@@ -84,12 +95,20 @@ const formSchema = z.object({
   published: z.boolean().optional(),
 });
 
-export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventDialogProps) {
+export function EventDialog({
+  event,
+  isOpen,
+  onClose,
+  onSave,
+  onDelete,
+  artistData,
+}: EventDialogProps) {
   const [error, setError] = useState<string | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const { t, i18n } = useLingui();
   const currentLanguage = i18n.locale;
+  const [selectedArtists, setSelectedArtists] = useState<string[] | undefined>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,6 +129,10 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
     if (event) {
       const start = new Date(event.beginning);
       const end = new Date(event.end);
+      if (event.artists) {
+        const artistsData = event.artists?.map((artist) => artist.id.toString()) || [];
+        setSelectedArtists(artistsData);
+      }
 
       form.reset({
         name: event.name || '',
@@ -137,6 +160,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
         color: 'blue',
         published: false,
       });
+      setSelectedArtists([]);
       setError(null);
     }
   }, [event, form]);
@@ -208,6 +232,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       color: values.color as EventColor,
       image: event?.image ?? null,
       published: event?.published ?? false,
+      updateArtists: selectedArtists,
     });
   };
 
@@ -283,7 +308,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
         <ScrollArea className="h-[58cqh] w-full sm:h-[75cqh]">
           <Form {...form}>
-            <form className="grid gap-4 p-1 py-4">
+            <form className="grid gap-4 p-1">
               <FormField
                 control={form.control}
                 name="name"
@@ -505,7 +530,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                 name="allDay"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex items-center gap-2">
+                    <div className="-mb-2 flex items-center gap-2">
                       <FormControl>
                         <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                       </FormControl>
@@ -534,60 +559,107 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
                 )}
               />
 
-              <div className="flex w-full items-center justify-start gap-6">
-                <FormField
-                  control={form.control}
-                  name="color"
-                  render={({ field }) => (
-                    <FormItem className="col-span-1 w-fit space-y-4">
-                      <FormLabel className="text-foreground text-sm font-medium leading-none">
-                        <Trans>Etiquette</Trans>
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          className="flex items-center gap-1.5"
-                          value={field.value}
-                          onValueChange={field.onChange}
-                        >
-                          {colorOptions.map((colorOption) => (
-                            <RadioGroupItem
-                              key={colorOption.value}
-                              value={colorOption.value}
-                              aria-label={colorOption.label}
-                              className={cn(
-                                'size-6 fill-white text-white shadow-none',
-                                colorOption.bgClass,
-                                colorOption.borderClass,
-                              )}
-                            />
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="published"
-                  render={({ field }) => (
-                    <FormItem className="col-span-1 mt-1 flex w-fit flex-col space-y-4">
-                      <FormLabel className="text-foreground text-sm font-medium leading-none">
-                        <Trans>Published</Trans>
-                      </FormLabel>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={(checked) => field.onChange(checked as boolean)}
+              <section className="flex w-full items-center justify-between gap-6">
+                <div className="flex w-full flex-col gap-1">
+                  <Trans>Artists</Trans>
+                  <Faceted
+                    modal={true}
+                    value={selectedArtists}
+                    onValueChange={(value) => {
+                      setSelectedArtists(value);
+                    }}
+                    multiple={true}
+                  >
+                    <FacetedTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="default"
+                        className="w-full min-w-56 rounded font-normal"
+                      >
+                        <FacetedBadgeList
+                          max={3}
+                          options={artistData?.map((member) => ({
+                            label: member.name,
+                            value: member.id.toString(),
+                          }))}
+                          placeholder={t`Select artists...`}
+                          className="h-fit"
                         />
-                      </FormControl>
+                      </Button>
+                    </FacetedTrigger>
+                    <FacetedContent className="z-9999 h-fit w-full origin-[var(--radix-popover-content-transform-origin)]">
+                      <FacetedInput
+                        aria-label={t`Search options`}
+                        placeholder={t`Search options...`}
+                      />
+                      <FacetedList className="h-fit">
+                        <FacetedEmpty>{t`No options found.`}</FacetedEmpty>
+                        <FacetedGroup>
+                          {artistData?.map((option) => (
+                            <FacetedItem key={option.id} value={option.id.toString()}>
+                              <span>{option.name}</span>
+                            </FacetedItem>
+                          ))}
+                        </FacetedGroup>
+                      </FacetedList>
+                    </FacetedContent>
+                  </Faceted>
+                </div>
+                <div className="flex w-fit items-center justify-end gap-6">
+                  <FormField
+                    control={form.control}
+                    name="color"
+                    render={({ field }) => (
+                      <FormItem className="col-span-1 w-fit space-y-4">
+                        <FormLabel className="text-foreground text-sm font-medium leading-none">
+                          <Trans>Etiquette</Trans>
+                        </FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            className="flex items-center gap-1.5"
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            {colorOptions.map((colorOption) => (
+                              <RadioGroupItem
+                                key={colorOption.value}
+                                value={colorOption.value}
+                                aria-label={colorOption.label}
+                                className={cn(
+                                  'size-6 fill-white text-white shadow-none',
+                                  colorOption.bgClass,
+                                  colorOption.borderClass,
+                                )}
+                              />
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                  <FormField
+                    control={form.control}
+                    name="published"
+                    render={({ field }) => (
+                      <FormItem className="col-span-1 mt-1 flex w-fit flex-col space-y-4">
+                        <FormLabel className="text-foreground text-sm font-medium leading-none">
+                          <Trans>Published</Trans>
+                        </FormLabel>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={(checked) => field.onChange(checked as boolean)}
+                          />
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </section>
             </form>
           </Form>
         </ScrollArea>

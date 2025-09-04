@@ -51,21 +51,6 @@ export default function EventCard({
             )}
 
             <div className="absolute left-2 top-2 flex items-center justify-start gap-2">
-              {isFinished && (
-                <Badge className="2" variant="destructive" size={'small'} color="red">
-                  Finalizado
-                </Badge>
-              )}
-
-              <Badge
-                className={cn('2', getEventColorClasses(event_data.color ?? undefined))}
-                variant="default"
-                size={'small'}
-                color="red"
-              >
-                <Trans>{event_data.color}</Trans>
-              </Badge>
-
               {event_data.published ? (
                 <Badge className="2" variant="default" size={'small'} color="red">
                   <Trans>Published</Trans>
@@ -75,9 +60,24 @@ export default function EventCard({
                   <Trans>Draft</Trans>
                 </Badge>
               )}
+              <Badge
+                className={cn('2', getEventColorClasses(event_data.color ?? undefined))}
+                variant="default"
+                size={'small'}
+                color="red"
+              >
+                <Trans>{event_data.color}</Trans>
+              </Badge>
+              {isFinished && (
+                <Badge className="2" variant="destructive" size={'small'} color="red">
+                  Finalizado
+                </Badge>
+              )}
             </div>
           </div>
-          <p className="text-muted-foreground line-clamp-2 text-sm">{event_data.description}</p>
+          <p className="text-muted-foreground line-clamp-2 text-sm">
+            {event_data.description ?? <Trans>No description</Trans>}
+          </p>
           <section className="flex flex-col gap-2">
             {/* <p>{event_data.artists?.map((artist) => }</p> */}
             <StackAvatarsTasksWithTooltip artist={event_data.artists} />
