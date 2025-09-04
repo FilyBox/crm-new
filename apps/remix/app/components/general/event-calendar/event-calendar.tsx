@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
-import { addDays, addMonths, addWeeks, format, subMonths, subWeeks } from 'date-fns';
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, LoaderIcon } from 'lucide-react';
+import { addDays, addMonths, addWeeks, subMonths, subWeeks } from 'date-fns';
+import {
+  Bird,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Loader2,
+  LoaderIcon,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
 import { cn } from '@documenso/ui/lib/utils';
@@ -15,11 +22,14 @@ import {
   DropdownMenuTrigger,
 } from '@documenso/ui/primitives/dropdown-menu';
 
+import { useCalendarEvents } from '~/hooks/use-calendar-events';
+
 import { AgendaView } from './agenda-view';
 import { useCalendarContext } from './calendar-context';
 import { CalendarDndProvider } from './calendar-dnd-context';
 import { AgendaDaysToShow, EventGap, EventHeight, WeekCellsHeight } from './constants';
 import { DayView } from './day-view';
+import EventCard from './event-card';
 import { EventDialog } from './event-dialog';
 import { EventsFilters } from './events-filters';
 import { MonthView } from './month-view';
@@ -45,14 +55,14 @@ export function EventCalendar({
   onEventDelete,
   className,
   isLoading = false,
-  initialView = 'month',
+  initialView = 'list',
 }: EventCalendarProps) {
   // Use the shared calendar context instead of local state
   const { currentDate, setCurrentDate } = useCalendarContext();
   const [view, setView] = useState<CalendarView>(initialView);
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
-
+  const { handleEventAdd, handleEventUpdate, handleEventDelete } = useCalendarEvents({});
   // Add keyboard shortcuts for view switching
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -79,6 +89,11 @@ export function EventCalendar({
           break;
         case 'a':
           setView('agenda');
+          break;
+        case 'l':
+          setView('list');
+          break;
+        default:
           break;
       }
     };
@@ -143,8 +158,8 @@ export function EventCalendar({
 
     const newEvent: CalendarEvent = {
       id: '',
-      title: '',
-      start: startTime,
+      name: '',
+      beginning: startTime,
       end: addHoursToDate(startTime, 1),
       allDay: false,
       color: 'blue',
@@ -158,41 +173,47 @@ export function EventCalendar({
 
   const handleEventSave = (event: CalendarEvent) => {
     if (event.id) {
-      onEventUpdate?.(event);
-      // Show toast notification when an event is updated
-      toast(`Event "${event.title}" updated`, {
-        description: format(new Date(event.start), 'MMM d, yyyy'),
+      toast.promise(handleEventUpdate(event), {
+        loading: `Updating event "${event.name}"...`,
+        success: `Event "${event.name}" updated`,
+        error: `Error updating event "${event.name}"`,
         position: 'bottom-center',
+        className: 'mb-16',
       });
     } else {
-      onEventAdd?.({
-        ...event,
-        id: Math.random().toString(36).substring(2, 11),
-      });
-      // Show toast notification when an event is added
-      toast(`Event "${event.title}" added`, {
-        description: format(new Date(event.start), 'MMM d, yyyy'),
+      toast.promise(handleEventAdd(event), {
+        loading: `Creating event "${event.name}"...`,
+        success: `Event "${event.name}" created`,
+        error: `Error creating event "${event.name}"`,
         position: 'bottom-center',
+        className: 'mb-16',
       });
     }
     setIsEventDialogOpen(false);
     setSelectedEvent(null);
   };
 
-  const handleEventDelete = (eventId: string) => {
-    // const deletedEvent = events.find((e) => e.id === eventId);
-    onEventDelete?.(eventId);
+  const eventDelete = (eventId: string) => {
+    toast.promise(handleEventDelete(eventId), {
+      loading: `Deleting event...`,
+      success: `Event deleted successfully`,
+      error: `Error deleting event`,
+
+      position: 'bottom-center',
+      className: 'mb-16',
+    });
+    // onEventDelete?.(eventId);
     setIsEventDialogOpen(false);
     setSelectedEvent(null);
   };
 
-  const handleEventUpdate = (updatedEvent: CalendarEvent) => {
-    onEventUpdate?.(updatedEvent);
-
-    // Show toast notification when an event is updated via drag and drop
-    toast(`Event "${updatedEvent.title}" moved`, {
-      description: format(new Date(updatedEvent.start), 'MMM d, yyyy'),
+  const eventUpdate = (updatedEvent: CalendarEvent) => {
+    toast.promise(handleEventUpdate(updatedEvent), {
+      loading: `Updating event "${updatedEvent.name}"...`,
+      success: `Event "${updatedEvent.name}" updated`,
+      error: `Error updating event "${updatedEvent.name}"`,
       position: 'bottom-center',
+      className: 'mb-16',
     });
   };
 
@@ -207,7 +228,7 @@ export function EventCalendar({
         } as React.CSSProperties
       }
     >
-      <CalendarDndProvider onEventUpdate={handleEventUpdate}>
+      <CalendarDndProvider onEventUpdate={eventUpdate}>
         <div
           className={cn(
             'flex flex-col justify-between gap-2 py-5 sm:flex-row sm:items-center',
@@ -279,6 +300,9 @@ export function EventCalendar({
                   <DropdownMenuItem onClick={() => setView('agenda')}>
                     <Trans>Agenda</Trans> <DropdownMenuShortcut>A</DropdownMenuShortcut>
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setView('list')}>
+                    <Trans>List</Trans> <DropdownMenuShortcut>L</DropdownMenuShortcut>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -317,6 +341,43 @@ export function EventCalendar({
               onEventSelect={handleEventSelect}
             />
           )}
+
+          {view === 'list' && (
+            <div className="mb-8">
+              {isLoading ? (
+                <div className="flex h-64 items-center justify-center">
+                  <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
+                </div>
+              ) : events && events.length === 0 ? (
+                <div className="text-muted-foreground/60 flex h-96 flex-col items-center justify-center gap-y-4">
+                  <Bird className="h-12 w-12" strokeWidth={1.5} />
+
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold">
+                      <Trans>No hay eventos</Trans>
+                    </h3>
+
+                    <p className="mt-2 max-w-[50ch]">
+                      <Trans>
+                        No has creado ningun evento todavía. Crea una nuevo evento para comenzar.
+                      </Trans>
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+                  {events.map((event) => (
+                    <EventCard
+                      key={event.id}
+                      onEventSelect={handleEventSelect}
+                      event_data={event}
+                      finished={false}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <EventDialog
@@ -327,7 +388,7 @@ export function EventCalendar({
             setSelectedEvent(null);
           }}
           onSave={handleEventSave}
-          onDelete={handleEventDelete}
+          onDelete={eventDelete}
         />
       </CalendarDndProvider>
     </div>

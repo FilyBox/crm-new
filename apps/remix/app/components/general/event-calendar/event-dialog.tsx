@@ -72,14 +72,14 @@ interface EventDialogProps {
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Title cannot be empty' }),
+  name: z.string().min(1, { message: 'Name cannot be empty' }),
   description: z.string().optional(),
   startDate: z.date(),
   endDate: z.date(),
   startTime: z.string(),
   endTime: z.string(),
   allDay: z.boolean(),
-  location: z.string().optional(),
+  venue: z.string().optional(),
   color: z.string(),
   published: z.boolean().optional(),
 });
@@ -94,46 +94,48 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      name: '',
       description: '',
       startDate: new Date(),
       endDate: new Date(),
       startTime: `${DefaultStartHour}:00`,
       endTime: `${DefaultEndHour}:00`,
       allDay: false,
-      location: '',
+      venue: '',
       color: 'blue',
     },
   });
 
   useEffect(() => {
     if (event) {
-      const start = new Date(event.start);
+      const start = new Date(event.beginning);
       const end = new Date(event.end);
 
       form.reset({
-        title: event.title || '',
+        name: event.name || '',
         description: event.description || '',
         startDate: start,
         endDate: end,
         startTime: formatTimeForInput(start),
         endTime: formatTimeForInput(end),
         allDay: event.allDay || false,
-        location: event.venue || '',
+        venue: event.venue || '',
         color: (event.color as EventColor) || 'orange',
+        published: event.published || false,
       });
       setError(null);
     } else {
       form.reset({
-        title: '',
+        name: '',
         description: '',
         startDate: new Date(),
         endDate: new Date(),
         startTime: `${DefaultStartHour}:00`,
         endTime: `${DefaultEndHour}:00`,
         allDay: false,
-        location: '',
+        venue: '',
         color: 'blue',
+        published: false,
       });
       setError(null);
     }
@@ -162,7 +164,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
     return options;
   }, []); // Empty dependency array ensures this only runs once
 
-  const handleSave = async (values: z.infer<typeof formSchema>) => {
+  const handleSave = (values: z.infer<typeof formSchema>) => {
     const start = new Date(values.startDate);
     const end = new Date(values.endDate);
 
@@ -193,16 +195,16 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       return;
     }
 
-    const eventTitle = values.title.trim() ? values.title : t`(no title)`;
-
+    const eventName = values.name.trim() ? values.name : t`(no title)`;
+    console.log('event published', values.published);
     onSave({
       id: event?.id || '',
-      title: eventTitle,
+      name: eventName,
       description: values.description || null,
-      start: start,
+      beginning: start,
       end,
       allDay: values.allDay,
-      venue: values.location || null,
+      venue: values.venue || null,
       color: values.color as EventColor,
       image: event?.image ?? null,
       published: event?.published ?? false,
@@ -252,6 +254,12 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
       bgClass: 'bg-orange-400 data-[state=checked]:bg-orange-400',
       borderClass: 'border-orange-400 data-[state=checked]:border-orange-400',
     },
+    {
+      value: 'sky',
+      label: 'Sky',
+      bgClass: 'bg-sky-400 data-[state=checked]:bg-sky-400',
+      borderClass: 'border-sky-400 data-[state=checked]:border-sky-400',
+    },
   ];
 
   return (
@@ -278,7 +286,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
             <form className="grid gap-4 p-1 py-4">
               <FormField
                 control={form.control}
-                name="title"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -512,7 +520,7 @@ export function EventDialog({ event, isOpen, onClose, onSave, onDelete }: EventD
 
               <FormField
                 control={form.control}
-                name="location"
+                name="venue"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>

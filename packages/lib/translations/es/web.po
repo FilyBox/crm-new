@@ -114,9 +114,10 @@ msgid "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}}
 msgstr "{0, plural, one {Esperando 1 destinatario} other {Esperando # destinatarios}}"
 
 #. placeholder {0}: _(FRIENDLY_FIELD_TYPE[fieldType as FieldType])
+#. placeholder {0}: event_data.color
 #. placeholder {0}: initialData ? _(msg`Update your event details like name, description, and artists.`) : _(msg`Create a new Event with details like name, description, and artists.`)
-#. placeholder {0}: initialData ? _(msg`Update Contract`) : _(msg`Add Contract`)
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
+#: apps/remix/app/components/general/event-calendar/event-card.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/distribution-sheet.tsx
 #: apps/remix/app/components/sheets/event-sheet.tsx
@@ -2860,7 +2861,6 @@ msgid "Creating artists..."
 msgstr ""
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 msgid "Creating event..."
 msgstr "Creando evento:::"
 
@@ -3150,7 +3150,6 @@ msgstr ""
 msgid "Deleting account..."
 msgstr "Eliminando cuenta..."
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 msgid "Deleting event..."
 msgstr "Eliminando eventos..."
@@ -3727,6 +3726,7 @@ msgid "Downloading files..."
 msgstr "Descargando archivos"
 
 #: apps/remix/app/components/general/document/document-status.tsx
+#: apps/remix/app/components/general/event-calendar/event-card.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: packages/lib/constants/document.ts
 msgid "Draft"
@@ -5225,6 +5225,10 @@ msgstr "Enlace de plantilla"
 msgid "Links Generated"
 msgstr "Enlaces generados"
 
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "List"
+msgstr ""
+
 #. placeholder {0}: webhook.eventTriggers .map((trigger) => toFriendlyWebhookEventName(trigger)) .join(', ')
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "Listening to {0}"
@@ -5244,10 +5248,6 @@ msgstr "Cargando documento..."
 #: apps/remix/app/components/general/skeletons/document-edit-skeleton.tsx
 msgid "Loading Document..."
 msgstr "Cargando Documento..."
-
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
-msgid "Loading events..."
-msgstr "Cargando eventos..."
 
 #: apps/remix/app/components/general/document/document-page-view-recent-activity.tsx
 msgid "Loading..."
@@ -5684,6 +5684,10 @@ msgstr "No"
 msgid "No active drafts"
 msgstr "No hay borradores activos"
 
+#: apps/remix/app/components/general/event-calendar/stack-avatars-tasks-with-tooltip.tsx
+msgid "No artists specified"
+msgstr ""
+
 #: packages/ui/primitives/data-table-table.tsx
 msgid "No data found"
 msgstr "Sin datos que mostrar"
@@ -5721,6 +5725,14 @@ msgstr "No se encontraron carpetas que coincidan con \"{searchTerm}\""
 #: apps/remix/app/routes/_recipient+/sign.$token+/rejected.tsx
 msgid "No further action is required from you at this time."
 msgstr "No further action is required from you at this time."
+
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "No has creado ningun evento todavía. Crea una nuevo evento para comenzar."
+msgstr ""
+
+#: apps/remix/app/components/general/event-calendar/event-calendar.tsx
+msgid "No hay eventos"
+msgstr ""
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
@@ -6611,11 +6623,12 @@ msgstr "Las plantillas públicas están conectadas a tu perfil público. Cualqui
 msgid "Publish"
 msgstr ""
 
+#: apps/remix/app/components/general/event-calendar/event-card.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/tables/events-filters.tsx
 msgid "Published"
-msgstr ""
+msgstr "Publicado"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Publishers/Collection Societies"
@@ -9511,7 +9524,6 @@ msgid "Update your Virgin record details."
 msgstr ""
 
 #: apps/remix/app/components/sheets/event-sheet.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/events._index.tsx
 msgid "Updating event..."
 msgstr "Actualizando eventos..."
 

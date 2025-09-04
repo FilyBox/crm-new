@@ -7,7 +7,7 @@ export const EventGap = 4;
 export const WeekCellsHeight = 72;
 
 // Number of days to show in the agenda view
-export const AgendaDaysToShow = 30;
+export const AgendaDaysToShow = 365;
 
 // Start and end hours for the week and day views
 export const StartHour = 7; // Start at 7 AM

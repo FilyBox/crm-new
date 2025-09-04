@@ -51,7 +51,7 @@ function EventWrapper({
   const displayEnd = currentTime
     ? new Date(
         new Date(currentTime).getTime() +
-          (new Date(event.end).getTime() - new Date(event.start).getTime()),
+          (new Date(event.end).getTime() - new Date(event.beginning).getTime()),
       )
     : new Date(event.end);
 
@@ -115,17 +115,17 @@ export function EventItem({
 
   // Use the provided currentTime (for dragging) or the event's actual time
   const displayStart = useMemo(() => {
-    return currentTime || new Date(event.start);
-  }, [currentTime, event.start]);
+    return currentTime || new Date(event.beginning);
+  }, [currentTime, event.beginning]);
 
   const displayEnd = useMemo(() => {
     return currentTime
       ? new Date(
           new Date(currentTime).getTime() +
-            (new Date(event.end).getTime() - new Date(event.start).getTime()),
+            (new Date(event.end).getTime() - new Date(event.beginning).getTime()),
         )
       : new Date(event.end);
-  }, [currentTime, event.start, event.end]);
+  }, [currentTime, event.beginning, event.end]);
 
   // Calculate event duration in minutes
   const durationMinutes = useMemo(() => {
@@ -169,7 +169,7 @@ export function EventItem({
                 {formatTimeWithOptionalMinutes(displayStart)}{' '}
               </span>
             )}
-            {event.title}
+            {event.name}
           </span>
         )}
       </EventWrapper>
@@ -198,14 +198,14 @@ export function EventItem({
       >
         {durationMinutes < 45 ? (
           <div className="truncate">
-            {event.title}{' '}
+            {event.name}{' '}
             {showTime && (
               <span className="opacity-70">{formatTimeWithOptionalMinutes(displayStart)}</span>
             )}
           </div>
         ) : (
           <>
-            <div className="truncate font-medium">{event.title}</div>
+            <div className="truncate font-medium">{event.name}</div>
             {showTime && (
               <div className="truncate font-normal uppercase opacity-70 sm:text-xs">
                 {getEventTime()}
@@ -232,7 +232,7 @@ export function EventItem({
       {...dndListeners}
       {...dndAttributes}
     >
-      <div className="text-sm font-medium">{event.title}</div>
+      <div className="text-sm font-medium">{event.name}</div>
       <div className="text-xs opacity-70">
         {event.allDay ? (
           <span>All day</span>

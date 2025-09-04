@@ -127,7 +127,7 @@ export default function EventsPage() {
       <div className="relative">
         {(isLoading || isCreating || isUpdating || isDeleting) && (
           <div className="bg-background/50 absolute inset-0 z-10 flex items-center justify-center">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <div className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
               <span className="text-muted-foreground z-20 text-sm">
                 {isLoading && t`Loading events...`}
@@ -135,7 +135,7 @@ export default function EventsPage() {
                 {isUpdating && t`Updating event...`}
                 {isDeleting && t`Deleting event...`}
               </span>
-            </div>
+            </div> */}
           </div>
         )}
 
@@ -145,7 +145,7 @@ export default function EventsPage() {
           onEventAdd={onEventAdd}
           onEventUpdate={onEventUpdate}
           onEventDelete={onEventDelete}
-          initialView="week"
+          initialView="list"
         />
       </div>
     </div>

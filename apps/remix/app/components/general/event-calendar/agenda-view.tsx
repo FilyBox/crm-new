@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 
-import { addDays, format, isToday } from 'date-fns';
+import { format, isAfter, isSameDay, isToday, startOfDay } from 'date-fns';
 import { Calendar } from 'lucide-react';
 
-import { AgendaDaysToShow } from './constants';
 import { EventItem } from './event-item';
 import type { CalendarEvent } from './types';
 import { getAgendaEventsForDay } from './utils';
@@ -17,22 +16,34 @@ interface AgendaViewProps {
 }
 
 export function AgendaView({ currentDate, events, onEventSelect }: AgendaViewProps) {
-  // Show events for the next days based on constant
-  const days = useMemo(() => {
-    return Array.from({ length: AgendaDaysToShow }, (_, i) => addDays(new Date(currentDate), i));
-  }, [currentDate]);
+  const futureEvents = useMemo(() => {
+    const today = startOfDay(new Date());
+    return events.filter((event) => {
+      const eventDate = new Date(event.beginning);
+      return isSameDay(eventDate, today) || isAfter(eventDate, today);
+    });
+  }, [events]);
+
+  const daysWithEvents = useMemo(() => {
+    const uniqueDays = new Set<string>();
+    futureEvents.forEach((event) => {
+      const eventDate = new Date(event.beginning);
+      uniqueDays.add(startOfDay(eventDate).toISOString());
+    });
+
+    return Array.from(uniqueDays)
+      .map((dateStr) => new Date(dateStr))
+      .sort((a, b) => a.getTime() - b.getTime());
+  }, [futureEvents]);
 
   const handleEventClick = (event: CalendarEvent, e: React.MouseEvent) => {
     e.stopPropagation();
     onEventSelect(event);
   };
 
-  // Check if there are any days with events
-  const hasEvents = days.some((day) => getAgendaEventsForDay(events, day).length > 0);
-
   return (
     <div className="border-border/70 border-t ps-4">
-      {!hasEvents ? (
+      {!futureEvents.length ? (
         <div className="flex min-h-[70svh] flex-col items-center justify-center py-16 text-center">
           <Calendar size={32} className="text-muted-foreground/50 mb-2" />
           <h3 className="text-lg font-medium">No events found</h3>
@@ -41,11 +52,8 @@ export function AgendaView({ currentDate, events, onEventSelect }: AgendaViewPro
           </p>
         </div>
       ) : (
-        days.map((day) => {
-          const dayEvents = getAgendaEventsForDay(events, day);
-
-          if (dayEvents.length === 0) return null;
-
+        daysWithEvents.map((day) => {
+          const dayEvents = getAgendaEventsForDay(futureEvents, day);
           return (
             <div key={day.toString()} className="border-border/70 relative my-12 border-t">
               <span

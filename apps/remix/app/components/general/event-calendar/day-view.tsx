@@ -50,7 +50,7 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
   const dayEvents = useMemo(() => {
     return events
       .filter((event) => {
-        const eventStart = new Date(event.start);
+        const eventStart = new Date(event.beginning);
         const eventEnd = new Date(event.end);
         return (
           isSameDay(currentDate, eventStart) ||
@@ -58,7 +58,7 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
           (currentDate > eventStart && currentDate < eventEnd)
         );
       })
-      .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+      .sort((a, b) => new Date(a.beginning).getTime() - new Date(b.beginning).getTime());
   }, [currentDate, events]);
 
   // Filter all-day events
@@ -84,8 +84,8 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
 
     // Sort events by start time and duration
     const sortedEvents = [...timeEvents].sort((a, b) => {
-      const aStart = new Date(a.start);
-      const bStart = new Date(b.start);
+      const aStart = new Date(a.beginning);
+      const bStart = new Date(b.beginning);
       const aEnd = new Date(a.end);
       const bEnd = new Date(b.end);
 
@@ -103,7 +103,7 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
     const columns: { event: CalendarEvent; end: Date }[][] = [];
 
     sortedEvents.forEach((event) => {
-      const eventStart = new Date(event.start);
+      const eventStart = new Date(event.beginning);
       const eventEnd = new Date(event.end);
 
       // Adjust start and end times if they're outside this day
@@ -129,7 +129,7 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
           const overlaps = col.some((c) =>
             areIntervalsOverlapping(
               { start: adjustedStart, end: adjustedEnd },
-              { start: new Date(c.event.start), end: new Date(c.event.end) },
+              { start: new Date(c.event.beginning), end: new Date(c.event.end) },
             ),
           );
           if (!overlaps) {
@@ -182,7 +182,7 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
             </div>
             <div className="border-border/70 relative border-r p-1 last:border-r-0">
               {allDayEvents.map((event) => {
-                const eventStart = new Date(event.start);
+                const eventStart = new Date(event.beginning);
                 const eventEnd = new Date(event.end);
                 const isFirstDay = isSameDay(currentDate, eventStart);
                 const isLastDay = isSameDay(currentDate, eventEnd);
@@ -197,7 +197,7 @@ export function DayView({ currentDate, events, onEventSelect, onEventCreate }: D
                     isLastDay={isLastDay}
                   >
                     {/* Always show the title in day view for better usability */}
-                    <div>{event.title}</div>
+                    <div>{event.name}</div>
                   </EventItem>
                 );
               })}

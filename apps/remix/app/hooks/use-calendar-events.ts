@@ -28,35 +28,6 @@ export interface DatabaseEvent {
   }>;
 }
 
-// Helper function to map database event to CalendarEvent
-export const mapDatabaseEventToCalendarEvent = (dbEvent: DatabaseEvent): CalendarEvent => {
-  return {
-    id: dbEvent.id.toString(),
-    title: dbEvent.name,
-    description: dbEvent.description || null,
-    start: new Date(dbEvent.beginning),
-    end: new Date(dbEvent.end),
-    allDay: dbEvent.allDay || false,
-    color: dbEvent.color || 'blue',
-    venue: dbEvent.venue || null,
-    published: dbEvent.published,
-  };
-};
-
-// Helper function to map CalendarEvent to database event format
-export const mapCalendarEventToDatabaseEvent = (calendarEvent: CalendarEvent) => {
-  return {
-    id: calendarEvent.id ? parseInt(calendarEvent.id) : undefined,
-    name: calendarEvent.title,
-    description: calendarEvent.description || null,
-    beginning: calendarEvent.start,
-    end: calendarEvent.end,
-    venue: calendarEvent.venue || null,
-    color: calendarEvent.color || 'blue',
-    allDay: calendarEvent.allDay || false,
-  };
-};
-
 export const useCalendarEvents = ({
   query,
   orderByColumn,
@@ -120,9 +91,9 @@ export const useCalendarEvents = ({
   const calendarEvents = useMemo(() => {
     if (!eventsData?.events) return [];
 
-    return eventsData.events.map((event) =>
-      mapDatabaseEventToCalendarEvent({
-        id: event.id,
+    return eventsData.events.map(
+      (event): CalendarEvent => ({
+        id: event.id.toString(),
         name: event.name,
         description: event.description,
         beginning: event.beginning,
@@ -130,42 +101,39 @@ export const useCalendarEvents = ({
         venue: event.venue,
         color: event.color,
         allDay: event.allDay,
-        image: event.image,
         published: event.published,
-        createdAt: event.createdAt,
-        updatedAt: event.updatedAt,
-        deletedAt: event.deletedAt,
-        artists: event.artists,
       }),
     );
   }, [eventsData?.events]);
 
   const handleEventAdd = async (event: CalendarEvent) => {
-    const dbEvent = mapCalendarEventToDatabaseEvent(event);
     await createEventMutation.mutateAsync({
-      name: dbEvent.name,
-      description: dbEvent.description ?? undefined,
-      beginning: dbEvent.beginning,
-      end: dbEvent.end,
-      venue: dbEvent.venue ?? undefined,
-      allDay: dbEvent.allDay,
-      color: dbEvent.color,
+      name: event.name,
+      description: event.description ?? undefined,
+      beginning: event.beginning,
+      end: event.end,
+      venue: event.venue ?? undefined,
+      allDay: event.allDay,
+      color: event.color ?? undefined,
+      published: event.published,
     });
   };
 
   const handleEventUpdate = async (event: CalendarEvent) => {
-    const dbEvent = mapCalendarEventToDatabaseEvent(event);
-    if (!dbEvent.id) return;
+    const id = parseInt(event.id);
+    if (isNaN(id)) return;
 
     await updateEventMutation.mutateAsync({
-      id: dbEvent.id,
-      name: dbEvent.name,
-      description: dbEvent.description ?? undefined,
-      beginning: dbEvent.beginning,
-      end: dbEvent.end,
-      venue: dbEvent.venue ?? undefined,
-      allDay: dbEvent.allDay,
-      color: dbEvent.color,
+      id,
+      name: event.name,
+      description: event.description ?? undefined,
+      beginning: event.beginning,
+      end: event.end,
+      venue: event.venue ?? undefined,
+      allDay: event.allDay,
+      color: event.color ?? undefined,
+      published: event.published,
+      image: typeof event.image === 'string' ? event.image : undefined,
     });
   };
 

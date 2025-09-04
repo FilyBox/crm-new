@@ -143,7 +143,7 @@ export function MonthView({ currentDate, events, onEventSelect, onEventCreate }:
                       className="min-h-[calc((var(--event-height)+var(--event-gap))*2)] sm:min-h-[calc((var(--event-height)+var(--event-gap))*3)] lg:min-h-[calc((var(--event-height)+var(--event-gap))*4)]"
                     >
                       {sortEvents(allDayEvents).map((event, index) => {
-                        const eventStart = new Date(event.start);
+                        const eventStart = new Date(event.beginning);
                         const eventEnd = new Date(event.end);
                         const isFirstDay = isSameDay(day, eventStart);
                         const isLastDay = isSameDay(day, eventEnd);
@@ -168,9 +168,9 @@ export function MonthView({ currentDate, events, onEventSelect, onEventCreate }:
                               >
                                 <div className="invisible" aria-hidden={true}>
                                   {!event.allDay && (
-                                    <span>{format(new Date(event.start), 'h:mm')} </span>
+                                    <span>{format(new Date(event.beginning), 'h:mm')} </span>
                                   )}
-                                  {event.title}
+                                  {event.name}
                                 </div>
                               </EventItem>
                             </div>
@@ -219,7 +219,7 @@ export function MonthView({ currentDate, events, onEventSelect, onEventCreate }:
                               <div className="text-sm font-medium">{format(day, 'EEE d')}</div>
                               <div className="space-y-1">
                                 {sortEvents(allEvents).map((event) => {
-                                  const eventStart = new Date(event.start);
+                                  const eventStart = new Date(event.beginning);
                                   const eventEnd = new Date(event.end);
                                   const isFirstDay = isSameDay(day, eventStart);
                                   const isLastDay = isSameDay(day, eventEnd);
