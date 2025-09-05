@@ -18,6 +18,7 @@ import { getTeamByUrl } from '@documenso/lib/server-only/team/get-team';
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
 import { formatContractsPath } from '@documenso/lib/utils/teams';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
+import { FeatureCard } from '@documenso/ui/primitives/card-fancy';
 import PDFViewer from '@documenso/ui/primitives/pdf-viewer';
 import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
 
@@ -174,36 +175,44 @@ export default function DocumentPage() {
 
         <div className="w-full flex-1 md:w-[350px]">
           <div className="sticky top-20">
-            <Card className="p-4">
+            <FeatureCard className="">
               <ScrollArea className="h-[32rem]">
                 <div className="flex flex-col gap-4 p-3">
                   <span className="line-clamp-1 text-2xl font-semibold">{contract?.fileName}</span>
                   {contract?.title && (
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium text-gray-500">Title</span>
-                      <span className="text-base">{contract.title}</span>
+                      <span className="text-foreground pb-1 text-lg font-medium">
+                        <Trans>Title</Trans>
+                      </span>
+                      <span className="text-sm">{contract.title}</span>
                     </div>
                   )}
 
                   {contract?.artists && (
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium text-gray-500">Artists</span>
-                      <span className="text-base">{contract.artists}</span>
+                      <span className="text-foreground pb-1 text-lg font-medium">
+                        <Trans>Artists</Trans>
+                      </span>
+                      <span className="text-sm">{contract.artists}</span>
                     </div>
                   )}
 
                   {contract?.status && (
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium text-gray-500">Status</span>
-                      <span className="text-base">{contract.status}</span>
+                      <span className="text-foreground pb-1 text-lg font-medium">
+                        <Trans>Status</Trans>
+                      </span>
+                      <span className="text-sm">{contract.status}</span>
                     </div>
                   )}
 
                   <div className="flex gap-4">
                     {contract?.startDate && (
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-500">Start Date</span>
-                        <span className="text-base">
+                        <span className="text-foreground pb-1 text-lg font-medium">
+                          <Trans>Start Date</Trans>
+                        </span>
+                        <span className="text-sm">
                           {format(contract.startDate as Date, 'd MMM yyyy', {
                             locale: currentLanguage === 'es' ? es : enUS,
                           })}
@@ -213,8 +222,10 @@ export default function DocumentPage() {
 
                     {contract?.endDate && (
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-500">End Date</span>
-                        <span className="text-base">
+                        <span className="text-foreground pb-1 text-lg font-medium">
+                          <Trans>End Date</Trans>
+                        </span>
+                        <span className="text-sm">
                           {format(contract.endDate as Date, 'd MMM yyyy', {
                             locale: currentLanguage === 'es' ? es : enUS,
                           })}
@@ -226,28 +237,34 @@ export default function DocumentPage() {
                   <div className="flex gap-4">
                     {contract?.isPossibleToExpand !== undefined && (
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-500">Can Extend</span>
-                        <span className="text-base">{contract.isPossibleToExpand}</span>
+                        <span className="text-foreground pb-1 text-lg font-medium">
+                          <Trans>Can Extend</Trans>
+                        </span>
+                        <span className="text-sm">{contract.isPossibleToExpand}</span>
                       </div>
                     )}
 
                     {contract?.possibleExtensionTime && (
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-500">Extension Time</span>
-                        <span className="text-base">{contract.possibleExtensionTime}</span>
+                        <span className="text-foreground pb-1 text-lg font-medium">
+                          <Trans>Extension Time</Trans>
+                        </span>
+                        <span className="text-sm">{contract.possibleExtensionTime}</span>
                       </div>
                     )}
                   </div>
 
                   {contract?.summary && (
                     <div className="mt-2 flex flex-col">
-                      <span className="text-sm font-medium text-gray-500">Summary</span>
+                      <span className="text-foreground pb-1 text-lg font-medium">
+                        <Trans>Summary</Trans>
+                      </span>
                       <p className="mt-1 text-base">{contract.summary}</p>
                     </div>
                   )}
                 </div>
               </ScrollArea>
-            </Card>
+            </FeatureCard>
           </div>
         </div>
       </div>

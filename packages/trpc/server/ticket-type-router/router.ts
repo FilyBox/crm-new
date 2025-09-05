@@ -27,6 +27,61 @@ export type GetTicketTypeByIdOptions = {
 };
 
 export const ticketTypeRouter = router({
+  createTicketTemplate: authenticatedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1).optional(),
+        price: z.number().optional(),
+        maxQuantityPerUser: z.number().optional(),
+        quantity: z.number().optional(),
+        description: z.string().optional(),
+        stripeProductId: z.string().optional(),
+        stripePriceId: z.string().optional(),
+        imageUrl: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { teamId, user } = ctx;
+      if (!input.name) {
+        throw new Error('El nombre del tipo de ticket es obligatorio');
+      }
+
+      try {
+        return await prisma.ticketTemplate.create({
+          data: {
+            name: input.name,
+            ...(input.price !== undefined ? { price: input.price } : {}),
+            maxQuantityPerUser: input.maxQuantityPerUser ?? 0,
+            quantity: input.quantity ?? 0,
+            ...(input.description !== undefined ? { description: input.description } : {}),
+            ...(input.stripeProductId !== undefined
+              ? { stripeProductId: input.stripeProductId }
+              : {}),
+            ...(input.stripePriceId !== undefined ? { stripePriceId: input.stripePriceId } : {}),
+            ...(input.imageUrl !== undefined ? { imageUrl: input.imageUrl } : {}),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            teamId: teamId,
+            userId: user?.id,
+          },
+        });
+      } catch (error) {
+        console.error('Error creating ticket type:', error);
+        throw new Error('Error creating ticket type');
+      }
+    }),
+
+  getTicketTemplate: authenticatedProcedure.query(async ({ ctx }) => {
+    const { teamId } = ctx;
+    const ticketTemplate = await prisma.ticketTemplate.findMany({
+      orderBy: {
+        createdAt: 'asc',
+      },
+      where: { teamId: teamId, deletedAt: null },
+    });
+    return ticketTemplate;
+  }),
+
   createTicketType: authenticatedProcedure
     .input(
       z.object({

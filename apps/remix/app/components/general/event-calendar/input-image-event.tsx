@@ -1,5 +1,6 @@
 import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import { Eye, Trash2Icon, Upload } from 'lucide-react';
 
 import { Badge } from '@documenso/ui/primitives/badge';
@@ -123,13 +124,17 @@ export default function InputImageEvent({
             type="button"
             variant="outline"
             onClick={triggerFileInput}
-            className={`flex w-full flex-1 items-center bg-transparent ${images.length > 0 ? 'justify-between' : 'justify-center'}`}
+            className={`bg-background flex w-full flex-1 items-center ${images.length > 0 ? 'justify-between' : 'justify-center'}`}
           >
             <div className="flex items-center">
               <Upload className="mr-2 h-4 w-4" />
-              Upload
+              <Trans>Upload</Trans>
             </div>
-            {images.length > 0 && <Badge variant="secondary">{images.length} files</Badge>}
+            {images.length > 0 && (
+              <Badge variant="secondary">
+                {images.length} <Trans>file{images.length > 1 ? 's' : ''}</Trans>
+              </Badge>
+            )}
           </Button>
 
           {images.length > 0 && (
@@ -138,7 +143,7 @@ export default function InputImageEvent({
                 <PopoverTrigger asChild>
                   <Button variant="outline" className="w-full sm:w-fit">
                     <Eye className="h-4 w-4 sm:mr-1 sm:w-fit" />
-                    Preview
+                    <Trans>Preview</Trans>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent

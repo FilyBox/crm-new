@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
+import { type TTicketTemplateLite } from '@documenso/lib/types/ticketTemplates';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
 import { Calendar } from '@documenso/ui/primitives/calendar';
@@ -83,20 +84,8 @@ interface EventDialogProps {
   onDelete: (eventId: string) => void;
   artistData?: artistData;
   tickets?: tickets[];
+  ticketTemplates?: TTicketTemplateLite[];
 }
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: 'Name cannot be empty' }),
-  description: z.string().optional(),
-  startDate: z.date(),
-  endDate: z.date(),
-  startTime: z.string(),
-  endTime: z.string(),
-  allDay: z.boolean(),
-  venue: z.string().optional(),
-  color: z.string(),
-  published: z.boolean().optional(),
-});
 
 export function EventDialog({
   event,
@@ -105,6 +94,7 @@ export function EventDialog({
   onSave,
   onDelete,
   artistData,
+  ticketTemplates,
 }: EventDialogProps) {
   const [error, setError] = useState<string | null>(null);
   const [startDateOpen, setStartDateOpen] = useState(false);
@@ -115,8 +105,21 @@ export function EventDialog({
   const [image, setImage] = useState<File | null>(null);
   const [isImageRemove, setIsImageRemove] = useState(false);
   const { type, addMember } = useUpdateFormStore();
-  const { newType } = useRegistrationFormStore();
+  const { newType, addNewTicket } = useRegistrationFormStore();
   const [selectedTickets, setSelectedTickets] = useState<string[] | undefined>([]);
+
+  const formSchema = z.object({
+    name: z.string().min(1, { message: t`Name cannot be empty` }),
+    description: z.string().optional(),
+    startDate: z.date(),
+    endDate: z.date(),
+    startTime: z.string(),
+    endTime: z.string(),
+    allDay: z.boolean(),
+    venue: z.string().optional(),
+    color: z.string(),
+    published: z.boolean().optional(),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -134,14 +137,10 @@ export function EventDialog({
   });
 
   useEffect(() => {
-    type.length = 0; // Clear the existing tickets
+    type.length = 0;
+    newType.length = 0;
 
     if (event) {
-      newType.length = 0;
-
-      const ticketTypesData = event.ticketTypes?.map((ticket) => ticket.id.toString()) || [];
-      setSelectedTickets(ticketTypesData);
-
       const start = new Date(event.beginning);
       const end = new Date(event.end);
       if (event.artists) {
@@ -206,7 +205,6 @@ export function EventDialog({
     return `${hours}:${minutes.toString().padStart(2, '0')}`;
   };
 
-  // Memoize time options so they're only calculated once
   const timeOptions = useMemo(() => {
     const options = [];
     for (let hour = StartHour; hour <= EndHour; hour++) {
@@ -214,14 +212,13 @@ export function EventDialog({
         const formattedHour = hour.toString().padStart(2, '0');
         const formattedMinute = minute.toString().padStart(2, '0');
         const value = `${formattedHour}:${formattedMinute}`;
-        // Use a fixed date to avoid unnecessary date object creations
         const date = new Date(2000, 0, 1, hour, minute);
         const label = format(date, 'h:mm a');
         options.push({ value, label });
       }
     }
     return options;
-  }, []); // Empty dependency array ensures this only runs once
+  }, []);
 
   const handleSave = (values: z.infer<typeof formSchema>) => {
     const start = new Date(values.startDate);
@@ -277,7 +274,6 @@ export function EventDialog({
     }
   };
 
-  // Updated color options to match types.ts
   const colorOptions: Array<{
     value: EventColor;
     label: string;
@@ -343,7 +339,7 @@ export function EventDialog({
 
         <ScrollArea className="h-[58cqh] w-full sm:h-[75cqh]">
           <Form {...form}>
-            <form className="grid gap-4 p-1">
+            <form className="grid gap-4 px-2">
               <FormField
                 control={form.control}
                 name="name"
@@ -391,7 +387,7 @@ export function EventDialog({
                             <Button
                               variant={'outline'}
                               className={cn(
-                                'bg-background hover:bg-background border-input group w-full justify-between px-3 font-normal outline-none outline-offset-0 focus-visible:outline-[3px]',
+                                '!bg-background hover:bg-background border-input group w-full justify-between px-3 font-normal outline-none outline-offset-0 focus-visible:outline-[3px]',
                                 !field.value && 'text-muted-foreground',
                               )}
                             >
@@ -589,7 +585,91 @@ export function EventDialog({
               <div className="flex flex-col gap-1">
                 <Trans>Tickets</Trans>
                 <div className="flex gap-3">
-                  <TicketsAdd isLoading={false} />
+                  {/* ticket template select to add tickets */}
+                  {!event && (
+                    <Faceted
+                      modal={true}
+                      value={selectedTickets}
+                      onValueChange={(value) => {
+                        setSelectedTickets(value);
+                      }}
+                      multiple={true}
+                    >
+                      <FacetedTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="default"
+                          className="bg-background w-full min-w-56 rounded font-normal"
+                        >
+                          <FacetedBadgeList
+                            max={2}
+                            options={ticketTemplates?.map((ticket) => ({
+                              label: ticket.name,
+                              value: ticket.id.toString(),
+                            }))}
+                            placeholder={t`Select a ticket...`}
+                            className="h-fit"
+                          />
+                        </Button>
+                      </FacetedTrigger>
+                      <FacetedContent className="z-9999 h-fit w-full origin-[var(--radix-popover-content-transform-origin)]">
+                        <FacetedInput
+                          aria-label={t`Search options`}
+                          placeholder={t`Search options...`}
+                        />
+                        <FacetedList className="h-fit">
+                          <FacetedEmpty>{t`No options found.`}</FacetedEmpty>
+                          <FacetedGroup>
+                            {ticketTemplates?.map((option) => (
+                              <FacetedItem key={option.id} value={option.id.toString()}>
+                                <span>{option.name}</span>
+                              </FacetedItem>
+                            ))}
+                          </FacetedGroup>
+                        </FacetedList>
+                      </FacetedContent>
+                    </Faceted>
+                  )}
+                  {selectedTickets && !event && selectedTickets?.length > 0 && (
+                    <Button
+                      variant="outline"
+                      size="default"
+                      type="button"
+                      className="w-fit min-w-28 flex-shrink rounded font-normal"
+                      onClick={() => {
+                        {
+                          selectedTickets?.forEach((ticketId) => {
+                            // Ensure ticketId is a string
+                            const id = ticketId.toString();
+                            // Check if the ticket already exists in the store
+                            const existingTicket = newType.find((t) => t.id === id);
+                            if (!existingTicket) {
+                              const ticketInfo = ticketTemplates?.find(
+                                (ticket) => ticket.id.toString() === id,
+                              );
+                              if (ticketInfo) {
+                                addNewTicket({
+                                  id: id,
+                                  name: ticketInfo.name,
+                                  price: ticketInfo.price,
+                                  quantity: ticketInfo.quantity,
+                                  maxQuantityPerUser: ticketInfo.maxQuantityPerUser,
+                                  description: ticketInfo.description,
+                                  seatNumber: null,
+                                  modified: false,
+                                });
+                              }
+                            }
+                          });
+
+                          setSelectedTickets([]); // Clear selection after adding
+                        }
+                      }}
+                    >
+                      Confirmar
+                    </Button>
+                  )}
+                  <TicketsAdd editar={!!event} isLoading={false} />
                 </div>
               </div>
 
@@ -611,12 +691,12 @@ export function EventDialog({
                         className="w-full min-w-56 rounded font-normal"
                       >
                         <FacetedBadgeList
-                          max={3}
+                          max={2}
                           options={artistData?.map((member) => ({
                             label: member.name,
                             value: member.id.toString(),
                           }))}
-                          placeholder={t`Select artists...`}
+                          placeholder={t`Select an artist...`}
                           className="h-fit"
                         />
                       </Button>

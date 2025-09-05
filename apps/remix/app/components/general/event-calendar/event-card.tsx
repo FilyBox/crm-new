@@ -87,13 +87,18 @@ export default function EventCard({
             {event_data.description ?? <Trans>No description</Trans>}
           </p>
           <section className="flex flex-col gap-2">
-            {/* <p>{event_data.artists?.map((artist) => }</p> */}
             <StackAvatarsTasksWithTooltip artist={event_data.artists} />
             <div className="flex items-center gap-2">
               <Badge className="w-fit !p-2" size={'small'} color="indigo">
                 <MapPinIcon width={16} height={16} />
               </Badge>
-              <p className="line-clamp-3 text-xs">{event_data.venue}</p>
+              {event_data.venue ? (
+                <p className="line-clamp-3 text-xs">{event_data.venue}</p>
+              ) : (
+                <p className="text-muted-foreground/70 text-xs">
+                  <Trans>No venue specified</Trans>
+                </p>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <Badge className="!p-2" size={'small'} color="grass">

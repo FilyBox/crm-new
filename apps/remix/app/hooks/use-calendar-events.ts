@@ -70,6 +70,8 @@ export const useCalendarEvents = ({
     }),
   );
 
+  const { data: ticketTemplates } = trpc.ticketType.getTicketTemplate.useQuery();
+
   // Create event mutation
   const createEventMutation = trpc.events.createEvent.useMutation({
     onSuccess: async () => {
@@ -234,6 +236,7 @@ export const useCalendarEvents = ({
   };
   return {
     events: calendarEvents,
+    ticketTemplates: ticketTemplates,
     isLoading,
     error,
     artists: eventsData?.artists,

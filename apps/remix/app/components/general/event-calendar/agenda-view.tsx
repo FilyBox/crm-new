@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { Trans } from '@lingui/react/macro';
 import { format, isAfter, isSameDay, isToday, startOfDay } from 'date-fns';
 import { Calendar } from 'lucide-react';
 
@@ -46,9 +47,11 @@ export function AgendaView({ currentDate, events, onEventSelect }: AgendaViewPro
       {!futureEvents.length ? (
         <div className="flex min-h-[70svh] flex-col items-center justify-center py-16 text-center">
           <Calendar size={32} className="text-muted-foreground/50 mb-2" />
-          <h3 className="text-lg font-medium">No events found</h3>
+          <h3 className="text-lg font-medium">
+            <Trans>No events found</Trans>
+          </h3>
           <p className="text-muted-foreground">
-            There are no events scheduled for this time period.
+            <Trans>There are no events scheduled for this time period.</Trans>
           </p>
         </div>
       ) : (

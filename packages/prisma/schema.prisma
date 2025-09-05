@@ -1485,6 +1485,7 @@ model TicketTemplate {
   price              Int? // Precio sugerido
   maxQuantityPerUser Int       @default(5)
   description        String?
+  quantity           Int?
   imageUrl           String?   @db.Text
   isActive           Boolean   @default(true)
   createdAt          DateTime  @default(now())

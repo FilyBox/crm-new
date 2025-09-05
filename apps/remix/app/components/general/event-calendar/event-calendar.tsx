@@ -34,6 +34,7 @@ import { EventDialog } from './event-dialog';
 import { EventsFilters } from './events-filters';
 import { MonthView } from './month-view';
 import SidebarCalendar from './sidebar-calendar';
+import { TicketTypeCreateDialog } from './ticket-type-create-dialog';
 import type { CalendarEvent, CalendarView } from './types';
 import { addHoursToDate } from './utils';
 import { WeekView } from './week-view';
@@ -56,7 +57,8 @@ export function EventCalendar({
   const [view, setView] = useState<CalendarView>(initialView);
   const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
-  const { handleEventAdd, handleEventUpdate, handleEventDelete, artists } = useCalendarEvents({});
+  const { handleEventAdd, handleEventUpdate, handleEventDelete, artists, ticketTemplates } =
+    useCalendarEvents({});
   const { t } = useLingui();
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -266,6 +268,7 @@ export function EventCalendar({
               >
                 <Trans>New Event</Trans>
               </Button>
+              <TicketTypeCreateDialog isLoading={isLoading} />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -373,6 +376,7 @@ export function EventCalendar({
           event={selectedEvent}
           isOpen={isEventDialogOpen}
           artistData={artists}
+          ticketTemplates={ticketTemplates}
           onClose={() => {
             setIsEventDialogOpen(false);
             setSelectedEvent(null);

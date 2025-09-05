@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useLingui } from '@lingui/react/macro';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { cn } from '../lib/utils';
@@ -107,7 +108,10 @@ function FacetedTrigger(props: React.ComponentProps<typeof PopoverTrigger>) {
   const { className, children, ...triggerProps } = props;
 
   return (
-    <PopoverTrigger {...triggerProps} className={cn('justify-between text-left', className)}>
+    <PopoverTrigger
+      {...triggerProps}
+      className={cn('bg-background justify-between text-left', className)}
+    >
       {children}
     </PopoverTrigger>
   );
@@ -131,7 +135,7 @@ function FacetedBadgeList(props: FacetedBadgeListProps) {
     altTextSelection,
     ...badgeListProps
   } = props;
-
+  const { t } = useLingui();
   const context = useFacetedContext('FacetedBadgeList');
   const values = Array.isArray(context.value)
     ? context.value
@@ -168,7 +172,7 @@ function FacetedBadgeList(props: FacetedBadgeListProps) {
             </Badge>
           ))}
           <Badge variant="secondary" className={cn('rounded-sm px-1 font-normal', badgeClassName)}>
-            +{values.length - max} {altTextSelection || 'more selected'}
+            +{values.length - max} {altTextSelection || t`more selected`}
           </Badge>
         </>
       ) : (

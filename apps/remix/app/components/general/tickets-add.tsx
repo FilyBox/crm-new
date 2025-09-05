@@ -14,7 +14,7 @@ import { Textarea } from '@documenso/ui/primitives/textarea';
 
 import { useRegistrationFormStore, useUpdateFormStore } from '~/storage/store-tickets';
 
-export default function TicketsAdd({ isLoading }: { isLoading: boolean }) {
+export default function TicketsAdd({ isLoading, editar }: { isLoading: boolean; editar: boolean }) {
   const { newType, addNewTicket, removeNewTicket, updateNewTicket } = useRegistrationFormStore();
   const { type, updateTicketEdit } = useUpdateFormStore();
   return (
@@ -28,10 +28,10 @@ export default function TicketsAdd({ isLoading }: { isLoading: boolean }) {
                   badgeVariants({
                     variant: 'secondary',
                     size: 'default',
-                    className: 'w-full hover:!bg-blue-100 hover:dark:!bg-blue-400/20',
+                    className: 'min-w-20 max-w-20 hover:!bg-blue-100 hover:dark:!bg-blue-400/20',
                   }),
                 )
-              : 'w-full'
+              : `bg-background ${editar ? 'w-full' : 'min-w-10 max-w-10'} p-1`
           }
         >
           {type.length > 0 ? (
