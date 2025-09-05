@@ -17,18 +17,20 @@ import { getRecipientsForDocument } from '@documenso/lib/server-only/recipient/g
 import { getTeamByUrl } from '@documenso/lib/server-only/team/get-team';
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
 import { formatContractsPath } from '@documenso/lib/utils/teams';
+import { cn } from '@documenso/ui/lib/utils';
+import { Button } from '@documenso/ui/primitives/button';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
 import { FeatureCard } from '@documenso/ui/primitives/card-fancy';
 import PDFViewer from '@documenso/ui/primitives/pdf-viewer';
 import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
 
+import { useIsActiveStore } from '~/storage/active-full-container';
 import { superLoaderJson, useSuperLoaderData } from '~/utils/super-json-loader';
 
 import type { Route } from './+types/documents.$id._index';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const { user } = await getSession(request);
-
   const teamUrl = params.teamUrl;
 
   if (!teamUrl) {
@@ -68,11 +70,6 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   if (document?.teamId && !team?.url) {
     throw redirect(documentRootPath);
   }
-
-  // if (document?.folderId) {
-  //   console.log('document has folderId, redirecting to root path');
-  //   throw redirect(documentRootPath);
-  // }
 
   const documentVisibility = document?.visibility;
   const currentTeamMemberRole = team.currentTeamRole;
@@ -129,6 +126,26 @@ export default function DocumentPage() {
   const loaderData = useSuperLoaderData<typeof loader>();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const { activeGame } = useIsActiveStore();
+
+  const handleIsOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const renderOpenButton = (handleToggle: () => void) => (
+    <div
+      className={cn(
+        'flex w-full items-center justify-start py-1 pr-4 md:py-1 md:pl-4',
+        isOpen ? 'pr-3' : '',
+      )}
+    >
+      <Button className="" onClick={handleIsOpen} variant="secondary">
+        {isOpen ? 'close' : 'open'}
+      </Button>
+    </div>
+  );
+
   const { i18n } = useLingui();
   const currentLanguage = i18n.locale;
   // const retryDocument = trpc.document.retryContractData.useMutation();
@@ -149,7 +166,7 @@ export default function DocumentPage() {
     }
   };
   return (
-    <div className="mx-auto w-full max-w-screen-xl sm:px-6">
+    <div className={`mx-auto w-full max-w-screen-xl sm:px-6`} style={{ scrollbarGutter: 'stable' }}>
       <h1
         className="block max-w-[20rem] truncate text-2xl font-semibold sm:mt-4 md:max-w-[30rem] md:text-3xl"
         title={document.title}
@@ -164,7 +181,9 @@ export default function DocumentPage() {
         </Link>
       </div>
 
-      <div className="relative mt-4 flex w-full flex-col gap-x-6 gap-y-8 sm:mt-8 md:flex-row lg:gap-x-8 lg:gap-y-0">
+      <div
+        className={`relative mt-4 flex w-full flex-col gap-x-6 gap-y-8 sm:mt-8 md:flex-row lg:gap-x-8 lg:gap-y-0`}
+      >
         <div className="flex-1">
           <Card className="rounded-xl before:rounded-xl" gradient>
             <CardContent className="p-2">
@@ -175,7 +194,7 @@ export default function DocumentPage() {
 
         <div className="w-full flex-1 md:w-[350px]">
           <div className="sticky top-20">
-            <FeatureCard className="">
+            <FeatureCard className="flex flex-col gap-3">
               <ScrollArea className="h-[32rem]">
                 <div className="flex flex-col gap-4 p-3">
                   <span className="line-clamp-1 text-2xl font-semibold">{contract?.fileName}</span>
@@ -264,6 +283,9 @@ export default function DocumentPage() {
                   )}
                 </div>
               </ScrollArea>
+              {/* <FullSizeCard title="chat" identifier="chat" className="max-h-fit min-h-fit">
+                <span>Chat</span>
+              </FullSizeCard> */}
             </FeatureCard>
           </div>
         </div>

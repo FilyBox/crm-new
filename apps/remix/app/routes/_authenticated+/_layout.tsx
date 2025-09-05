@@ -15,6 +15,7 @@ import { GenericErrorLayout } from '~/components/general/generic-error-layout';
 import { OrganisationBillingBanner } from '~/components/general/organisations/organisation-billing-banner';
 import { VerifyEmailBanner } from '~/components/general/verify-email-banner';
 import { TeamProvider } from '~/providers/team';
+import { useIsActiveStore } from '~/storage/active-full-container';
 
 import type { Route } from './+types/_layout';
 
@@ -44,6 +45,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Layout({ loaderData, params }: Route.ComponentProps) {
   const { banner } = loaderData;
+  const { activeGame } = useIsActiveStore();
+  console.log('activeGame', activeGame);
 
   const { user, organisations } = useSession();
 
@@ -110,9 +113,9 @@ export default function Layout({ loaderData, params }: Route.ComponentProps) {
 
         {banner && <AppBanner banner={banner} />}
 
-        <Header />
+        <main style={{ scrollbarGutter: 'stable' }} className={`mt-5 h-fit`}>
+          <Header className={activeGame ? 'z-0' : ''} />
 
-        <main style={{ scrollbarGutter: 'stable both-edges' }} className="mt-5 h-fit">
           <Outlet />
         </main>
       </TeamProvider>

@@ -1,11 +1,5 @@
 {
   "extends": "@documenso/tsconfig/react-library.json",
-  "include": [
-    "."
-  ],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules"
-  ]
+  "include": [".", "../../apps/remix/app/components/general/fullSize-Card.tsx"],
+  "exclude": ["dist", "build", "node_modules"]
 }

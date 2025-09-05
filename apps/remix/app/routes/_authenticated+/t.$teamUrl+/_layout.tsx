@@ -77,7 +77,7 @@ export default function Layout() {
   };
 
   return (
-    <div key={team.url} style={{ scrollbarGutter: 'stable both-edges' }}>
+    <div key={team.url}>
       <TrpcProvider headers={trpcHeaders}>
         <LimitsProvider initialValue={limits} teamId={team.id}>
           <NuqsAdapter>

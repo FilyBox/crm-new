@@ -67,10 +67,11 @@ export const Header = ({ className, ...props }: HeaderProps) => {
   return (
     <header
       className={cn(
-        'supports-backdrop-blur:bg-background/60 bg-background/95 sticky top-0 z-[60] flex h-16 w-full items-center border-b border-b-transparent backdrop-blur duration-200',
+        'supports-backdrop-blur:bg-background/60 bg-background/95 sticky top-0 z-50 flex h-16 w-full items-center border-b border-b-transparent backdrop-blur duration-200',
         scrollY > 5 && 'border-b-border',
         className,
       )}
+      style={{ scrollbarGutter: 'stable' }}
       {...props}
     >
       <div className="mx-auto flex w-full max-w-screen-xl items-center justify-between gap-x-4 px-4 md:justify-normal md:px-8">
