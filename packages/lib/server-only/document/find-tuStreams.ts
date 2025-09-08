@@ -157,7 +157,6 @@ export const findTuStreams = async ({
       where: whereClause,
     }),
   ]);
-  console.log('tuStreamsArtists', data);
 
   return {
     data: data,

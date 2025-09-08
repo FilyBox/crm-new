@@ -120,8 +120,6 @@ export const ticketTypeRouter = router({
           claveUnity: 'E48',
         });
 
-        console.log('Product data from Factura:', productData);
-
         if (productData?.data?.uid) {
           externalUid = productData.data.uid;
         }
@@ -192,7 +190,6 @@ export const ticketTypeRouter = router({
     .mutation(async ({ input }) => {
       const { eventId, ...data } = input;
 
-      console.log('Creating multiple ticket types for event:', eventId, data.ticketTypes);
       const tickets = Promise.all(
         data.ticketTypes.map(async (input) => {
           if (!input.name) {
@@ -221,10 +218,8 @@ export const ticketTypeRouter = router({
           ]);
 
           const price = priceStripe.status === 'fulfilled' ? priceStripe.value : null;
-          console.log('Product data from Factura:', productData);
           let externalUid: string | undefined = undefined;
           if (productData.status === 'fulfilled' && productData.value?.data?.uid) {
-            console.log('Factura product created successfully:', productData.value.data);
             externalUid = productData.value.data.uid;
           }
 

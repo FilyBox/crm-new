@@ -9,8 +9,6 @@ export type GetDocumentByIdOptions = {
 };
 
 export const getContractById = async ({ contractId }: GetDocumentByIdOptions) => {
-  console.log('contractId', contractId);
-
   const document = await prisma.contract.findFirst({
     where: {
       id: contractId,

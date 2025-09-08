@@ -33,7 +33,6 @@ export const artistRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const { ...data } = input;
-      console.log('Creating artist with data:', data);
 
       const { teamId, user } = ctx;
       const userId = user.id;

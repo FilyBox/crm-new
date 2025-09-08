@@ -147,8 +147,6 @@ export const useCalendarEvents = ({
 
       const result = await putFile(truncatedFile);
       imageUrl = result.data;
-      console.log('Image uploaded successfully:', result.data);
-      imageUrl = result.data;
 
       if (imageUrl) {
         await updateEventMutation.mutateAsync({
@@ -160,8 +158,6 @@ export const useCalendarEvents = ({
 
     if (newType.length > 0 && event) {
       newType.forEach(async (type) => {
-        console.log('Creating ticket type for event:', event.id, type);
-
         await createTicketType({
           name: type.name ?? '',
           price: type.price ?? 0,
@@ -189,7 +185,6 @@ export const useCalendarEvents = ({
   const handleEventUpdate = async (event: CalendarEvent) => {
     const id = parseInt(event.id);
     if (isNaN(id)) return;
-    console.log('event published', event.published);
 
     const image = event.image instanceof File ? event.image : null;
     let imageUrl: string | undefined = undefined;
@@ -203,8 +198,6 @@ export const useCalendarEvents = ({
       const truncatedFile = new File([image], safeName, { type: image.type });
 
       const result = await putFile(truncatedFile);
-      imageUrl = result.data;
-      console.log('Image uploaded successfully:', result.data);
       imageUrl = result.data;
     }
     await updateEventMutation.mutateAsync({

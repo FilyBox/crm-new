@@ -48,7 +48,6 @@ export const releaseRouter = router({
       const { user, teamId } = ctx;
       const userId = user.id;
       const { artistsToUpdate, ...data } = input;
-      console.log('artiststoupdate', artistsToUpdate);
       return await prisma.releases.create({
         data: {
           ...data,
@@ -347,11 +346,7 @@ export const releaseRouter = router({
       //   throw new Error('No tienes permisos para actualizar tareas en este equipo');
       // }
 
-      console.log('Updating release with data:', data);
-
       if (artists && artistsToUpdate) {
-        console.log('artists to disconnect', artists);
-        console.log('artists to connect', artistsToUpdate);
         await prisma.releases.update({
           where: { id },
           data: {
@@ -362,7 +357,6 @@ export const releaseRouter = router({
           },
         });
       } else if (artistsToUpdate) {
-        console.log('artists to connect', artistsToUpdate);
         await prisma.releases.update({
           where: { id },
           data: {

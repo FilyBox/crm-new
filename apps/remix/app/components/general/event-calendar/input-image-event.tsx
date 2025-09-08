@@ -89,7 +89,6 @@ export default function InputImageEvent({
 
   const removeImage = (id: string) => {
     if (onUpload) {
-      console.log('Removing image with ID:', id);
       onUpload(null);
       setIsImageRemove(true);
     } else if (onMultipleUpload) {

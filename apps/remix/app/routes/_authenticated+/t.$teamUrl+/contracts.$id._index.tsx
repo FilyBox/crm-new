@@ -24,6 +24,7 @@ import { FeatureCard } from '@documenso/ui/primitives/card-fancy';
 import PDFViewer from '@documenso/ui/primitives/pdf-viewer';
 import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
 
+import { FullSizeCard } from '~/components/general/fullSize-Card';
 import { useIsActiveStore } from '~/storage/active-full-container';
 import { superLoaderJson, useSuperLoaderData } from '~/utils/super-json-loader';
 
@@ -283,9 +284,9 @@ export default function DocumentPage() {
                   )}
                 </div>
               </ScrollArea>
-              {/* <FullSizeCard title="chat" identifier="chat" className="max-h-fit min-h-fit">
+              <FullSizeCard title="chat" identifier="chat" className="max-h-fit min-h-fit">
                 <span>Chat</span>
-              </FullSizeCard> */}
+              </FullSizeCard>
             </FeatureCard>
           </div>
         </div>
