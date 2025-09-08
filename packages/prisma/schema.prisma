@@ -88,6 +88,10 @@ model User {
   iscrSongs                           IsrcSongs[]
   Suggestion                          Suggestion[]
   musicPlatforms                      MusicPlatforms[]
+  taskAssignees                       TaskAssignee[]
+  taskComments                        TaskComment[]
+  taskAttachments                     TaskAttachment[]
+  taskSubtasks                        Task[]
 
   verificationTokens VerificationToken[]
   apiTokens          ApiToken[]
@@ -342,17 +346,120 @@ model Session {
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  BLOCKED
+}
+
+model Task {
+  id          Int            @id @default(autoincrement())
+  externalId  String? /// @zod.string.describe("A custom external ID you can use to identify the task.")
+  userId      Int /// @zod.number.describe("The ID of the user that created this task.")
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  status      TaskStatus     @default(PENDING)
+  priority    TaskPriority   @default(MEDIUM)
+  dueDate     DateTime?
+  assignees   TaskAssignee[]
+  comments    TaskComment[]
+
+  tags         String[]  @default([])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+  completedAt  DateTime?
+  deletedAt    DateTime?
+  teamId       Int
+  projectId    Int?
+  parentTaskId Int?
+
+  team            Team             @relation(fields: [teamId], references: [id])
+  parentTask      Task?            @relation("TaskHierarchy", fields: [parentTaskId], references: [id])
+  subtasks        Task[]           @relation("TaskHierarchy")
+  taskAttachments TaskAttachment[]
+
+  auditLogs TaskAuditLog[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+  @@index([dueDate])
+  @@index([teamId])
+}
+
+model TaskAttachment {
+  id        Int      @id @default(autoincrement())
+  taskId    Int // Requerido
+  userId    Int // Requerido
+  name      String // Requerido
+  createdAt DateTime @default(now()) // Automático
+  user      User     @relation(fields: [userId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model TaskComment {
+  id        Int      @id @default(autoincrement())
+  taskId    Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+}
+
+model TaskAssignee {
+  id         Int      @id @default(autoincrement())
+  taskId     Int
+  userId     Int
+  assignedAt DateTime @default(now())
+  assignedBy Int /// User who assigned the task
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+}
+
+model TaskAuditLog {
+  id        String   @id @default(cuid())
+  taskId    Int
+  createdAt DateTime @default(now())
+  type      String
+  data      Json
+
+  name      String?
+  email     String?
+  userId    Int?
+  userAgent String?
+  ipAddress String?
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
 enum DocumentStatus {
   DRAFT
   PENDING
   COMPLETED
   REJECTED
+  PROCESSING
+  ERROR
 }
 
 enum DocumentSource {
   DOCUMENT
   TEMPLATE
   TEMPLATE_DIRECT_LINK
+  CHAT
 }
 
 enum DocumentVisibility {
@@ -409,24 +516,25 @@ model Document {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
-  authOptions    Json? /// [DocumentAuthOptions] @zod.custom.use(ZDocumentAuthOptionsSchema)
-  formValues     Json? /// [DocumentFormValues] @zod.custom.use(ZDocumentFormValuesSchema)
-  visibility     DocumentVisibility  @default(EVERYONE)
-  title          String
-  status         DocumentStatus      @default(DRAFT)
-  recipients     Recipient[]
-  fields         Field[]
-  shareLinks     DocumentShareLink[]
-  documentDataId String
-  documentMeta   DocumentMeta?
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @default(now()) @updatedAt
-  completedAt    DateTime?
-  deletedAt      DateTime?
-  templateId     Int?
-  source         DocumentSource
-
-  useLegacyFieldInsertion Boolean @default(false)
+  authOptions             Json? /// [DocumentAuthOptions] @zod.custom.use(ZDocumentAuthOptionsSchema)
+  formValues              Json? /// [DocumentFormValues] @zod.custom.use(ZDocumentFormValuesSchema)
+  visibility              DocumentVisibility     @default(EVERYONE)
+  documentBodyExtracted   DocumentBodyExtracted?
+  title                   String
+  status                  DocumentStatus         @default(DRAFT)
+  recipients              Recipient[]
+  fields                  Field[]
+  shareLinks              DocumentShareLink[]
+  documentDataId          String
+  documentMeta            DocumentMeta?
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @default(now()) @updatedAt
+  completedAt             DateTime?
+  deletedAt               DateTime?
+  templateId              Int?
+  source                  DocumentSource
+  useToChat               Boolean                @default(false)
+  useLegacyFieldInsertion Boolean                @default(false)
 
   documentData DocumentData @relation(fields: [documentDataId], references: [id], onDelete: Cascade)
   template     Template?    @relation(fields: [templateId], references: [id], onDelete: SetNull)
@@ -440,6 +548,16 @@ model Document {
   @@index([userId])
   @@index([status])
   @@index([folderId])
+}
+
+model DocumentImages {
+  id          String    @id @default(cuid())
+  recipientId Int
+  data        String
+  createdAt   DateTime  @default(now())
+  recipient   Recipient @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId])
 }
 
 model DocumentAuditLog {
@@ -537,11 +655,11 @@ enum RecipientRole {
 
 /// @zod.import(["import { ZRecipientAuthOptionsSchema } from '@documenso/lib/types/document-auth';"])
 model Recipient {
-  id                Int           @id @default(autoincrement())
+  id                Int              @id @default(autoincrement())
   documentId        Int?
   templateId        Int?
-  email             String        @db.VarChar(255)
-  name              String        @default("") @db.VarChar(255)
+  email             String           @db.VarChar(255)
+  name              String           @default("") @db.VarChar(255)
   token             String
   documentDeletedAt DateTime?
   expired           DateTime?
@@ -549,14 +667,15 @@ model Recipient {
   authOptions       Json? /// [RecipientAuthOptions] @zod.custom.use(ZRecipientAuthOptionsSchema)
   signingOrder      Int? /// @zod.number.describe("The order in which the recipient should sign the document. Only works if the document is set to sequential signing.")
   rejectionReason   String?
-  role              RecipientRole @default(SIGNER)
-  readStatus        ReadStatus    @default(NOT_OPENED)
-  signingStatus     SigningStatus @default(NOT_SIGNED)
-  sendStatus        SendStatus    @default(NOT_SENT)
-  document          Document?     @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  template          Template?     @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  role              RecipientRole    @default(SIGNER)
+  readStatus        ReadStatus       @default(NOT_OPENED)
+  signingStatus     SigningStatus    @default(NOT_SIGNED)
+  sendStatus        SendStatus       @default(NOT_SENT)
+  document          Document?        @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  template          Template?        @relation(fields: [templateId], references: [id], onDelete: Cascade)
   fields            Field[]
   signatures        Signature[]
+  images            DocumentImages[]
 
   @@unique([documentId, email])
   @@unique([templateId, email])
@@ -796,6 +915,21 @@ model OrganisationGlobalSettings {
   brandingCompanyDetails String  @default("")
 }
 
+enum DocumentBodyExtractedStatus {
+  ERROR
+  PENDING
+  COMPLETED
+  PROCESSING
+}
+
+model DocumentBodyExtracted {
+  id         String   @id @default(cuid())
+  body       String
+  status     String
+  documentId Int      @unique
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
 /// @zod.import(["import { ZDocumentEmailSettingsSchema } from '@documenso/lib/types/document-email';"])
 model TeamGlobalSettings {
   id   String @id
@@ -862,18 +996,18 @@ model Team {
   isrcArtists                         IsrcArtists[]
   songs                               Songs[]
   musicPlatforms                      MusicPlatforms[]
-
-  isrcSongs                IsrcSongs[]
-  artists                  Artist[]
-  distributionStatement    DistributionStatement[]
-  releases                 Releases[]
-  releasesArtists          releasesArtists[]
-  contract                 Contract[]
-  Chat                     Chat[]
-  contractTemplates        ContractTemplate[]
-  lpm                      lpm[]
-  lpmProductDisplayArtists lpmProductDisplayArtists[]
-  Files                    Files[]
+  tasks                               Task[]
+  isrcSongs                           IsrcSongs[]
+  artists                             Artist[]
+  distributionStatement               DistributionStatement[]
+  releases                            Releases[]
+  releasesArtists                     releasesArtists[]
+  contract                            Contract[]
+  Chat                                Chat[]
+  contractTemplates                   ContractTemplate[]
+  lpm                                 lpm[]
+  lpmProductDisplayArtists            lpmProductDisplayArtists[]
+  Files                               Files[]
 }
 
 model TeamEmail {
@@ -1224,12 +1358,25 @@ model Event {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   deletedAt    DateTime?
+  allDay       Boolean       @default(false)
+  color        EventColor?
   queues       Queue[]
   team         Team          @relation(fields: [teamId], references: [id])
   user         User?         @relation(fields: [userId], references: [id])
   eventDates   EventDate[]
   ticketTypes  TicketType[]
   ticketBuyers TicketBuyer[]
+}
+
+enum EventColor {
+  blue
+  orange
+  violet
+  rose
+  emerald
+  sky
+
+  @@map("event_colors")
 }
 
 model EventDate {
@@ -1338,6 +1485,7 @@ model TicketTemplate {
   price              Int? // Precio sugerido
   maxQuantityPerUser Int       @default(5)
   description        String?
+  quantity           Int?
   imageUrl           String?   @db.Text
   isActive           Boolean   @default(true)
   createdAt          DateTime  @default(now())
@@ -1514,78 +1662,78 @@ model Songs {
 }
 
 model lpm {
-  id                                  Int       @id @default(autoincrement())
-  productId                           String?   @map("productId")
-  productType                         String?   @map("Product Type")
-  productTitle                        String?   @map("Product Title")
-  productVersion                      String?   @map("Product Version")
-  productDisplayArtist                String?   @map("Product Display Artist")
-  parentLabel                         String?   @map("Parent Label")
-  label                               String?   @map("label")
-  originalReleaseDate                 DateTime? @map("Original Release Date")
-  releaseDate                         DateTime? @map("Release Date")
-  upc                                 String?   @map("UPC")
-  catalog                             String?   @map("Catalog ")
-  productPriceTier                    String?   @map("Product Price Tier")
-  productGenre                        String?   @map("Product Genre")
-  submissionStatus                    String?   @map("Submission Status")
-  productCLine                        String?   @map("Product C Line")
-  productPLine                        String?   @map("Product P Line")
-  preOrderDate                        DateTime? @map("PreOrder Date")
-  exclusives                          String?   @map("Exclusives")
-  explicitLyrics                      String?   @map("ExplicitLyrics")
-  productPlayLink                     String?   @map("Product Play Link")
-  linerNotes                          String?   @map("Liner Notes")
-  primaryMetadataLanguage             String?   @map("Primary Metadata Language")
-  compilation                         String?   @map("Compilation")
-  pdfBooklet                          String?   @map("PDF Booklet")
-  timedReleaseDate                    DateTime? @map("Timed Release Date")
-  timedReleaseMusicServices           DateTime? @map("Timed Release Music Services")
-  lastProcessDate                     DateTime? @map("Last Process Date")
-  importDate                          DateTime? @map("Import Date")
-  createdBy                           String?   @map("Created By")
-  lastModified                        DateTime? @map("Last Modified")
-  submittedAt                         DateTime? @map("Submitted At")
-  submittedBy                         String?   @map("Submitted By")
-  vevoChannel                         String?   @map("Vevo Channel")
-  trackType                           String?   @map("TrackType")
-  trackId                             String?   @map("Track Id")
-  trackVolume                         Boolean?  @map("Track Volume")
-  trackNumber                         String?   @map("Track Number")
-  trackName                           String?   @map("Track Name")
-  trackVersion                        String?   @map("Track Version")
-  trackDisplayArtist                  String?   @map("Track Display Artist")
-  isrc                                String?   @map("Isrc")
-  trackPriceTier                      String?   @map("Track Price Tier")
-  trackGenre                          String?   @map("Track Genre")
-  audioLanguage                       String?   @map("Audio Language")
-  trackCLine                          String?   @map("Track C Line")
-  trackPLine                          String?   @map("Track P Line")
-  writersComposers                    String?   @map("WritersComposers")
-  publishersCollectionSocieties       String?   @map("PublishersCollection Societies")
-  withholdMechanicals                 String?   @map("Withhold Mechanicals")
-  preOrderType                        String?   @map("PreOrder Type")
-  instantGratificationDate            DateTime? @map("Instant Gratification Date")
-  duration                            String?   @map("Duration")
-  sampleStartTime                     String?   @map("Sample Start Time")
-  explicitLyricsTrack                 String?   @map("Explicit Lyrics")
-  albumOnly                           String?   @map("Album Only")
-  lyrics                              String?   @map("Lyrics")
-  additionalContributorsPerforming    String?   @map("AdditionalContributorsPerforming")
-  additionalContributorsNonPerforming String?   @map("AdditionalContributorsNonPerforming")
-  producers                           String?   @map("Producers")
-  continuousMix                       String?   @map("Continuous Mix")
-  continuouslyMixedIndividualSong     String?   @map("Continuously Mixed Individual Song")
-  trackPlayLink                       String?   @map("Track Play Link")
-
+  id                                  Int                        @id @default(autoincrement())
+  productId                           String?                    @map("productId")
+  productType                         String?                    @map("Product Type")
+  productTitle                        String?                    @map("Product Title")
+  productVersion                      String?                    @map("Product Version")
+  productDisplayArtist                String?                    @map("Product Display Artist")
+  parentLabel                         String?                    @map("Parent Label")
+  label                               String?                    @map("label")
+  originalReleaseDate                 DateTime?                  @map("Original Release Date")
+  releaseDate                         DateTime?                  @map("Release Date")
+  upc                                 String?                    @map("UPC")
+  catalog                             String?                    @map("Catalog ")
+  productPriceTier                    String?                    @map("Product Price Tier")
+  productGenre                        String?                    @map("Product Genre")
+  submissionStatus                    String?                    @map("Submission Status")
+  productCLine                        String?                    @map("Product C Line")
+  productPLine                        String?                    @map("Product P Line")
+  preOrderDate                        DateTime?                  @map("PreOrder Date")
+  exclusives                          String?                    @map("Exclusives")
+  explicitLyrics                      String?                    @map("ExplicitLyrics")
+  productPlayLink                     String?                    @map("Product Play Link")
+  linerNotes                          String?                    @map("Liner Notes")
+  primaryMetadataLanguage             String?                    @map("Primary Metadata Language")
+  compilation                         String?                    @map("Compilation")
+  pdfBooklet                          String?                    @map("PDF Booklet")
+  timedReleaseDate                    DateTime?                  @map("Timed Release Date")
+  timedReleaseMusicServices           DateTime?                  @map("Timed Release Music Services")
+  lastProcessDate                     DateTime?                  @map("Last Process Date")
+  importDate                          DateTime?                  @map("Import Date")
+  createdBy                           String?                    @map("Created By")
+  lastModified                        DateTime?                  @map("Last Modified")
+  submittedAt                         DateTime?                  @map("Submitted At")
+  submittedBy                         String?                    @map("Submitted By")
+  vevoChannel                         String?                    @map("Vevo Channel")
+  trackType                           String?                    @map("TrackType")
+  trackId                             String?                    @map("Track Id")
+  trackVolume                         Boolean?                   @map("Track Volume")
+  trackNumber                         String?                    @map("Track Number")
+  trackName                           String?                    @map("Track Name")
+  trackVersion                        String?                    @map("Track Version")
+  trackDisplayArtist                  String?                    @map("Track Display Artist")
+  isrc                                String?                    @map("Isrc")
+  trackPriceTier                      String?                    @map("Track Price Tier")
+  trackGenre                          String?                    @map("Track Genre")
+  audioLanguage                       String?                    @map("Audio Language")
+  trackCLine                          String?                    @map("Track C Line")
+  trackPLine                          String?                    @map("Track P Line")
+  writersComposers                    String?                    @map("WritersComposers")
+  publishersCollectionSocieties       String?                    @map("PublishersCollection Societies")
+  withholdMechanicals                 String?                    @map("Withhold Mechanicals")
+  preOrderType                        String?                    @map("PreOrder Type")
+  instantGratificationDate            DateTime?                  @map("Instant Gratification Date")
+  duration                            String?                    @map("Duration")
+  sampleStartTime                     String?                    @map("Sample Start Time")
+  explicitLyricsTrack                 String?                    @map("Explicit Lyrics")
+  albumOnly                           String?                    @map("Album Only")
+  lyrics                              String?                    @map("Lyrics")
+  additionalContributorsPerforming    String?                    @map("AdditionalContributorsPerforming")
+  additionalContributorsNonPerforming String?                    @map("AdditionalContributorsNonPerforming")
+  producers                           String?                    @map("Producers")
+  continuousMix                       String?                    @map("Continuous Mix")
+  continuouslyMixedIndividualSong     String?                    @map("Continuously Mixed Individual Song")
+  trackPlayLink                       String?                    @map("Track Play Link")
+  deletedAt                           DateTime?                  @map("Deleted At")
   // writerId   Int?
-  userId     Int?
-  teamId     Int
-  artists    Artist[]
-  lpmArtists lpmProductDisplayArtists[]
+  userId                              Int?
+  teamId                              Int
+  artists                             Artist[]
+  lpmArtists                          lpmProductDisplayArtists[]
   // writer     Writers?                   @relation(fields: [writerId], references: [id], onDelete: SetNull)
-  user       User?                      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team       Team                       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user                                User?                      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                                Team                       @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 enum ContractStatus {
@@ -1635,6 +1783,7 @@ model Contract {
   documentId                  Int
   createdAt                   DateTime                      @default(now())
   updatedAt                   DateTime                      @updatedAt
+  deletedAt                   DateTime?
   summary                     String?                       @db.Text
   userId                      Int?
   teamId                      Int
@@ -1655,10 +1804,10 @@ model Territories {
   avatarImageId                    String?
   disabled                         Boolean?                           @default(false)
   userId                           Int?
-  teamId                           Int
+  teamId                           Int?
   distributionStatementTerritories DistributionStatementTerritories[]
   user                             User?                              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team                             Team                               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team                             Team?                              @relation(fields: [teamId], references: [id], onDelete: SetNull)
 }
 
 model DistributionStatementTerritories {
@@ -1698,11 +1847,11 @@ model MusicPlatforms {
   disabled                            Boolean?                              @default(false)
   url                                 String?                               @unique
   userId                              Int?
-  teamId                              Int
+  teamId                              Int?
   distributionStatementMusicPlatforms DistributionStatementMusicPlatforms[]
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team Team  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team Team? @relation(fields: [teamId], references: [id], onDelete: SetNull)
 }
 
 model DistributionStatement {
@@ -1740,9 +1889,9 @@ model DistributionStatement {
   teamId                              Int
   distributionStatementMusicPlatforms DistributionStatementMusicPlatforms[]
   distributionStatementTerritories    DistributionStatementTerritories[]
-
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team Team  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  deletedAt                           DateTime?
+  user                                User?                                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                                Team                                  @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([teamId])
@@ -1787,6 +1936,7 @@ model Releases {
   team            Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now())
+  deletedAt       DateTime?
 }
 
 model IsrcArtists {
@@ -1816,11 +1966,11 @@ model IsrcSongs {
 
   isrcArtists IsrcArtists[]
 
-  createdAt DateTime @default(now())
-
-  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  team    Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  artists Artist[]
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  artists   Artist[]
 }
 
 model tuStreamsArtists {
@@ -1857,6 +2007,7 @@ model tuStreams {
 
   tuStreamsArtists tuStreamsArtists[]
   createdAt        DateTime           @default(now())
+  deletedAt        DateTime?
   user             User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
   team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
   artists          Artist[]
@@ -1893,9 +2044,8 @@ model Files {
   useToChat    Boolean            @default(false)
   documentData DocumentData       @relation(fields: [fileDataId], references: [id], onDelete: Cascade)
   team         Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
-
-  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  folderId String?
+  folder       Folder?            @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId     String?
 
   @@unique([fileDataId])
   @@index([userId])

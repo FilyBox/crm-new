@@ -107,7 +107,7 @@ export default function DocumentPage() {
   const { recipients, documentData, documentMeta } = document;
 
   return (
-    <div className="mx-auto -mt-4 w-full max-w-screen-xl px-4 md:px-8">
+    <div className="mx-auto mt-4 w-full max-w-screen-xl px-4 md:px-8">
       {document.status === DocumentStatus.PENDING && (
         <DocumentRecipientLinkCopyDialog recipients={recipients} />
       )}
@@ -213,7 +213,9 @@ export default function DocumentPage() {
                       />
                     );
                   })
-                  .exhaustive()}
+                  .otherwise(() => (
+                    <Trans>This document is not available</Trans>
+                  ))}
               </p>
 
               <div className="mt-4 border-t px-4 pt-4">

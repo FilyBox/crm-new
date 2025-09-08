@@ -28,6 +28,7 @@ import {
 } from '@documenso/ui/primitives/form/form';
 import { Input } from '@documenso/ui/primitives/input';
 import { PasswordInput } from '@documenso/ui/primitives/password-input';
+import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
 import { SignaturePadDialog } from '@documenso/ui/primitives/signature-pad/signature-pad-dialog';
 import { useToast } from '@documenso/ui/primitives/use-toast';
 
@@ -203,7 +204,7 @@ export const SignUpForm = ({
         </div>
       </div>
 
-      <div className="border-border dark:bg-background relative z-10 flex min-h-[min(850px,80vh)] w-full max-w-lg flex-col rounded-xl border bg-neutral-100 p-6">
+      <ScrollArea className="border-border dark:bg-background relative z-10 flex h-[min(850px,80vh)] w-full max-w-lg flex-col rounded-xl border bg-neutral-100 p-6">
         <div className="h-20">
           <h1 className="text-xl font-semibold md:text-2xl">
             <Trans>Create a new account</Trans>
@@ -387,7 +388,7 @@ export const SignUpForm = ({
             .
           </Trans>
         </p>
-      </div>
+      </ScrollArea>
     </div>
   );
 };

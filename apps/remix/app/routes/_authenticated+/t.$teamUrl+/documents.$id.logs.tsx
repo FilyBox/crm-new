@@ -125,7 +125,7 @@ export default function DocumentsLogsPage({ loaderData }: Route.ComponentProps) 
     return `[${recipient.role}] ${text}`;
   };
   return (
-    <div className="mx-auto -mt-4 w-full max-w-screen-xl px-4 md:px-8">
+    <div className="mx-auto mt-4 w-full max-w-screen-xl px-4 md:px-8">
       <Link
         to={`${documentRootPath}/${document.id}`}
         className="flex items-center text-[#7AC455] hover:opacity-80"

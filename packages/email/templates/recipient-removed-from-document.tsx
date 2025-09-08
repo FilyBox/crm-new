@@ -11,7 +11,7 @@ import { TemplateFooter } from '../template-components/template-footer';
 export type DocumentCancelEmailTemplateProps = Partial<TemplateDocumentCancelProps>;
 
 export const RecipientRemovedFromDocumentTemplate = ({
-  inviterName = 'Lucas Smith',
+  inviterName = 'nombre',
   documentName = 'Open Source Pledge.pdf',
   assetBaseUrl = 'http://localhost:3002',
 }: DocumentCancelEmailTemplateProps) => {
@@ -36,11 +36,7 @@ export const RecipientRemovedFromDocumentTemplate = ({
               {branding.brandingEnabled && branding.brandingLogo ? (
                 <Img src={branding.brandingLogo} alt="Branding Logo" className="mb-4 h-6" />
               ) : (
-                <Img
-                  src={getAssetUrl('/static/logo.png')}
-                  alt="Documenso Logo"
-                  className="mb-4 h-6"
-                />
+                <Img src={getAssetUrl('/static/lpm.jpg')} alt="Logo" className="mb-4 h-6" />
               )}
 
               <TemplateDocumentImage className="mt-6" assetBaseUrl={assetBaseUrl} />

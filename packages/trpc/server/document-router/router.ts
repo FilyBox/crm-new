@@ -1,5 +1,9 @@
+import type { Prisma } from '@prisma/client';
 import { DocumentDataType } from '@prisma/client';
+import { DocumentSource } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import { DateTime } from 'luxon';
+import { z } from 'zod';
 
 import { getServerLimits } from '@documenso/ee/server-only/limits/server';
 import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
@@ -12,18 +16,40 @@ import { createDocumentV2 } from '@documenso/lib/server-only/document/create-doc
 import { deleteDocument } from '@documenso/lib/server-only/document/delete-document';
 import { duplicateDocument } from '@documenso/lib/server-only/document/duplicate-document-by-id';
 import { findDocumentAuditLogs } from '@documenso/lib/server-only/document/find-document-audit-logs';
-import { findDocuments } from '@documenso/lib/server-only/document/find-documents';
+import {
+  findDocuments,
+  findDocumentsChat,
+} from '@documenso/lib/server-only/document/find-documents';
 import { getDocumentById } from '@documenso/lib/server-only/document/get-document-by-id';
 import { getDocumentAndSenderByToken } from '@documenso/lib/server-only/document/get-document-by-token';
 import { getDocumentWithDetailsById } from '@documenso/lib/server-only/document/get-document-with-details-by-id';
+import { getMultipleDocumentFilesById } from '@documenso/lib/server-only/document/get-multiple-document-files-by-id';
 import type { GetStatsInput } from '@documenso/lib/server-only/document/get-stats';
 import { getStats } from '@documenso/lib/server-only/document/get-stats';
+import {
+  type GetStatsInputChat,
+  getStatsChat,
+} from '@documenso/lib/server-only/document/get-stats-chat';
 import { resendDocument } from '@documenso/lib/server-only/document/resend-document';
 import { searchDocumentsWithKeyword } from '@documenso/lib/server-only/document/search-documents-with-keyword';
 import { sendDocument } from '@documenso/lib/server-only/document/send-document';
 import { getTeamById } from '@documenso/lib/server-only/team/get-team';
-import { getPresignPostUrl } from '@documenso/lib/universal/upload/server-actions';
+import {
+  getContractInfoTask,
+  getExtractBodyContractTask,
+} from '@documenso/lib/server-only/trigger';
+import {
+  generateQuery,
+  runGenerateSQLQuery,
+} from '@documenso/lib/universal/ai/queries-proccessing';
+import {
+  getPresignGetUrl,
+  getPresignPostUrl,
+} from '@documenso/lib/universal/upload/server-actions';
 import { isDocumentCompleted } from '@documenso/lib/utils/document';
+import { prisma } from '@documenso/prisma';
+import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-document-status';
+import { type FilterStructure, filterColumns } from '@documenso/ui/lib/filter-columns';
 
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { downloadDocumentRoute } from './download-document';
@@ -85,6 +111,33 @@ export const documentRouter = router({
         teamId,
         documentId,
       });
+    }),
+
+  getChatDocumentById: authenticatedProcedure
+    .input(ZGetDocumentByIdQuerySchema)
+    .query(async ({ input, ctx }) => {
+      const { documentId } = input;
+
+      ctx.logger.info({
+        input: {
+          documentId,
+        },
+      });
+
+      return await prisma.document.findUnique({
+        where: {
+          id: documentId,
+        },
+        include: {
+          documentData: true,
+        },
+      });
+
+      // return await getDocumentById({
+      //   userId: ctx.user.id,
+      //   teamId,
+      //   documentId,
+      // });
     }),
 
   /**
@@ -170,15 +223,30 @@ export const documentRouter = router({
         period,
         senderIds,
         folderId,
+        filterStructure,
+        joinOperator,
       } = input;
+
+      let where: Prisma.DocumentWhereInput = {};
+
+      if (filterStructure) {
+        const advancedWhere = filterColumns({
+          filters: filterStructure.filter(
+            (filter): filter is FilterStructure => filter !== null && filter !== undefined,
+          ),
+          joinOperator: joinOperator,
+        });
+
+        where = advancedWhere;
+      }
 
       const getStatOptions: GetStatsInput = {
         user,
         period,
         search: query,
         folderId,
+        source,
       };
-
       if (teamId) {
         const team = await getTeamById({ userId: user.id, teamId });
 
@@ -202,6 +270,7 @@ export const documentRouter = router({
           page,
           perPage,
           source,
+          where,
           status,
           period,
           senderIds,
@@ -345,7 +414,7 @@ export const documentRouter = router({
     .input(ZCreateDocumentRequestSchema)
     .mutation(async ({ input, ctx }) => {
       const { user, teamId } = ctx;
-      const { title, documentDataId, timezone, folderId } = input;
+      const { title, documentDataId, timezone, folderId, useToChat, source } = input;
 
       ctx.logger.info({
         input: {
@@ -371,6 +440,8 @@ export const documentRouter = router({
         userTimezone: timezone,
         requestMetadata: ctx.metadata,
         folderId,
+        useToChat,
+        source,
       });
     }),
 
@@ -685,5 +756,249 @@ export const documentRouter = router({
       return {
         url: `${NEXT_PUBLIC_WEBAPP_URL()}/__htmltopdf/certificate?d=${encrypted}`,
       };
+    }),
+
+  retryChatDocument: authenticatedProcedure
+    .input(z.object({ documenDataId: z.string().optional(), documentId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { documenDataId, documentId } = input;
+      const { teamId, user } = ctx;
+      const userId = user.id;
+
+      const document = await prisma.document.findUnique({
+        where: { id: documentId },
+        select: {
+          documentDataId: true,
+        },
+      });
+      if (!document) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Document not found.',
+        });
+      }
+
+      const documentData = await prisma.documentData.findUnique({
+        where: {
+          id: document.documentDataId ?? documenDataId,
+        },
+      });
+      if (documentData) {
+        const { url } = await getPresignGetUrl(documentData.data || '');
+        await getExtractBodyContractTask(userId, documentId, url, teamId);
+
+        await prisma.document.update({
+          where: { id: documentId },
+          data: { status: 'PENDING' },
+        });
+        // const url = await getURL({ type: documentData.type, data: documentData.data });
+      }
+
+      return documentData;
+    }),
+
+  getMultipleDocumentById: authenticatedProcedure
+    .input(z.object({ fileIds: z.array(z.number()) }))
+    .mutation(async ({ input, ctx }) => {
+      const { teamId } = ctx;
+      const { fileIds } = input;
+
+      const files = await getMultipleDocumentFilesById({
+        userId: ctx.user.id,
+        teamId,
+        documentsId: fileIds,
+      });
+      return files;
+    }),
+
+  retryContractData: authenticatedProcedure
+    .input(z.object({ documentId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const { documentId } = input;
+      const { teamId, user } = ctx;
+      const userId = user.id;
+
+      let newPulicAccessToken = '';
+      let newId = '';
+
+      const document = await prisma.document.findUnique({
+        where: { id: documentId },
+        select: {
+          documentDataId: true,
+        },
+      });
+      if (!document) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Document not found.',
+        });
+      }
+
+      const documentData = await prisma.documentData.findUnique({
+        where: {
+          id: document.documentDataId,
+        },
+      });
+      if (documentData) {
+        const { url } = await getPresignGetUrl(documentData.data || '');
+        const { publicAccessToken, id } = await getContractInfoTask(
+          userId,
+          documentId,
+          url,
+          teamId,
+        );
+        newPulicAccessToken = publicAccessToken;
+        newId = id;
+        await prisma.document.update({
+          where: { id: documentId },
+          data: { status: 'PENDING' },
+        });
+        // const url = await getURL({ type: documentData.type, data: documentData.data });
+      }
+      // const { publicAccessToken, id } = await getContractInfoTask(userId, documentId, teamId);
+
+      return { publicAccessToken: newPulicAccessToken, id: newId };
+    }),
+
+  aiConnection: authenticatedProcedure
+    .input(
+      z.object({
+        question: z.string(),
+        folderId: z.number().optional(),
+        tableToConsult: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { teamId, user } = ctx;
+      const userId = user.id;
+      const { question, folderId, tableToConsult } = input;
+      try {
+        const query = await generateQuery(question, userId, teamId, folderId, tableToConsult);
+
+        const companies = await runGenerateSQLQuery(query);
+
+        // const generation = await generateChartConfig(companies, question);
+        return { query, companies };
+      } catch (e) {
+        console.log('Error generating AI query:', e);
+        return { query: '', companies: [] };
+      }
+    }),
+
+  findDocumentsInternalUseToChat: authenticatedProcedure
+    .input(
+      z.object({
+        status: z.nativeEnum(ExtendedDocumentStatus).optional(),
+        query: z.string().optional(),
+        page: z.number().optional(),
+        perPage: z.number().optional(),
+        period: z.enum(['7d', '14d', '30d']).optional(),
+        orderBy: z.enum(['endDate', 'updatedAt']).optional(),
+        orderByDirection: z.enum(['asc', 'desc']).optional().default('desc'),
+        folderId: z.string().optional(),
+        orderByColumn: z.enum(['id', 'createdAt', 'title']).optional(),
+        filterStructure: z
+          .array(
+            z
+              .custom<FilterStructure>(
+                (val) => val === null || val === undefined || typeof val === 'object',
+              )
+              .optional()
+              .nullable(),
+          )
+          .optional(),
+        joinOperator: z.enum(['and', 'or']).optional().default('and'),
+        senderIds: z.array(z.number()).optional(),
+      }),
+    )
+    .output(ZFindDocumentsInternalResponseSchema)
+    .query(async ({ input, ctx }) => {
+      const { user, teamId } = ctx;
+      const {
+        query,
+        page,
+        perPage,
+        orderByDirection,
+        orderByColumn,
+        // source,
+        status,
+        period,
+        senderIds,
+        folderId,
+        filterStructure,
+        joinOperator,
+      } = input;
+      console.log('folderId', folderId);
+      let where: Prisma.DocumentWhereInput = {};
+
+      if (filterStructure) {
+        const advancedWhere = filterColumns({
+          filters: filterStructure.filter(
+            (filter): filter is FilterStructure => filter !== null && filter !== undefined,
+          ),
+          joinOperator: joinOperator,
+        });
+
+        where = advancedWhere;
+      }
+
+      const team = await getTeamById({ userId: user.id, teamId });
+
+      const teamCountsOption = {
+        ...team,
+        teamId: team.id,
+        currentUserEmail: user.email,
+        userId: user.id,
+        teamEmail: team.teamEmail?.email ?? undefined,
+      };
+
+      const getStatOptions: GetStatsInputChat = {
+        user,
+        period,
+        search: query,
+        folderId,
+        where,
+        team: teamCountsOption,
+      };
+
+      const [stats, documents] = await Promise.all([
+        getStatsChat(getStatOptions),
+        findDocumentsChat({
+          userId: user.id,
+          teamId,
+          query,
+          page,
+          perPage,
+          where,
+          source: 'CHAT',
+          status,
+          period,
+          useToChat: true,
+          senderIds,
+          folderId,
+          orderBy: orderByColumn
+            ? { column: orderByColumn, direction: orderByDirection }
+            : undefined,
+        }),
+      ]);
+
+      return {
+        ...documents,
+        stats,
+      };
+    }),
+
+  findAllDocumentsInternalUseToChat: authenticatedProcedure
+    .input(z.object({ teamId: z.number() }))
+    .query(async ({ input }) => {
+      const { teamId } = input;
+
+      const documentsChat = await prisma.document.findMany({
+        where: {
+          teamId,
+          source: DocumentSource.CHAT,
+        },
+      });
+      return documentsChat;
     }),
 });

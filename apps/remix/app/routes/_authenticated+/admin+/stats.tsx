@@ -5,12 +5,10 @@ import {
   File,
   FileCheck,
   FileClock,
-  FileCog,
   FileEdit,
   Mail,
   MailOpen,
   PenTool,
-  UserPlus,
   UserSquare2,
   Users,
 } from 'lucide-react';
@@ -30,7 +28,6 @@ import { AdminStatsSignerConversionChart } from '~/components/general/admin-stat
 import { AdminStatsUsersWithDocumentsChart } from '~/components/general/admin-stats-users-with-documents';
 import { CardMetric } from '~/components/general/metric-card';
 
-import { version } from '../../../../package.json';
 import type { Route } from './+types/stats';
 
 export async function loader() {
@@ -82,16 +79,15 @@ export default function AdminStatsPage({ loaderData }: Route.ComponentProps) {
         <Trans>Instance Stats</Trans>
       </h2>
 
-      <div className="mt-8 grid flex-1 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid flex-1 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
         <CardMetric icon={Users} title={_(msg`Total Users`)} value={usersCount} />
         <CardMetric icon={File} title={_(msg`Total Documents`)} value={docStats.ALL} />
-        <CardMetric
+        {/* <CardMetric
           icon={UserPlus}
           title={_(msg`Active Subscriptions`)}
           value={organisationsWithSubscriptionsCount}
-        />
-
-        <CardMetric icon={FileCog} title={_(msg`App Version`)} value={`v${version}`} />
+        /> */}
+        {/* <CardMetric icon={FileCog} title={_(msg`App Version`)} value={`v${version}`} /> */}
       </div>
 
       <div className="mt-16 gap-8">

@@ -90,7 +90,7 @@ export const DocumentDuplicateDialog = ({
           </DialogTitle>
         </DialogHeader>
         {!documentData || isLoading ? (
-          <div className="mx-auto -mt-4 flex w-full max-w-screen-xl flex-col px-4 md:px-8">
+          <div className="mx-auto mt-4 flex w-full max-w-screen-xl flex-col px-4 md:px-8">
             <h1 className="mt-4 grow-0 truncate text-2xl font-semibold md:text-3xl">
               <Trans>Loading Document...</Trans>
             </h1>

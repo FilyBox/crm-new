@@ -1,3 +1,4 @@
+import NumberFlow, { continuous } from '@number-flow/react';
 import type { LucideIcon } from 'lucide-react/dist/lucide-react';
 
 import { cn } from '@documenso/ui/lib/utils';
@@ -7,9 +8,18 @@ export type CardMetricProps = {
   title: string;
   value: string | number;
   className?: string;
+  valueFormat?: ValueFormat;
 };
 
-export const CardMetric = ({ icon: Icon, title, value, className }: CardMetricProps) => {
+export type ValueFormat = 'currency' | 'percent' | 'decimal';
+
+export const CardMetric = ({
+  icon: Icon,
+  title,
+  value,
+  className,
+  valueFormat = 'decimal',
+}: CardMetricProps) => {
   return (
     <div
       className={cn(
@@ -30,9 +40,16 @@ export const CardMetric = ({ icon: Icon, title, value, className }: CardMetricPr
           </h3>
         </div>
 
-        <p className="text-foreground mt-auto text-4xl font-semibold leading-8">
-          {typeof value === 'number' ? value.toLocaleString('en-US') : value}
-        </p>
+        {typeof value === 'number' ? (
+          <NumberFlow
+            plugins={[continuous]}
+            format={{ style: valueFormat, currency: 'USD' }}
+            className="text-foreground mt-auto text-4xl font-semibold leading-8"
+            value={valueFormat === 'percent' ? value / 100 : value}
+          />
+        ) : (
+          <p className="text-foreground mt-auto text-4xl font-semibold leading-8">{value}</p>
+        )}
       </div>
     </div>
   );

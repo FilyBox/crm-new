@@ -13,15 +13,15 @@ export function meta({ params: { slug } }: Route.MetaArgs) {
   }
 
   return [
-    { title: 'Documenso - Share' },
-    { description: 'I just signed a document in style with Documenso!' },
+    { title: 'Share' },
+    { description: 'I just signed a document in style!' },
     {
       property: 'og:title',
       content: 'Documenso - Join the open source signing revolution',
     },
     {
       property: 'og:description',
-      content: 'I just signed with Documenso!',
+      content: 'I just signed!',
     },
     {
       property: 'og:type',
@@ -33,7 +33,7 @@ export function meta({ params: { slug } }: Route.MetaArgs) {
     },
     {
       name: 'twitter:site',
-      content: '@documenso',
+      content: '@lpm',
     },
     {
       name: 'twitter:card',
@@ -45,7 +45,7 @@ export function meta({ params: { slug } }: Route.MetaArgs) {
     },
     {
       name: 'twitter:description',
-      content: 'I just signed with Documenso!',
+      content: 'I just signed!',
     },
   ];
 }
@@ -70,7 +70,7 @@ export const loader = async ({ request, params: { slug } }: Route.LoaderArgs) =>
   }
 
   // Is hardcoded because this whole meta is hardcoded anyway for Documenso.
-  throw redirect('https://documenso.com');
+  throw redirect(NEXT_PUBLIC_WEBAPP_URL());
 };
 
 export default function SharePage() {

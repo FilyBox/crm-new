@@ -36,6 +36,7 @@ export type TFolder = z.infer<typeof ZFolderSchema>;
 const ZFolderCountSchema = z.object({
   documents: z.number(),
   templates: z.number(),
+  files: z.number(),
   subfolders: z.number(),
 });
 
@@ -74,6 +75,18 @@ export const ZDeleteFolderSchema = z.object({
 export const ZMoveFolderSchema = z.object({
   id: z.string(),
   parentId: z.string().nullable(),
+  type: ZFolderTypeSchema.optional(),
+});
+
+export const ZMoveToFolderSchema = z.object({
+  documentId: z.number(),
+  folderId: z.string().nullable().optional(),
+  type: ZFolderTypeSchema.optional(),
+});
+
+export const ZMoveMultipleToFolderSchema = z.object({
+  documentIds: z.array(z.number()),
+  folderId: z.string().nullable().optional(),
   type: ZFolderTypeSchema.optional(),
 });
 

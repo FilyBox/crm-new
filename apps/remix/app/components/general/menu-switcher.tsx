@@ -111,7 +111,7 @@ export const MenuSwitcher = () => {
         >
           <Trans>Sign Out</Trans>
         </DropdownMenuItem>
-        <div className="flex min-h-[74px] flex-col items-center justify-end gap-2">
+        <div className="flex flex-col items-center justify-end gap-2">
           <DropdownMenuSeparator className="border-muted-foreground w-full" />
           <ThemeSwitcher className="flex w-full items-center justify-center rounded-md py-1" />
         </div>

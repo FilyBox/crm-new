@@ -4,15 +4,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
-html {
-  scrollbar-gutter: stable;
-}
-
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   background: transparent;
   border-radius: 10px;
-  scrollbar-gutter: stable;
 }
 
 ::view-transition-group(root) {
@@ -49,6 +44,61 @@ html {
   to {
     clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
   }
+}
+
+.overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 990;
+  place-items: end center;
+}
+
+.active-game {
+  inset: 0;
+  display: grid;
+  place-items: end center;
+  top: 0;
+  z-index: 999;
+  height: 100%;
+}
+
+.active-action-bar .inner {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.active-game .inner {
+  display: flex;
+  height: fit-content;
+  width: 90vw;
+  height: 100dvh;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  overflow: hidden;
+  background: var(--background);
+  padding: 16px;
+}
+
+.animated-cards::before {
+  @apply pointer-events-none absolute select-none rounded-lg opacity-0 transition-opacity duration-300 hover:opacity-100;
+  background: radial-gradient(
+    1000px circle at var(--x) var(--y),
+    #c9ee80 0,
+    #eebbe2 10%,
+    #adc0ec 25%,
+    #c9ee80 35%,
+    rgba(255, 255, 255, 0) 50%,
+    transparent 80%
+  );
+  z-index: -1;
+  content: '';
+  inset: -1px;
 }
 
 @layer base {
@@ -278,7 +328,6 @@ html {
   width: 6px;
   background: transparent;
   border-radius: 10px;
-  scrollbar-gutter: stable;
 }
 
 /* .custom-scrollbar::-webkit-scrollbar-track {

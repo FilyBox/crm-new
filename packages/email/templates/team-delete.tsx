@@ -1,6 +1,7 @@
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 
+import { env } from '@documenso/lib/utils/env';
 import { formatTeamUrl } from '@documenso/lib/utils/teams';
 
 import { Body, Container, Head, Hr, Html, Img, Preview, Section, Text } from '../components';
@@ -16,7 +17,7 @@ export type TeamDeleteEmailProps = {
 
 export const TeamDeleteEmailTemplate = ({
   assetBaseUrl = 'http://localhost:3002',
-  baseUrl = 'https://documenso.com',
+  baseUrl = env('NEXT_PUBLIC_WEBAPP_URL') || 'http://localhost:3000',
   teamUrl = 'demo',
 }: TeamDeleteEmailProps) => {
   const { _ } = useLingui();
@@ -42,7 +43,7 @@ export const TeamDeleteEmailTemplate = ({
               <TemplateImage
                 assetBaseUrl={assetBaseUrl}
                 className="mb-4 h-6 p-2"
-                staticAsset="logo.png"
+                staticAsset="lpm.jpg"
               />
             )}
 

@@ -1,6 +1,8 @@
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 
+import { env } from '@documenso/lib/utils/env';
+
 import { Body, Container, Head, Html, Img, Preview, Section } from '../components';
 import { useBranding } from '../providers/branding';
 import type { TemplateDocumentCompletedProps } from '../template-components/template-document-completed';
@@ -12,7 +14,7 @@ export type DocumentCompletedEmailTemplateProps = Partial<TemplateDocumentComple
 };
 
 export const DocumentCompletedEmailTemplate = ({
-  downloadLink = 'https://documenso.com',
+  downloadLink = env('NEXT_PUBLIC_WEBAPP_URL') || 'http://localhost:3000',
   documentName = 'Open Source Pledge.pdf',
   assetBaseUrl = 'http://localhost:3002',
   customBody,
@@ -38,11 +40,7 @@ export const DocumentCompletedEmailTemplate = ({
               {branding.brandingEnabled && branding.brandingLogo ? (
                 <Img src={branding.brandingLogo} alt="Branding Logo" className="mb-4 h-6" />
               ) : (
-                <Img
-                  src={getAssetUrl('/static/logo.png')}
-                  alt="Documenso Logo"
-                  className="mb-4 h-6"
-                />
+                <Img src={getAssetUrl('/static/lpm.jpg')} alt="Logo" className="mb-4 h-6" />
               )}
 
               <TemplateDocumentCompleted

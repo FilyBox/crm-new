@@ -34,6 +34,8 @@ export type CreateDocumentOptions = {
   userTimezone?: string;
   requestMetadata: ApiRequestMetadata;
   folderId?: string;
+  useToChat?: boolean;
+  source?: DocumentSource;
 };
 
 export const createDocument = async ({
@@ -48,6 +50,8 @@ export const createDocument = async ({
   timezone,
   userTimezone,
   folderId,
+  useToChat,
+  source,
 }: CreateDocumentOptions) => {
   const team = await getTeamById({ userId, teamId });
 

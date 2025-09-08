@@ -3,7 +3,7 @@ import { match } from 'ts-pattern';
 
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
-import { FolderType } from '@documenso/lib/types/folder-type';
+import { FolderType, type TFolderType } from '@documenso/lib/types/folder-type';
 import type { ApiRequestMetadata } from '@documenso/lib/universal/extract-request-metadata';
 import { prisma } from '@documenso/prisma';
 
@@ -15,6 +15,7 @@ export interface MoveDocumentToFolderOptions {
   documentId: number;
   folderId?: string | null;
   requestMetadata?: ApiRequestMetadata;
+  type?: TFolderType;
 }
 
 export const moveDocumentToFolder = async ({
@@ -22,6 +23,7 @@ export const moveDocumentToFolder = async ({
   teamId,
   documentId,
   folderId,
+  type,
 }: MoveDocumentToFolderOptions) => {
   const team = await getTeamById({ userId, teamId });
 
@@ -50,9 +52,45 @@ export const moveDocumentToFolder = async ({
     ],
   };
 
-  const document = await prisma.document.findFirst({
-    where: documentWhereClause,
-  });
+  const generalWhereClause = {
+    id: documentId,
+    OR: [{ teamId }, { userId, teamId }],
+  };
+
+  const folderType = type ?? FolderType.DOCUMENT;
+  let document;
+
+  switch (folderType) {
+    case FolderType.DOCUMENT:
+      document = await prisma.document.findFirst({
+        where: documentWhereClause,
+      });
+      break;
+    case FolderType.TEMPLATE:
+      document = await prisma.template.findFirst({
+        where: documentWhereClause,
+      });
+      break;
+    case FolderType.CHAT:
+      document = await prisma.document.findFirst({
+        where: documentWhereClause,
+      });
+      break;
+    case FolderType.CONTRACT:
+      document = await prisma.contract.findFirst({
+        where: generalWhereClause,
+      });
+      break;
+    case FolderType.FILE:
+      document = await prisma.files.findFirst({
+        where: generalWhereClause,
+      });
+      break;
+  }
+
+  // document = await prisma.document.findFirst({
+  //   where: documentWhereClause,
+  // });
 
   if (!document) {
     throw new AppError(AppErrorCode.NOT_FOUND, {
@@ -63,7 +101,7 @@ export const moveDocumentToFolder = async ({
   if (folderId) {
     const folderWhereClause = {
       id: folderId,
-      type: FolderType.DOCUMENT,
+      type: type ?? FolderType.DOCUMENT,
       OR: [
         { teamId, ...visibilityFilters },
         { userId, teamId },
@@ -81,12 +119,60 @@ export const moveDocumentToFolder = async ({
     }
   }
 
-  return await prisma.document.update({
-    where: {
-      id: documentId,
-    },
-    data: {
-      folderId,
-    },
-  });
+  switch (folderType) {
+    case FolderType.DOCUMENT:
+      return await prisma.document.update({
+        where: {
+          id: documentId,
+        },
+        data: {
+          folderId,
+        },
+      });
+    case FolderType.TEMPLATE:
+      return await prisma.template.update({
+        where: {
+          id: documentId,
+        },
+        data: {
+          folderId,
+        },
+      });
+    case FolderType.CHAT:
+      return await prisma.document.update({
+        where: {
+          id: documentId,
+        },
+        data: {
+          folderId,
+        },
+      });
+    case FolderType.CONTRACT:
+      return await prisma.contract.update({
+        where: {
+          id: documentId,
+        },
+        data: {
+          folderId,
+        },
+      });
+    case FolderType.FILE:
+      return await prisma.files.update({
+        where: {
+          id: documentId,
+        },
+        data: {
+          folderId,
+        },
+      });
+  }
+
+  // return await prisma.document.update({
+  //   where: {
+  //     id: documentId,
+  //   },
+  //   data: {
+  //     folderId,
+  //   },
+  // });
 };

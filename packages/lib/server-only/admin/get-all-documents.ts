@@ -44,6 +44,9 @@ export const findDocuments = async ({ query, page = 1, perPage = 10 }: FindDocum
     prisma.document.count({
       where: {
         ...termFilters,
+        source: {
+          not: 'CHAT',
+        },
       },
     }),
   ]);

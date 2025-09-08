@@ -1,22 +1,10 @@
 import type { HTMLAttributes } from 'react';
 
 import { Trans } from '@lingui/react/macro';
-import {
-  BracesIcon,
-  CreditCardIcon,
-  Globe2Icon,
-  Lock,
-  MailIcon,
-  PaletteIcon,
-  Settings2Icon,
-  User,
-  Users,
-  WebhookIcon,
-} from 'lucide-react';
+import { Globe2Icon, Lock, MailIcon, PaletteIcon, Settings2Icon, User, Users } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
 import { useSession } from '@documenso/lib/client-only/providers/session';
-import { IS_BILLING_ENABLED } from '@documenso/lib/constants/app';
 import { isPersonalLayout } from '@documenso/lib/utils/organisations';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -102,7 +90,7 @@ export const SettingsMobileNav = ({ className, ...props }: SettingsMobileNavProp
             </Button>
           </Link>
 
-          <Link to="/settings/tokens">
+          {/* <Link to="/settings/tokens">
             <Button
               variant="ghost"
               className={cn(
@@ -141,7 +129,7 @@ export const SettingsMobileNav = ({ className, ...props }: SettingsMobileNavProp
                 <Trans>Billing</Trans>
               </Button>
             </Link>
-          )}
+          )} */}
         </>
       )}
 

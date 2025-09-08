@@ -10,7 +10,6 @@ import { useSession } from '@documenso/lib/client-only/providers/session';
 import { isPersonalLayout } from '@documenso/lib/utils/organisations';
 import { trpc } from '@documenso/trpc/react';
 import { Sheet, SheetContent } from '@documenso/ui/primitives/sheet';
-import { ThemeSwitcher } from '@documenso/ui/primitives/theme-switcher';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
 
@@ -108,16 +107,6 @@ export const AppNavMobile = ({ isMenuOpen, onMenuOpenChange }: AppNavMobileProps
           >
             <Trans>Sign Out</Trans>
           </button>
-        </div>
-
-        <div className="mt-auto flex w-full flex-col space-y-4 self-end">
-          <div className="w-fit">
-            <ThemeSwitcher />
-          </div>
-
-          <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} Documenso, Inc. <br /> All rights reserved.
-          </p>
         </div>
       </SheetContent>
     </Sheet>

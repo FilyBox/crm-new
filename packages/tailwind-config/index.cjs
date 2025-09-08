@@ -25,6 +25,7 @@ module.exports = {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         backgroundDark: 'hsl(var(--background-dark))',
+        'animated-cards': 'hsl(var(--animated-cards))',
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',

@@ -6,28 +6,11 @@ export const appMetaTags = (title?: string) => {
 
   return [
     {
-      title: title ? `${title} - Documenso` : 'Documenso',
+      title: title ? `${title} - LPM` : 'LPM',
     },
     {
       name: 'description',
       content: description,
-    },
-    {
-      name: 'keywords',
-      content:
-        'Documenso, open source, DocuSign alternative, document signing, open signing infrastructure, open-source community, fast signing, beautiful signing, smart templates',
-    },
-    {
-      name: 'author',
-      content: 'Documenso, Inc.',
-    },
-    {
-      name: 'robots',
-      content: 'index, follow',
-    },
-    {
-      property: 'og:title',
-      content: 'Documenso - The Open Source DocuSign Alternative',
     },
     {
       property: 'og:description',
@@ -40,22 +23,6 @@ export const appMetaTags = (title?: string) => {
     {
       property: 'og:type',
       content: 'website',
-    },
-    {
-      name: 'twitter:card',
-      content: 'summary_large_image',
-    },
-    {
-      name: 'twitter:site',
-      content: '@documenso',
-    },
-    {
-      name: 'twitter:description',
-      content: description,
-    },
-    {
-      name: 'twitter:image',
-      content: `${NEXT_PUBLIC_WEBAPP_URL()}/opengraph-image.jpg`,
     },
   ];
 };

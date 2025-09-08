@@ -11,15 +11,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
-html {
-  scrollbar-gutter: stable;
-}
-
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   background: transparent;
   border-radius: 10px;
-  scrollbar-gutter: stable;
 }
 
 ::view-transition-group(root) {

@@ -2,6 +2,8 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 
+import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
+
 import {
   Body,
   Button,
@@ -28,15 +30,14 @@ export type OrganisationInviteEmailProps = {
 
 export const OrganisationInviteEmailTemplate = ({
   assetBaseUrl = 'http://localhost:3002',
-  baseUrl = 'https://documenso.com',
+  baseUrl = NEXT_PUBLIC_WEBAPP_URL(),
   senderName = 'John Doe',
   organisationName = 'Organisation Name',
   token = '',
 }: OrganisationInviteEmailProps) => {
   const { _ } = useLingui();
   const branding = useBranding();
-
-  const previewText = msg`Accept invitation to join an organisation on Documenso`;
+  const previewText = msg`Accept invitation to join an organisation on ${NEXT_PUBLIC_WEBAPP_URL()}`;
 
   return (
     <Html>
@@ -52,7 +53,7 @@ export const OrganisationInviteEmailTemplate = ({
               <TemplateImage
                 assetBaseUrl={assetBaseUrl}
                 className="mb-4 h-6 p-2"
-                staticAsset="logo.png"
+                staticAsset="lpm.jpg"
               />
             )}
 
@@ -66,7 +67,9 @@ export const OrganisationInviteEmailTemplate = ({
 
             <Section className="p-2 text-slate-500">
               <Text className="text-center text-lg font-medium text-black">
-                <Trans>Join {organisationName} on Documenso</Trans>
+                <Trans>
+                  Join {organisationName} on {NEXT_PUBLIC_WEBAPP_URL()}
+                </Trans>
               </Text>
 
               <Text className="my-1 text-center text-base">

@@ -6,6 +6,7 @@ import { Trans } from '@lingui/react/macro';
 import { Loader } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import { Link, useNavigate, useParams } from 'react-router';
+import { toast } from 'sonner';
 import { match } from 'ts-pattern';
 
 import { useLimits } from '@documenso/ee/server-only/limits/provider/client';
@@ -20,7 +21,6 @@ import { putPdfFile } from '@documenso/lib/universal/upload/put-file';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
 import { trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { useCurrentTeam } from '~/providers/team';
 
@@ -31,7 +31,6 @@ export interface DocumentDropZoneWrapperProps {
 
 export const DocumentDropZoneWrapper = ({ children, className }: DocumentDropZoneWrapperProps) => {
   const { _ } = useLingui();
-  const { toast } = useToast();
   const { user } = useSession();
   const { folderId } = useParams();
 
@@ -72,11 +71,10 @@ export const DocumentDropZoneWrapper = ({ children, className }: DocumentDropZon
       });
 
       void refreshLimits();
-
-      toast({
-        title: _(msg`Document uploaded`),
+      toast.success(_(msg`Document uploaded`), {
         description: _(msg`Your document has been uploaded successfully.`),
-        duration: 5000,
+        className: 'mb-16',
+        position: 'bottom-center',
       });
 
       analytics.capture('App: Document Uploaded', {
@@ -97,11 +95,10 @@ export const DocumentDropZoneWrapper = ({ children, className }: DocumentDropZon
         )
         .otherwise(() => msg`An error occurred while uploading your document.`);
 
-      toast({
-        title: _(msg`Error`),
+      toast.error(_(msg`Error`), {
         description: _(errorMessage),
-        variant: 'destructive',
-        duration: 7500,
+        className: 'mb-16',
+        position: 'bottom-center',
       });
     } finally {
       setIsLoading(false);
@@ -109,11 +106,10 @@ export const DocumentDropZoneWrapper = ({ children, className }: DocumentDropZon
   };
 
   const onFileDropRejected = () => {
-    toast({
-      title: _(msg`Your document failed to upload.`),
+    toast.error(_(msg`Your document failed to upload.`), {
       description: _(msg`File cannot be larger than ${APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB`),
-      duration: 5000,
-      variant: 'destructive',
+      className: 'mb-16',
+      position: 'bottom-center',
     });
   };
 

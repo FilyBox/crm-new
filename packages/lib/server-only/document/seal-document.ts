@@ -19,6 +19,7 @@ import { putPdfFileServerSide } from '../../universal/upload/put-file.server';
 import { fieldsContainUnsignedRequiredField } from '../../utils/advanced-fields-helpers';
 import { getAuditLogsPdf } from '../htmltopdf/get-audit-logs-pdf';
 import { getCertificatePdf } from '../htmltopdf/get-certificate-pdf';
+import { getRecipientImagesPdf } from '../htmltopdf/get-recipient-images-pdf';
 import { addRejectionStampToPdf } from '../pdf/add-rejection-stamp-to-pdf';
 import { flattenAnnotations } from '../pdf/flatten-annotations';
 import { flattenForm } from '../pdf/flatten-form';
@@ -126,6 +127,11 @@ export const sealDocument = async ({
       })
     : null;
 
+  const recipientImagesData = await getRecipientImagesPdf({
+    documentId,
+    language: document.documentMeta?.language,
+  }).catch(() => null);
+
   const auditLogData = settings.includeAuditLog
     ? await getAuditLogsPdf({
         documentId,
@@ -156,6 +162,17 @@ export const sealDocument = async ({
     const certificatePages = await doc.copyPages(certificate, certificate.getPageIndices());
 
     certificatePages.forEach((page) => {
+      doc.addPage(page);
+    });
+  }
+
+  if (recipientImagesData) {
+    const recipientImagesDoc = await PDFDocument.load(recipientImagesData);
+    const recipientImagesPages = await doc.copyPages(
+      recipientImagesDoc,
+      recipientImagesDoc.getPageIndices(),
+    );
+    recipientImagesPages.forEach((page) => {
       doc.addPage(page);
     });
   }

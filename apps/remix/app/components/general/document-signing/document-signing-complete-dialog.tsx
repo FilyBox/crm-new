@@ -32,6 +32,7 @@ import { DocumentSigningDisclosure } from '~/components/general/document-signing
 export type DocumentSigningCompleteDialogProps = {
   isSubmitting: boolean;
   documentTitle: string;
+  images?: File[] | null;
   fields: Field[];
   fieldsValidated: () => void | Promise<void>;
   onSignatureComplete: (nextSigner?: { name: string; email: string }) => void | Promise<void>;
@@ -59,6 +60,7 @@ export const DocumentSigningCompleteDialog = ({
   onSignatureComplete,
   role,
   disabled = false,
+  images,
   allowDictateNextSigner = false,
   defaultNextSigner,
 }: DocumentSigningCompleteDialogProps) => {

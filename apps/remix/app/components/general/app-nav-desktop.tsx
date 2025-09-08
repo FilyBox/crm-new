@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
@@ -12,6 +13,14 @@ import { useSession } from '@documenso/lib/client-only/providers/session';
 import { isPersonalLayout } from '@documenso/lib/utils/organisations';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@documenso/ui/primitives/navigation-menu';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
 
@@ -53,31 +62,17 @@ export const AppNavDesktop = ({
 
     return [
       {
-        href: `/t/${teamUrl}/documents`,
-        label: msg`Documents`,
-      },
-      {
-        href: `/t/${teamUrl}/templates`,
-        label: msg`Templates`,
-      },
-      {
         href: `/t/${teamUrl}/files`,
         label: msg`Files`,
       },
-      {
-        href: `/t/${teamUrl}/contracts`,
-        label: msg`Contracts`,
-      },
+
       {
         href: `/t/${teamUrl}/events`,
         label: msg`Events`,
       },
-      {
-        href: `/t/${teamUrl}/chatspace`,
-        label: msg`Chat`,
-      },
     ];
   }, [currentTeam, organisations]);
+
   const menuNavigationLinksMusic = useMemo(() => {
     let teamUrl = currentTeam?.url || null;
 
@@ -92,7 +87,7 @@ export const AppNavDesktop = ({
     return [
       {
         href: `/t/${teamUrl}/music`,
-        label: msg`Music`,
+        label: msg`Virgin`,
       },
       {
         href: `/t/${teamUrl}/tuStreams`,
@@ -104,11 +99,42 @@ export const AppNavDesktop = ({
       },
       {
         href: `/t/${teamUrl}/distribution`,
-        label: msg`Distribution`,
+        label: msg`Ada`,
       },
       {
         href: `/t/${teamUrl}/isrc`,
         label: msg`ISRC`,
+      },
+    ];
+  }, [currentTeam, organisations]);
+
+  const menuNavigationLinksContracts = useMemo(() => {
+    let teamUrl = currentTeam?.url || null;
+
+    if (!teamUrl && isPersonalLayout(organisations)) {
+      teamUrl = organisations[0].teams[0]?.url || null;
+    }
+
+    if (!teamUrl) {
+      return [];
+    }
+
+    return [
+      {
+        href: `/t/${teamUrl}/documents`,
+        label: msg`Create contracts`,
+      },
+      {
+        href: `/t/${teamUrl}/templates`,
+        label: msg`Templates`,
+      },
+      {
+        href: `/t/${teamUrl}/contracts`,
+        label: msg`Contracts`,
+      },
+      {
+        href: `/t/${teamUrl}/chatspace`,
+        label: msg`Chat`,
       },
     ];
   }, [currentTeam, organisations]);
@@ -123,29 +149,115 @@ export const AppNavDesktop = ({
     >
       <div>
         <AnimatePresence>
-          {menuNavigationLinks.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex items-baseline gap-x-6"
-            >
-              {menuNavigationLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  to={href}
-                  className={cn(
-                    'text-muted-foreground dark:text-muted-foreground/60 focus-visible:ring-ring ring-offset-background rounded-md font-medium leading-5 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2',
-                    {
-                      'text-foreground dark:text-muted-foreground': pathname?.startsWith(href),
-                    },
-                  )}
-                >
-                  {_(label)}
-                </Link>
-              ))}
-            </motion.div>
-          )}
+          <div className="flex items-center gap-3">
+            {menuNavigationLinks.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-baseline gap-x-6 text-sm"
+              >
+                <NavigationMenu>
+                  <NavigationMenuList className="flex items-center gap-3">
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger
+                        className={cn(
+                          'dark:text-muted-foreground/60 text-muted-foreground dark:hover:text-foreground m-0 p-0',
+                          {
+                            'text-foreground dark:text-muted-foreground':
+                              menuNavigationLinksMusic.some((link) =>
+                                pathname?.startsWith(`${link.href}`),
+                              ),
+                          },
+                        )}
+                      >
+                        <Trans>Music</Trans>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="flex min-w-32 flex-col gap-2 p-1">
+                        {menuNavigationLinksMusic.map(({ href, label }) => (
+                          <NavigationMenuLink asChild key={href}>
+                            <Link
+                              key={href}
+                              to={`${href}`}
+                              className={cn(
+                                'text-muted-foreground dark:text-muted-foreground/60 dark:hover:text-foreground focus-visible:ring-ring ring-offset-background hover:bg-secondary/80 w-full rounded-sm p-1 text-center font-medium leading-5 focus-visible:outline-none focus-visible:ring-2',
+                                {
+                                  'text-foreground dark:text-muted-foreground':
+                                    pathname?.startsWith(`${href}`),
+                                },
+                              )}
+                            >
+                              {_(label)}
+                            </Link>
+                          </NavigationMenuLink>
+                        ))}
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger
+                        className={cn(
+                          'dark:text-muted-foreground/60 text-muted-foreground dark:hover:text-foreground m-0 p-0',
+                          {
+                            'text-foreground dark:text-muted-foreground':
+                              menuNavigationLinksContracts.some((link) =>
+                                pathname?.startsWith(`${link.href}`),
+                              ),
+                          },
+                        )}
+                      >
+                        <Trans>Contracts</Trans>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="min-w-52">
+                        <div className="flex w-full flex-col items-center gap-2 p-1">
+                          {menuNavigationLinksContracts.map(({ href, label }) => (
+                            <NavigationMenuLink asChild key={href}>
+                              <Link
+                                key={href}
+                                to={`${href}`}
+                                className={cn(
+                                  'text-muted-foreground dark:text-muted-foreground/60 dark:hover:text-foreground focus-visible:ring-ring ring-offset-background hover:bg-secondary/80 w-full rounded-sm p-1 text-center font-medium leading-5 focus-visible:outline-none focus-visible:ring-2',
+                                  {
+                                    'text-foreground dark:text-muted-foreground':
+                                      pathname?.startsWith(`${href}`),
+                                  },
+                                )}
+                              >
+                                {_(label)}
+                              </Link>
+                            </NavigationMenuLink>
+                          ))}
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </motion.div>
+            )}
+            {menuNavigationLinks.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-baseline gap-x-6"
+              >
+                {menuNavigationLinks.map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    to={href}
+                    className={cn(
+                      'text-muted-foreground dark:text-muted-foreground/60 focus-visible:ring-ring ring-offset-background rounded-md text-sm font-medium leading-5 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2',
+                      {
+                        'text-foreground dark:text-muted-foreground': pathname?.startsWith(href),
+                      },
+                    )}
+                  >
+                    {_(label)}
+                  </Link>
+                ))}
+              </motion.div>
+            )}
+          </div>
         </AnimatePresence>
       </div>
 

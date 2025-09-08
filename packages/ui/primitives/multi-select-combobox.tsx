@@ -12,6 +12,7 @@ import { cn } from '../lib/utils';
 import { Button } from './button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './command';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { ScrollArea } from './scroll-area';
 
 type OptionValue = string | number | boolean | null;
 
@@ -26,7 +27,6 @@ type MultiSelectComboboxProps<T = OptionValue> = {
   enableClearAllButton?: boolean;
   enableSearch?: boolean;
   className?: string;
-  contentClassName?: string;
   loading?: boolean;
   inputPlaceholder?: MessageDescriptor;
   onChange: (_values: T[]) => void;
@@ -47,7 +47,6 @@ export function MultiSelectCombobox<T = OptionValue>({
   enableClearAllButton,
   enableSearch = true,
   className,
-  contentClassName,
   inputPlaceholder,
   loading,
   onChange,
@@ -105,15 +104,15 @@ export function MultiSelectCombobox<T = OptionValue>({
   const showClearButton = enableClearAllButton && selectedValues.length > 0;
 
   return (
-    <Popover open={open && !loading} onOpenChange={setOpen}>
-      <div className="relative">
+    <Popover modal={false} open={open && !loading} onOpenChange={setOpen}>
+      <div className="relative w-full sm:w-48">
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             disabled={loading}
             aria-expanded={open}
-            className={cn('w-[200px] px-3', className)}
+            className={cn('w-full sm:w-48', className)}
             data-testid={testId}
           >
             <AnimatePresence>
@@ -151,25 +150,27 @@ export function MultiSelectCombobox<T = OptionValue>({
         )}
       </div>
 
-      <PopoverContent className={cn('z-[50000000] w-full p-0', contentClassName)}>
+      <PopoverContent className="w-full p-0 sm:w-48">
         <Command>
           {enableSearch && <CommandInput placeholder={inputPlaceholder && _(inputPlaceholder)} />}
           <CommandEmpty>
             <Trans>No value found.</Trans>
           </CommandEmpty>
-          <CommandGroup>
-            {options.map((option, i) => (
-              <CommandItem key={i} onSelect={() => handleSelect(option.value)}>
-                <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    selectedValues.includes(option.value) ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-                {option.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <ScrollArea className="h-72">
+            <CommandGroup>
+              {options.map((option, i) => (
+                <CommandItem key={i} onSelect={() => handleSelect(option.value)}>
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      selectedValues.includes(option.value) ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                  {option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>

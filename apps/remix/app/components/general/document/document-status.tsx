@@ -42,6 +42,18 @@ export const FRIENDLY_STATUS_MAP: Record<ExtendedDocumentStatus, FriendlyStatus>
     icon: XCircle,
     color: 'text-red-500 dark:text-red-300',
   },
+  ERROR: {
+    label: msg`Error`,
+    labelExtended: msg`Document error`,
+    icon: File,
+    color: 'text-red-500 dark:text-red-200',
+  },
+  PROCESSING: {
+    label: msg`Processing`,
+    labelExtended: msg`Document processing`,
+    icon: File,
+    color: 'text-yellow-500 dark:text-yellow-200',
+  },
   INBOX: {
     label: msg`Inbox`,
     labelExtended: msg`Document inbox`,

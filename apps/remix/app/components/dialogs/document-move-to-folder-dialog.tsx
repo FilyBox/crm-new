@@ -8,11 +8,11 @@ import type * as DialogPrimitive from '@radix-ui/react-dialog';
 import { FolderIcon, HomeIcon, Loader2, Search } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
-import { FolderType } from '@documenso/lib/types/folder-type';
-import { formatDocumentsPath } from '@documenso/lib/utils/teams';
+import { FolderType, type TFolderType } from '@documenso/lib/types/folder-type';
 import { trpc } from '@documenso/trpc/react';
 import { Button } from '@documenso/ui/primitives/button';
 import {
@@ -32,12 +32,12 @@ import {
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
 import { Input } from '@documenso/ui/primitives/input';
-import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { useCurrentTeam } from '~/providers/team';
 
 export type DocumentMoveToFolderDialogProps = {
   documentId: number;
+  type?: TFolderType;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentFolderId?: string;
@@ -52,12 +52,12 @@ type TMoveDocumentFormSchema = z.infer<typeof ZMoveDocumentFormSchema>;
 export const DocumentMoveToFolderDialog = ({
   documentId,
   open,
+  type,
   onOpenChange,
   currentFolderId,
   ...props
 }: DocumentMoveToFolderDialogProps) => {
   const { _ } = useLingui();
-  const { toast } = useToast();
 
   const navigate = useNavigate();
   const team = useCurrentTeam();
@@ -74,7 +74,7 @@ export const DocumentMoveToFolderDialog = ({
   const { data: folders, isLoading: isFoldersLoading } = trpc.folder.findFolders.useQuery(
     {
       parentId: currentFolderId,
-      type: FolderType.DOCUMENT,
+      type: type ?? FolderType.DOCUMENT,
     },
     {
       enabled: open,
@@ -97,20 +97,21 @@ export const DocumentMoveToFolderDialog = ({
       await moveDocumentToFolder({
         documentId,
         folderId: data.folderId ?? null,
+        type: type ?? FolderType.DOCUMENT,
       });
 
-      const documentsPath = formatDocumentsPath(team.url);
+      // const documentsPath = formatDocumentsPath(team.url);
 
-      if (data.folderId) {
-        await navigate(`${documentsPath}/f/${data.folderId}`);
-      } else {
-        await navigate(documentsPath);
-      }
+      // if (data.folderId) {
+      //   await navigate(`${documentsPath}/f/${data.folderId}`);
+      // } else {
+      //   await navigate(documentsPath);
+      // }
 
-      toast({
-        title: _(msg`Document moved`),
+      toast.success(_(msg`Document moved`), {
         description: _(msg`The document has been moved successfully.`),
-        variant: 'default',
+        className: 'mb-16',
+        position: 'bottom-center',
       });
 
       onOpenChange(false);
@@ -118,29 +119,27 @@ export const DocumentMoveToFolderDialog = ({
       const error = AppError.parseError(err);
 
       if (error.code === AppErrorCode.NOT_FOUND) {
-        toast({
-          title: _(msg`Error`),
+        toast.error(_(msg`Error`), {
           description: _(msg`The folder you are trying to move the document to does not exist.`),
-          variant: 'destructive',
+          className: 'mb-16',
+          position: 'bottom-center',
         });
-
         return;
       }
 
       if (error.code === AppErrorCode.UNAUTHORIZED) {
-        toast({
-          title: _(msg`Error`),
+        toast.error(_(msg`Error`), {
           description: _(msg`You are not allowed to move this document.`),
-          variant: 'destructive',
+          className: 'mb-16',
+          position: 'bottom-center',
         });
-
         return;
       }
 
-      toast({
-        title: _(msg`Error`),
+      toast.error(_(msg`Error`), {
         description: _(msg`An error occurred while moving the document.`),
-        variant: 'destructive',
+        className: 'mb-16',
+        position: 'bottom-center',
       });
     }
   };

@@ -2,6 +2,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 
+import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { formatTeamUrl } from '@documenso/lib/utils/teams';
 
 import { Body, Container, Head, Hr, Html, Img, Preview, Section, Text } from '../components';
@@ -19,8 +20,8 @@ export type TeamEmailRemovedTemplateProps = {
 
 export const TeamEmailRemovedTemplate = ({
   assetBaseUrl = 'http://localhost:3002',
-  baseUrl = 'https://documenso.com',
-  teamEmail = 'example@documenso.com',
+  baseUrl = NEXT_PUBLIC_WEBAPP_URL(),
+  teamEmail = 'email@gmail.com',
   teamName = 'Team Name',
   teamUrl = 'demo',
 }: TeamEmailRemovedTemplateProps) => {
@@ -43,7 +44,7 @@ export const TeamEmailRemovedTemplate = ({
               <TemplateImage
                 assetBaseUrl={assetBaseUrl}
                 className="mb-4 h-6 p-2"
-                staticAsset="logo.png"
+                staticAsset="lpm.jpg"
               />
             )}
 

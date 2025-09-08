@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink, httpLink, splitLink } from '@trpc/client';
@@ -35,9 +35,9 @@ export interface TrpcProviderProps {
   headers?: Record<string, string>;
 }
 
-export function TrpcProvider({ children, headers }: TrpcProviderProps) {
-  const [queryClient] = useState(() => new QueryClient());
+export const queryClient = new QueryClient();
 
+export function TrpcProvider({ children, headers }: TrpcProviderProps) {
   // May cause remounting issues.
   const trpcClient = useMemo(
     () =>

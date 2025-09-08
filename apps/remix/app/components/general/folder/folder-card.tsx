@@ -1,3 +1,5 @@
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { Plural, Trans } from '@lingui/react/macro';
 import { FolderType } from '@prisma/client';
 import {
@@ -11,7 +13,13 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { formatDocumentsPath, formatTemplatesPath } from '@documenso/lib/utils/teams';
+import {
+  formatChatPath,
+  formatContractsPath,
+  formatDocumentsPath,
+  formatFilesPath,
+  formatTemplatesPath,
+} from '@documenso/lib/utils/teams';
 import { type TFolderWithSubfolders } from '@documenso/trpc/server/folder-router/schema';
 import { Button } from '@documenso/ui/primitives/button';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
@@ -43,12 +51,30 @@ export const FolderCard = ({
   onDelete,
 }: FolderCardProps) => {
   const team = useCurrentTeam();
+  const { _ } = useLingui();
 
   const formatPath = () => {
-    const rootPath =
-      folder.type === FolderType.DOCUMENT
-        ? formatDocumentsPath(team.url)
-        : formatTemplatesPath(team.url);
+    let rootPath;
+    switch (folder.type) {
+      case FolderType.DOCUMENT:
+        rootPath = formatDocumentsPath(team.url);
+        break;
+      case FolderType.TEMPLATE:
+        rootPath = formatTemplatesPath(team.url);
+        break;
+      case FolderType.CHAT:
+        rootPath = formatChatPath(team.url);
+        break;
+      case FolderType.CONTRACT:
+        rootPath = formatContractsPath(team.url);
+        break;
+      case FolderType.FILE:
+        rootPath = formatFilesPath(team.url);
+        break;
+      default:
+        rootPath = formatDocumentsPath(team.url);
+        break;
+    }
 
     return `${rootPath}/f/${folder.id}`;
   };
@@ -69,19 +95,46 @@ export const FolderCard = ({
 
                 <div className="text-muted-foreground mt-1 flex space-x-2 truncate text-xs">
                   <span>
-                    {folder.type === FolderType.TEMPLATE ? (
-                      <Plural
-                        value={folder._count.templates}
-                        one={<Trans># template</Trans>}
-                        other={<Trans># templates</Trans>}
-                      />
-                    ) : (
-                      <Plural
-                        value={folder._count.documents}
-                        one={<Trans># document</Trans>}
-                        other={<Trans># documents</Trans>}
-                      />
-                    )}
+                    {(() => {
+                      const typeMap: Record<
+                        FolderType,
+                        { count: number; one: string; other: string }
+                      > = {
+                        DOCUMENT: {
+                          count: folder._count.documents,
+                          one: _(msg`1 document`),
+                          other: _(msg`${folder._count.documents} documents`),
+                        },
+                        TEMPLATE: {
+                          count: folder._count.templates,
+                          one: _(msg`1 template`),
+                          other: _(msg`${folder._count.templates} templates`),
+                        },
+                        CHAT: {
+                          count: folder._count.documents,
+                          one: _(msg`1 file`),
+                          other: _(msg`# files`),
+                        },
+                        CONTRACT: {
+                          count: folder._count.documents,
+                          one: _(msg`1 contract`),
+                          other: _(msg`# contracts`),
+                        },
+                        FILE: {
+                          count: folder._count.files,
+                          one: _(msg`1 file`),
+                          other: _(msg`${folder._count.files} files`),
+                        },
+                      };
+                      const { count, one, other } = typeMap[folder.type];
+                      return (
+                        <Plural
+                          value={count}
+                          one={<Trans>{one}</Trans>}
+                          other={<Trans>{other}</Trans>}
+                        />
+                      );
+                    })()}
                   </span>
                   <span>•</span>
                   <span>

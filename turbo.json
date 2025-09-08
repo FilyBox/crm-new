@@ -37,6 +37,7 @@
   },
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": [
+    "GOOGLE_GENERATIVE_AI_API_KEY",
     "APP_VERSION",
     "NEXT_PRIVATE_ENCRYPTION_KEY",
     "NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY",

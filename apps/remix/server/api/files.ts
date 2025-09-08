@@ -72,12 +72,46 @@ export const filesRoute = new Hono<HonoEnv>()
       return c.json({ error: 'Upload failed' }, 500);
     }
   })
+  .post('/upload-file', sValidator('form', ZUploadPdfRequestSchema), async (c) => {
+    try {
+      const { file } = c.req.valid('form');
+
+      if (!file) {
+        return c.json({ error: 'No file provided' }, 400);
+      }
+
+      // Todo: (RR7) This is new.
+      // Add file size validation.
+      // Convert MB to bytes (1 MB = 1024 * 1024 bytes)
+      const MAX_FILE_SIZE = APP_DOCUMENT_UPLOAD_SIZE_LIMIT * 1024 * 1024;
+
+      if (file.size > MAX_FILE_SIZE) {
+        return c.json({ error: 'File too large' }, 400);
+      }
+
+      // Todo: (RR7) Test this.
+      if (!file.name.endsWith('.pdf')) {
+        Object.defineProperty(file, 'name', {
+          writable: true,
+          value: `${file.name}`,
+        });
+      }
+
+      const { type, data } = await putFileServerSide(file);
+
+      const result = await createDocumentData({ type, data });
+
+      return c.json(result);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      return c.json({ error: 'Upload failed' }, 500);
+    }
+  })
   .post('/presigned-get-url', sValidator('json', ZGetPresignedGetUrlRequestSchema), async (c) => {
     const { key } = await c.req.json();
 
     try {
       const { url } = await getPresignGetUrl(key || '');
-
       return c.json({ url } satisfies TGetPresignedGetUrlResponse);
     } catch (err) {
       console.error(err);

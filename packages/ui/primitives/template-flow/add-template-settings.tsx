@@ -15,7 +15,6 @@ import {
   DOCUMENT_DISTRIBUTION_METHODS,
   DOCUMENT_SIGNATURE_TYPES,
 } from '@documenso/lib/constants/document';
-import { SUPPORTED_LANGUAGES } from '@documenso/lib/constants/i18n';
 import { DEFAULT_DOCUMENT_TIME_ZONE, TIME_ZONES } from '@documenso/lib/constants/time-zones';
 import { ZDocumentEmailSettingsSchema } from '@documenso/lib/types/document-email';
 import type { TTemplate } from '@documenso/lib/types/template';
@@ -120,7 +119,7 @@ export const AddTemplateSettingsFormPartial = ({
         distributionMethod:
           template.templateMeta?.distributionMethod || DocumentDistributionMethod.EMAIL,
         redirectUrl: template.templateMeta?.redirectUrl ?? '',
-        language: template.templateMeta?.language ?? 'en',
+        language: template.templateMeta?.language ?? 'es',
         emailId: template.templateMeta?.emailId ?? null,
         emailReplyTo: template.templateMeta?.emailReplyTo ?? undefined,
         emailSettings: ZDocumentEmailSettingsSchema.parse(template?.templateMeta?.emailSettings),
@@ -198,7 +197,7 @@ export const AddTemplateSettingsFormPartial = ({
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="meta.language"
               render={({ field }) => (
@@ -236,7 +235,7 @@ export const AddTemplateSettingsFormPartial = ({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <FormField
               control={form.control}
@@ -541,7 +540,7 @@ export const AddTemplateSettingsFormPartial = ({
 
                 <AccordionContent className="text-muted-foreground -mx-1 px-1 pt-4 text-sm leading-relaxed">
                   <div className="flex flex-col space-y-6">
-                    <FormField
+                    {/* <FormField
                       control={form.control}
                       name="externalId"
                       render={({ field }) => (
@@ -569,7 +568,7 @@ export const AddTemplateSettingsFormPartial = ({
                           <FormMessage />
                         </FormItem>
                       )}
-                    />
+                    /> */}
 
                     <FormField
                       control={form.control}

@@ -1,14 +1,6 @@
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  BracesIcon,
-  Globe2Icon,
-  GroupIcon,
-  Settings2Icon,
-  SettingsIcon,
-  Users2Icon,
-  WebhookIcon,
-} from 'lucide-react';
+import { Globe2Icon, GroupIcon, Settings2Icon, SettingsIcon, Users2Icon } from 'lucide-react';
 import { Link, NavLink, Outlet, redirect } from 'react-router';
 
 import { getSession } from '@documenso/auth/server/lib/utils/get-session';
@@ -91,16 +83,16 @@ export default function TeamsSettingsLayout() {
       label: t`Groups`,
       icon: GroupIcon,
     },
-    {
-      path: `/t/${team.url}/settings/tokens`,
-      label: t`API Tokens`,
-      icon: BracesIcon,
-    },
-    {
-      path: `/t/${team.url}/settings/webhooks`,
-      label: t`Webhooks`,
-      icon: WebhookIcon,
-    },
+    // {
+    //   path: `/t/${team.url}/settings/tokens`,
+    //   label: t`API Tokens`,
+    //   icon: BracesIcon,
+    // },
+    // {
+    //   path: `/t/${team.url}/settings/webhooks`,
+    //   label: t`Webhooks`,
+    //   icon: WebhookIcon,
+    // },
   ];
 
   if (!canExecuteTeamAction('MANAGE_TEAM', team.currentTeamRole)) {

@@ -33,10 +33,12 @@ export default function SignUp({ loaderData }: Route.ComponentProps) {
   const { isGoogleSSOEnabled, isOIDCSSOEnabled } = loaderData;
 
   return (
-    <SignUpForm
-      className="w-screen max-w-screen-2xl px-4 md:px-16 lg:-my-16"
-      isGoogleSSOEnabled={isGoogleSSOEnabled}
-      isOIDCSSOEnabled={isOIDCSSOEnabled}
-    />
+    <div className="flex h-full w-screen items-center justify-center p-16">
+      <SignUpForm
+        className="max-h-[80vh] w-full max-w-screen-2xl lg:-my-28"
+        isGoogleSSOEnabled={isGoogleSSOEnabled}
+        isOIDCSSOEnabled={isOIDCSSOEnabled}
+      />
+    </div>
   );
 }

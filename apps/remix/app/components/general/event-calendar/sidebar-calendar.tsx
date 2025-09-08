@@ -1,0 +1,69 @@
+import { useEffect, useState } from 'react';
+
+import { useLingui } from '@lingui/react';
+import { format } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
+import { ChevronDownIcon } from 'lucide-react';
+
+import { Button } from '@documenso/ui/primitives/button';
+import { Calendar } from '@documenso/ui/primitives/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
+
+import { useCalendarContext } from './calendar-context';
+
+export default function SidebarCalendar() {
+  const { currentDate, setCurrentDate } = useCalendarContext();
+  const [open, setOpen] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState<Date>(currentDate);
+  const { i18n } = useLingui();
+  const currentLanguage = i18n.locale;
+  // Update the calendar month whenever currentDate changes
+  useEffect(() => {
+    setCalendarMonth(currentDate);
+  }, [currentDate]);
+
+  // Handle date selection
+  const handleSelect = (date: Date | undefined) => {
+    if (date) {
+      setCurrentDate(date);
+    }
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" id="date" className="w-fit justify-between font-normal">
+          {currentDate
+            ? format(
+                currentDate,
+                `${currentLanguage === 'es' ? "d 'de' MMMM yyyy" : 'MMMM d, yyyy'}`,
+                {
+                  locale: currentLanguage === 'es' ? es : enUS,
+                },
+              )
+            : 'Select date'}
+          <ChevronDownIcon />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+        <Calendar
+          captionLayout="dropdown"
+          mode="single"
+          selected={currentDate}
+          onSelect={handleSelect}
+          month={calendarMonth}
+          onMonthChange={setCalendarMonth}
+          classNames={{
+            day_button:
+              'transition-none! hover:not-in-data-selected:bg-sidebar-accent group-[.range-middle]:group-data-selected:bg-sidebar-accent text-sidebar-foreground',
+            today: '*:after:transition-none',
+            outside: 'data-selected:bg-sidebar-accent/50',
+          }}
+        />
+      </PopoverContent>
+    </Popover>
+    // <div className={cn('flex w-full justify-center', className)}>
+
+    // </div>
+  );
+}

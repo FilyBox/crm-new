@@ -13,6 +13,7 @@ import {
   useLocation,
 } from 'react-router';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
+import { Toaster } from 'sonner';
 
 import { getOptionalSession } from '@documenso/auth/server/lib/utils/get-session';
 import { SessionProvider } from '@documenso/lib/client-only/providers/session';
@@ -21,7 +22,6 @@ import { createPublicEnv, env } from '@documenso/lib/utils/env';
 import { extractLocaleData } from '@documenso/lib/utils/i18n';
 import { TrpcProvider } from '@documenso/trpc/react';
 import { getOrganisationSession } from '@documenso/trpc/server/organisation-router/get-organisation-session';
-import { Toaster } from '@documenso/ui/primitives/toaster';
 import { TooltipProvider } from '@documenso/ui/primitives/tooltip';
 
 import type { Route } from './+types/root';
@@ -135,7 +135,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
             <TrpcProvider>
               {children}
 
-              <Toaster />
+              <Toaster theme="system" richColors className="mb-16" />
             </TrpcProvider>
           </TooltipProvider>
         </SessionProvider>
