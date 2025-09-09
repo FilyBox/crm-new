@@ -37,7 +37,7 @@ interface ChatPropsWithoutSuggestions extends ChatPropsBase {
 
 interface ChatPropsWithSuggestions extends ChatPropsBase {
   append: (message: { role: 'user'; content: string }) => void;
-  suggestions: string[];
+  suggestions?: string[];
 }
 
 type ChatProps = ChatPropsWithoutSuggestions | ChatPropsWithSuggestions;
@@ -181,7 +181,11 @@ export function Chat({
 
   return (
     <ChatContainer className={className}>
-      {isEmpty && append && suggestions ? <Greeting /> : null}
+      {isEmpty && append && suggestions ? (
+        <PromptSuggestions label="Try these prompts ✨" append={append} suggestions={suggestions} />
+      ) : isEmpty ? (
+        <Greeting />
+      ) : null}
 
       {messages.length > 0 ? (
         <ChatMessages messages={messages}>

@@ -73,7 +73,7 @@ export function FullSizeCard({
       </AnimatePresence>
       <AnimatePresence>
         {activeGame ? (
-          <div className="active-game fixed flex items-center justify-center">
+          <div className="active-game fixed bottom-0 z-50 flex items-center justify-center">
             <motion.div
               layoutId={`card-${identifier || title}`}
               className="inner mb-5"
@@ -152,7 +152,7 @@ export function FullSizeCard({
               </CardDescription>
             </motion.div>
           </CardHeader>
-          <CardContent className={cn('h-0', cardContentClassName)}>
+          <CardContent className={cn('h-0 overflow-hidden', cardContentClassName)}>
             <motion.div layoutId={`content-${title}`} className="h-0 overflow-hidden">
               {children}
             </motion.div>

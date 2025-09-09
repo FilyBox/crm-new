@@ -25,7 +25,7 @@ interface HighlightedPre extends React.HTMLAttributes<HTMLPreElement> {
   children: string;
   language: string;
 }
-
+//@ts-expect-error
 const HighlightedPre = React.memo(async ({ children, language, ...props }: HighlightedPre) => {
   const { codeToTokens, bundledLanguages } = await import('shiki');
 

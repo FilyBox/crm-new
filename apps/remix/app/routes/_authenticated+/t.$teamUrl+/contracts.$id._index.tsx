@@ -27,6 +27,7 @@ import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
 import { ChatDemo } from '~/components/general/chat/chat-component';
 import { FullSizeCard } from '~/components/general/fullSize-Card';
 import { useCurrentTeam } from '~/providers/team';
+import { useIsActiveStore } from '~/storage/active-full-container';
 import { superLoaderJson, useSuperLoaderData } from '~/utils/super-json-loader';
 
 import type { Route } from './+types/contracts.$id._index';
@@ -129,8 +130,8 @@ export default function DocumentPage() {
   const { id } = useCurrentTeam();
   const { user } = useSession();
   const { i18n } = useLingui();
+  const { activeGame } = useIsActiveStore();
   const [searchParams, setSearchParams] = useSearchParams();
-  const existingUUID = searchParams.get('chatId');
   const currentLanguage = i18n.locale;
   const { document, documentRootPath, contract } = loaderData;
   const { documentData } = document;

@@ -112,8 +112,8 @@ export default function Layout({ loaderData, params }: Route.ComponentProps) {
 
         {banner && <AppBanner banner={banner} />}
 
-        <main style={{ scrollbarGutter: 'stable' }} className={`mt-5 h-fit`}>
-          <Header className={activeGame ? 'z-0' : ''} />
+        <main style={{ scrollbarGutter: 'stable' }} className={`h-fit`}>
+          <Header className={activeGame ? 'z-10' : ''} />
 
           <Outlet />
         </main>
