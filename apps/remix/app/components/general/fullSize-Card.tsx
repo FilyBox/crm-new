@@ -153,7 +153,9 @@ export function FullSizeCard({
             </motion.div>
           </CardHeader>
           <CardContent className={cn('h-0', cardContentClassName)}>
-            <motion.div layoutId={`content-${title}`} className="h-0"></motion.div>
+            <motion.div layoutId={`content-${title}`} className="h-0 overflow-hidden">
+              {children}
+            </motion.div>
           </CardContent>
         </Card>
       </motion.div>

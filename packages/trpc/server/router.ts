@@ -2,6 +2,7 @@ import { adminRouter } from './admin-router/router';
 import { apiTokenRouter } from './api-token-router/router';
 import { artistRouter } from './artist-router/router';
 import { authRouter } from './auth-router/router';
+import { chatRouter } from './chat-router/router';
 import { contractsRouter } from './contracts-router/router';
 import { distributionRouter } from './distributionStatement-router/router';
 import { documentRouter } from './document-router/router';
@@ -51,6 +52,7 @@ export const appRouter = router({
   release: releaseRouter,
   events: eventRouter,
   ticketType: ticketTypeRouter,
+  chat: chatRouter,
 });
 
 export type AppRouter = typeof appRouter;

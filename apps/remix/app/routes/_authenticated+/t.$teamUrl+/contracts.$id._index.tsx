@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Trans, useLingui } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { ChevronLeft } from 'lucide-react';
-import { Link, redirect } from 'react-router';
+import { Link, redirect, useSearchParams } from 'react-router';
 import { match } from 'ts-pattern';
 
 import { getSession } from '@documenso/auth/server/lib/utils/get-session';
+import { useSession } from '@documenso/lib/client-only/providers/session';
 import { AppError } from '@documenso/lib/errors/app-error';
 import { getContractById } from '@documenso/lib/server-only/document/get-contract-by-id';
 import { getDocumentById } from '@documenso/lib/server-only/document/get-document-by-id';
@@ -17,18 +18,18 @@ import { getRecipientsForDocument } from '@documenso/lib/server-only/recipient/g
 import { getTeamByUrl } from '@documenso/lib/server-only/team/get-team';
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
 import { formatContractsPath } from '@documenso/lib/utils/teams';
-import { cn } from '@documenso/ui/lib/utils';
-import { Button } from '@documenso/ui/primitives/button';
+import { generateUUID } from '@documenso/ui/lib/utils';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
 import { FeatureCard } from '@documenso/ui/primitives/card-fancy';
 import PDFViewer from '@documenso/ui/primitives/pdf-viewer';
 import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
 
+import { ChatDemo } from '~/components/general/chat/chat-component';
 import { FullSizeCard } from '~/components/general/fullSize-Card';
-import { useIsActiveStore } from '~/storage/active-full-container';
+import { useCurrentTeam } from '~/providers/team';
 import { superLoaderJson, useSuperLoaderData } from '~/utils/super-json-loader';
 
-import type { Route } from './+types/documents.$id._index';
+import type { Route } from './+types/contracts.$id._index';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const { user } = await getSession(request);
@@ -125,47 +126,35 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
 export default function DocumentPage() {
   const loaderData = useSuperLoaderData<typeof loader>();
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const { activeGame } = useIsActiveStore();
-
-  const handleIsOpen = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const renderOpenButton = (handleToggle: () => void) => (
-    <div
-      className={cn(
-        'flex w-full items-center justify-start py-1 pr-4 md:py-1 md:pl-4',
-        isOpen ? 'pr-3' : '',
-      )}
-    >
-      <Button className="" onClick={handleIsOpen} variant="secondary">
-        {isOpen ? 'close' : 'open'}
-      </Button>
-    </div>
-  );
-
+  const { id } = useCurrentTeam();
+  const { user } = useSession();
   const { i18n } = useLingui();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const existingUUID = searchParams.get('chatId');
   const currentLanguage = i18n.locale;
-  // const retryDocument = trpc.document.retryContractData.useMutation();
-
   const { document, documentRootPath, contract } = loaderData;
   const { documentData } = document;
 
-  const handleRetry = () => {
-    try {
-      setIsGenerating(true);
-      // const { publicAccessToken, id } = await retryDocument.mutateAsync({
-      //   documentId: contract.documentId,
-      // });
-      // void navigate(`${documentRootPath}/${contract.documentId}/${id}/${publicAccessToken}/retry`);
-    } catch (error) {
-      console.error('Error navigating to folders:', error);
-      setIsGenerating(false);
+  const UUID = useMemo(() => {
+    const existingUUID = searchParams.get('chatId');
+    return existingUUID || generateUUID();
+  }, [searchParams]);
+
+  // Guardar el UUID en searchParams solo si no existe
+  useEffect(() => {
+    const existingUUID = searchParams.get('chatId');
+    if (!existingUUID) {
+      setSearchParams(
+        (prev) => {
+          const newParams = new URLSearchParams(prev);
+          newParams.set('chatId', UUID);
+          return newParams;
+        },
+        { replace: true },
+      );
     }
-  };
+  }, [UUID, setSearchParams]);
+
   return (
     <div className={`mx-auto w-full max-w-screen-xl sm:px-6`} style={{ scrollbarGutter: 'stable' }}>
       <h1
@@ -284,8 +273,23 @@ export default function DocumentPage() {
                   )}
                 </div>
               </ScrollArea>
-              <FullSizeCard title="chat" identifier="chat" className="max-h-fit min-h-fit">
-                <span>Chat</span>
+              <FullSizeCard
+                title={contract.fileName || contract.title}
+                identifier="chat"
+                className="max-h-fit min-h-fit"
+              >
+                <ChatDemo
+                  id={UUID}
+                  teamId={id}
+                  contractId={contract.documentId}
+                  initialMessages={[]}
+                  selectedChatModel="chat-model"
+                  contractName={contract.fileName || contract.title}
+                  isReadonly={false}
+                  body={''}
+                  key={UUID}
+                  userId={user.id}
+                />
               </FullSizeCard>
             </FeatureCard>
           </div>
