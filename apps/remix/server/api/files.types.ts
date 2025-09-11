@@ -1,9 +1,35 @@
+import { type UIMessage } from 'ai';
 import { z } from 'zod';
 
 import DocumentDataSchema from '@documenso/prisma/generated/zod/modelSchema/DocumentDataSchema';
 
 export const ZUploadPdfRequestSchema = z.object({
   file: z.instanceof(File),
+});
+// const {
+//   id,
+//   teamId,
+//   contractId,
+//   body,
+//   messages,
+//   selectedChatModel,
+// }: {
+//   id: string;
+//   teamId?: string;
+//   contractId: string;
+//   body?: string;
+//   messages: Array<UIMessage>;
+//   selectedChatModel: string;
+// } = await request.json();
+
+export const ZChatRequestSchema = z.object({
+  id: z.string().uuid(),
+  teamId: z.number(),
+  userId: z.number(),
+  contractId: z.number(),
+  body: z.string().optional(),
+  messages: z.array(z.custom<UIMessage>()),
+  model: z.string(),
 });
 
 export const ZUploadPdfResponseSchema = DocumentDataSchema.pick({

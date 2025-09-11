@@ -782,12 +782,8 @@ export const lpmRouter = router({
     )
     .mutation(async ({ input }) => {
       const { id, artistsToUpdate, artists, ...data } = input;
-      console.log('attached artists', artists);
-      console.log('artistsToUpdate', artistsToUpdate);
-      console.log('id', id);
+
       if (artists && artistsToUpdate) {
-        console.log('artists to disconnect', artists);
-        console.log('artists to connect', artistsToUpdate);
         await prisma.lpm.update({
           where: { id },
           data: {
@@ -798,7 +794,6 @@ export const lpmRouter = router({
           },
         });
       } else if (artistsToUpdate) {
-        console.log('artists to connect', artistsToUpdate);
         await prisma.lpm.update({
           where: { id },
           data: {

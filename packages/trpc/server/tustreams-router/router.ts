@@ -88,8 +88,6 @@ export const tuStreamsRouter = router({
       const { user, teamId } = ctx;
       const userId = user.id;
       const { tuStreams } = input;
-      console.log('Creating multiple tuStreams:', tuStreams.length);
-
       // Verify permissions if it's a team task
       if (teamId && ctx.teamId !== teamId) {
         throw new Error('No tienes permisos para crear tuStreams en este equipo');
@@ -109,13 +107,10 @@ export const tuStreamsRouter = router({
             const createdTuStreams = [];
 
             for (const stream of batch) {
-              console.log('Processing stream:', stream);
               // Normalize artist string for consistent processing
               const normalizedArtistString = (stream.artist || '')
                 .replace(/\s+ft\.\s+/gi, ', ')
                 .replace(/\s+&\s+/g, ', ');
-
-              console.log('Normalized artist string:', normalizedArtistString);
 
               // Create arrays of artist data
               // const artistsData = normalizedArtistString
@@ -442,8 +437,6 @@ export const tuStreamsRouter = router({
       const { id, artistsToUpdate, artists, ...data } = input;
 
       if (artists && artistsToUpdate) {
-        console.log('artists to disconnect', artists);
-        console.log('artists to connect', artistsToUpdate);
         await prisma.tuStreams.update({
           where: { id },
           data: {
@@ -454,7 +447,6 @@ export const tuStreamsRouter = router({
           },
         });
       } else if (artistsToUpdate) {
-        console.log('artists to connect', artistsToUpdate);
         await prisma.tuStreams.update({
           where: { id },
           data: {

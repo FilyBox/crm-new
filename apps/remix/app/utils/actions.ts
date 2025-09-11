@@ -130,7 +130,6 @@ export const runGenerateSQLQuery = async (query: string) => {
 
   let data: QueryResult;
   try {
-    console.log('Using Vercel Postgres connection string');
     data = await sql.query(query);
     // data = await sql.query(query);
   } catch (e) {

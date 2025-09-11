@@ -73,8 +73,6 @@ export const distributionRouter = router({
       const userId = user.id;
       const { territories, musicPlatform, ...data } = input;
 
-      console.log('territories to create:', territories);
-      console.log('musicPlatform to create:', musicPlatform);
       // const allData = { ...data, userId, ...(teamId ? { teamId } : {}) };
 
       return await prisma.distributionStatement.create({
@@ -187,8 +185,6 @@ export const distributionRouter = router({
       const { user, teamId } = ctx;
       const userId = user.id;
 
-      console.log('Updating LPM with ID:', id);
-      console.log('updating music platforms:', musicPlatform);
       const pepe = await prisma.distributionStatement.update({
         where: { id },
         data: {
@@ -252,8 +248,6 @@ export const distributionRouter = router({
           distributionStatementMusicPlatforms: true,
         },
       });
-
-      console.log('pepe', pepe);
 
       return pepe;
     }),
@@ -637,10 +631,6 @@ export const distributionRouter = router({
       const { user, teamId } = ctx;
       const userId = user.id;
       const { distributions } = input;
-      console.log('Creating multiple distribution statements:', distributions.length);
-      console.log('tipo de cambio', distributions[0].tipoDeCambio);
-      console.log('nombre del territorio', distributions[0].nombreDelTerritorio);
-      console.log('codigo del territorio', distributions[0].codigoDelTerritorio);
       // Verify permissions if it's a team operation
       if (teamId && ctx.teamId !== teamId) {
         throw new Error('No tienes permisos para crear distribution statements en este equipo');

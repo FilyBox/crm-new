@@ -23,8 +23,7 @@ export const downloadAnyFileMultiple = async ({ multipleFiles }: FileData) => {
   try {
     for (const fileData of multipleFiles) {
       const { documentData, title } = fileData;
-      console.log('type of documentData', documentData.type);
-      console.log('initialData of documentData', documentData.initialData);
+
       const bytes = await getMultipleFiles({
         type: documentData.type,
         data: documentData.initialData,
