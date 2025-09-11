@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { Trans, useLingui } from '@lingui/react/macro';
 import type { Column, ColumnMeta, Table } from '@tanstack/react-table';
 import {
   CalendarIcon,
@@ -18,6 +17,7 @@ import { formatDate } from '@documenso/ui/lib/format';
 import { generateId } from '@documenso/ui/lib/id';
 import { getFiltersStateParser } from '@documenso/ui/lib/parsers';
 import { useDebouncedCallback } from '@documenso/ui/lib/use-debounced-callback';
+import { useIsMobile } from '@documenso/ui/lib/use-mobile';
 import { cn } from '@documenso/ui/lib/utils';
 import { Badge } from '@documenso/ui/primitives/badge';
 import { Button } from '@documenso/ui/primitives/button';
@@ -86,14 +86,14 @@ export function DataTableFilterList<TData>({
   loading,
   throttleMs = THROTTLE_MS,
   shallow = true,
-  ...props
+  // ...props
 }: DataTableFilterListProps<TData>) {
   const id = React.useId();
   const labelId = React.useId();
   const descriptionId = React.useId();
   const [open, setOpen] = React.useState(false);
   const addButtonRef = React.useRef<HTMLButtonElement>(null);
-  const { t } = useLingui();
+  const isMobile = useIsMobile();
 
   const columns = React.useMemo(() => {
     return table.getAllColumns().filter((column) => column.columnDef.enableColumnFilter);
@@ -110,15 +110,9 @@ export function DataTableFilterList<TData>({
       }),
   );
 
-  const [applyFilters, setApplyFilters] = useQueryState(
-    'applyFilters',
-    parseAsStringEnum(['true', 'false']).withOptions({
-      clearOnDefault: true,
-      shallow,
-    }),
-  );
+  const [localFilters, setLocalFilters] = React.useState<ExtendedColumnFilter<TData>[]>(filters);
 
-  const debouncedSetFilters = useDebouncedCallback(setFilters, debounceMs);
+  const debouncedSetFilters = useDebouncedCallback(setLocalFilters, debounceMs);
 
   const [joinOperator, setJoinOperator] = useQueryState(
     JOIN_OPERATOR_KEY,
@@ -133,7 +127,7 @@ export function DataTableFilterList<TData>({
 
     if (!column) return;
     debouncedSetFilters([
-      ...filters,
+      ...localFilters,
       {
         id: column.id as Extract<keyof TData, string>,
         value: '',
@@ -142,13 +136,10 @@ export function DataTableFilterList<TData>({
         filterId: generateId({ length: 8 }),
       },
     ]);
-    void setApplyFilters('false');
-  }, [columns, filters, debouncedSetFilters]);
+  }, [columns, localFilters, debouncedSetFilters]);
 
   const onFilterUpdate = React.useCallback(
     (filterId: string, updates: Partial<Omit<ExtendedColumnFilter<TData>, 'filterId'>>) => {
-      void setApplyFilters('false');
-
       debouncedSetFilters((prevFilters) => {
         const updatedFilters = prevFilters.map((filter) => {
           if (filter.filterId === filterId) {
@@ -164,56 +155,63 @@ export function DataTableFilterList<TData>({
 
   const onFilterRemove = React.useCallback(
     (filterId: string) => {
-      void setApplyFilters('false');
+      const updatedFilters = localFilters.filter((filter) => filter.filterId !== filterId);
+      void setLocalFilters(updatedFilters);
+      if (updatedFilters.length === 0) {
+        void setFilters(null);
+      }
 
-      const updatedFilters = filters.filter((filter) => filter.filterId !== filterId);
-      void setFilters(updatedFilters);
       requestAnimationFrame(() => {
         addButtonRef.current?.focus();
       });
     },
-    [filters, setFilters],
+    [localFilters, setLocalFilters],
   );
 
   const onFiltersReset = React.useCallback(() => {
     void setFilters(null);
     void setJoinOperator('and');
-  }, [setFilters, setJoinOperator]);
+    void setLocalFilters([]);
+  }, [setFilters, setJoinOperator, setLocalFilters]);
 
-  // React.useEffect(() => {
-  //   function onKeyDown(event: KeyboardEvent) {
-  //     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
-  //       return;
-  //     }
+  React.useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
 
-  //     if (event.key === OPEN_MENU_SHORTCUT && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
-  //       event.preventDefault();
-  //       setOpen(true);
-  //     }
+      if (event.key === OPEN_MENU_SHORTCUT && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+        event.preventDefault();
+        setOpen(true);
+      }
 
-  //     if (event.key === OPEN_MENU_SHORTCUT && event.shiftKey && filters.length > 0) {
-  //       event.preventDefault();
-  //       onFilterRemove(filters[filters.length - 1]?.filterId ?? '');
-  //     }
-  //   }
+      if (event.key === OPEN_MENU_SHORTCUT && event.shiftKey && localFilters.length > 0) {
+        event.preventDefault();
+        onFilterRemove(localFilters[localFilters.length - 1]?.filterId ?? '');
+      }
+    }
 
-  //   window.addEventListener('keydown', onKeyDown);
-  //   return () => window.removeEventListener('keydown', onKeyDown);
-  // }, [filters, onFilterRemove]);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [localFilters, onFilterRemove]);
 
   const onTriggerKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (REMOVE_FILTER_SHORTCUTS.includes(event.key) && filters.length > 0) {
+      if (REMOVE_FILTER_SHORTCUTS.includes(event.key) && localFilters.length > 0) {
         event.preventDefault();
-        onFilterRemove(filters[filters.length - 1]?.filterId ?? '');
+        onFilterRemove(localFilters[localFilters.length - 1]?.filterId ?? '');
       }
     },
-    [filters, onFilterRemove],
+    [localFilters, onFilterRemove],
   );
 
   return (
-    <Sortable value={filters} onValueChange={setFilters} getItemValue={(item) => item.filterId}>
-      <Popover open={open} onOpenChange={setOpen}>
+    <Sortable
+      value={localFilters}
+      onValueChange={setLocalFilters}
+      getItemValue={(item) => item.filterId}
+    >
+      <Popover modal={true} open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -222,40 +220,40 @@ export function DataTableFilterList<TData>({
             onKeyDown={onTriggerKeyDown}
           >
             <ListFilter className="size-4" />
-            <Trans>Filter</Trans>
-            {filters.length > 0 && (
+            {/* Filtros */}
+            {localFilters.length > 0 && (
               <Badge
-                variant="secondary"
+                variant={filters.length > 0 ? 'default' : 'secondary'}
                 className="h-[18.24px] rounded-[3.2px] px-[5.12px] font-mono text-[10.4px] font-normal"
               >
-                {filters.length}
+                {localFilters.length}
               </Badge>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent
+          align="start"
           aria-describedby={descriptionId}
           aria-labelledby={labelId}
-          className="dark:bg-backgroundDark flex w-full max-w-[var(--radix-popover-content-available-width)] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3.5 p-4 sm:min-w-[380px]"
-          {...props}
+          className="dark:bg-backgroundDark flex w-full max-w-[88vw] origin-[var(--radix-popover-content-transform-origin)] flex-col gap-3.5 overflow-hidden p-4 sm:min-w-[380px]"
         >
           <div className="flex flex-col gap-1">
             <h4 id={labelId} className="font-medium leading-none">
-              {filters.length > 0 ? t`Filters` : t`No filters applied`}
+              {localFilters.length > 0 ? `Filtros` : `No hay filtros aplicados`}
             </h4>
             <p
               id={descriptionId}
-              className={cn('text-muted-foreground text-sm', filters.length > 0 && 'sr-only')}
+              className={cn('text-muted-foreground text-sm', localFilters.length > 0 && 'sr-only')}
             >
-              {filters.length > 0
-                ? t`Modify filters to refine your rows.`
-                : t`Add filters to refine your rows.`}
+              {localFilters.length > 0
+                ? `Modifica los filtros para refinar tu búsqueda.`
+                : `Agrega filtros para refinar tu busqueda.`}
             </p>
           </div>
-          {filters.length > 0 ? (
+          {localFilters.length > 0 ? (
             <SortableContent asChild>
-              <div role="list" className="flex max-h-[300px] flex-col gap-2 overflow-y-auto p-1">
-                {filters.map((filter, index) => (
+              <div role="list" className="flex max-h-[300px] flex-col gap-2 overflow-y-auto">
+                {localFilters.map((filter, index) => (
                   <DataTableFilterItem<TData>
                     key={filter.filterId}
                     filter={filter}
@@ -280,9 +278,9 @@ export function DataTableFilterList<TData>({
               onClick={onFilterAdd}
               disabled={loading}
             >
-              <Trans>Add filter</Trans>
+              {isMobile ? 'Agregar' : 'Agregar filtro'}
             </Button>
-            {filters.length > 0 ? (
+            {localFilters.length > 0 ? (
               <Button
                 disabled={loading}
                 variant="outline"
@@ -290,19 +288,21 @@ export function DataTableFilterList<TData>({
                 className="rounded"
                 onClick={onFiltersReset}
               >
-                <Trans>Reset filters</Trans>
+                {isMobile ? 'Limpiar' : 'Limpiar filtros'}
               </Button>
             ) : null}
-            {filters.length > 0 ? (
+            {localFilters.length > 0 ? (
               <Button
                 variant="outline"
                 size="sm"
                 className="rounded"
                 loading={loading}
-                disabled={loading || applyFilters === 'true'}
-                onClick={async () => setApplyFilters('true')}
+                disabled={loading}
+                onClick={() => {
+                  void setFilters(localFilters);
+                }}
               >
-                <Trans>Apply filters</Trans>
+                {isMobile ? 'Aplicar' : 'Aplicar filtros'}
               </Button>
             ) : null}
           </div>
@@ -390,9 +390,9 @@ function DataTableFilterItem<TData>({
       >
         <div className="min-w-[72px] text-center">
           {index === 0 ? (
-            <span className="text-muted-foreground text-sm">
-              <Trans>Where</Trans>
-            </span>
+            <div className="border-muted-foreground/30 h-full w-full min-w-[72px] rounded-sm border py-1">
+              <span className="text-muted-foreground text-sm">Dónde</span>
+            </div>
           ) : index === 1 ? (
             <Select
               value={joinOperator}
@@ -418,7 +418,7 @@ function DataTableFilterItem<TData>({
               </SelectContent>
             </Select>
           ) : (
-            <span className="text-muted-foreground text-sm">{joinOperator}</span>
+            <span className="text-muted-foreground text-sm">{joinOperator === 'and'}</span>
           )}
         </div>
         <Popover open={showFieldSelector} onOpenChange={setShowFieldSelector}>
@@ -433,7 +433,7 @@ function DataTableFilterItem<TData>({
               <span className="truncate">
                 {columns.find((column) => column.id === filter.id)?.id ?? 'Select field'}
               </span>
-              <ChevronsUpDown className="opacity-50" />
+              <ChevronsUpDown size={16} className="opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -442,17 +442,16 @@ function DataTableFilterItem<TData>({
             className="w-40 origin-[var(--radix-popover-content-transform-origin)] p-0"
           >
             <Command>
-              <CommandInput placeholder="Search fields..." />
+              <CommandInput placeholder="Buscar campos..." />
               <CommandList>
-                <CommandEmpty>
-                  <Trans>No fields found.</Trans>
-                </CommandEmpty>
+                <CommandEmpty>No se encontraron campos.</CommandEmpty>
                 <CommandGroup>
                   {columns.map((column) => (
                     <CommandItem
                       key={column.id}
                       value={column.id}
-                      onSelect={(value) => {
+                      disabled={false}
+                      onSelect={() => {
                         onFilterUpdate(filter.filterId, {
                           id: column.id as Extract<keyof TData, string>,
                           variant: column.columnDef.meta?.variant ?? 'text',
@@ -467,6 +466,7 @@ function DataTableFilterItem<TData>({
                     >
                       <span className="truncate">{column.id}</span>
                       <Check
+                        size={16}
                         className={cn(
                           'ml-auto',
                           column.id === filter.id ? 'opacity-100' : 'opacity-0',
@@ -486,7 +486,7 @@ function DataTableFilterItem<TData>({
           onValueChange={(value: FilterOperator) =>
             onFilterUpdate(filter.filterId, {
               operator: value,
-              value: value === 'isEmpty' || value === 'isNotEmpty' ? '' : filter.value,
+              value: filter.value,
             })
           }
         >
@@ -524,13 +524,13 @@ function DataTableFilterItem<TData>({
           aria-controls={filterItemId}
           variant="outline"
           size="icon"
-          className="size-4 rounded"
+          className="size-8 min-w-8 rounded"
           onClick={() => onFilterRemove(filter.filterId)}
         >
           <Trash2 className="size-5" />
         </Button>
         <SortableItemHandle asChild>
-          <Button variant="outline" size="icon" className="size-4 rounded">
+          <Button variant="ghost" size="icon" className="size-8 min-w-8 rounded">
             <GripVertical />
           </Button>
         </SortableItemHandle>
@@ -559,19 +559,19 @@ function onFilterInputRender<TData>({
   showValueSelector: boolean;
   setShowValueSelector: (value: boolean) => void;
 }) {
-  if (filter.operator === 'isEmpty' || filter.operator === 'isNotEmpty') {
-    return (
-      <div
-        id={inputId}
-        role="status"
-        aria-label={`${columnMeta?.label} filter is ${
-          filter.operator === 'isEmpty' ? 'empty' : 'not empty'
-        }`}
-        aria-live="polite"
-        className="dark:bg-input/30 h-8 w-full rounded border bg-transparent"
-      />
-    );
-  }
+  // if (filter.operator === 'isEmpty' || filter.operator === 'isNotEmpty') {
+  //   return (
+  //     <div
+  //       id={inputId}
+  //       role="status"
+  //       aria-label={`${columnMeta?.label} filter is ${
+  //         filter.operator === 'isEmpty' ? 'empty' : 'not empty'
+  //       }`}
+  //       aria-live="polite"
+  //       className="dark:bg-input/30 h-8 w-full rounded border bg-transparent"
+  //     />
+  //   );
+  // }
 
   switch (filter.variant) {
     case 'text':
@@ -600,7 +600,7 @@ function onFilterInputRender<TData>({
           aria-label={`${columnMeta?.label} filter value`}
           aria-describedby={`${inputId}-description`}
           inputMode={isNumber ? 'numeric' : undefined}
-          placeholder={columnMeta?.placeholder ?? 'Enter a value...'}
+          placeholder={columnMeta?.placeholder ?? 'Escribe un valor...'}
           className="h-8 w-full rounded"
           defaultValue={typeof filter.value === 'string' ? filter.value : undefined}
           onChange={(event) =>
@@ -673,14 +673,17 @@ function onFilterInputRender<TData>({
             <Button
               id={inputId}
               aria-controls={inputListboxId}
-              aria-label={`${columnMeta?.label} filter value${multiple ? 's' : ''}`}
+              aria-label={`${columnMeta?.label} filtrar valor${multiple ? 'es' : ''}`}
               variant="outline"
               size="sm"
               className="w-full rounded font-normal"
+              disabled={false}
             >
               <FacetedBadgeList
                 options={columnMeta?.options}
-                placeholder={columnMeta?.placeholder ?? `Select option${multiple ? 's' : ''}...`}
+                placeholder={
+                  columnMeta?.placeholder ?? `Seleccionar opci${multiple ? 'ones' : 'ón'}...`
+                }
               />
             </Button>
           </FacetedTrigger>
@@ -689,8 +692,8 @@ function onFilterInputRender<TData>({
             className="w-[250px] origin-[var(--radix-popover-content-transform-origin)]"
           >
             <FacetedInput
-              aria-label={`Search ${columnMeta?.label} options`}
-              placeholder={columnMeta?.placeholder ?? 'Search options...'}
+              aria-label={`Buscar ${columnMeta?.label} opciones`}
+              placeholder={columnMeta?.placeholder ?? 'Buscar opciones...'}
             />
             <FacetedList>
               <FacetedEmpty>No options found.</FacetedEmpty>

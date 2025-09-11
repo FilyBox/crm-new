@@ -74,7 +74,6 @@ export default function ContractsPage() {
 
   const {
     filters,
-    applyFilters,
     perPage,
     query,
     page,
@@ -108,7 +107,7 @@ export default function ContractsPage() {
       status: statusParams,
       orderByColumn: columnOrder,
       orderByDirection: columnDirection as 'asc' | 'desc',
-      filterStructure: applyFilters ? filters : [],
+      filterStructure: filters,
       joinOperator: joinOperator,
     },
     queryOptions({
@@ -282,7 +281,7 @@ export default function ContractsPage() {
 
   const handleRetry = async (row: Contract) => {
     try {
-      const { documentId, id } = row;
+      const { documentId } = row;
       if (!documentId || documentId === 0) {
         toast.error(t`The record does not have an associated document.`, {
           position: 'bottom-center',
@@ -290,7 +289,7 @@ export default function ContractsPage() {
         });
         return;
       }
-      const result = await retryDocument.mutateAsync({
+      await retryDocument.mutateAsync({
         documentId: documentId,
       });
       toast.info(t`Attempting to retry`, {

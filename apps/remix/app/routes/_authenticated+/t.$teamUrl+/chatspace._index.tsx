@@ -49,7 +49,6 @@ export default function DocumentsPage() {
 
   const {
     filters,
-    applyFilters,
     perPage,
     query,
     page,
@@ -78,7 +77,7 @@ export default function DocumentsPage() {
         senderIds: findDocumentSearchParams.senderIds,
         orderByColumn: columnOrder,
         orderByDirection: columnDirection as 'asc' | 'desc',
-        filterStructure: applyFilters ? filters : [],
+        filterStructure: filters,
         joinOperator: joinOperator,
         folderId,
       },

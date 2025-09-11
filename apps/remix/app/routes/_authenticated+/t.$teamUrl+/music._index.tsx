@@ -112,16 +112,8 @@ export function meta() {
 
 export default function TablePage() {
   const [searchParams] = useSearchParams();
-  const {
-    filters,
-    applyFilters,
-    perPage,
-    query,
-    page,
-    joinOperator,
-    columnOrder,
-    columnDirection,
-  } = useSortParams({ sortColumns });
+  const { filters, perPage, query, page, joinOperator, columnOrder, columnDirection } =
+    useSortParams({ sortColumns });
 
   const { _ } = useLingui();
   const { clearCsvFiles } = useCsvFilesStore();
@@ -138,7 +130,7 @@ export default function TablePage() {
     perPage: perPage,
     orderByColumn: columnOrder,
     orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
+    filterStructure: filters,
     joinOperator: joinOperator,
   });
 

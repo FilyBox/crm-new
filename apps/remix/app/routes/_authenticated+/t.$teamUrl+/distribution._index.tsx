@@ -84,16 +84,8 @@ const ZSearchParamsSchema = ZFindDistributionInternalRequestSchema.pick({
 export default function DistributionPage() {
   const [searchParams] = useSearchParams();
 
-  const {
-    filters,
-    applyFilters,
-    perPage,
-    query,
-    page,
-    joinOperator,
-    columnOrder,
-    columnDirection,
-  } = useSortParams({ sortColumns });
+  const { filters, perPage, query, page, joinOperator, columnOrder, columnDirection } =
+    useSortParams({ sortColumns });
 
   const findDocumentSearchParams = useMemo(
     () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
@@ -111,7 +103,7 @@ export default function DistributionPage() {
     territoryIds: findDocumentSearchParams.territoryIds,
     orderByColumn: columnOrder,
     orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
+    filterStructure: filters,
     joinOperator: joinOperator,
   });
 
@@ -130,7 +122,6 @@ export default function DistributionPage() {
   const findData = trpc.distribution.findAllDistribution.useMutation();
 
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [dataIntial, setData] = useState<DistributionStatement[]>([]);
   const [editingUser, setEditingUser] = useState<TDistribution | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -196,7 +187,6 @@ export default function DistributionPage() {
 
   const handleDelete = (deleteData: DistributionStatement) => {
     try {
-      setData(dataIntial.filter((record) => record.id !== deleteData.id));
       sonnertoast.promise(deleteDistributionByIdMutation.mutateAsync({ id: deleteData.id }), {
         loading: _(msg`Deleting record...`),
         success: _(msg`Record deleted successfully`),
@@ -205,7 +195,6 @@ export default function DistributionPage() {
         className: 'mb-16',
       });
     } catch (error) {
-      setData((prevData) => [...prevData, deleteData]);
       sonnertoast.error(_(msg`Error deleting record`));
       console.error('Error deleting record:', error);
     }
@@ -225,7 +214,7 @@ export default function DistributionPage() {
 
   const handleUpdate = async (updatedDistribution: TDistribution) => {
     try {
-      const { id } = await updateDistributionByIdMutation.mutateAsync({
+      await updateDistributionByIdMutation.mutateAsync({
         id: updatedDistribution.id,
 
         // Territory and platform arrays
@@ -263,12 +252,6 @@ export default function DistributionPage() {
         otrosCostos: updatedDistribution.otrosCostos ?? undefined,
         ingresosRecibidos: updatedDistribution.ingresosRecibidos ?? undefined,
       });
-
-      setData(
-        dataIntial.map((record) =>
-          record.id === updatedDistribution.id ? updatedDistribution : record,
-        ),
-      );
       // setIsDialogOpen(false);
       // setEditingUser(null);
       await refetch();
@@ -342,12 +325,6 @@ export default function DistributionPage() {
       console.error(`Failed to parse date: ${dateString}`, error);
       return null;
     }
-  }
-
-  // Format date to ISO string or in a custom format
-  function formatDate(date: Date | null): string {
-    if (!date) return '';
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
   const handleCsvUpload = async (file: File) => {

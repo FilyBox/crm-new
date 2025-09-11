@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router';
 import { z } from 'zod';
 
@@ -112,10 +111,10 @@ const colorOptions: Array<{
 export default function EventsPage() {
   const { isColorVisible, toggleColorVisibility } = useCalendarContext();
   const [searchParams] = useSearchParams();
-  const { t } = useLingui();
 
-  const { filters, applyFilters, query, joinOperator, columnOrder, columnDirection } =
-    useSortParams({ sortColumns });
+  const { filters, query, joinOperator, columnOrder, columnDirection } = useSortParams({
+    sortColumns,
+  });
 
   const findDocumentSearchParams = useMemo(
     () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
@@ -127,7 +126,7 @@ export default function EventsPage() {
     artistIds: findDocumentSearchParams.artistIds,
     orderByColumn: columnOrder,
     orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
+    filterStructure: filters,
     joinOperator: joinOperator,
   });
 

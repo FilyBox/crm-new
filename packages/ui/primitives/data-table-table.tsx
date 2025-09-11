@@ -74,10 +74,7 @@ export function DataTable<TData>({
   table,
   actionBar,
   className,
-  columnVisibility,
   data,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
   error,
   currentTeamMemberRole,
   from,
@@ -85,14 +82,8 @@ export function DataTable<TData>({
   onRetry,
   onDelete,
   onNavegate,
-  perPage,
-  currentPage,
-  totalPages,
   skeleton,
   onMoveDocument,
-  hasFilters,
-  onClearFilters,
-  onPaginationChange,
   children,
   ...props
 }: DataTableProps<TData>) {
@@ -174,7 +165,6 @@ export function DataTable<TData>({
   const { i18n } = useLingui();
   const currentLanguage = i18n.locale;
   const isDesktop = useMediaQuery('(min-width: 640px)');
-  const columns = React.useMemo(() => table.getAllColumns().length, [table]);
   const prepareCardData = (row: TData) => {
     const typedRow = row as HasId & HasOptionalFields;
 
@@ -377,15 +367,16 @@ export function DataTable<TData>({
                         ))}
                       </TableRow>
                     </ContextMenuTrigger>
-                    <ContextMenuContent className="z-[60] w-64">
+                    <ContextMenuContent className="z-[60] w-40 text-center">
                       {onEdit && canEditDelete && (
                         <ContextMenuItem
+                          className="text-center"
                           onClick={() => {
                             onEdit(row.original);
                           }}
                           inset
                         >
-                          Edit
+                          <Trans>Edit</Trans>
                         </ContextMenuItem>
                       )}
 
@@ -396,7 +387,7 @@ export function DataTable<TData>({
                           }}
                           inset
                         >
-                          View
+                          <Trans>View</Trans>
                         </ContextMenuItem>
                       )}
 
@@ -407,7 +398,7 @@ export function DataTable<TData>({
                           }}
                           inset
                         >
-                          Retry
+                          <Trans>Retry</Trans>
                         </ContextMenuItem>
                       )}
 
@@ -418,7 +409,7 @@ export function DataTable<TData>({
                           }}
                           inset
                         >
-                          Move To Folder
+                          <Trans>Move To Folder</Trans>
                         </ContextMenuItem>
                       )}
 
@@ -438,7 +429,7 @@ export function DataTable<TData>({
                           }}
                           inset
                         >
-                          Delete
+                          <Trans>Delete</Trans>
                         </ContextMenuItem>
                       )}
                     </ContextMenuContent>

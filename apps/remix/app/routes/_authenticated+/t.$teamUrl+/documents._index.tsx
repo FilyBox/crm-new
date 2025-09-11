@@ -54,7 +54,7 @@ export default function DocumentsPage() {
   const organisation = useCurrentOrganisation();
   const team = useCurrentTeam();
 
-  const { filters, applyFilters, joinOperator, columnDirection } = useSortParams({ sortColumns });
+  const { filters, joinOperator, columnDirection } = useSortParams({ sortColumns });
 
   const { folderId } = useParams();
   const [searchParams] = useSearchParams();
@@ -83,7 +83,7 @@ export default function DocumentsPage() {
         folderId,
         source: DocumentSource.DOCUMENT,
         orderByDirection: columnDirection as 'asc' | 'desc',
-        filterStructure: applyFilters ? filters : [],
+        filterStructure: filters,
         joinOperator: joinOperator,
       },
       queryOptions({

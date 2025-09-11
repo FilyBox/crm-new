@@ -58,16 +58,8 @@ const ZSearchParamsSchema = ZFindIsrcSongsInternalRequestSchema.pick({
 export default function IsrcPage() {
   const [searchParams] = useSearchParams();
 
-  const {
-    filters,
-    applyFilters,
-    perPage,
-    query,
-    page,
-    joinOperator,
-    columnOrder,
-    columnDirection,
-  } = useSortParams({ sortColumns });
+  const { filters, perPage, query, page, joinOperator, columnOrder, columnDirection } =
+    useSortParams({ sortColumns });
 
   const team = useOptionalCurrentTeam();
 
@@ -83,7 +75,7 @@ export default function IsrcPage() {
     artistIds: findDocumentSearchParams.artistIds,
     orderByColumn: columnOrder,
     orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
+    filterStructure: filters,
     joinOperator: joinOperator,
     perPage: perPage,
   });
@@ -110,7 +102,7 @@ export default function IsrcPage() {
         artistIds: findDocumentSearchParams.artistIds,
         orderByColumn: columnOrder,
         orderByDirection: columnDirection as 'asc' | 'desc',
-        filterStructure: applyFilters ? filters : [],
+        filterStructure: filters,
         joinOperator: joinOperator,
       });
 

@@ -78,16 +78,8 @@ const ZSearchParamsSchema = ZFindReleaseInternalRequestSchema.pick({
 export default function TasksPage() {
   const [searchParams] = useSearchParams();
 
-  const {
-    filters,
-    applyFilters,
-    perPage,
-    query,
-    page,
-    joinOperator,
-    columnOrder,
-    columnDirection,
-  } = useSortParams({ sortColumns });
+  const { filters, perPage, query, page, joinOperator, columnOrder, columnDirection } =
+    useSortParams({ sortColumns });
   const { _ } = useLingui();
 
   const findDocumentSearchParams = useMemo(() => {
@@ -122,7 +114,7 @@ export default function TasksPage() {
     artistIds: findDocumentSearchParams.artistIds,
     orderByColumn: columnOrder,
     orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
+    filterStructure: filters,
     joinOperator: joinOperator,
   });
 
@@ -139,7 +131,6 @@ export default function TasksPage() {
   const { clearCsvFiles } = useCsvFilesStore();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [dataIntial, setData] = useState<TFindReleaseResponse | null>(null);
   const [editingData, seteditingData] = useState<TRelease | null>(null);
   // const [csvFiles, setCsvFiles] = useState<CSVFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -157,12 +148,6 @@ export default function TasksPage() {
     [ExtendedRelease.Soft]: 0,
     [ExtendedRelease.ALL]: 0,
   });
-
-  useEffect(() => {
-    if (data?.releases) {
-      setData(data.releases);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (data?.types) {

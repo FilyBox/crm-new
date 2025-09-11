@@ -975,12 +975,10 @@ msgstr "Add Email Domain"
 msgid "Add Fields"
 msgstr "Add Fields"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Add filter"
 msgstr "Add filter"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Add filters to refine your rows."
 msgstr "Add filters to refine your rows."
@@ -1567,7 +1565,6 @@ msgstr "Any Status"
 msgid "API Tokens"
 msgstr "API Tokens"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Apply filters"
 msgstr "Apply filters"
@@ -3023,6 +3020,7 @@ msgstr "delete"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
+#: packages/ui/primitives/data-table-table.tsx
 #: packages/ui/primitives/expandable-card.tsx
 msgid "Delete"
 msgstr "Delete"
@@ -3796,6 +3794,7 @@ msgstr "Duration"
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
+#: packages/ui/primitives/data-table-table.tsx
 #: packages/ui/primitives/expandable-card.tsx
 msgid "Edit"
 msgstr "Edit"
@@ -4521,13 +4520,11 @@ msgstr "Files uploaded"
 msgid "Fill in the details to create a new subscription claim."
 msgstr "Fill in the details to create a new subscription claim."
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Filter"
 msgstr "Filter"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Filters"
 msgstr "Filters"
@@ -5473,7 +5470,6 @@ msgstr "Message <0>(Optional)</0>"
 msgid "Min"
 msgstr "Min"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Modify filters to refine your rows."
 msgstr "Modify filters to refine your rows."
@@ -5542,6 +5538,10 @@ msgstr "Move Template to Folder"
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
 msgid "Move to Folder"
 msgstr "Move to Folder"
+
+#: packages/ui/primitives/data-table-table.tsx
+msgid "Move To Folder"
+msgstr "Move To Folder"
 
 #: packages/ui/components/document/document-global-auth-access-select.tsx
 msgid "Multiple access methods can be selected."
@@ -5704,13 +5704,11 @@ msgstr "No Especificado  "
 msgid "No events found"
 msgstr "No events found"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "No fields found."
 msgstr "No fields found."
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "No filters applied"
 msgstr "No filters applied"
@@ -6999,7 +6997,6 @@ msgstr "Reset"
 msgid "Reset email sent"
 msgstr "Reset email sent"
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Reset filters"
 msgstr "Reset filters"
@@ -7041,6 +7038,7 @@ msgstr "Retention of Documents"
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
+#: packages/ui/primitives/data-table-table.tsx
 msgid "Retry"
 msgstr "Retry"
 
@@ -9831,6 +9829,7 @@ msgstr "Video"
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/organisation-billing-invoices-table.tsx
+#: packages/ui/primitives/data-table-table.tsx
 #: packages/ui/primitives/expandable-card.tsx
 msgid "View"
 msgstr "View"
@@ -10373,7 +10372,6 @@ msgstr "When you sign a document, we can automatically fill in and sign the foll
 msgid "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 msgstr "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 
-#: apps/remix/app/components/tables/data-table-filter-list.tsx
 #: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Where"
 msgstr "Where"

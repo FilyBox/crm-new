@@ -4,7 +4,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { TypeOfTuStreams } from '@prisma/client';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import { toast as sonnertoast } from 'sonner';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -13,7 +13,6 @@ import { type TtuStreams } from '@documenso/lib/types/tustreams';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { parseCsvFile } from '@documenso/lib/utils/csvParser';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
-import { formTuStreamsPath } from '@documenso/lib/utils/teams';
 import { type tuStreams } from '@documenso/prisma/client';
 import { trpc } from '@documenso/trpc/react';
 import {
@@ -74,19 +73,8 @@ const ZSearchParamsSchema = ZFindTuStreamsInternalRequestSchema.pick({
 export default function TuStreamsPage() {
   const [searchParams] = useSearchParams();
 
-  const {
-    filters,
-    applyFilters,
-    applySorting,
-    perPage,
-    query,
-    page,
-    typeParams,
-    statusParams,
-    joinOperator,
-    columnOrder,
-    columnDirection,
-  } = useSortParams({ sortColumns, type: ['EP', 'Album', 'Sencillo'] });
+  const { filters, perPage, query, page, typeParams, joinOperator, columnOrder, columnDirection } =
+    useSortParams({ sortColumns, type: ['EP', 'Album', 'Sencillo'] });
 
   const findDocumentSearchParams = useMemo(() => {
     const searchParamsObject = Object.fromEntries(searchParams.entries());
@@ -108,9 +96,7 @@ export default function TuStreamsPage() {
     return result.data;
   }, [searchParams]);
 
-  const navigate = useNavigate();
   const team = useOptionalCurrentTeam();
-  const releasesRootPath = formTuStreamsPath(team?.url);
 
   const { data, isLoading, isLoadingError, refetch } = trpc.tuStreams.findTuStreams.useQuery({
     query: query,
@@ -121,7 +107,7 @@ export default function TuStreamsPage() {
     artistIds: findDocumentSearchParams.artistIds,
     orderByColumn: columnOrder,
     orderByDirection: columnDirection as 'asc' | 'desc',
-    filterStructure: applyFilters ? filters : [],
+    filterStructure: filters,
     joinOperator: joinOperator,
   });
 
@@ -209,11 +195,6 @@ export default function TuStreamsPage() {
       console.error(`Failed to parse date: ${dateString}`, error);
       return null;
     }
-  }
-
-  function formatDate(date: Date | null): string {
-    if (!date) return '';
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
   const handleCsvUpload = async (file: File) => {
@@ -421,26 +402,6 @@ export default function TuStreamsPage() {
   useEffect(() => {
     void refetch();
   }, [team?.url]);
-
-  const getTabHref = (value: keyof typeof ExtendedTuStreamsType) => {
-    const params = new URLSearchParams(searchParams);
-
-    params.set('type', value);
-
-    if (value === ExtendedTuStreamsType.ALL) {
-      params.delete('type');
-    }
-
-    if (params.has('page')) {
-      params.delete('page');
-    }
-
-    return `${formTuStreamsPath(team?.url)}?${params.toString()}`;
-  };
-
-  const handleTaskClick = (taskId: number) => {
-    void navigate(`${releasesRootPath}/${taskId}`);
-  };
 
   return (
     <div className="mx-auto max-w-screen-xl gap-y-8 px-4 md:px-8">
