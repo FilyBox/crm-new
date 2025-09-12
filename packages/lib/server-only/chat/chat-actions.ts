@@ -96,6 +96,7 @@ export async function saveChat({
         createdAt: new Date(),
         userId: userId,
         title,
+        crmChatCreatedAt: new Date(),
       },
     });
   } catch (error) {

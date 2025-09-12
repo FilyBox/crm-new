@@ -82,7 +82,7 @@ export function FullSizeCard({
               style={{ borderRadius: 12 }}
               ref={ref}
             >
-              <Card className="col-span-1 h-full w-full px-2 pt-2">
+              <Card className="col-span-1 h-full w-full gap-6 px-2">
                 <CardHeader className="flex max-h-8 flex-col items-start gap-0 px-2">
                   <motion.div
                     layoutId={`title-header-${title}`}
@@ -109,7 +109,7 @@ export function FullSizeCard({
                     </CardDescription>
                   </motion.div>
                 </CardHeader>
-                <CardContent style={{ containerType: 'size' }} className="h-full px-2">
+                <CardContent style={{ containerType: 'size' }} className="h-full px-2 pt-5">
                   <motion.div layoutId={`content-${title}`} className="h-full">
                     {children}
                   </motion.div>

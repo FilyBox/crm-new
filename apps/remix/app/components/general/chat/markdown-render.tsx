@@ -110,7 +110,6 @@ const HighlightedPre = React.memo(({ children, language, ...props }: Highlighted
 });
 HighlightedPre.displayName = 'HighlightedCode';
 
-// ...existing code...
 interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
   children: React.ReactNode;
   className?: string;

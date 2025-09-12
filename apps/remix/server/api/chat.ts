@@ -73,6 +73,12 @@ export const ChatRoute = new Hono<HonoEnv>()
       }
       const prompt = `El siguiente texto es el contrato del cual se te preguntara o pedira que realizes resumenes, respondas preguntas, generes documentos, reportes, etc.
       Cuando se te pregunte con algo relacionado a un contrato, "el contrato", o demas maneras que aludan a un contrato es referente a este contexto que se te esta proporcionando.
+      No respondas nada que no este relacionado a este contrato. Además, responde en el mismo idioma en el que se te pregunte.
+      Si no sabes la respuesta, di que no lo sabes. No intentes inventar una respuesta.
+      Si la pregunta o solicitud no esta relacionada con el contrato, responde que no puedes ayudar con eso.
+      Si el usuario te pide un resumen, asegurate de que sea breve y conciso.
+      No olvides que siempre debes referirte al contrato proporcionado.
+      Si la pregunta o solicitud es sobre algo que no esta en el contrato, responde que no lo sabes o no puedes hacerlo.
       el contenido del contrato es el siguiente:`;
 
       const modelAndContex = prompt + contract.documentBodyExtracted?.body;

@@ -56,7 +56,7 @@ export function ChatDemo(props: ChatDemoProps) {
   const isLoading = status === 'submitted' || status === 'streaming';
 
   return (
-    <div className={cn('flex', 'flex-col', 'h-full max-h-[90%]', 'w-full')}>
+    <div className={cn('flex', 'flex-col', 'h-full max-h-[94%]', 'w-full')}>
       <Chat
         className="grow"
         messages={messages}
