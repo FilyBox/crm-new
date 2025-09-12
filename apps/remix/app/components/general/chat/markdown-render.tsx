@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -21,34 +21,73 @@ export function MarkdownRenderer({ children }: MarkdownRendererProps) {
   );
 }
 
-interface HighlightedPre extends React.HTMLAttributes<HTMLPreElement> {
+interface HighlightedPreProps extends React.HTMLAttributes<HTMLPreElement> {
   children: string;
   language: string;
 }
-//@ts-expect-error
-const HighlightedPre = React.memo(async ({ children, language, ...props }: HighlightedPre) => {
-  const { codeToTokens, bundledLanguages } = await import('shiki');
 
-  if (!(language in bundledLanguages)) {
+const HighlightedPre = React.memo(({ children, language, ...props }: HighlightedPreProps) => {
+  const [tokens, setTokens] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadAndHighlight = async () => {
+      try {
+        const { codeToTokens, bundledLanguages } = await import('shiki');
+
+        if (!isMounted) return;
+
+        if (!(language in bundledLanguages)) {
+          setTokens([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const { tokens: highlightedTokens } = await codeToTokens(children, {
+          lang: language as keyof typeof bundledLanguages,
+          defaultColor: false,
+          themes: {
+            light: 'github-light',
+            dark: 'github-dark',
+          },
+        });
+
+        if (isMounted) {
+          setTokens(highlightedTokens);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setTokens([]);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadAndHighlight();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [children, language]);
+
+  if (isLoading) {
     return <pre {...props}>{children}</pre>;
   }
 
-  const { tokens } = await codeToTokens(children, {
-    lang: language as keyof typeof bundledLanguages,
-    defaultColor: false,
-    themes: {
-      light: 'github-light',
-      dark: 'github-dark',
-    },
-  });
+  if (tokens.length === 0) {
+    return <pre {...props}>{children}</pre>;
+  }
 
   return (
     <pre {...props}>
       <code>
         {tokens.map((line, lineIndex) => (
-          <>
-            <span key={lineIndex}>
-              {line.map((token, tokenIndex) => {
+          <React.Fragment key={lineIndex}>
+            <span>
+              {line.map((token: any, tokenIndex: number) => {
                 const style = typeof token.htmlStyle === 'string' ? undefined : token.htmlStyle;
 
                 return (
@@ -63,7 +102,7 @@ const HighlightedPre = React.memo(async ({ children, language, ...props }: Highl
               })}
             </span>
             {lineIndex !== tokens.length - 1 && '\n'}
-          </>
+          </React.Fragment>
         ))}
       </code>
     </pre>
@@ -71,6 +110,7 @@ const HighlightedPre = React.memo(async ({ children, language, ...props }: Highl
 });
 HighlightedPre.displayName = 'HighlightedCode';
 
+// ...existing code...
 interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
   children: React.ReactNode;
   className?: string;

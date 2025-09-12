@@ -165,35 +165,36 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     minute: '2-digit',
   });
 
-  if (isUser) {
-    return (
-      <div className={cn('flex flex-col', isUser ? 'items-end' : 'items-start')}>
-        {/* {files ? (
-          <div className="mb-1 flex flex-wrap gap-2">
-            {files.map((file, index) => {
-              return <FilePreview file={file} key={index} />
-            })}
-          </div>
-        ) : null}
-  */}
-        <div className={cn(chatBubbleVariants({ isUser, animation }))}>
-          <MarkdownRenderer>{content}</MarkdownRenderer>
-        </div>
+  // if (isUser) {
+  //   console.log('isUser', isUser, content);
+  //   return (
+  //     <div className={cn('flex flex-col', isUser ? 'items-end' : 'items-start')}>
+  //       {/* {files ? (
+  //         <div className="mb-1 flex flex-wrap gap-2">
+  //           {files.map((file, index) => {
+  //             return <FilePreview file={file} key={index} />
+  //           })}
+  //         </div>
+  //       ) : null}
+  // */}
+  //       <div className={cn(chatBubbleVariants({ isUser, animation }))}>
+  //         <MarkdownRenderer>{content}</MarkdownRenderer>
+  //       </div>
 
-        {showTimeStamp && createdAt ? (
-          <time
-            dateTime={createdAt.toISOString()}
-            className={cn(
-              'mt-1 block px-1 text-xs opacity-50',
-              animation !== 'none' && 'animate-in fade-in-0 duration-500',
-            )}
-          >
-            {formattedTime}
-          </time>
-        ) : null}
-      </div>
-    );
-  }
+  //       {showTimeStamp && createdAt ? (
+  //         <time
+  //           dateTime={createdAt.toISOString()}
+  //           className={cn(
+  //             'mt-1 block px-1 text-xs opacity-50',
+  //             animation !== 'none' && 'animate-in fade-in-0 duration-500',
+  //           )}
+  //         >
+  //           {formattedTime}
+  //         </time>
+  //       ) : null}
+  //     </div>
+  //   );
+  // }
 
   if (parts && parts.length > 0) {
     return parts.map((part, index) => {

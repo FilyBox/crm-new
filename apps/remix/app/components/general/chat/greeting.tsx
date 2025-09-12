@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro';
 import { motion } from 'framer-motion';
 
 export const Greeting = () => {
@@ -13,7 +14,7 @@ export const Greeting = () => {
         transition={{ delay: 0.5 }}
         className="text-2xl font-semibold"
       >
-        Hola
+        <Trans>Hi</Trans>
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -22,7 +23,7 @@ export const Greeting = () => {
         transition={{ delay: 0.6 }}
         className="text-2xl text-zinc-500"
       >
-        En qué puedo ayudarte hoy?
+        <Trans>What can I help you with today?</Trans>
       </motion.div>
     </div>
   );

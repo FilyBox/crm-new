@@ -4804,6 +4804,10 @@ msgstr "Here you can set your general document preferences"
 msgid "Here's how it works:"
 msgstr "Here's how it works:"
 
+#: apps/remix/app/components/general/chat/greeting.tsx
+msgid "Hi"
+msgstr "Hi"
+
 #: packages/email/templates/bulk-send-complete.tsx
 msgid "Hi {userName},"
 msgstr "Hi {userName},"
@@ -10355,6 +10359,10 @@ msgstr "Welcome!"
 #: apps/remix/app/routes/_recipient+/sign.$token+/waiting.tsx
 msgid "Were you trying to edit this document instead?"
 msgstr "Were you trying to edit this document instead?"
+
+#: apps/remix/app/components/general/chat/greeting.tsx
+msgid "What can I help you with today?"
+msgstr "What can I help you with today?"
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
 msgid "What you can do with teams:"

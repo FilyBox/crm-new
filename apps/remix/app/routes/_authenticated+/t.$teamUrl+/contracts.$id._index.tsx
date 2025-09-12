@@ -184,7 +184,9 @@ export default function DocumentPage() {
         <div className="w-full flex-1 md:w-[350px]">
           <div className="sticky top-20">
             <FeatureCard className="flex flex-col p-5">
-              <span className="line-clamp-1 text-2xl font-semibold">{contract?.title}</span>
+              <span className="text-primary line-clamp-1 text-lg font-semibold">
+                {contract?.title}
+              </span>
 
               <ScrollArea className="h-[29rem] py-3">
                 <div className="flex flex-col gap-4">

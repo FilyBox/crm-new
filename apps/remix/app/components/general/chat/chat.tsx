@@ -1,5 +1,6 @@
 import { type ReactElement, forwardRef, useCallback, useRef, useState } from 'react';
 
+import type { UIMessage } from 'ai';
 import { ArrowDown, ThumbsDown, ThumbsUp } from 'lucide-react';
 
 import { cn } from '@documenso/ui/lib/utils';
@@ -19,7 +20,7 @@ interface ChatPropsBase {
     event?: { preventDefault?: () => void },
     options?: { experimental_attachments?: FileList },
   ) => void;
-  messages: Array<Message>;
+  messages: Array<UIMessage>;
   input: string;
   className?: string;
   handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;

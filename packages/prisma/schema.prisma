@@ -1237,21 +1237,21 @@ model ContractTemplate {
 }
 
 model Chat {
-  id         String   @id @default(cuid())
-  createdAt  DateTime
-  title      String   @db.Text
-  userId     Int
-  documentId Int?
-  teamId     Int
-  visibility String   @default("private") @db.VarChar(255)
-
-  user       User                @relation(fields: [userId], references: [id])
-  document   Document?           @relation(fields: [documentId], references: [id])
-  team       Team                @relation(fields: [teamId], references: [id])
-  messagesV1 MessageDeprecated[]
-  messagesV2 Message[]
-  votesV1    VoteDeprecated[]
-  votesV2    Vote[]
+  id               String              @id @default(cuid())
+  createdAt        DateTime
+  title            String              @db.Text
+  userId           Int
+  documentId       Int?
+  teamId           Int
+  visibility       String              @default("private") @db.VarChar(255)
+  crmChatCreatedAt DateTime?
+  user             User                @relation(fields: [userId], references: [id])
+  document         Document?           @relation(fields: [documentId], references: [id])
+  team             Team                @relation(fields: [teamId], references: [id])
+  messagesV1       MessageDeprecated[]
+  messagesV2       Message[]
+  votesV1          VoteDeprecated[]
+  votesV2          Vote[]
 
   @@map("Chat")
 }
