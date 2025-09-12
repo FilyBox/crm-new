@@ -173,7 +173,7 @@ export default function DocumentsPage() {
             </Avatar>
 
             <h2 className="text-4xl font-semibold">
-              <Trans>Documents</Trans>
+              <Trans>Created Contracts</Trans>
             </h2>
           </div>
 

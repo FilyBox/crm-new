@@ -155,12 +155,12 @@ export default function DocumentPage() {
   }, [UUID, setSearchParams]);
 
   return (
-    <div className={`mx-auto w-full max-w-screen-xl sm:px-6`} style={{ scrollbarGutter: 'stable' }}>
-      <h1
-        className="block max-w-[20rem] truncate text-2xl font-semibold sm:mt-4 md:max-w-[30rem] md:text-3xl"
-        title={document.title}
-      >
-        {document.title}
+    <div
+      className={`mx-auto w-full max-w-screen-xl px-4 sm:px-6`}
+      style={{ scrollbarGutter: 'stable' }}
+    >
+      <h1 className="block max-w-[20rem] truncate text-2xl font-semibold sm:mt-4 md:max-w-[30rem] md:text-3xl">
+        {contract.fileName}
       </h1>
 
       <div className="mt-1.5 flex flex-wrap items-center justify-between gap-y-2 sm:mt-2.5 sm:gap-y-0">
@@ -183,19 +183,11 @@ export default function DocumentPage() {
 
         <div className="w-full flex-1 md:w-[350px]">
           <div className="sticky top-20">
-            <FeatureCard className="flex flex-col gap-3">
-              <ScrollArea className="h-[32rem]">
-                <div className="flex flex-col gap-4 p-3">
-                  <span className="line-clamp-1 text-2xl font-semibold">{contract?.fileName}</span>
-                  {contract?.title && (
-                    <div className="flex flex-col">
-                      <span className="text-foreground pb-1 text-lg font-medium">
-                        <Trans>Title</Trans>
-                      </span>
-                      <span className="text-sm">{contract.title}</span>
-                    </div>
-                  )}
+            <FeatureCard className="flex flex-col p-5">
+              <span className="line-clamp-1 text-2xl font-semibold">{contract?.title}</span>
 
+              <ScrollArea className="h-[29rem] py-3">
+                <div className="flex flex-col gap-4">
                   {contract?.artists && (
                     <div className="flex flex-col">
                       <span className="text-foreground pb-1 text-lg font-medium">
@@ -214,7 +206,7 @@ export default function DocumentPage() {
                     </div>
                   )}
 
-                  <div className="flex gap-4">
+                  <div className="flex w-full items-center justify-between gap-4">
                     {contract?.startDate && (
                       <div className="flex flex-col">
                         <span className="text-foreground pb-1 text-lg font-medium">
@@ -242,7 +234,7 @@ export default function DocumentPage() {
                     )}
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex w-full items-center justify-between gap-4">
                     {contract?.isPossibleToExpand !== undefined && (
                       <div className="flex flex-col">
                         <span className="text-foreground pb-1 text-lg font-medium">

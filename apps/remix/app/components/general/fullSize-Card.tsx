@@ -17,6 +17,8 @@ import {
 
 import { useIsActiveStore } from '~/storage/active-full-container';
 
+import { MessageInput } from './chat/message-input';
+
 type ChartLineLabelProps = {
   className?: string;
   title: string;
@@ -81,14 +83,13 @@ export function FullSizeCard({
               ref={ref}
             >
               <Card className="col-span-1 h-full w-full px-2 pt-2">
-                <CardHeader className="flex flex-col items-start gap-0 px-2">
+                <CardHeader className="flex max-h-8 flex-col items-start gap-0 px-2">
                   <motion.div
                     layoutId={`title-header-${title}`}
                     className="flex w-full items-center justify-between gap-2"
                   >
                     <div className="game-title flex items-center gap-2">
                       {Icon && <Icon className="text-primary h-5 w-5" />}
-
                       <CardTitle className="text-base font-bold md:text-xl">{title}</CardTitle>
                     </div>
 
@@ -124,15 +125,14 @@ export function FullSizeCard({
         className={cn('h-full w-full', className)}
       >
         <Card className={cn('flex h-full w-full flex-col gap-0', className)}>
-          <CardHeader className="flex flex-col items-start gap-0">
+          <CardHeader className="flex flex-col items-start gap-0 p-4 pb-0">
             <motion.div
               layoutId={`title-header-${title}`}
               className="flex w-full items-center justify-between gap-2"
             >
               <div className="game-title flex items-center gap-2">
                 {Icon && <Icon className="text-primary h-5 w-5" />}
-
-                <CardTitle className="text-base font-bold md:text-xl">{title}</CardTitle>
+                <CardTitle className="text-base font-bold md:text-xl">Chat</CardTitle>
               </div>
               {fullScreenButton && (
                 <Button
@@ -152,9 +152,12 @@ export function FullSizeCard({
               </CardDescription>
             </motion.div>
           </CardHeader>
-          <CardContent className={cn('h-0 overflow-hidden', cardContentClassName)}>
-            <motion.div layoutId={`content-${title}`} className="h-0 overflow-hidden">
-              {children}
+          <CardContent className={cn('p-4 pt-0', cardContentClassName)}>
+            <motion.div layoutId={`content-${title}`} className="h-fit">
+              <div onClick={() => setActiveGame(title)} className="z-10 h-fit w-full">
+                <MessageInput className="" allowAttachments={false} value="" isGenerating />
+              </div>
+              <div className="h-0 overflow-hidden">{children}</div>
             </motion.div>
           </CardContent>
         </Card>

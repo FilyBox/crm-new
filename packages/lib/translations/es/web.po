@@ -1687,6 +1687,10 @@ msgstr ""
 msgid "Artists"
 msgstr "Artistas"
 
+#: apps/remix/app/components/general/chat/message-input.tsx
+msgid "Ask AI..."
+msgstr "Preguntar a la IA..."
+
 #: apps/remix/app/components/tables/releases-table.tsx
 msgid "Assets"
 msgstr ""
@@ -2823,7 +2827,11 @@ msgstr "Creado por"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Created By"
-msgstr ""
+msgstr "Creado por"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents._index.tsx
+msgid "Created Contracts"
+msgstr "Contratos creados"
 
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 msgid "Created on"
@@ -2853,7 +2861,7 @@ msgstr ""
 #. placeholder {0}: event.name
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Creating event \"{0}\"..."
-msgstr ""
+msgstr "Creando evento \"{0}\"..."
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
@@ -2862,15 +2870,15 @@ msgstr ""
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Creating record..."
-msgstr ""
+msgstr "Agregando registro"
 
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
 msgid "Creating ticket template..."
-msgstr ""
+msgstr "Creando platilla de ticket..."
 
 #: apps/remix/app/components/general/task/task-priority.tsx
 msgid "Critical"
-msgstr ""
+msgstr "Critico"
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "CSV Structure"
@@ -3634,7 +3642,6 @@ msgstr "El documento será eliminado permanentemente"
 #: apps/remix/app/components/general/user-profile-timur.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/_layout.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id.edit.tsx
 #: apps/remix/app/routes/_profile+/p.$url.tsx
@@ -8965,7 +8972,6 @@ msgstr ""
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Title"
 msgstr "Título"

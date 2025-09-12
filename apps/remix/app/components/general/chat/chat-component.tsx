@@ -1,10 +1,6 @@
-import { useState } from 'react';
-
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { type UseChatOptions, useChat } from '@ai-sdk/react';
+import { useChat } from '@ai-sdk/react';
 import { queryOptions } from '@tanstack/react-query';
 import type { UIMessage } from 'ai';
-import { customProvider, extractReasoningMiddleware, wrapLanguageModel } from 'ai';
 import { toast } from 'sonner';
 
 import { queryClient, trpc } from '@documenso/trpc/react';
@@ -13,7 +9,6 @@ import { cn, convertToUIMessages, generateUUID } from '@documenso/ui/lib/utils';
 import { Chat } from './chat';
 
 type ChatDemoProps = {
-  // initialMessages?: UseChatOptions['initialMessages'];
   id: string;
   body?: string;
   teamId: number;
@@ -26,17 +21,7 @@ type ChatDemoProps = {
 };
 
 export function ChatDemo(props: ChatDemoProps) {
-  const {
-    id,
-    teamId,
-    contractId,
-    userId,
-    contractName,
-    body,
-    selectedChatModel,
-    isReadonly,
-    initialMessages,
-  } = props;
+  const { id, teamId, contractId, userId, body, selectedChatModel, initialMessages } = props;
 
   const { data: messagesFromDb } = trpc.chat.getMessagesByChatId.useQuery(
     {
@@ -60,8 +45,8 @@ export function ChatDemo(props: ChatDemoProps) {
         : convertToUIMessages(messagesFromDb || []),
       body: { id, model: selectedChatModel, teamId, contractId, body, userId },
       generateId: generateUUID,
-      onFinish: async () => {
-        await queryClient.invalidateQueries({ queryKey: ['chatMessages', id] });
+      onFinish: () => {
+        void queryClient.invalidateQueries({ queryKey: ['chatMessages', id] });
       },
       onError: () => {
         toast.error('An error occurred, please try again!');

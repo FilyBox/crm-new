@@ -1682,6 +1682,10 @@ msgstr "Artist created successfully"
 msgid "Artists"
 msgstr "Artists"
 
+#: apps/remix/app/components/general/chat/message-input.tsx
+msgid "Ask AI..."
+msgstr "Ask AI..."
+
 #: apps/remix/app/components/tables/releases-table.tsx
 msgid "Assets"
 msgstr "Assets"
@@ -2820,6 +2824,10 @@ msgstr "Created by"
 msgid "Created By"
 msgstr "Created By"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents._index.tsx
+msgid "Created Contracts"
+msgstr "Created Contracts"
+
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 msgid "Created on"
 msgstr "Created on"
@@ -3629,7 +3637,6 @@ msgstr "Document will be permanently deleted"
 #: apps/remix/app/components/general/user-profile-timur.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/_layout.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id.edit.tsx
 #: apps/remix/app/routes/_profile+/p.$url.tsx
@@ -8974,7 +8981,6 @@ msgstr "Tipo de Precio"
 #: apps/remix/app/components/tables/templates-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Title"
 msgstr "Title"

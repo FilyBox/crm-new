@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUp, Info, Loader2, Mic, Paperclip, Square, X } from 'lucide-react';
+import { useLingui } from '@lingui/react/macro';
+import { ArrowUp, Square } from 'lucide-react';
 import { omit } from 'remeda';
 
 import { cn } from '@documenso/ui/lib/utils';
@@ -33,18 +33,17 @@ interface MessageInputWithAttachmentsProps extends MessageInputBaseProps {
 type MessageInputProps = MessageInputWithoutAttachmentProps | MessageInputWithAttachmentsProps;
 
 export function MessageInput({
-  placeholder = 'Ask AI...',
+  placeholder,
   className,
   onKeyDown: onKeyDownProp,
   submitOnEnter = true,
   stop,
   isGenerating,
   enableInterrupt = true,
-  transcribeAudio,
   ...props
 }: MessageInputProps) {
-  const [isDragging, setIsDragging] = useState(false);
   const [showInterruptPrompt, setShowInterruptPrompt] = useState(false);
+  const { t } = useLingui();
 
   useEffect(() => {
     if (!isGenerating) {
@@ -65,28 +64,6 @@ export function MessageInput({
 
         return [...currentFiles, ...files];
       });
-    }
-  };
-
-  const onDragOver = (event: React.DragEvent) => {
-    if (props.allowAttachments !== true) return;
-    event.preventDefault();
-    setIsDragging(true);
-  };
-
-  const onDragLeave = (event: React.DragEvent) => {
-    if (props.allowAttachments !== true) return;
-    event.preventDefault();
-    setIsDragging(false);
-  };
-
-  const onDrop = (event: React.DragEvent) => {
-    setIsDragging(false);
-    if (props.allowAttachments !== true) return;
-    event.preventDefault();
-    const dataTransfer = event.dataTransfer;
-    if (dataTransfer.files.length) {
-      addFiles(Array.from(dataTransfer.files));
     }
   };
 
@@ -155,12 +132,7 @@ export function MessageInput({
   });
 
   return (
-    <div
-      className="relative flex w-full"
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
-    >
+    <div className="relative flex w-full">
       {enableInterrupt && (
         <InterruptPrompt isOpen={showInterruptPrompt} close={() => setShowInterruptPrompt(false)} />
       )}
@@ -169,8 +141,9 @@ export function MessageInput({
         <div className="relative flex-1">
           <textarea
             aria-label="Write your prompt here"
-            placeholder={placeholder}
+            placeholder={placeholder ? placeholder : t`Ask AI...`}
             ref={textAreaRef}
+            autoFocus={true}
             onPaste={onPaste}
             onKeyDown={onKeyDown}
             className={cn(
