@@ -28,6 +28,7 @@ import {
   useQueryStates,
 } from 'nuqs';
 
+import { usePage } from '../hooks/usePage';
 import type { ExtendedColumnSort } from '../types/data-table';
 import { getSortingStateParser } from './parsers';
 import { useDebouncedCallback } from './use-debounced-callback';
@@ -99,10 +100,11 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     initialState?.columnVisibility ?? {},
   );
 
-  const [page, setPage] = useQueryState(
-    PAGE_KEY,
-    parseAsInteger.withOptions(queryStateOptions).withDefault(1),
-  );
+  // const [page, setPage] = useQueryState(
+  //   PAGE_KEY,
+  //   parseAsInteger.withOptions(queryStateOptions).withDefault(1),
+  // );
+  const { page, setPage } = usePage({ queryStateOptions });
   const [perPage, setPerPage] = useQueryState(
     PER_PAGE_KEY,
     parseAsInteger

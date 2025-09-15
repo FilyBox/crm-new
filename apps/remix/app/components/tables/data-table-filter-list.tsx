@@ -12,6 +12,7 @@ import {
 import { parseAsStringEnum, useQueryState } from 'nuqs';
 
 import { dataTableConfig } from '@documenso/ui/config/data-table';
+import { usePage } from '@documenso/ui/hooks/usePage';
 import { getDefaultFilterOperator, getFilterOperators } from '@documenso/ui/lib/data-table';
 import { formatDate } from '@documenso/ui/lib/format';
 import { generateId } from '@documenso/ui/lib/id';
@@ -94,6 +95,7 @@ export function DataTableFilterList<TData>({
   const [open, setOpen] = React.useState(false);
   const addButtonRef = React.useRef<HTMLButtonElement>(null);
   const isMobile = useIsMobile();
+  const { setPage } = usePage();
 
   const columns = React.useMemo(() => {
     return table.getAllColumns().filter((column) => column.columnDef.enableColumnFilter);
@@ -300,6 +302,7 @@ export function DataTableFilterList<TData>({
                 disabled={loading}
                 onClick={() => {
                   void setFilters(localFilters);
+                  void setPage(1);
                 }}
               >
                 {isMobile ? 'Aplicar' : 'Aplicar filtros'}
@@ -559,19 +562,19 @@ function onFilterInputRender<TData>({
   showValueSelector: boolean;
   setShowValueSelector: (value: boolean) => void;
 }) {
-  // if (filter.operator === 'isEmpty' || filter.operator === 'isNotEmpty') {
-  //   return (
-  //     <div
-  //       id={inputId}
-  //       role="status"
-  //       aria-label={`${columnMeta?.label} filter is ${
-  //         filter.operator === 'isEmpty' ? 'empty' : 'not empty'
-  //       }`}
-  //       aria-live="polite"
-  //       className="dark:bg-input/30 h-8 w-full rounded border bg-transparent"
-  //     />
-  //   );
-  // }
+  if (filter.operator === 'isEmpty' || filter.operator === 'isNotEmpty') {
+    return (
+      <div
+        id={inputId}
+        role="status"
+        aria-label={`${columnMeta?.label} filter is ${
+          filter.operator === 'isEmpty' ? 'empty' : 'not empty'
+        }`}
+        aria-live="polite"
+        className="dark:bg-input/30 h-8 w-full rounded border bg-transparent"
+      />
+    );
+  }
 
   switch (filter.variant) {
     case 'text':

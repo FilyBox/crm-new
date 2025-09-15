@@ -980,14 +980,6 @@ msgstr "Agregar dominio de correo electrónico"
 msgid "Add Fields"
 msgstr "Agregar Campos"
 
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Add filter"
-msgstr "Agregar filtro"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Add filters to refine your rows."
-msgstr "Agrega filtros para refinar tu busqueda"
-
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Add group roles"
 msgstr "Agregar roles de grupo"
@@ -1569,10 +1561,6 @@ msgstr "Cualquier estado"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "API Tokens"
 msgstr "Tokens de API"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Apply filters"
-msgstr "Aplicar"
 
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
@@ -4533,13 +4521,8 @@ msgid "Fill in the details to create a new subscription claim."
 msgstr "Rellena los detalles para crear una nueva reclamación de suscripción."
 
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
-#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Filter"
 msgstr "Filtrar"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Filters"
-msgstr "Filtros"
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
@@ -5486,10 +5469,6 @@ msgstr "Mensaje <0>(Opcional)</0>"
 msgid "Min"
 msgstr "Mín"
 
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Modify filters to refine your rows."
-msgstr "Modifica los filtros para refinar tu busqueda."
-
 #: apps/remix/app/components/general/document/document-page-view-recipients.tsx
 #: apps/remix/app/components/general/template/template-page-view-recipients.tsx
 msgid "Modify recipients"
@@ -5721,13 +5700,8 @@ msgid "No events found"
 msgstr "Sin eventos encontrados"
 
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
-#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "No fields found."
 msgstr "Campos no encontrados"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "No filters applied"
-msgstr "Sin filtros"
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/template-move-to-folder-dialog.tsx
@@ -7013,10 +6987,6 @@ msgstr "Restablecer"
 msgid "Reset email sent"
 msgstr "Correo de restablecimiento enviado"
 
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Reset filters"
-msgstr "Limpiar filtros"
-
 #: apps/remix/app/components/forms/forgot-password.tsx
 #: apps/remix/app/components/forms/reset-password.tsx
 #: apps/remix/app/routes/_unauthenticated+/reset-password.$token.tsx
@@ -7833,6 +7803,7 @@ msgstr "Algunos firmantes no han sido asignados a un campo de firma. Asigne al m
 #: apps/remix/app/routes/_unauthenticated+/verify-email.$token.tsx
 #: apps/remix/app/routes/_unauthenticated+/verify-email.$token.tsx
 #: packages/ui/components/document/document-share-button.tsx
+#: packages/ui/primitives/data-table-table.tsx
 msgid "Something went wrong"
 msgstr "Algo salió mal"
 
@@ -10376,10 +10347,6 @@ msgstr "Cuando firme un documento, podemos completar y firmar automáticamente l
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 msgstr "Cuando utilice nuestra plataforma para colocar su firma electrónica en documentos, está consintiendo hacerlo bajo la Ley de Firmas Electrónicas en el Comercio Global y Nacional (Ley E-Sign) y otras leyes aplicables. Esta acción indica su aceptación de usar medios electrónicos para firmar documentos y recibir notificaciones."
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Where"
-msgstr "Dónde"
 
 #: apps/remix/app/routes/_profile+/p.$url.tsx
 msgid "While waiting for them to do so you can create your own account and get started with document signing right away."

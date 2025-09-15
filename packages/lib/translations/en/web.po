@@ -975,14 +975,6 @@ msgstr "Add Email Domain"
 msgid "Add Fields"
 msgstr "Add Fields"
 
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Add filter"
-msgstr "Add filter"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Add filters to refine your rows."
-msgstr "Add filters to refine your rows."
-
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Add group roles"
 msgstr "Add group roles"
@@ -1564,10 +1556,6 @@ msgstr "Any Status"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "API Tokens"
 msgstr "API Tokens"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Apply filters"
-msgstr "Apply filters"
 
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-complete-dialog.tsx
@@ -4528,13 +4516,8 @@ msgid "Fill in the details to create a new subscription claim."
 msgstr "Fill in the details to create a new subscription claim."
 
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
-#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "Filter"
 msgstr "Filter"
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Filters"
-msgstr "Filters"
 
 #: apps/remix/app/components/general/task/contracts-status.tsx
 #: apps/remix/app/components/general/task/contracts-status.tsx
@@ -5481,10 +5464,6 @@ msgstr "Message <0>(Optional)</0>"
 msgid "Min"
 msgstr "Min"
 
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Modify filters to refine your rows."
-msgstr "Modify filters to refine your rows."
-
 #: apps/remix/app/components/general/document/document-page-view-recipients.tsx
 #: apps/remix/app/components/general/template/template-page-view-recipients.tsx
 msgid "Modify recipients"
@@ -5716,13 +5695,8 @@ msgid "No events found"
 msgstr "No events found"
 
 #: apps/remix/app/components/tables/data-table-filter-menu.tsx
-#: packages/ui/primitives/data-table-filter-list.tsx
 msgid "No fields found."
 msgstr "No fields found."
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "No filters applied"
-msgstr "No filters applied"
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/template-move-to-folder-dialog.tsx
@@ -7008,10 +6982,6 @@ msgstr "Reset"
 msgid "Reset email sent"
 msgstr "Reset email sent"
 
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Reset filters"
-msgstr "Reset filters"
-
 #: apps/remix/app/components/forms/forgot-password.tsx
 #: apps/remix/app/components/forms/reset-password.tsx
 #: apps/remix/app/routes/_unauthenticated+/reset-password.$token.tsx
@@ -7828,6 +7798,7 @@ msgstr "Some signers have not been assigned a signature field. Please assign at 
 #: apps/remix/app/routes/_unauthenticated+/verify-email.$token.tsx
 #: apps/remix/app/routes/_unauthenticated+/verify-email.$token.tsx
 #: packages/ui/components/document/document-share-button.tsx
+#: packages/ui/primitives/data-table-table.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
@@ -10385,10 +10356,6 @@ msgstr "When you sign a document, we can automatically fill in and sign the foll
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 msgstr "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
-
-#: packages/ui/primitives/data-table-filter-list.tsx
-msgid "Where"
-msgstr "Where"
 
 #: apps/remix/app/routes/_profile+/p.$url.tsx
 msgid "While waiting for them to do so you can create your own account and get started with document signing right away."

@@ -518,7 +518,9 @@ export function DataTable<TData>({
             <Bird className="h-12 w-12" strokeWidth={1.5} />
 
             <div className="text-center">
-              <p className="mt-2 max-w-[60ch]">Something went wrong</p>
+              <p className="mt-2 max-w-[60ch]">
+                <Trans>Something went wrong</Trans>
+              </p>
             </div>
           </div>
         )
