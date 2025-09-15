@@ -161,6 +161,7 @@ export function DataTableFilterList<TData>({
       void setLocalFilters(updatedFilters);
       if (updatedFilters.length === 0) {
         void setFilters(null);
+        void setPage(1);
       }
 
       requestAnimationFrame(() => {
@@ -288,7 +289,10 @@ export function DataTableFilterList<TData>({
                 variant="outline"
                 size="sm"
                 className="rounded"
-                onClick={onFiltersReset}
+                onClick={() => {
+                  void onFiltersReset();
+                  void setPage(1);
+                }}
               >
                 {isMobile ? 'Limpiar' : 'Limpiar filtros'}
               </Button>
