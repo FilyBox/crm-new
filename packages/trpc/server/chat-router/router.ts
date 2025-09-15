@@ -1,6 +1,10 @@
 import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
+import {
+  getChatsByDocumentId,
+  getChatsByTeamId,
+} from '@documenso/lib/server-only/chat/chat-actions';
 import { type Chat, ZChatSchema } from '@documenso/lib/types/chat';
 import { ZMessageSchema } from '@documenso/lib/types/messages';
 import { prisma } from '@documenso/prisma';
@@ -21,6 +25,40 @@ export type GetArtistByIdOptions = {
 };
 
 export const chatRouter = router({
+  getChatsByTeamId: authenticatedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(20),
+        startingAfter: z.string().nullable(),
+        endingBefore: z.string().nullable(),
+        documentId: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { limit, startingAfter, endingBefore, documentId } = input;
+      const { teamId } = ctx;
+
+      return await getChatsByTeamId({
+        teamId,
+        limit,
+        startingAfter,
+        endingBefore,
+        documentId,
+      });
+    }),
+
+  getChatsByDocumentId: authenticatedProcedure
+    .input(z.object({ documentId: z.number() }))
+    .query(async ({ input, ctx }) => {
+      const { documentId } = input;
+      const { teamId } = ctx;
+
+      return await getChatsByDocumentId({
+        documentId,
+        teamId,
+      });
+    }),
+
   singleDocumentById: authenticatedProcedure
     .input(z.object({ documentId: z.number() }))
     .query(async ({ input }) => {

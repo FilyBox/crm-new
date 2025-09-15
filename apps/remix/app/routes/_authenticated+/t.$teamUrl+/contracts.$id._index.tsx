@@ -5,6 +5,7 @@ import { TeamMemberRole } from '@prisma/client';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { ChevronLeft } from 'lucide-react';
+import { useQueryState } from 'nuqs';
 import { Link, redirect, useSearchParams } from 'react-router';
 import { match } from 'ts-pattern';
 
@@ -18,6 +19,7 @@ import { getRecipientsForDocument } from '@documenso/lib/server-only/recipient/g
 import { getTeamByUrl } from '@documenso/lib/server-only/team/get-team';
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
 import { formatContractsPath } from '@documenso/lib/utils/teams';
+import { queryClient } from '@documenso/trpc/react';
 import { generateUUID } from '@documenso/ui/lib/utils';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
 import { FeatureCard } from '@documenso/ui/primitives/card-fancy';
@@ -133,16 +135,18 @@ export default function DocumentPage() {
   const currentLanguage = i18n.locale;
   const { document, documentRootPath, contract } = loaderData;
   const { documentData } = document;
+  const [chatName, setChatName] = useQueryState('chatId');
 
   const UUID = useMemo(() => {
-    const existingUUID = searchParams.get('chatId');
+    const existingUUID = chatName;
     return existingUUID || generateUUID();
-  }, [searchParams]);
+  }, [searchParams, setChatName]);
 
   // Guardar el UUID en searchParams solo si no existe
   useEffect(() => {
-    const existingUUID = searchParams.get('chatId');
+    const existingUUID = chatName;
     if (!existingUUID) {
+      setChatName(existingUUID);
       setSearchParams(
         (prev) => {
           const newParams = new URLSearchParams(prev);
@@ -151,8 +155,28 @@ export default function DocumentPage() {
         },
         { replace: true },
       );
+    } else {
+      setChatName(UUID);
     }
-  }, [UUID, setSearchParams]);
+  }, [UUID, setSearchParams, setChatName]);
+
+  const handleChatChange = (chatId: string) => {
+    setChatName(chatId);
+    queryClient.invalidateQueries({ queryKey: ['chatMessages', UUID] });
+  };
+
+  const handleNewChat = () => {
+    const newUUID = generateUUID();
+    setChatName(newUUID);
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set('chatId', newUUID);
+        return newParams;
+      },
+      { replace: true },
+    );
+  };
 
   return (
     <div
@@ -267,12 +291,16 @@ export default function DocumentPage() {
                 </div>
               </ScrollArea>
               <FullSizeCard
+                documentId={document.id}
+                selectedChatId={chatName || UUID}
                 title={contract.fileName || contract.title}
                 identifier="chat"
                 className="max-h-14 min-h-fit"
+                onChatChange={handleChatChange}
+                onNewChat={handleNewChat}
               >
                 <ChatDemo
-                  id={UUID}
+                  id={chatName || UUID}
                   teamId={id}
                   contractId={contract.documentId}
                   initialMessages={[]}

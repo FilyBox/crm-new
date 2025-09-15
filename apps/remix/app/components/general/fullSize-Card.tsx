@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import React from 'react';
 
+import type { Chat } from '@prisma/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { type LucideIcon } from 'lucide-react';
 import { ExpandIcon } from 'lucide-react';
@@ -14,10 +15,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@documenso/ui/primitives/card';
+import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from '@documenso/ui/primitives/sidebar';
 
 import { useIsActiveStore } from '~/storage/active-full-container';
 
 import { MessageInput } from './chat/message-input';
+import { SidebarHistory } from './chat/sidebar-history';
 
 type ChartLineLabelProps = {
   className?: string;
@@ -29,6 +42,10 @@ type ChartLineLabelProps = {
   identifier: string;
   fullScreenButton?: boolean;
   cardContentClassName?: string;
+  onChatChange: (chatId: string) => void;
+  selectedChatId?: string;
+  documentId: number;
+  onNewChat: () => void;
 };
 
 export function FullSizeCard({
@@ -40,6 +57,10 @@ export function FullSizeCard({
   className,
   cardContentClassName,
   fullScreenButton = true,
+  selectedChatId,
+  documentId,
+  onChatChange,
+  onNewChat,
 }: ChartLineLabelProps) {
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const { setIsActive } = useIsActiveStore();
@@ -76,46 +97,107 @@ export function FullSizeCard({
       <AnimatePresence>
         {activeGame ? (
           <div className="active-game fixed bottom-0 z-50 flex items-center justify-center">
-            <motion.div
-              layoutId={`card-${identifier || title}`}
-              className="inner mb-5"
-              style={{ borderRadius: 12 }}
-              ref={ref}
-            >
-              <Card className="col-span-1 h-full w-full gap-6 px-2">
-                <CardHeader className="flex max-h-8 flex-col items-start gap-0 px-2">
-                  <motion.div
-                    layoutId={`title-header-${title}`}
-                    className="flex w-full items-center justify-between gap-2"
-                  >
-                    <div className="game-title flex items-center gap-2">
-                      {Icon && <Icon className="text-primary h-5 w-5" />}
-                      <CardTitle className="text-base font-bold md:text-xl">{title}</CardTitle>
-                    </div>
-
-                    <Button
-                      onClick={() => setActiveGame(null)}
-                      size={'icon'}
-                      variant={'ghost'}
-                      className="-mr-1 h-fit w-fit !p-1"
+            <SidebarProvider className="items-start">
+              <motion.div
+                layoutId={`card-${identifier || title}`}
+                className="inner flex"
+                style={{ borderRadius: 12 }}
+                ref={ref}
+              >
+                <Card
+                  style={{ containerType: 'size' }}
+                  className="col-span-1 flex h-full w-full flex-col justify-between gap-6 px-2 py-0"
+                >
+                  <CardHeader className="flex max-h-8 flex-col items-start gap-0 px-2">
+                    <motion.div
+                      layoutId={`title-header-${title}`}
+                      className="flex w-full items-center justify-between gap-2"
                     >
-                      <ExpandIcon size={16} />
-                    </Button>
-                  </motion.div>
+                      <div className="game-title flex items-center gap-2">
+                        {Icon && <Icon className="text-primary h-5 w-5" />}
+                        <CardTitle className="text-base font-bold md:text-xl">{title}</CardTitle>
+                        {/* {chats && (
+                          <Select
+                            onValueChange={onChatChange}
+                            defaultValue={chats[0]?.id.toString()}
+                          >
+                            <SelectTrigger className="w-full max-w-52">
+                              <SelectValue placeholder="Select a chat" className="line-clamp-1" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {chats.map((chat) => (
+                                  <SelectItem key={chat.id} value={chat.id.toString()}>
+                                    {chat.title}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        )} */}
+                      </div>
 
-                  <motion.div layoutId={`description-${title}`}>
-                    <CardDescription className="text-foreground text-base">
-                      {description}
-                    </CardDescription>
-                  </motion.div>
-                </CardHeader>
-                <CardContent style={{ containerType: 'size' }} className="h-full px-2 pt-5">
-                  <motion.div layoutId={`content-${title}`} className="h-full">
-                    {children}
-                  </motion.div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                      <Button
+                        onClick={() => setActiveGame(null)}
+                        size={'icon'}
+                        variant={'ghost'}
+                        className="-mr-1 h-fit w-fit !p-1"
+                      >
+                        <ExpandIcon size={16} />
+                      </Button>
+                    </motion.div>
+
+                    <motion.div layoutId={`description-${title}`}>
+                      <CardDescription className="text-foreground text-base">
+                        {description}
+                      </CardDescription>
+                    </motion.div>
+                  </CardHeader>
+                  <CardContent className="flex h-[90cqh] w-full flex-row gap-3 px-2">
+                    <Sidebar
+                      collapsible="none"
+                      className="bg-backgroundDark mb-10 hidden h-full w-64 rounded-md pb-10 md:flex"
+                    >
+                      <SidebarContent className="h-full">
+                        <SidebarHistory
+                          documentId={documentId}
+                          onNewChat={onNewChat}
+                          onChatChange={onChatChange}
+                          id={selectedChatId ? selectedChatId : ''}
+                        />
+                        {/* <SidebarGroup>
+                          <SidebarGroupContent>
+                            <SidebarMenu>
+                              <ScrollArea className="h-[70vh] w-full">
+                                {chats &&
+                                  chats.map((item) => (
+                                    <SidebarMenuItem key={item.id}>
+                                      <SidebarMenuButton
+                                        asChild
+                                        isActive={selectedChatId === item.id}
+                                        onClick={() => onChatChange?.(item.id)}
+                                      >
+                                        <span className="line-clamp-1">
+                                          {item.title.length > 20
+                                            ? `${item.title.slice(0, 20)}...`
+                                            : item.title}
+                                        </span>
+                                      </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                  ))}
+                                </ScrollArea>
+                            </SidebarMenu>
+                          </SidebarGroupContent>
+                        </SidebarGroup> */}
+                      </SidebarContent>
+                    </Sidebar>
+                    <motion.div layoutId={`content-${title}`} className="h-full w-full">
+                      {children}
+                    </motion.div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </SidebarProvider>
           </div>
         ) : null}
       </AnimatePresence>
@@ -130,10 +212,27 @@ export function FullSizeCard({
               layoutId={`title-header-${title}`}
               className="flex w-full items-center justify-between gap-2"
             >
-              <div className="game-title flex items-center gap-2">
+              <div className="game-title flex w-full items-center gap-2">
                 {Icon && <Icon className="text-primary h-5 w-5" />}
                 <CardTitle className="text-base font-bold md:text-xl">Chat</CardTitle>
+                {/* {chats && (
+                  <Select onValueChange={onChatChange} defaultValue={chats[0]?.id.toString()}>
+                    <SelectTrigger className="w-full max-w-52">
+                      <SelectValue placeholder="Select a chat" className="line-clamp-1" />
+                    </SelectTrigger>
+                    <SelectContent aria-modal="true">
+                      <SelectGroup>
+                        {chats.map((chat) => (
+                          <SelectItem key={chat.id} value={chat.id.toString()}>
+                            {chat.title}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )} */}
               </div>
+
               {fullScreenButton && (
                 <Button
                   onClick={() => setActiveGame(title)}

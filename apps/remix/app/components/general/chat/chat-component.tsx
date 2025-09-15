@@ -40,9 +40,7 @@ export function ChatDemo(props: ChatDemoProps) {
       api: '/api/chat/chat',
       experimental_throttle: 100,
       sendExtraMessageFields: true,
-      initialMessages: initialMessages.length
-        ? initialMessages
-        : convertToUIMessages(messagesFromDb || []),
+      initialMessages: convertToUIMessages(messagesFromDb || []),
       body: { id, model: selectedChatModel, teamId, contractId, body, userId },
       generateId: generateUUID,
       onFinish: () => {
@@ -56,9 +54,9 @@ export function ChatDemo(props: ChatDemoProps) {
   const isLoading = status === 'submitted' || status === 'streaming';
 
   return (
-    <div className={cn('flex', 'flex-col', 'h-full max-h-[94%]', 'w-full')}>
+    <div className={cn('flex', 'flex-col', 'h-full', 'w-full')}>
       <Chat
-        className="grow"
+        className=""
         messages={messages}
         handleSubmit={handleSubmit}
         input={input}

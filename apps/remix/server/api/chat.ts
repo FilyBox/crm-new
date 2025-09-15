@@ -1,26 +1,20 @@
 import { sValidator } from '@hono/standard-validator';
-import {
-  type UIMessage,
-  appendResponseMessages,
-  createDataStreamResponse,
-  smoothStream,
-  streamText,
-} from 'ai';
+import { appendResponseMessages, createDataStreamResponse, smoothStream, streamText } from 'ai';
 import { Hono } from 'hono';
+import { mutate } from 'swr';
 
-import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
+import { getSession } from '@documenso/auth/server/lib/utils/get-session';
+import { NEXT_PRIVATE_INTERNAL_WEBAPP_URL } from '@documenso/lib/constants/app';
 import {
   generateTitleFromUserMessage,
   getChatById,
+  getChatsByTeamId,
   myProvider,
   saveChat,
   saveMessages,
   singleDocumentById,
 } from '@documenso/lib/server-only/chat/chat-actions';
-import {
-  getPresignGetUrl,
-  getPresignPostUrl,
-} from '@documenso/lib/universal/upload/server-actions';
+import { getMemberRoles } from '@documenso/lib/server-only/team/get-member-roles';
 import {
   generateUUID,
   getMostRecentUserMessage,
@@ -28,22 +22,31 @@ import {
 } from '@documenso/ui/lib/utils';
 
 import type { HonoEnv } from '../router';
-import {
-  type TGetPresignedGetUrlResponse,
-  type TGetPresignedPostUrlResponse,
-  ZChatRequestSchema,
-  ZGetPresignedGetUrlRequestSchema,
-  ZGetPresignedPostUrlRequestSchema,
-} from './files.types';
+import { ZChatRequestSchema } from './files.types';
 
-export const ChatRoute = new Hono<HonoEnv>()
-  /**
-   * Uploads a document file to the appropriate storage location and creates
-   * a document data record.
-   */
-  .post('/chat', sValidator('json', ZChatRequestSchema), async (c) => {
+export const ChatRoute = new Hono<HonoEnv>().post(
+  '/chat',
+  sValidator('json', ZChatRequestSchema),
+  async (c) => {
     try {
-      const { contractId, body, model, messages, id, teamId, userId } = c.req.valid('json');
+      const { session, user } = await getSession(c);
+      const { contractId, model, messages, id, teamId, userId } = c.req.valid('json');
+      if (!session || !user || session.userId !== userId) {
+        return new Response('Unauthorized', { status: 401 });
+      }
+
+      const { teamRole } = await getMemberRoles({
+        teamId: teamId,
+        reference: {
+          type: 'User',
+          id: userId,
+        },
+      });
+
+      if (!teamRole) {
+        return new Response('Unauthorized', { status: 401 });
+      }
+
       const userMessage = getMostRecentUserMessage(messages);
       if (!userMessage) {
         return new Response('No user message found', { status: 400 });
@@ -66,6 +69,7 @@ export const ChatRoute = new Hono<HonoEnv>()
         });
 
         await saveChat({ id, contractId, userId, title, teamId });
+        await mutate(() => true, undefined, { revalidate: false });
       } else {
         if (Number(chat.userId) !== Number(userId)) {
           return new Response('Unauthorized', { status: 401 });
@@ -149,7 +153,8 @@ export const ChatRoute = new Hono<HonoEnv>()
             sendReasoning: true,
           });
         },
-        onError: () => {
+        onError: (error) => {
+          console.error('Chat generation error:', error);
           return 'Oops, an error occurred!';
         },
       });
@@ -157,30 +162,52 @@ export const ChatRoute = new Hono<HonoEnv>()
       console.error('Upload failed:', error);
       return c.json({ error: 'Upload failed' }, 500);
     }
-  })
+  },
+);
 
-  .post('/presigned-get-url', sValidator('json', ZGetPresignedGetUrlRequestSchema), async (c) => {
-    const { key } = await c.req.json();
+export const HistoryRoute = new Hono<HonoEnv>().get('/history', async (c) => {
+  try {
+    const teamId = c.req.query('teamId');
+    const userId = c.req.query('userId');
+    const limit = Number(c.req.query('limit') || '10');
+    const documentId = c.req.query('documentId');
+    const startingAfter = c.req.query('starting_after');
+    const endingBefore = c.req.query('ending_before');
 
-    try {
-      const { url } = await getPresignGetUrl(key || '');
-      return c.json({ url } satisfies TGetPresignedGetUrlResponse);
-    } catch (err) {
-      console.error(err);
-
-      throw new AppError(AppErrorCode.UNKNOWN_ERROR);
+    if (startingAfter && endingBefore) {
+      return Response.json('Only one of starting_after or ending_before can be provided!', {
+        status: 400,
+      });
     }
-  })
-  .post('/presigned-post-url', sValidator('json', ZGetPresignedPostUrlRequestSchema), async (c) => {
-    const { fileName, contentType } = c.req.valid('json');
 
-    try {
-      const { key, url } = await getPresignPostUrl(fileName, contentType);
+    const { session, user } = await getSession(c);
 
-      return c.json({ key, url } satisfies TGetPresignedPostUrlResponse);
-    } catch (err) {
-      console.error(err);
-
-      throw new AppError(AppErrorCode.UNKNOWN_ERROR);
+    if (!session || !user || session.userId !== Number(userId)) {
+      return new Response('Unauthorized', { status: 401 });
     }
-  });
+
+    const { teamRole } = await getMemberRoles({
+      teamId: Number(teamId),
+      reference: {
+        type: 'User',
+        id: Number(userId),
+      },
+    });
+    if (!teamRole) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+
+    const chats = await getChatsByTeamId({
+      teamId: Number(teamId),
+      limit,
+      startingAfter: startingAfter || null,
+      endingBefore: endingBefore || null,
+      documentId: Number(documentId),
+    });
+
+    return c.json({ chats });
+  } catch (error) {
+    console.error('Failed to fetch history:', error);
+    return c.json({ error: 'Failed to fetch history' }, 500);
+  }
+});

@@ -13,7 +13,7 @@ import { getIpAddress } from '@documenso/lib/universal/get-ip-address';
 import { logger } from '@documenso/lib/utils/logger';
 import { openApiDocument } from '@documenso/trpc/server/open-api';
 
-import { ChatRoute } from './api/chat';
+import { ChatRoute, HistoryRoute } from './api/chat';
 import { filesRoute } from './api/files';
 import { type AppContext, appContext } from './context';
 import { appMiddleware } from './middleware';
@@ -83,6 +83,7 @@ app.route('/api/auth', auth);
 // Files route.
 app.route('/api/files', filesRoute);
 app.route('/api/chat', ChatRoute);
+app.route('/api/chat', HistoryRoute);
 // API servers.
 app.route('/api/v1', tsRestHonoApp);
 app.use('/api/jobs/*', jobsClient.getApiHandler());

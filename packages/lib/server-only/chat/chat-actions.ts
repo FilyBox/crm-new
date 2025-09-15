@@ -60,6 +60,98 @@ export async function singleDocumentById(documentId: number) {
   return documents;
 }
 
+export async function getChatsByDocumentId({
+  documentId,
+  teamId,
+}: {
+  documentId: number;
+  teamId: number;
+}) {
+  try {
+    const chats = await prisma.chat.findMany({
+      where: {
+        documentId,
+        teamId,
+      },
+    });
+    return chats;
+  } catch (error) {
+    console.error('Failed to get chats by document id from database');
+    throw error;
+  }
+}
+
+export async function getChatsByTeamId({
+  teamId,
+  limit,
+  startingAfter,
+  endingBefore,
+  documentId,
+}: {
+  teamId: number;
+  limit: number;
+  startingAfter: string | null;
+  endingBefore: string | null;
+  documentId: number;
+}) {
+  try {
+    const extendedLimit = limit + 1;
+
+    let whereCondition: any = {
+      teamId: teamId,
+      documentId: documentId,
+    };
+
+    if (startingAfter) {
+      const selectedChat = await prisma.chat.findUnique({
+        where: { id: startingAfter },
+        select: { createdAt: true },
+      });
+
+      if (!selectedChat) {
+        throw new Error(`Chat with id ${startingAfter} not found`);
+      }
+
+      whereCondition.createdAt = {
+        gt: selectedChat.createdAt,
+      };
+    } else if (endingBefore) {
+      const selectedChat = await prisma.chat.findUnique({
+        where: { id: endingBefore },
+        select: { createdAt: true },
+      });
+
+      if (!selectedChat) {
+        throw new Error(`Chat with id ${endingBefore} not found`);
+      }
+
+      whereCondition.createdAt = {
+        lt: selectedChat.createdAt,
+      };
+    }
+
+    const filteredChats = await prisma.chat.findMany({
+      where: whereCondition,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: extendedLimit,
+    });
+
+    const hasMore = filteredChats.length > limit;
+    const chats = hasMore ? filteredChats.slice(0, limit) : filteredChats;
+
+    return {
+      chats: chats,
+      hasMore,
+    };
+  } catch (error) {
+    console.error('Failed to get chats by user from database');
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function generateTitleFromUserMessage({ message }: { message: Message }) {
   const { text: title } = await generateText({
     model: myProvider.languageModel('title-model'),
