@@ -87,7 +87,7 @@ export function BoardPopover({
 
   const updateBoardMutation = trpc.task.updateBoard.useMutation({
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['boardsTasks'] });
+      await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
     },
     onError: () => {
       toast.error(t`Error updating board`, {
@@ -175,7 +175,11 @@ export function BoardPopover({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsSheetOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsSheetOpen(false);
+              }}
               className="h-8 w-8 p-0"
             >
               <X className="h-4 w-4" />
@@ -214,7 +218,11 @@ export function BoardPopover({
                             ? 'border-gray-800'
                             : 'border-transparent hover:border-gray-300',
                         )}
-                        onClick={() => form.setValue('color', color.value)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          form.setValue('color', color.value);
+                        }}
                       />
                     ))}
                   </div>
@@ -280,7 +288,9 @@ export function BoardPopover({
               <Button
                 className="w-full"
                 disabled={createBoardMutation.isPending || updateBoardMutation.isPending}
-                onClick={async () => {
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   const isValid = await form.trigger();
                   if (isValid) {
                     const values = form.getValues();

@@ -8,10 +8,19 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { EventColor } from '@documenso/prisma/generated/types';
+import type { EventColor } from '@documenso/prisma/generated/types';
 import { queryClient, trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@documenso/ui/primitives/dialog';
 import {
   Form,
   FormControl,
@@ -22,23 +31,13 @@ import {
 } from '@documenso/ui/primitives/form';
 import { Input } from '@documenso/ui/primitives/input';
 import { RadioGroup, RadioGroupItem } from '@documenso/ui/primitives/radio-group';
-import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@documenso/ui/primitives/sheet';
 
-interface EventDialogProps {
+interface ListDialogProps {
   board: Board | null;
   isOpen: boolean;
   setIsSheetOpen: (isOpen: boolean) => void;
   setInitialData: (data: Board | null) => void;
-
+  boardId: string;
   onClose: () => void;
   onSave: (board: Pick<Board, 'id' | 'name' | 'color'>) => void;
   onDelete: (listId: string) => void;
@@ -46,15 +45,16 @@ interface EventDialogProps {
 
 export function ListDialog({
   board,
+  boardId,
   setInitialData,
   isOpen,
   setIsSheetOpen,
   onClose,
   onSave,
   onDelete,
-}: EventDialogProps) {
+}: ListDialogProps) {
   const [error, setError] = useState<string | null>(null);
-  const { t, i18n } = useLingui();
+  const { t } = useLingui();
 
   const formSchema = z.object({
     name: z.string().min(1, { message: t`Name cannot be empty` }),
@@ -69,9 +69,9 @@ export function ListDialog({
     },
   });
 
-  const createBoardMutation = trpc.task.createBoard.useMutation({
+  const createListMutation = trpc.task.createList.useMutation({
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['boardsTasks'] });
+      await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
     },
     onError: () => {
       toast.error(t`Error creating board`, {
@@ -108,9 +108,10 @@ export function ListDialog({
 
   const handleCreate = async (values: z.infer<typeof formSchema>) => {
     const { name, color } = values;
-    await createBoardMutation.mutate({
+    await createListMutation.mutate({
       name,
       color: color ? (color as EventColor) : 'blue',
+      boardId,
     });
   };
 
@@ -120,7 +121,7 @@ export function ListDialog({
     if (board?.id) {
       console.log('Editing board not implemented yet');
     } else {
-      handleCreate(values);
+      void handleCreate(values);
     }
 
     onSave({
@@ -181,84 +182,80 @@ export function ListDialog({
   ];
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsSheetOpen}>
-      <SheetTrigger asChild>
+    <Dialog open={isOpen} onOpenChange={setIsSheetOpen}>
+      <DialogTrigger asChild>
         <Button onClick={() => setInitialData(null)} className="w-full sm:w-fit">
-          <Trans>New Board</Trans>
+          <Trans>New List</Trans>
         </Button>
-      </SheetTrigger>
-      <SheetContent
+      </DialogTrigger>
+      <DialogContent
         autoFocus={false}
-        showOverlay={true}
-        className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-between overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl"
+        className="m-2 flex h-fit w-full flex-col justify-between overflow-y-auto rounded-lg sm:m-2 md:max-w-4xl"
       >
-        <SheetHeader>
-          <SheetTitle>{board?.id ? t`Edit Event` : t`Create Event`}</SheetTitle>
-          <SheetDescription className="sr-only">
-            {board?.id ? t`Edit the details of this board` : t`Add a new board to your calendar`}
-          </SheetDescription>
-        </SheetHeader>
+        <DialogHeader>
+          <DialogTitle>{board?.id ? t`Edit List` : t`Create List`}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {board?.id ? t`Edit the details of this list` : t`Add a new list to your board`}
+          </DialogDescription>
+        </DialogHeader>
         {error && (
           <div className="bg-destructive/15 text-destructive rounded-md px-3 py-2 text-sm">
             {error}
           </div>
         )}
+        <Form {...form}>
+          <form aria-disabled={createListMutation.isPending} className="grid gap-4 px-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <Trans>Title</Trans>
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <ScrollArea className="h-[58cqh] w-full sm:h-[75cqh]">
-          <Form {...form}>
-            <form aria-disabled={createBoardMutation.isPending} className="grid gap-4 px-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <Trans>Title</Trans>
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem className="col-span-1 w-fit space-y-4">
-                    <FormLabel className="text-foreground text-sm font-medium leading-none">
-                      <Trans>Etiquette</Trans>
-                    </FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        className="flex items-center gap-1.5"
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        {colorOptions.map((colorOption) => (
-                          <RadioGroupItem
-                            key={colorOption.value}
-                            value={colorOption.value}
-                            aria-label={colorOption.label}
-                            className={cn(
-                              'size-6 fill-white text-white shadow-none',
-                              colorOption.bgClass,
-                              colorOption.borderClass,
-                            )}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </ScrollArea>
-        <SheetFooter className="flex-row sm:justify-between">
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem className="col-span-1 w-fit space-y-4">
+                  <FormLabel className="text-foreground text-sm font-medium leading-none">
+                    <Trans>Etiquette</Trans>
+                  </FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      className="flex items-center gap-1.5"
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      {colorOptions.map((colorOption) => (
+                        <RadioGroupItem
+                          key={colorOption.value}
+                          value={colorOption.value}
+                          aria-label={colorOption.label}
+                          className={cn(
+                            'size-6 fill-white text-white shadow-none',
+                            colorOption.bgClass,
+                            colorOption.borderClass,
+                          )}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+        <DialogFooter className="flex-row sm:justify-between">
           {board?.id && (
             <Button
               variant="outline"
@@ -284,12 +281,12 @@ export function ListDialog({
             </Button>
           )}
           <div className="flex flex-1 justify-end gap-2">
-            <Button disabled={createBoardMutation.isPending} variant="outline" onClick={onClose}>
+            <Button disabled={createListMutation.isPending} variant="outline" onClick={onClose}>
               <Trans>Cancel</Trans>
             </Button>
             <Button
-              disabled={createBoardMutation.isPending}
-              loading={createBoardMutation.isPending}
+              disabled={createListMutation.isPending}
+              loading={createListMutation.isPending}
               onClick={async () => {
                 const isValid = await form.trigger();
                 if (isValid) {
@@ -301,8 +298,8 @@ export function ListDialog({
               <Trans>Save</Trans>
             </Button>
           </div>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

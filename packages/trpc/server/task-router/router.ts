@@ -349,7 +349,6 @@ export const taskRouter = router({
       orderBy: { createdAt: 'desc' },
     });
 
-    console.log('boards found', boards);
     return boards;
   }),
   updateBoard: authenticatedProcedure

@@ -916,12 +916,12 @@ msgstr "Agrega un dominio personalizado para enviar correos electrónicos en nom
 msgid "Add a document"
 msgstr "Agregar un documento"
 
-#: apps/remix/app/components/dialogs/list-dialog.tsx
-msgid "Add a new board to your calendar"
-msgstr ""
-
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Add a new event to your calendar"
+msgstr ""
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Add a new list to your board"
 msgstr ""
 
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
@@ -2704,7 +2704,6 @@ msgstr "Crear documento a partir de la plantilla"
 msgid "Create Email"
 msgstr "Crear correo electrónico"
 
-#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Create Event"
 msgstr "Crear evento"
@@ -2725,6 +2724,10 @@ msgstr "Crear grupo"
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Create Groups"
 msgstr "Crear Grupos"
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Create List"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/artist-create-dialog.tsx
 msgid "Create New Artist"
@@ -3840,22 +3843,25 @@ msgstr ""
 msgid "Edit"
 msgstr "Editar"
 
-#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Edit Event"
 msgstr "Editar evento"
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Edit List"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
 msgid "Edit Template"
 msgstr "Editar plantilla"
 
-#: apps/remix/app/components/dialogs/list-dialog.tsx
-msgid "Edit the details of this board"
-msgstr ""
-
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Edit the details of this event"
 msgstr "Edita los detalles de este evento"
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Edit the details of this list"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id.tsx
 msgid "Edit webhook"
@@ -5685,13 +5691,13 @@ msgstr "Nunca expira"
 msgid "New Artist"
 msgstr "Nuevo Artista"
 
-#: apps/remix/app/components/dialogs/list-dialog.tsx
-msgid "New Board"
-msgstr ""
-
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "New Event"
 msgstr "Nuevo evento"
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "New List"
+msgstr ""
 
 #: apps/remix/app/components/forms/password.tsx
 msgid "New Password"

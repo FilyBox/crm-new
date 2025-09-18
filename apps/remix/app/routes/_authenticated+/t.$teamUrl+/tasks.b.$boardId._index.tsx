@@ -7,6 +7,10 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { z } from 'zod';
 
+import { getSession } from '@documenso/auth/server/lib/utils/get-session';
+import { getBoardById } from '@documenso/lib/server-only/document/get-board-by-id';
+import { getTeamByUrl } from '@documenso/lib/server-only/team/get-team';
+import { getTeamMembers } from '@documenso/lib/server-only/team/get-team-members';
 import { type TTask } from '@documenso/lib/types/task';
 import { formTasksPath } from '@documenso/lib/utils/teams';
 import { trpc } from '@documenso/trpc/react';
@@ -19,6 +23,7 @@ import {
   KanbanHeader,
   KanbanProvider,
 } from '@documenso/ui/primitives/kanban';
+import { ScrollArea, ScrollBar } from '@documenso/ui/primitives/scroll-area';
 
 import { ListDialog } from '~/components/dialogs/list-dialog';
 import { TaskCreateDialog } from '~/components/dialogs/task-create-dialog';
@@ -35,8 +40,29 @@ export function meta() {
   return appMetaTags('Tasks');
 }
 
-export function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   const { boardId } = params;
+  const { user } = await getSession(request);
+  const team = await getTeamByUrl({ userId: user.id, teamUrl: params.teamUrl });
+
+  const [teamMembers, board] = await Promise.all([
+    getTeamMembers({ userId: user.id, teamId: team.id }),
+    getBoardById({ boardId }),
+  ]);
+  const currentTeamMember = teamMembers.find((member) => member.userId === user.id);
+
+  if (!board) {
+    throw new Response('Not Found', { status: 404 });
+  }
+
+  if (
+    currentTeamMember &&
+    currentTeamMember.teamRole === 'MEMBER' &&
+    board.visibility !== 'EVERYONE' &&
+    board.visibility !== 'ONLY_ME'
+  ) {
+    throw new Response('Not Found', { status: 404 });
+  }
 
   return superLoaderJson({
     boardId,
@@ -60,7 +86,7 @@ export default function TasksPage() {
       boardId: boardId,
     },
     queryOptions({
-      queryKey: ['boardsTasks', filters, joinOperator],
+      queryKey: ['listTasks', filters, joinOperator],
       staleTime: Infinity,
       refetchOnWindowFocus: false,
     }),
@@ -98,6 +124,7 @@ export default function TasksPage() {
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-8">
         <ListDialog
           isOpen={isSheetOpen}
+          boardId={boardId}
           setIsSheetOpen={setIsSheetOpen}
           setInitialData={setEditingBoard}
           onSave={() => {
@@ -109,44 +136,46 @@ export default function TasksPage() {
           }}
           board={null}
         />
-
-        {data && data.columns && data.columns.length > 0 && (
-          <KanbanProvider columns={data.columns} data={kanbanData} onDataChange={setKanbanData}>
-            {(column) => (
-              <KanbanBoard
-                className={cn('', getEventColorClasses(column.color))}
-                id={column.id}
-                key={column.id}
-              >
-                <KanbanHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={cn('h-2 w-2 rounded-full', getEventColorClasses(column.color))}
+        <ScrollArea className="h-fit w-full max-w-screen-xl">
+          {data && data.columns && data.columns.length > 0 && (
+            <KanbanProvider columns={data.columns} data={kanbanData} onDataChange={setKanbanData}>
+              {(column) => (
+                <KanbanBoard
+                  className={cn('', getEventColorClasses(column.color))}
+                  id={column.id}
+                  key={column.id}
+                >
+                  <KanbanHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={cn('h-2 w-2 rounded-full', getEventColorClasses(column.color))}
+                        />
+                        <span className="text-sm font-semibold">{column.name}</span>
+                        <Badge variant="secondary" className="pointer-events-none rounded-sm">
+                          {kanbanData.filter((task) => task.column === column.id).length}
+                        </Badge>
+                      </div>
+                      <TaskCreateDialog
+                        taskRootPath={taskRootPath}
+                        listId={column.id}
+                        teamMembers={teamMembers}
                       />
-                      <span className="text-sm font-semibold">{column.name}</span>
-                      <Badge variant="secondary" className="pointer-events-none rounded-sm">
-                        {kanbanData.filter((task) => task.column === column.id).length}
-                      </Badge>
                     </div>
-                    <TaskCreateDialog
-                      taskRootPath={taskRootPath}
-                      listId={column.id}
-                      teamMembers={teamMembers}
-                    />
-                  </div>
-                </KanbanHeader>
-                <KanbanCards id={column.id}>
-                  {(task: any) => (
-                    <KanbanCard key={task.id} id={task.id} name={task.name} column={task.column}>
-                      <TaskCardContent task={task} />
-                    </KanbanCard>
-                  )}
-                </KanbanCards>
-              </KanbanBoard>
-            )}
-          </KanbanProvider>
-        )}
+                  </KanbanHeader>
+                  <KanbanCards id={column.id}>
+                    {(task: any) => (
+                      <KanbanCard key={task.id} id={task.id} name={task.name} column={task.column}>
+                        <TaskCardContent task={task} />
+                      </KanbanCard>
+                    )}
+                  </KanbanCards>
+                </KanbanBoard>
+              )}
+            </KanbanProvider>
+          )}
+          <ScrollBar orientation="horizontal" className="bottom-1" />
+        </ScrollArea>
       </div>
     </div>
   );

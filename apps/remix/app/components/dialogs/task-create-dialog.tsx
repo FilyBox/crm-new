@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 
 import { Trans, useLingui } from '@lingui/react/macro';
-import { FilePlus, PlusIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useSession } from '@documenso/lib/client-only/providers/session';
@@ -63,7 +63,7 @@ export const TaskCreateDialog = ({
 
   const { mutateAsync: createTask } = trpc.task.createTask.useMutation({
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['boardsTasks'] });
+      await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
     },
     onError: () => {
       toast.error(t`Error creating board`, {
