@@ -903,6 +903,11 @@ msgstr "Ada"
 msgid "Add"
 msgstr "Add"
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Add a card"
+msgstr "Add a card"
+
 #: apps/remix/app/components/dialogs/organisation-email-domain-create-dialog.tsx
 msgid "Add a custom domain to send emails on behalf of your organisation. We'll generate DKIM records that you need to add to your DNS provider."
 msgstr "Add a custom domain to send emails on behalf of your organisation. We'll generate DKIM records that you need to add to your DNS provider."
@@ -950,6 +955,10 @@ msgstr "Add another option"
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/radio-field.tsx
 msgid "Add another value"
 msgstr "Add another value"
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Add card"
+msgstr "Add card"
 
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 msgid "Add Contract"
@@ -1057,10 +1066,6 @@ msgstr "Add sorting"
 #: apps/remix/app/components/tables/data-table-sort-list.tsx
 msgid "Add sorting to organize your rows."
 msgstr "Add sorting to organize your rows."
-
-#: apps/remix/app/components/dialogs/task-create-dialog.tsx
-msgid "Add Task"
-msgstr "Add Task"
 
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
 msgid "Add team email"
@@ -1696,6 +1701,10 @@ msgstr "Assets"
 msgid "Assigned Teams"
 msgstr "Assigned Teams"
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Assignees"
+msgstr "Assignees"
+
 #: packages/lib/constants/recipient-roles.ts
 msgctxt "Recipient role action verb"
 msgid "Assist"
@@ -2019,7 +2028,6 @@ msgstr "Can prepare"
 #: apps/remix/app/components/dialogs/passkey-create-dialog.tsx
 #: apps/remix/app/components/dialogs/public-profile-template-manage-dialog.tsx
 #: apps/remix/app/components/dialogs/session-logout-all-dialog.tsx
-#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-delete-dialog.tsx
@@ -2775,10 +2783,6 @@ msgstr "Create signing links"
 msgid "Create Subscription Claim"
 msgstr "Create Subscription Claim"
 
-#: apps/remix/app/components/dialogs/task-create-dialog.tsx
-msgid "Create Task"
-msgstr "Create Task"
-
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
@@ -3199,6 +3203,7 @@ msgstr "Deleting record..."
 msgid "Deleting records..."
 msgstr "Deleting records..."
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
@@ -4222,7 +4227,6 @@ msgid "Error al reintentar"
 msgstr "Error al reintentar"
 
 #: apps/remix/app/components/dialogs/list-dialog.tsx
-#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/general/board-popover.tsx
 msgid "Error creating board"
 msgstr "Error creating board"
@@ -4244,6 +4248,10 @@ msgstr "Error creating list"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Error creating records"
 msgstr "Error creating records"
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Error creating task"
+msgstr "Error creating task"
 
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
 msgid "Error creating ticket template. Please try again."
@@ -6877,7 +6885,6 @@ msgid "Record Type"
 msgstr "Record Type"
 
 #: apps/remix/app/components/dialogs/list-dialog.tsx
-#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -8155,6 +8162,10 @@ msgstr "System Theme"
 msgid "Task cancelled"
 msgstr "Task cancelled"
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Task created successfully"
+msgstr "Task created successfully"
+
 #: apps/remix/app/components/general/task/task-status.tsx
 msgid "Task in progress"
 msgstr "Task in progress"
@@ -8684,10 +8695,6 @@ msgstr "The signing link has been copied to your clipboard."
 #: apps/remix/app/routes/_authenticated+/admin+/site-settings.tsx
 msgid "The site banner is a message that is shown at the top of the site. It can be used to display important information to your users."
 msgstr "The site banner is a message that is shown at the top of the site. It can be used to display important information to your users."
-
-#: apps/remix/app/components/dialogs/task-create-dialog.tsx
-msgid "The specified project does not exist or you don't have access."
-msgstr "The specified project does not exist or you don't have access."
 
 #: apps/remix/app/components/dialogs/task-create-dialog.tsx
 msgid "The specified team does not exist or you don't have access."

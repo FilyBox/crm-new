@@ -135,6 +135,15 @@ export default function TasksPage() {
     },
   );
 
+  const updateTaskColumnMutation = trpc.task.updateTaskColumn.useMutation({
+    onSuccess: () => {
+      void refetch();
+    },
+    onError: (error) => {
+      console.error('Error updating task column:', error);
+    },
+  });
+
   if (isLoading || isTeamMembersLoading) {
     return <div className="bg-muted h-full w-full animate-pulse" />;
   }
@@ -160,7 +169,7 @@ export default function TasksPage() {
             {data && data.columns && data.columns.length > 0 && (
               <section className="flex !h-full justify-start gap-6 px-4">
                 <KanbanProvider
-                  className="flex !h-full justify-start gap-6"
+                  className="flex !h-full w-fit justify-start gap-6"
                   columns={data.columns}
                   data={kanbanData}
                   onDataChange={setKanbanData}

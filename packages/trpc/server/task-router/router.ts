@@ -111,6 +111,33 @@ export const taskRouter = router({
       return taskCreated;
     }),
 
+  updateTaskColumn: authenticatedProcedure
+    .input(
+      z.object({
+        taskId: z.number(),
+        newListId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { taskId, newListId } = input;
+      const { teamId } = ctx;
+
+      const list = await prisma.list.findFirst({
+        where: { id: newListId, teamId },
+      });
+
+      if (!list) {
+        throw new Error('List not found or you do not have permission to move tasks to it');
+      }
+
+      const updatedTask = await prisma.task.update({
+        where: { id: taskId },
+        data: { listId: newListId },
+      });
+
+      return updatedTask;
+    }),
+
   findTaskById: authenticatedProcedure
     .input(z.object({ taskId: z.string() }))
     .query(async ({ input }: { input: { taskId: string } }) => {

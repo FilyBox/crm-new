@@ -408,9 +408,9 @@ model Task {
   dueDate     DateTime?
   assignees   TaskAssignee[]
   comments    TaskComment[]
-
-  list   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
-  listId String
+  coverImage  String?
+  list        List           @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId      String
 
   tags         String[]  @default([])
   createdAt    DateTime  @default(now())
