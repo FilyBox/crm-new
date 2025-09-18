@@ -17,7 +17,7 @@ import { Button } from '@documenso/ui/primitives/button';
 import { Card, CardContent, CardTitle } from '@documenso/ui/primitives/card';
 
 import { BoardPopover } from '~/components/general/board-popover';
-import { getEventColorClasses } from '~/components/general/event-calendar';
+import { getEventColorClassesGradient } from '~/components/general/event-calendar';
 import { useCurrentTeam } from '~/providers/team';
 import { canPerformManagerAndAboveAction } from '~/utils/constants';
 import { appMetaTags } from '~/utils/meta';
@@ -193,7 +193,7 @@ export default function TasksPage() {
                     <div
                       className={cn(
                         'relative h-24 rounded-t-md',
-                        getEventColorClasses(board.color || 'blue'),
+                        getEventColorClassesGradient(board.color || 'blue'),
                       )}
                     >
                       <div className="flex w-full items-center justify-end">

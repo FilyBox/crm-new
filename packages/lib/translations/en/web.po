@@ -1058,6 +1058,10 @@ msgstr "Add sorting"
 msgid "Add sorting to organize your rows."
 msgstr "Add sorting to organize your rows."
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Add Task"
+msgstr "Add Task"
+
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
 msgid "Add team email"
 msgstr "Add team email"
@@ -2588,6 +2592,7 @@ msgstr "Cover"
 #: apps/remix/app/components/dialogs/organisation-group-create-dialog.tsx
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 #: apps/remix/app/routes/_profile+/_layout.tsx
 msgid "Create"
 msgstr "Create"
@@ -2895,6 +2900,7 @@ msgid "Creating ticket template..."
 msgstr "Creating ticket template..."
 
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 msgid "Creating..."
 msgstr "Creating..."
 
@@ -4226,6 +4232,10 @@ msgstr "Error creating board"
 msgid "Error creating event \"{0}\""
 msgstr "Error creating event \"{0}\""
 
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "Error creating list"
+msgstr "Error creating list"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4288,6 +4298,10 @@ msgstr "Error updating board"
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Error updating event \"{0}\""
 msgstr "Error updating event \"{0}\""
+
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "Error updating list"
+msgstr "Error updating list"
 
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
@@ -5264,6 +5278,14 @@ msgstr "Links Generated"
 msgid "List"
 msgstr "List"
 
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "List created successfully"
+msgstr "List created successfully"
+
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "List updated successfully"
+msgstr "List updated successfully"
+
 #. placeholder {0}: webhook.eventTriggers .map((trigger) => toFriendlyWebhookEventName(trigger)) .join(', ')
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "Listening to {0}"
@@ -5651,6 +5673,7 @@ msgstr "Name"
 #: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/board-popover.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 msgid "Name cannot be empty"
 msgstr "Name cannot be empty"
 
@@ -9474,6 +9497,7 @@ msgstr "UPC"
 #: apps/remix/app/components/forms/email-preferences-form.tsx
 #: apps/remix/app/components/forms/public-profile-form.tsx
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/settings-public-profile-templates-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
@@ -9638,6 +9662,7 @@ msgid "Updating Your Information"
 msgstr "Updating Your Information"
 
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 msgid "Updating..."
 msgstr "Updating..."
 

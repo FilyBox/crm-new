@@ -1063,6 +1063,10 @@ msgstr "Agregar orden"
 msgid "Add sorting to organize your rows."
 msgstr "Agrega un orden para organizar tus datos"
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Add Task"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/team-email-add-dialog.tsx
 msgid "Add team email"
 msgstr "Agregar correo electrónico del equipo"
@@ -2593,6 +2597,7 @@ msgstr ""
 #: apps/remix/app/components/dialogs/organisation-group-create-dialog.tsx
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 #: apps/remix/app/routes/_profile+/_layout.tsx
 msgid "Create"
 msgstr "Crear"
@@ -2900,6 +2905,7 @@ msgid "Creating ticket template..."
 msgstr "Creando platilla de ticket..."
 
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 msgid "Creating..."
 msgstr "Creando..."
 
@@ -4231,6 +4237,10 @@ msgstr ""
 msgid "Error creating event \"{0}\""
 msgstr "Error al craer evento \"{0}\""
 
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "Error creating list"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4293,6 +4303,10 @@ msgstr ""
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Error updating event \"{0}\""
 msgstr "Error al actualizar evento \"{0}\""
+
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "Error updating list"
+msgstr ""
 
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
@@ -5269,6 +5283,14 @@ msgstr "Enlaces generados"
 msgid "List"
 msgstr "Lista"
 
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "List created successfully"
+msgstr ""
+
+#: apps/remix/app/components/general/list-popover.tsx
+msgid "List updated successfully"
+msgstr "Lista actualizada exitosamente"
+
 #. placeholder {0}: webhook.eventTriggers .map((trigger) => toFriendlyWebhookEventName(trigger)) .join(', ')
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "Listening to {0}"
@@ -5656,6 +5678,7 @@ msgstr "Nombre"
 #: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/board-popover.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 msgid "Name cannot be empty"
 msgstr "El nombre no puede estar vacio"
 
@@ -7189,7 +7212,7 @@ msgstr "Guardar plantilla"
 #. placeholder {0}: result.count
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 msgid "Se han creado {0} registros exitosament"
-msgstr ""
+msgstr "Se han creado {0} registros exitosamente"
 
 #: apps/remix/app/components/tables/distribution-table-musicplatform-filter.tsx
 #: apps/remix/app/components/tables/distribution-table-territoriesName-filter.tsx
@@ -7242,12 +7265,12 @@ msgstr "Buscar carpetas..."
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search for genre..."
-msgstr ""
+msgstr "Buscar por genero..."
 
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search genre"
-msgstr ""
+msgstr "Buscar genero"
 
 #: packages/ui/components/common/language-switcher-dialog.tsx
 msgid "Search languages..."
@@ -7260,7 +7283,7 @@ msgstr "Buscar idiomas..."
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search options"
-msgstr ""
+msgstr "Buscar opciones"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
@@ -7269,7 +7292,7 @@ msgstr ""
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Search options..."
-msgstr ""
+msgstr "Buscar opciones..."
 
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 msgid "Secret"
@@ -9465,6 +9488,7 @@ msgstr ""
 #: apps/remix/app/components/forms/email-preferences-form.tsx
 #: apps/remix/app/components/forms/public-profile-form.tsx
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/settings-public-profile-templates-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
@@ -9629,6 +9653,7 @@ msgid "Updating Your Information"
 msgstr "Actualizando Su Información"
 
 #: apps/remix/app/components/general/board-popover.tsx
+#: apps/remix/app/components/general/list-popover.tsx
 msgid "Updating..."
 msgstr "Actualizando..."
 

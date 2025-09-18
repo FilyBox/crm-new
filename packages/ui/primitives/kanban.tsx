@@ -71,7 +71,7 @@ export const KanbanBoard = ({ id, children, className }: KanbanBoardProps) => {
   return (
     <div
       className={cn(
-        'bg-secondary flex size-full min-h-40 flex-col divide-y overflow-hidden rounded-md border text-xs shadow-sm ring-2 transition-all',
+        'bg-secondary flex size-full min-h-40 flex-col overflow-hidden rounded-xl border text-xs shadow-sm ring-2 transition-all',
         isOver ? 'ring-primary' : 'ring-transparent',
         className,
       )}
@@ -108,7 +108,7 @@ export const KanbanCard = <T extends KanbanItemProps = KanbanItemProps>({
       <div style={style} {...listeners} {...attributes} ref={setNodeRef}>
         <Card
           className={cn(
-            'cursor-grab gap-4 rounded-md p-3 shadow-sm',
+            'cursor-grab gap-4 rounded-lg p-3 shadow-sm',
             isDragging && 'pointer-events-none cursor-grabbing opacity-30',
             className,
           )}
@@ -120,7 +120,7 @@ export const KanbanCard = <T extends KanbanItemProps = KanbanItemProps>({
         <t.In>
           <Card
             className={cn(
-              'ring-primary cursor-grab gap-4 rounded-md p-3 shadow-sm ring-2',
+              'ring-primary cursor-grab gap-4 rounded-lg p-3 shadow-sm ring-2',
               isDragging && 'cursor-grabbing',
               className,
             )}
@@ -157,7 +157,7 @@ export const KanbanCards = <T extends KanbanItemProps = KanbanItemProps>({
           {filteredData.map(children)}
         </div>
       </SortableContext>
-      <ScrollBar orientation="vertical" />
+      <ScrollBar orientation="vertical" className="" />
     </ScrollArea>
   );
 };

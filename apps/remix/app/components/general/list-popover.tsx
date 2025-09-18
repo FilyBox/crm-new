@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Trans, useLingui } from '@lingui/react/macro';
-import type { Board } from '@prisma/client';
+import { useLingui } from '@lingui/react/macro';
+import type { List } from '@prisma/client';
 import { X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { BoardVisibility, type TBoardVisibility } from '@documenso/lib/types/board-visibility';
 import type { EventColor } from '@documenso/prisma/generated/types';
 import { queryClient, trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
@@ -23,36 +22,30 @@ import {
 } from '@documenso/ui/primitives/form';
 import { Input } from '@documenso/ui/primitives/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@documenso/ui/primitives/select';
 
-import { getEventColorClassesGradient } from './event-calendar';
+import { getEventColorClasses } from './event-calendar';
 
-interface BoardDialogProps {
-  board: Board | null;
+interface ListPopoverProps {
+  list: Pick<List, 'id' | 'name' | 'color'> | null;
   isOpen: boolean;
   setIsSheetOpen: (isOpen: boolean) => void;
   children?: React.ReactNode;
-  canAdminAbove: boolean;
+  boardId: string;
+  onSave?: () => void;
 }
 
-export function BoardPopover({
-  board,
+export function ListPopover({
+  list,
   isOpen,
   setIsSheetOpen,
   children,
-  canAdminAbove,
-}: BoardDialogProps) {
+  boardId,
+  onSave,
+}: ListPopoverProps) {
   const { t } = useLingui();
   const formSchema = z.object({
     name: z.string().min(1, { message: t`Name cannot be empty` }),
     color: z.string(),
-    visibility: z.string().default(BoardVisibility.EVERYONE),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,23 +53,23 @@ export function BoardPopover({
     defaultValues: {
       name: '',
       color: 'blue',
-      visibility: BoardVisibility.EVERYONE,
     },
   });
 
-  const createBoardMutation = trpc.task.createBoard.useMutation({
+  const createListMutation = trpc.task.createList.useMutation({
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['boards'] });
+      await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
+      onSave?.();
     },
     onError: () => {
-      toast.error(t`Error creating board`, {
+      toast.error(t`Error creating list`, {
         className: '',
         position: 'bottom-center',
       });
     },
     onSettled: (success) => {
       if (success) {
-        toast.success(t`Board created successfully`, {
+        toast.success(t`List created successfully`, {
           className: '',
           position: 'bottom-center',
         });
@@ -85,19 +78,20 @@ export function BoardPopover({
     },
   });
 
-  const updateBoardMutation = trpc.task.updateBoard.useMutation({
+  const updateListMutation = trpc.task.updateList.useMutation({
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
+      onSave?.();
     },
     onError: () => {
-      toast.error(t`Error updating board`, {
+      toast.error(t`Error updating list`, {
         className: '',
         position: 'bottom-center',
       });
     },
     onSettled: (success) => {
       if (success) {
-        toast.success(t`Board updated successfully`, {
+        toast.success(t`List updated successfully`, {
           className: '',
           position: 'bottom-center',
         });
@@ -107,49 +101,45 @@ export function BoardPopover({
   });
 
   useEffect(() => {
-    if (board) {
+    if (list) {
       form.reset({
-        name: board.name || '',
-        color: (board.color as EventColor) || 'orange',
-        visibility: board.visibility || BoardVisibility.EVERYONE,
+        name: list.name || '',
+        color: (list.color as EventColor) || 'blue',
       });
     } else {
       form.reset({
         name: '',
         color: 'blue',
-        visibility: BoardVisibility.EVERYONE,
       });
     }
-  }, [board, form]);
+  }, [list, form]);
 
   const handleUpdate = async (values: z.infer<typeof formSchema>) => {
-    if (!board?.id) return;
+    if (!list?.id) return;
 
     const { name, color } = values;
-    await updateBoardMutation.mutate({
-      boardId: board.id,
+    await updateListMutation.mutate({
+      listId: list.id,
       name,
       color: color ? (color as EventColor) : 'blue',
-      visibility: values.visibility as TBoardVisibility,
     });
   };
 
   const handleCreate = async (values: z.infer<typeof formSchema>) => {
     const { name, color } = values;
-    await createBoardMutation.mutate({
+    await createListMutation.mutate({
       name,
       color: color ? (color as EventColor) : 'blue',
-      visibility: values.visibility as TBoardVisibility,
+      boardId,
     });
     form.reset({
       name: '',
       color: 'blue',
-      visibility: BoardVisibility.EVERYONE,
     });
   };
 
   const handleSave = (values: z.infer<typeof formSchema>) => {
-    if (board?.id) {
+    if (list?.id) {
       void handleUpdate(values);
     } else {
       void handleCreate(values);
@@ -157,13 +147,14 @@ export function BoardPopover({
   };
 
   const colorOptions = [
-    { value: 'blue', label: 'Blue', class: getEventColorClassesGradient('blue') },
-    { value: 'emerald', label: 'Emerald', class: getEventColorClassesGradient('emerald') },
-    { value: 'sky', label: 'Sky', class: getEventColorClassesGradient('sky') },
-    { value: 'violet', label: 'Violet', class: getEventColorClassesGradient('violet') },
-    { value: 'rose', label: 'Rose', class: getEventColorClassesGradient('rose') },
-    { value: 'orange', label: 'Orange', class: getEventColorClassesGradient('orange') },
+    { value: 'blue', label: 'Blue', class: getEventColorClasses('blue') },
+    { value: 'emerald', label: 'Emerald', class: getEventColorClasses('emerald') },
+    { value: 'sky', label: 'Sky', class: getEventColorClasses('sky') },
+    { value: 'violet', label: 'Violet', class: getEventColorClasses('violet') },
+    { value: 'rose', label: 'Rose', class: getEventColorClasses('rose') },
+    { value: 'orange', label: 'Orange', class: getEventColorClasses('orange') },
   ];
+
   return (
     <Popover open={isOpen} onOpenChange={setIsSheetOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
@@ -171,7 +162,7 @@ export function BoardPopover({
         <div className="flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between border-b p-4">
-            <h3 className="font-medium">{board?.id ? 'Editar tablero' : 'Crear tablero'}</h3>
+            <h3 className="font-medium">{list?.id ? 'Editar lista' : 'Crear lista'}</h3>
             <Button
               variant="ghost"
               size="sm"
@@ -191,12 +182,12 @@ export function BoardPopover({
               <div
                 className={cn(
                   'relative h-20 overflow-hidden rounded-lg',
-                  getEventColorClassesGradient(form.watch('color')),
+                  getEventColorClasses(form.watch('color')),
                 )}
               >
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                   <div className="rounded bg-white/90 px-2 py-1 text-xs font-medium text-black backdrop-blur-sm">
-                    📋 {form.watch('name') || 'Título del tablero'}
+                    📝 {form.watch('name') || 'Título de la lista'}
                   </div>
                 </div>
               </div>
@@ -228,54 +219,16 @@ export function BoardPopover({
                   </div>
                 </div>
 
-                {/* Título del tablero */}
+                {/* Título de la lista */}
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Título del tablero *</FormLabel>
+                      <FormLabel className="text-sm font-medium">Título de la lista *</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="" className="bg-background" />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="visibility"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        <Trans>Visibility</Trans>
-                      </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t`Select visibility`} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value={BoardVisibility.EVERYONE}>
-                            <Trans>Everyone</Trans>
-                          </SelectItem>
-                          {canAdminAbove && (
-                            <SelectItem value={BoardVisibility.MANAGER_AND_ABOVE}>
-                              <Trans>Managers and above</Trans>
-                            </SelectItem>
-                          )}
-                          {canAdminAbove && (
-                            <SelectItem value={BoardVisibility.ADMIN}>
-                              <Trans>Admins only</Trans>
-                            </SelectItem>
-                          )}
-                          <SelectItem value={BoardVisibility.ONLY_ME}>
-                            <Trans>Only me</Trans>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -287,7 +240,7 @@ export function BoardPopover({
             <div className="space-y-3 pt-2">
               <Button
                 className="w-full"
-                disabled={createBoardMutation.isPending || updateBoardMutation.isPending}
+                disabled={createListMutation.isPending || updateListMutation.isPending}
                 onClick={async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -298,11 +251,11 @@ export function BoardPopover({
                   }
                 }}
               >
-                {createBoardMutation.isPending || updateBoardMutation.isPending
-                  ? board?.id
+                {createListMutation.isPending || updateListMutation.isPending
+                  ? list?.id
                     ? t`Updating...`
                     : t`Creating...`
-                  : board?.id
+                  : list?.id
                     ? t`Update`
                     : t`Create`}
               </Button>

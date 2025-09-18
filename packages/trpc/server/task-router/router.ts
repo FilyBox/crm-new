@@ -254,6 +254,38 @@ export const taskRouter = router({
       };
     }),
 
+  updateList: authenticatedProcedure
+    .input(
+      z.object({
+        listId: z.string(),
+        name: z.string().min(1),
+        color: z.enum(['blue', 'orange', 'violet', 'rose', 'emerald', 'sky']).optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { listId, name, color } = input;
+      const { teamId, user } = ctx;
+      const userId = user.id;
+
+      const existingList = await prisma.list.findFirst({
+        where: { id: listId, teamId },
+      });
+
+      if (!existingList) {
+        throw new Error('List not found or you do not have permission to update it');
+      }
+
+      const updatedList = await prisma.list.update({
+        where: { id: listId },
+        data: {
+          name,
+          ...(color && { color }),
+        },
+      });
+
+      return updatedList;
+    }),
+
   createBoard: authenticatedProcedure
     .input(
       z.object({

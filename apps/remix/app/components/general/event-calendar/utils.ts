@@ -10,20 +10,55 @@ export function getEventColorClasses(color?: EventColor | string): string {
 
   switch (eventColor) {
     case 'sky':
-      return 'bg-blue-200 dark:!text-blue-100 !text-blue-900 hover:bg-blue-200/40 dark:bg-blue-400/25 dark:hover:bg-blue-400/20 dark:text-blue-200 shadow-blue-700/8';
+      return 'bg-indigo-200/80 border border-indigo-400 dark:border-indigo-600 dark:!text-indigo-100 !text-indigo-900  dark:bg-indigo-900/80  dark:text-indigo-200 shadow-indigo-700/8';
     case 'violet':
-      return 'bg-violet-200 dark:!text-violet-100 !text-violet-900 hover:bg-violet-200/40 dark:bg-violet-400/25 dark:hover:bg-violet-400/20 dark:text-violet-200 shadow-violet-700/8';
+      return 'bg-violet-200/80 border border-violet-400 dark:border-violet-600 dark:!text-violet-100 !text-violet-900 dark:bg-violet-900/80  dark:text-violet-200 shadow-violet-700/8';
     case 'rose':
-      return 'bg-rose-200 dark:!text-rose-100 !text-rose-900 hover:bg-rose-200/40 dark:bg-rose-400/25 dark:hover:bg-rose-400/20 dark:text-rose-200 shadow-rose-700/8';
+      return 'bg-rose-200/80 border border-rose-400 dark:border-rose-600 dark:!text-rose-100 !text-rose-900  dark:bg-rose-900/80  dark:text-rose-200 shadow-rose-700/8';
     case 'emerald':
-      return 'bg-emerald-200 dark:!text-emerald-100 !text-emerald-900 hover:bg-emerald-200/40 dark:bg-emerald-400/25 dark:hover:bg-emerald-400/20 dark:text-emerald-200 shadow-emerald-700/8';
+      return 'bg-emerald-200/80 border border-emerald-400 dark:border-emerald-600 dark:!text-emerald-100 !text-emerald-900  dark:bg-emerald-900/80  dark:text-emerald-200 shadow-emerald-700/8';
     case 'orange':
-      return 'bg-orange-200 dark:!text-orange-100 !text-orange-900 hover:bg-orange-200/40 dark:bg-orange-400/25 dark:hover:bg-orange-400/20 dark:text-orange-200 shadow-orange-700/8';
+      return 'bg-orange-200/80 border border-orange-400 dark:border-orange-600 dark:!text-orange-100 !text-orange-900  dark:bg-orange-900/80 dark:text-orange-200 shadow-orange-700/8';
     default:
-      return 'bg-blue-200 dark:!text-blue-100 !text-blue-900 hover:bg-blue-200/40 dark:bg-blue-400/25 dark:hover:bg-blue-400/20 dark:text-blue-200 shadow-blue-700/8';
+      return 'bg-indigo-200/80 border border-indigo-400 dark:border-indigo-600 dark:!text-indigo-100 !text-indigo-900  dark:bg-indigo-900/80 dark:text-indigo-200 shadow-indigo-700/8';
   }
 }
 
+export function getEventColorBorderClasses(color?: EventColor | string): string {
+  const eventColor = color || 'sky';
+  switch (eventColor) {
+    case 'sky':
+      return 'border-blue-400';
+    case 'violet':
+      return 'border-violet-400';
+    case 'rose':
+      return 'border-rose-400';
+    case 'emerald':
+      return 'border-emerald-400';
+    case 'orange':
+      return 'border-orange-400';
+    default:
+      return 'border-blue-400';
+  }
+}
+
+export function getEventColorClassesGradient(color?: EventColor | string): string {
+  const eventColor = color || 'sky';
+  switch (eventColor) {
+    case 'sky':
+      return 'bg-gradient-to-b from-blue-400 via-cyan-400 to-blue-600 dark:from-blue-600 dark:via-cyan-600 dark:to-blue-800';
+    case 'violet':
+      return 'bg-gradient-to-b from-purple-400 via-violet-400 to-fuchsia-600 dark:from-purple-600 dark:via-violet-600 dark:to-fuchsia-800';
+    case 'rose':
+      return 'bg-gradient-to-b from-rose-400 via-pink-400 to-rose-600 dark:from-rose-600 dark:via-pink-600 dark:to-rose-800';
+    case 'emerald':
+      return 'bg-gradient-to-b from-emerald-400 via-teal-400 to-emerald-600 dark:from-emerald-600 dark:via-teal-600 dark:to-emerald-800';
+    case 'orange':
+      return 'bg-gradient-to-b from-orange-400 via-yellow-400 to-orange-600 dark:from-orange-600 dark:via-yellow-600 dark:to-orange-800';
+    default:
+      return 'bg-gradient-to-b from-blue-400 via-cyan-400 to-blue-600 dark:from-blue-600 dark:via-cyan-600 dark:to-blue-800';
+  }
+}
 /**
  * Get CSS classes for border radius based on event position in multi-day events
  */

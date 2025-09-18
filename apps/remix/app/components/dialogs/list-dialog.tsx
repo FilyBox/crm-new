@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { Board } from '@prisma/client';
-import { Trash2Icon } from 'lucide-react';
+import { PlusIcon, Trash2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -36,7 +36,6 @@ interface ListDialogProps {
   board: Board | null;
   isOpen: boolean;
   setIsSheetOpen: (isOpen: boolean) => void;
-  setInitialData: (data: Board | null) => void;
   boardId: string;
   onClose: () => void;
   onSave: (board: Pick<Board, 'id' | 'name' | 'color'>) => void;
@@ -46,7 +45,6 @@ interface ListDialogProps {
 export function ListDialog({
   board,
   boardId,
-  setInitialData,
   isOpen,
   setIsSheetOpen,
   onClose,
@@ -184,7 +182,8 @@ export function ListDialog({
   return (
     <Dialog open={isOpen} onOpenChange={setIsSheetOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setInitialData(null)} className="w-full sm:w-fit">
+        <Button className="flex w-full min-w-60 items-center justify-start bg-zinc-200/60 text-white hover:bg-zinc-200/50 sm:w-fit">
+          <PlusIcon className="mr-2" size={16} />
           <Trans>New List</Trans>
         </Button>
       </DialogTrigger>

@@ -178,21 +178,18 @@ export const TaskCreateDialog = ({
       onOpenChange={(value) => !isCreatingTask && setShowTaskCreateDialog(value)}
     >
       <DrawerTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <PlusIcon className="h-4 w-4" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex h-7 w-full items-center justify-start py-1"
+        >
+          <PlusIcon className="mr-2 h-4 w-4" />
+          <Trans>Add Task</Trans>
         </Button>
       </DrawerTrigger>
 
       <DrawerContent className="h-[90vh] !max-h-screen w-full">
         <DrawerHeader>
-          {/* <DrawerTitle>
-            <Trans>Create New Task</Trans>
-          </DrawerTitle> */}
-          {/* <DrawerDescription>
-            <Trans>
-              Create a new task with details like title, description, priority and due date.
-            </Trans>
-          </DrawerDescription> */}
           <div>
             <Trans>Title</Trans>
             <Input
