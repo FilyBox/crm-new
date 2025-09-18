@@ -19,6 +19,7 @@ import { profileRouter } from './profile-router/router';
 import { recipientRouter } from './recipient-router/router';
 import { releaseRouter } from './releases-router/router';
 import { shareLinkRouter } from './share-link-router/router';
+import { taskRouter } from './task-router/router';
 import { teamRouter } from './team-router/router';
 import { templateRouter } from './template-router/router';
 import { ticketTypeRouter } from './ticket-type-router/router';
@@ -53,6 +54,7 @@ export const appRouter = router({
   events: eventRouter,
   ticketType: ticketTypeRouter,
   chat: chatRouter,
+  task: taskRouter,
 });
 
 export type AppRouter = typeof appRouter;

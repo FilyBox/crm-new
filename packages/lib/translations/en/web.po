@@ -52,6 +52,7 @@ msgstr "\"{placeholderEmail}\" on behalf of \"Team Name\" has invited you to sig
 msgid "\"Team Name\" has invited you to sign \"example document\"."
 msgstr "\"Team Name\" has invited you to sign \"example document\"."
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "(no title)"
 msgstr "(no title)"
@@ -910,6 +911,10 @@ msgstr "Add a custom domain to send emails on behalf of your organisation. We'll
 msgid "Add a document"
 msgstr "Add a document"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Add a new board to your calendar"
+msgstr "Add a new board to your calendar"
+
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Add a new event to your calendar"
 msgstr "Add a new event to your calendar"
@@ -1116,6 +1121,7 @@ msgid "Admin Panel"
 msgstr "Admin Panel"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 #: packages/lib/constants/document-visibility.ts
 #: packages/ui/components/document/document-visibility-select.tsx
 msgid "Admins only"
@@ -1610,6 +1616,10 @@ msgstr "Are you sure you want to complete the document? This action cannot be un
 msgid "Are you sure you want to delete the following claim?"
 msgstr "Are you sure you want to delete the following claim?"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Are you sure you want to delete this board?"
+msgstr "Are you sure you want to delete this board?"
+
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Are you sure you want to delete this event?"
 msgstr "Are you sure you want to delete this event?"
@@ -1848,6 +1858,20 @@ msgstr "Blocked"
 msgid "Blue"
 msgstr "Blue"
 
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Board created successfully"
+msgstr "Board created successfully"
+
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Board updated successfully"
+msgstr "Board updated successfully"
+
+#. placeholder {0}: team.name
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tasks._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tasks._index.tsx
+msgid "Boards from {0}"
+msgstr "Boards from {0}"
+
 #: apps/remix/app/components/forms/branding-preferences-form.tsx
 msgid "Brand Details"
 msgstr "Brand Details"
@@ -1972,6 +1996,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-delete-dialog.tsx
@@ -1990,6 +2015,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/dialogs/passkey-create-dialog.tsx
 #: apps/remix/app/components/dialogs/public-profile-template-manage-dialog.tsx
 #: apps/remix/app/components/dialogs/session-logout-all-dialog.tsx
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-delete-dialog.tsx
@@ -2561,6 +2587,7 @@ msgstr "Cover"
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-group-create-dialog.tsx
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 #: apps/remix/app/routes/_profile+/_layout.tsx
 msgid "Create"
 msgstr "Create"
@@ -2672,6 +2699,7 @@ msgstr "Create document from template"
 msgid "Create Email"
 msgstr "Create Email"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Create Event"
 msgstr "Create Event"
@@ -2738,6 +2766,10 @@ msgstr "Create signing links"
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Create Subscription Claim"
 msgstr "Create Subscription Claim"
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Create Task"
+msgstr "Create Task"
 
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
 #: apps/remix/app/components/dialogs/team-create-dialog.tsx
@@ -2858,6 +2890,10 @@ msgstr "Creating record..."
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
 msgid "Creating ticket template..."
 msgstr "Creating ticket template..."
+
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Creating..."
+msgstr "Creating..."
 
 #: apps/remix/app/components/general/task/task-priority.tsx
 msgid "Critical"
@@ -2986,6 +3022,7 @@ msgstr "delete"
 #: apps/remix/app/components/dialogs/document-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/files-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-delete-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-email-delete-dialog.tsx
@@ -3761,6 +3798,10 @@ msgstr "Dropdown"
 msgid "Dropdown options"
 msgstr "Dropdown options"
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Due Date"
+msgstr "Due Date"
+
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 #: apps/remix/app/components/dialogs/document-duplicate-dialog.tsx
 #: apps/remix/app/components/dialogs/template-duplicate-dialog.tsx
@@ -3794,6 +3835,7 @@ msgstr "Duration"
 msgid "Edit"
 msgstr "Edit"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Edit Event"
 msgstr "Edit Event"
@@ -3801,6 +3843,10 @@ msgstr "Edit Event"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
 msgid "Edit Template"
 msgstr "Edit Template"
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "Edit the details of this board"
+msgstr "Edit the details of this board"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Edit the details of this event"
@@ -4163,6 +4209,12 @@ msgstr "Error"
 msgid "Error al reintentar"
 msgstr "Error al reintentar"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Error creating board"
+msgstr "Error creating board"
+
 #. placeholder {0}: event.name
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Error creating event \"{0}\""
@@ -4220,6 +4272,10 @@ msgstr "Error processing file"
 msgid "Error retrying document"
 msgstr "Error retrying document"
 
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Error updating board"
+msgstr "Error updating board"
+
 #. placeholder {0}: event.name
 #. placeholder {0}: updatedEvent.name
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
@@ -4245,6 +4301,7 @@ msgstr "Error uploading file"
 msgid "Error while processing CSV"
 msgstr "Error while processing CSV"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Etiquette"
 msgstr "Etiquette"
@@ -4274,6 +4331,7 @@ msgid "Events"
 msgstr "Events"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 #: packages/lib/constants/document-visibility.ts
 #: packages/ui/components/document/document-visibility-select.tsx
 msgid "Everyone"
@@ -5372,6 +5430,7 @@ msgid "Manager"
 msgstr "Manager"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 #: packages/lib/constants/document-visibility.ts
 #: packages/ui/components/document/document-visibility-select.tsx
 msgid "Managers and above"
@@ -5583,6 +5642,8 @@ msgstr "N/A"
 msgid "Name"
 msgstr "Name"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Name cannot be empty"
 msgstr "Name cannot be empty"
@@ -5618,6 +5679,10 @@ msgstr "Never expire"
 #: apps/remix/app/components/dialogs/artist-create-dialog.tsx
 msgid "New Artist"
 msgstr "New Artist"
+
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "New Board"
+msgstr "New Board"
 
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "New Event"
@@ -5946,6 +6011,10 @@ msgstr "Only admins can access and view the document"
 #: packages/ui/components/document/document-visibility-select.tsx
 msgid "Only managers and above can access and view the document"
 msgstr "Only managers and above can access and view the document"
+
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Only me"
+msgstr "Only me"
 
 #: apps/remix/app/components/general/generic-error-layout.tsx
 #: apps/remix/app/components/general/generic-error-layout.tsx
@@ -6421,6 +6490,7 @@ msgstr "Please try a different domain."
 msgid "Please try again and make sure you enter the correct email address."
 msgstr "Please try again and make sure you enter the correct email address."
 
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/dialogs/template-create-dialog.tsx
 #: apps/remix/app/components/general/template/template-drop-zone-wrapper.tsx
 msgid "Please try again later."
@@ -6490,6 +6560,10 @@ msgstr "Price"
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Primary Metadata Language"
 msgstr "Primary Metadata Language"
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "Priority"
+msgstr "Priority"
 
 #: apps/remix/app/components/general/template/template-type.tsx
 #: apps/remix/app/components/tables/new-templates-table.tsx
@@ -6773,6 +6847,8 @@ msgstr "Record Name"
 msgid "Record Type"
 msgstr "Record Type"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -7084,6 +7160,7 @@ msgstr "RTL"
 msgid "Sample Start Time"
 msgstr "Sample Start Time"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
 #: apps/remix/app/components/dialogs/template-direct-link-dialog.tsx
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
 #: apps/remix/app/components/embed/authoring/configure-fields-view.tsx
@@ -7332,6 +7409,7 @@ msgid "Select triggers"
 msgstr "Select triggers"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 msgid "Select visibility"
 msgstr "Select visibility"
 
@@ -8052,6 +8130,10 @@ msgstr "Task cancelled"
 msgid "Task in progress"
 msgstr "Task in progress"
 
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Tasks"
+msgstr "Tasks"
+
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
@@ -8348,6 +8430,10 @@ msgstr "The authentication methods required for recipients to sign the signature
 msgid "The authentication methods required for recipients to view the document."
 msgstr "The authentication methods required for recipients to view the document."
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+msgid "The board will be deleted"
+msgstr "The board will be deleted"
+
 #: apps/remix/app/routes/_authenticated+/admin+/site-settings.tsx
 msgid "The content to show in the banner, HTML is allowed"
 msgstr "The content to show in the banner, HTML is allowed"
@@ -8569,6 +8655,14 @@ msgstr "The signing link has been copied to your clipboard."
 #: apps/remix/app/routes/_authenticated+/admin+/site-settings.tsx
 msgid "The site banner is a message that is shown at the top of the site. It can be used to display important information to your users."
 msgstr "The site banner is a message that is shown at the top of the site. It can be used to display important information to your users."
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "The specified project does not exist or you don't have access."
+msgstr "The specified project does not exist or you don't have access."
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "The specified team does not exist or you don't have access."
+msgstr "The specified team does not exist or you don't have access."
 
 #: packages/email/templates/team-email-removed.tsx
 msgid "The team email <0>{teamEmail}</0> has been removed from the following team"
@@ -8944,6 +9038,8 @@ msgstr "Tipo de Ingreso"
 msgid "Tipo de Precio"
 msgstr "Tipo de Precio"
 
+#: apps/remix/app/components/dialogs/list-dialog.tsx
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
@@ -9371,6 +9467,7 @@ msgstr "UPC"
 #: apps/remix/app/components/forms/document-preferences-form.tsx
 #: apps/remix/app/components/forms/email-preferences-form.tsx
 #: apps/remix/app/components/forms/public-profile-form.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/settings-public-profile-templates-table.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
@@ -9533,6 +9630,10 @@ msgstr "Updating record..."
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Updating Your Information"
 msgstr "Updating Your Information"
+
+#: apps/remix/app/components/general/board-popover.tsx
+msgid "Updating..."
+msgstr "Updating..."
 
 #: packages/ui/primitives/any-file-upload.tsx
 #: packages/ui/primitives/document-dropzone.tsx
@@ -9715,6 +9816,10 @@ msgstr "User Organisations"
 #: apps/remix/app/components/forms/signup.tsx
 msgid "User profiles are here!"
 msgstr "User profiles are here!"
+
+#: apps/remix/app/components/dialogs/task-create-dialog.tsx
+msgid "User session is invalid. Please log in again."
+msgstr "User session is invalid. Please log in again."
 
 #: apps/remix/app/components/general/menu-switcher.tsx
 msgid "User settings"
@@ -9955,6 +10060,7 @@ msgid "Virgin Statistics"
 msgstr "Virgin Statistics"
 
 #: apps/remix/app/components/dialogs/folder-update-dialog.tsx
+#: apps/remix/app/components/general/board-popover.tsx
 msgid "Visibility"
 msgstr "Visibility"
 

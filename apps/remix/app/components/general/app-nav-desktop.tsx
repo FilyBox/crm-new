@@ -70,6 +70,10 @@ export const AppNavDesktop = ({
         href: `/t/${teamUrl}/events`,
         label: msg`Events`,
       },
+      {
+        href: `/t/${teamUrl}/tasks`,
+        label: msg`Tasks`,
+      },
     ];
   }, [currentTeam, organisations]);
 

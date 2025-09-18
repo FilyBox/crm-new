@@ -10,17 +10,17 @@ export function getEventColorClasses(color?: EventColor | string): string {
 
   switch (eventColor) {
     case 'sky':
-      return 'bg-blue-200 hover:bg-blue-200/40 text-blue-900/90 dark:bg-blue-400/25 dark:hover:bg-blue-400/20 dark:text-blue-200 shadow-blue-700/8';
+      return 'bg-blue-200 dark:!text-blue-100 !text-blue-900 hover:bg-blue-200/40 dark:bg-blue-400/25 dark:hover:bg-blue-400/20 dark:text-blue-200 shadow-blue-700/8';
     case 'violet':
-      return 'bg-violet-200 hover:bg-violet-200/40 text-violet-900/90 dark:bg-violet-400/25 dark:hover:bg-violet-400/20 dark:text-violet-200 shadow-violet-700/8';
+      return 'bg-violet-200 dark:!text-violet-100 !text-violet-900 hover:bg-violet-200/40 dark:bg-violet-400/25 dark:hover:bg-violet-400/20 dark:text-violet-200 shadow-violet-700/8';
     case 'rose':
-      return 'bg-rose-200 hover:bg-rose-200/40 text-rose-900/90 dark:bg-rose-400/25 dark:hover:bg-rose-400/20 dark:text-rose-200 shadow-rose-700/8';
+      return 'bg-rose-200 dark:!text-rose-100 !text-rose-900 hover:bg-rose-200/40 dark:bg-rose-400/25 dark:hover:bg-rose-400/20 dark:text-rose-200 shadow-rose-700/8';
     case 'emerald':
-      return 'bg-emerald-200 hover:bg-emerald-200/40 text-emerald-900/90 dark:bg-emerald-400/25 dark:hover:bg-emerald-400/20 dark:text-emerald-200 shadow-emerald-700/8';
+      return 'bg-emerald-200 dark:!text-emerald-100 !text-emerald-900 hover:bg-emerald-200/40 dark:bg-emerald-400/25 dark:hover:bg-emerald-400/20 dark:text-emerald-200 shadow-emerald-700/8';
     case 'orange':
-      return 'bg-orange-200 hover:bg-orange-200/40 text-orange-900/90 dark:bg-orange-400/25 dark:hover:bg-orange-400/20 dark:text-orange-200 shadow-orange-700/8';
+      return 'bg-orange-200 dark:!text-orange-100 !text-orange-900 hover:bg-orange-200/40 dark:bg-orange-400/25 dark:hover:bg-orange-400/20 dark:text-orange-200 shadow-orange-700/8';
     default:
-      return 'bg-blue-200 hover:bg-blue-200/40 text-blue-900/90 dark:bg-blue-400/25 dark:hover:bg-blue-400/20 dark:text-blue-200 shadow-blue-700/8';
+      return 'bg-blue-200 dark:!text-blue-100 !text-blue-900 hover:bg-blue-200/40 dark:bg-blue-400/25 dark:hover:bg-blue-400/20 dark:text-blue-200 shadow-blue-700/8';
   }
 }
 

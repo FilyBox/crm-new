@@ -33,6 +33,7 @@
     "@lingui/detect-locale": "^5.2.0",
     "@lingui/macro": "^5.2.0",
     "@lingui/react": "^5.2.0",
+    "@novu/react": "^3.9.3",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@react-router/node": "^7.6.0",

@@ -4,7 +4,7 @@ import { TaskAssigneeSchema } from '@documenso/prisma/generated/zod/modelSchema/
 import { TaskCommentSchema } from '@documenso/prisma/generated/zod/modelSchema/TaskCommentSchema';
 import { TaskSchema } from '@documenso/prisma/generated/zod/modelSchema/TaskSchema';
 import { TeamSchema } from '@documenso/prisma/generated/zod/modelSchema/TeamSchema';
-import { UserSchema } from '@documenso/prisma/generated/zod/modelSchema/UserSchema';
+import UserSchema from '@documenso/prisma/generated/zod/modelSchema/UserSchema';
 
 const ZTaskAssigneeSchema = z.object({
   name: z.string().optional(),
@@ -27,24 +27,35 @@ export const ZTaskSchema = TaskSchema.pick({
   updatedAt: true,
   completedAt: true,
   deletedAt: true,
+  listId: true,
   teamId: true,
 }).extend({
   enhancedAssignees: z.array(ZTaskAssigneeSchema).optional(),
-  assignees: TaskAssigneeSchema.pick({
-    id: true,
-    userId: true,
-    taskId: true,
-    assignedAt: true,
-    assignedBy: true,
-  }),
-  comments: TaskCommentSchema.pick({
-    id: true,
-    userId: true,
-    createdAt: true,
-    updatedAt: true,
-    taskId: true,
-    content: true,
-  }),
+  assignees: z.array(
+    TaskAssigneeSchema.pick({
+      id: true,
+      userId: true,
+      taskId: true,
+      assignedAt: true,
+      assignedBy: true,
+    }).extend({
+      user: UserSchema.pick({
+        id: true,
+        name: true,
+        email: true,
+      }),
+    }),
+  ),
+  comments: z.array(
+    TaskCommentSchema.pick({
+      id: true,
+      userId: true,
+      createdAt: true,
+      updatedAt: true,
+      taskId: true,
+      content: true,
+    }),
+  ),
 });
 
 export type TTask = z.infer<typeof ZTaskSchema>;
@@ -52,7 +63,7 @@ export type TTask = z.infer<typeof ZTaskSchema>;
 /**
  * A lite version of the document response schema without relations.
  */
-export const ZDocumentLiteSchema = TaskSchema.pick({
+export const ZTaskLiteSchema = TaskSchema.pick({
   id: true,
   externalId: true,
   userId: true,
@@ -69,9 +80,10 @@ export const ZDocumentLiteSchema = TaskSchema.pick({
   completedAt: true,
   deletedAt: true,
   teamId: true,
+  listId: true,
 });
 
-export type TTaskLite = z.infer<typeof ZDocumentLiteSchema>;
+export type TTaskLite = z.infer<typeof ZTaskLiteSchema>;
 
 /**
  * A version of the document response schema when returning multiple documents at once from a single API endpoint.
@@ -93,6 +105,7 @@ export const ZTaskManySchema = TaskSchema.pick({
   completedAt: true,
   deletedAt: true,
   teamId: true,
+  listId: true,
 }).extend({
   user: UserSchema.pick({
     id: true,
@@ -105,4 +118,4 @@ export const ZTaskManySchema = TaskSchema.pick({
   }).nullable(),
 });
 
-export type TDocumentMany = z.infer<typeof ZTaskManySchema>;
+export type TTaskMany = z.infer<typeof ZTaskManySchema>;

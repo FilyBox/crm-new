@@ -17,6 +17,7 @@ import { AppCommandMenu } from './app-command-menu';
 import { AppNavDesktop } from './app-nav-desktop';
 import { AppNavMobile } from './app-nav-mobile';
 import { MenuSwitcher } from './menu-switcher';
+import NotificationCenter from './notification-center';
 import { OrgMenuSwitcher } from './org-menu-switcher';
 
 export type HeaderProps = HTMLAttributes<HTMLDivElement>;
@@ -24,20 +25,20 @@ export type HeaderProps = HTMLAttributes<HTMLDivElement>;
 export const Header = ({ className, ...props }: HeaderProps) => {
   const params = useParams();
 
-  const { organisations } = useSession();
+  const { organisations, user } = useSession();
 
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
-  const { data: unreadCountData } = trpc.document.inbox.getCount.useQuery(
-    {
-      readStatus: ReadStatus.NOT_OPENED,
-    },
-    {
-      // refetchInterval: 30000, // Refetch every 30 seconds
-    },
-  );
+  // const { data: unreadCountData } = trpc.document.inbox.getCount.useQuery(
+  //   {
+  //     readStatus: ReadStatus.NOT_OPENED,
+  //   },
+  //   {
+  //     // refetchInterval: 30000, // Refetch every 30 seconds
+  //   },
+  // );
 
   useEffect(() => {
     let throttleTimeout: NodeJS.Timeout | null = null;
@@ -84,7 +85,7 @@ export const Header = ({ className, ...props }: HeaderProps) => {
 
         <AppNavDesktop setIsCommandMenuOpen={setIsCommandMenuOpen} />
 
-        <Button asChild variant="outline" className="relative hidden h-10 w-10 rounded-lg md:flex">
+        {/* <Button asChild variant="outline" className="relative hidden h-10 w-10 rounded-lg md:flex">
           <Link to="/inbox" className="relative block h-10 w-10">
             <InboxIcon className="text-muted-foreground hover:text-foreground h-5 w-5 flex-shrink-0 transition-colors" />
 
@@ -94,7 +95,9 @@ export const Header = ({ className, ...props }: HeaderProps) => {
               </span>
             )}
           </Link>
-        </Button>
+        </Button> */}
+
+        <NotificationCenter suscriberId={user.id.toString()} />
 
         <div className="md:-ml-2">
           {isPersonalLayout(organisations) ? <MenuSwitcher /> : <OrgMenuSwitcher />}

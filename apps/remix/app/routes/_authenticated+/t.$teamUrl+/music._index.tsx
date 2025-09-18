@@ -159,8 +159,6 @@ export default function TablePage() {
   const findAll = async () => {
     try {
       const result = await findData.mutateAsync({});
-
-      // Transform the data to match the expected type
       if (Array.isArray(result)) {
         return result;
       } else {
