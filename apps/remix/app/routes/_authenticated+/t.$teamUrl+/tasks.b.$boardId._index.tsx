@@ -27,12 +27,25 @@ import { StackAvatarsTasksWithTooltip } from '~/components/general/stack-avatars
 import { useCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
 import { useSortParams } from '~/utils/searchParams';
+import { superLoaderJson, useSuperLoaderData } from '~/utils/super-json-loader';
+
+import type { Route } from './+types/tasks.b.$boardId._index';
 
 export function meta() {
   return appMetaTags('Tasks');
 }
 
+export function loader({ params }: Route.LoaderArgs) {
+  const { boardId } = params;
+
+  return superLoaderJson({
+    boardId,
+  });
+}
+
 export default function TasksPage() {
+  const { boardId } = useSuperLoaderData<typeof loader>();
+
   const { filters, joinOperator } = useSortParams({ sortColumns: z.enum(['createdAt']) });
   const team = useCurrentTeam();
   const [editingTask, setEditingTask] = React.useState<TTask | null>(null);
@@ -44,7 +57,7 @@ export default function TasksPage() {
     {
       filterStructure: filters,
       joinOperator: joinOperator,
-      boardId: '',
+      boardId: boardId,
     },
     queryOptions({
       queryKey: ['boardsTasks', filters, joinOperator],
@@ -76,16 +89,6 @@ export default function TasksPage() {
     },
   );
 
-  const handleEditTask = (record: TTask) => {
-    setEditingTask(record);
-    setIsSheetOpen(true);
-  };
-
-  const openCreateDialogTask = () => {
-    setEditingTask(null);
-    setIsSheetOpen(true);
-  };
-
   if (isLoading || isTeamMembersLoading) {
     return <div className="bg-muted h-full w-full animate-pulse" />;
   }
@@ -115,7 +118,7 @@ export default function TasksPage() {
                 id={column.id}
                 key={column.id}
               >
-                <KanbanHeader className={cn('', getEventColorClasses(column.color))}>
+                <KanbanHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div
@@ -133,10 +136,7 @@ export default function TasksPage() {
                     />
                   </div>
                 </KanbanHeader>
-                <KanbanCards
-                  className={cn('h-full', getEventColorClasses(column.color))}
-                  id={column.id}
-                >
+                <KanbanCards id={column.id}>
                   {(task: any) => (
                     <KanbanCard key={task.id} id={task.id} name={task.name} column={task.column}>
                       <TaskCardContent task={task} />
@@ -152,7 +152,6 @@ export default function TasksPage() {
   );
 }
 
-// Componente separado para el contenido de la tarjeta
 function TaskCardContent({ task }: { task: any }) {
   const date = task.dueDate ? new Date(task.dueDate) : undefined;
 

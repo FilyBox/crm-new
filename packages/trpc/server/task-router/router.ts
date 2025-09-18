@@ -290,6 +290,22 @@ export const taskRouter = router({
           visibility,
         },
       });
+
+      const defaultLists = ['To Do', 'In Progress', 'Done'];
+      await Promise.allSettled(
+        defaultLists.map(async (listName) =>
+          prisma.list.create({
+            data: {
+              color: 'blue',
+              teamId,
+              userId,
+              name: listName,
+              boardId: board.id,
+            },
+          }),
+        ),
+      );
+
       return board;
     }),
 

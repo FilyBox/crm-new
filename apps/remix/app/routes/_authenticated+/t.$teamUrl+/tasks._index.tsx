@@ -4,10 +4,12 @@ import { Trans } from '@lingui/react/macro';
 import type { Board } from '@prisma/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MoreVertical, PencilIcon, PlusIcon, Trash2 } from 'lucide-react';
+import { Link } from 'react-router';
 import { toast } from 'sonner';
 
 import { useSession } from '@documenso/lib/client-only/providers/session';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
+import { formTasksPath } from '@documenso/lib/utils/teams';
 import { trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
@@ -23,7 +25,7 @@ import {
 import { BoardPopover } from '~/components/general/board-popover';
 import { getEventColorClasses } from '~/components/general/event-calendar';
 import { useCurrentTeam } from '~/providers/team';
-import { canPerformAdminAction, canPerformManagerAndAboveAction } from '~/utils/constants';
+import { canPerformManagerAndAboveAction } from '~/utils/constants';
 import { appMetaTags } from '~/utils/meta';
 
 export function meta() {
@@ -36,12 +38,11 @@ export default function TasksPage() {
 
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
   const [prevBoardsLength, setPrevBoardsLength] = useState(0);
+  const taskRootPath = formTasksPath(team?.url);
 
   const [openEditDialogs, setOpenEditDialogs] = useState<Record<string, boolean>>({});
   const canAdminAbove = canPerformManagerAndAboveAction({ teamMemberRole: team?.currentTeamRole });
-  const canAdmin = canPerformAdminAction({ teamMemberRole: team?.currentTeamRole });
 
   const {
     data: boards,
@@ -51,7 +52,6 @@ export default function TasksPage() {
     refetchOnWindowFocus: false,
   });
 
-  // Track when new boards are added
   useEffect(() => {
     if (boards && boards.length > prevBoardsLength) {
       setPrevBoardsLength(boards.length);
@@ -184,76 +184,78 @@ export default function TasksPage() {
       >
         <AnimatePresence mode="popLayout">
           {boards?.map((board) => (
-            <motion.div
-              key={board.id}
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              layout
-              layoutId={board.id}
-            >
-              <Card className="group h-36 cursor-pointer transition-shadow hover:shadow-lg">
-                <div
-                  className={cn(
-                    'relative h-24 rounded-t-lg',
-                    getEventColorClasses(board.color || 'blue'),
-                  )}
-                >
-                  <div className="flex w-full items-center justify-end">
-                    {(canAdminAbove ||
-                      (board.userId === user.id && board.visibility === 'ONLY_ME')) && (
-                      <BoardPopover
-                        canAdminAbove={canAdminAbove}
-                        board={selectedBoard}
-                        isOpen={openEditDialogs[board.id] || false}
-                        setIsSheetOpen={(isOpen) => {
-                          if (!isOpen) {
-                            handleCloseEditDialog(board.id);
-                          }
-                        }}
-                      >
-                        <Button
-                          variant="ghost"
-                          className="hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-                          onClick={() => handleEditBoard(board)}
-                        >
-                          <PencilIcon size={16} />
-                        </Button>
-                      </BoardPopover>
+            <Link key={board.id} to={`${taskRootPath}/b/${board.id}`}>
+              <motion.div
+                key={board.id}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                layout
+                layoutId={board.id}
+              >
+                <Card className="group h-36 cursor-pointer transition-shadow hover:shadow-lg">
+                  <div
+                    className={cn(
+                      'relative h-24 rounded-t-md',
+                      getEventColorClasses(board.color || 'blue'),
                     )}
-                    {canAdminAbove ||
-                      (board.userId === user.id && board.visibility === 'ONLY_ME' && (
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-muted-foreground hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-                            >
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => handleDeleteBoard(board.id)}
-                              className="text-red-600 focus:text-red-600"
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Eliminar
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      ))}
+                  >
+                    <div className="flex w-full items-center justify-end">
+                      {(canAdminAbove ||
+                        (board.userId === user.id && board.visibility === 'ONLY_ME')) && (
+                        <BoardPopover
+                          canAdminAbove={canAdminAbove}
+                          board={selectedBoard}
+                          isOpen={openEditDialogs[board.id] || false}
+                          setIsSheetOpen={(isOpen) => {
+                            if (!isOpen) {
+                              handleCloseEditDialog(board.id);
+                            }
+                          }}
+                        >
+                          <Button
+                            variant="ghost"
+                            className="hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
+                            onClick={() => handleEditBoard(board)}
+                          >
+                            <PencilIcon size={16} />
+                          </Button>
+                        </BoardPopover>
+                      )}
+                      {canAdminAbove ||
+                        (board.userId === user.id && board.visibility === 'ONLY_ME' && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-muted-foreground hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
+                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteBoard(board.id)}
+                                className="text-red-600 focus:text-red-600"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Eliminar
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        ))}
+                    </div>
                   </div>
-                </div>
-                <CardContent className="p-3">
-                  <CardTitle className="text-foreground truncate text-sm font-medium">
-                    {board.name}
-                  </CardTitle>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  <CardContent className="p-3">
+                    <CardTitle className="text-foreground truncate text-sm font-medium">
+                      {board.name}
+                    </CardTitle>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </Link>
           ))}
 
           {/* Create New Board Card */}
