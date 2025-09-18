@@ -221,7 +221,7 @@ export const TeamMemberCreateDialog = ({ trigger, ...props }: TeamMemberCreateDi
                                 })),
                               );
                             }}
-                            className="bg-background w-full"
+                            className="bg-background z-9999 w-full"
                             emptySelectionPlaceholder={t`Select members`}
                           />
                         </FormControl>

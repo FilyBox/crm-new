@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { Board } from '@prisma/client';
-import { BoardVisibility as BoardVisibilityEnum, DocumentVisibility } from '@prisma/client';
 import { X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { BoardVisibility, type TBoardVisibility } from '@documenso/lib/types/board-visibility';
-import { EventColor } from '@documenso/prisma/generated/types';
+import type { EventColor } from '@documenso/prisma/generated/types';
 import { queryClient, trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -39,14 +38,17 @@ interface BoardDialogProps {
   isOpen: boolean;
   setIsSheetOpen: (isOpen: boolean) => void;
   children?: React.ReactNode;
+  canAdminAbove: boolean;
 }
 
-export function BoardPopover({ board, isOpen, setIsSheetOpen, children }: BoardDialogProps) {
-  console.log('BoardVisibility', BoardVisibility);
-  console.log('BoardVisibilityEnum', BoardVisibilityEnum);
-  console.log('DocumentVisibility', DocumentVisibility);
+export function BoardPopover({
+  board,
+  isOpen,
+  setIsSheetOpen,
+  children,
+  canAdminAbove,
+}: BoardDialogProps) {
   const { t } = useLingui();
-
   const formSchema = z.object({
     name: z.string().min(1, { message: t`Name cannot be empty` }),
     color: z.string(),
@@ -139,6 +141,11 @@ export function BoardPopover({ board, isOpen, setIsSheetOpen, children }: BoardD
       color: color ? (color as EventColor) : 'blue',
       visibility: values.visibility as TBoardVisibility,
     });
+    form.reset({
+      name: '',
+      color: 'blue',
+      visibility: BoardVisibility.EVERYONE,
+    });
   };
 
   const handleSave = (values: z.infer<typeof formSchema>) => {
@@ -184,7 +191,7 @@ export function BoardPopover({ board, isOpen, setIsSheetOpen, children }: BoardD
                 )}
               >
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                  <div className="rounded bg-white/90 px-2 py-1 text-xs font-medium backdrop-blur-sm">
+                  <div className="rounded bg-white/90 px-2 py-1 text-xs font-medium text-black backdrop-blur-sm">
                     📋 {form.watch('name') || 'Título del tablero'}
                   </div>
                 </div>
@@ -246,12 +253,16 @@ export function BoardPopover({ board, isOpen, setIsSheetOpen, children }: BoardD
                           <SelectItem value={BoardVisibility.EVERYONE}>
                             <Trans>Everyone</Trans>
                           </SelectItem>
-                          <SelectItem value={BoardVisibility.MANAGER_AND_ABOVE}>
-                            <Trans>Managers and above</Trans>
-                          </SelectItem>
-                          <SelectItem value={BoardVisibility.ADMIN}>
-                            <Trans>Admins only</Trans>
-                          </SelectItem>
+                          {canAdminAbove && (
+                            <SelectItem value={BoardVisibility.MANAGER_AND_ABOVE}>
+                              <Trans>Managers and above</Trans>
+                            </SelectItem>
+                          )}
+                          {canAdminAbove && (
+                            <SelectItem value={BoardVisibility.ADMIN}>
+                              <Trans>Admins only</Trans>
+                            </SelectItem>
+                          )}
                           <SelectItem value={BoardVisibility.ONLY_ME}>
                             <Trans>Only me</Trans>
                           </SelectItem>

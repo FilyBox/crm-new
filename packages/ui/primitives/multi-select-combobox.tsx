@@ -104,7 +104,7 @@ export function MultiSelectCombobox<T = OptionValue>({
   const showClearButton = enableClearAllButton && selectedValues.length > 0;
 
   return (
-    <Popover modal={false} open={open && !loading} onOpenChange={setOpen}>
+    <Popover modal={true} open={open && !loading} onOpenChange={setOpen}>
       <div className="relative w-full sm:w-48">
         <PopoverTrigger asChild>
           <Button
@@ -150,7 +150,7 @@ export function MultiSelectCombobox<T = OptionValue>({
         )}
       </div>
 
-      <PopoverContent className="w-full p-0 sm:w-48">
+      <PopoverContent className="z-9999 w-full p-0 sm:w-48">
         <Command>
           {enableSearch && <CommandInput placeholder={inputPlaceholder && _(inputPlaceholder)} />}
           <CommandEmpty>

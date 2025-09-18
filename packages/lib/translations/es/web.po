@@ -1865,17 +1865,17 @@ msgstr "Azul"
 
 #: apps/remix/app/components/general/board-popover.tsx
 msgid "Board created successfully"
-msgstr ""
+msgstr "Tablero creado exitosamente"
 
 #: apps/remix/app/components/general/board-popover.tsx
 msgid "Board updated successfully"
-msgstr ""
+msgstr "Tablero actualizado exitosamente"
 
 #. placeholder {0}: team.name
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tasks._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tasks._index.tsx
 msgid "Boards from {0}"
-msgstr ""
+msgstr "Tableros de {0}"
 
 #: apps/remix/app/components/forms/branding-preferences-form.tsx
 msgid "Brand Details"
@@ -8137,7 +8137,7 @@ msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 msgid "Tasks"
-msgstr ""
+msgstr "Tareas"
 
 #: apps/remix/app/components/tables/organisation-teams-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { Trans, useLingui } from '@lingui/react/macro';
+import { Trans } from '@lingui/react/macro';
 import type { Board } from '@prisma/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MoreVertical, PencilIcon, PlusIcon, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useSession } from '@documenso/lib/client-only/providers/session';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { trpc } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
@@ -22,6 +23,7 @@ import {
 import { BoardPopover } from '~/components/general/board-popover';
 import { getEventColorClasses } from '~/components/general/event-calendar';
 import { useCurrentTeam } from '~/providers/team';
+import { canPerformAdminAction, canPerformManagerAndAboveAction } from '~/utils/constants';
 import { appMetaTags } from '~/utils/meta';
 
 export function meta() {
@@ -30,10 +32,17 @@ export function meta() {
 
 export default function TasksPage() {
   const team = useCurrentTeam();
+  const { user } = useSession();
+
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogEditOpen, setIsDialogEditOpen] = useState(false);
   const [prevBoardsLength, setPrevBoardsLength] = useState(0);
+
+  const [openEditDialogs, setOpenEditDialogs] = useState<Record<string, boolean>>({});
+  const canAdminAbove = canPerformManagerAndAboveAction({ teamMemberRole: team?.currentTeamRole });
+  const canAdmin = canPerformAdminAction({ teamMemberRole: team?.currentTeamRole });
+
   const {
     data: boards,
     refetch,
@@ -63,7 +72,11 @@ export default function TasksPage() {
 
   const handleEditBoard = (board: Board) => {
     setSelectedBoard(board);
-    setIsDialogEditOpen(true);
+    setOpenEditDialogs((prev) => ({ ...prev, [board.id]: true }));
+  };
+
+  const handleCloseEditDialog = (boardId: string) => {
+    setOpenEditDialogs((prev) => ({ ...prev, [boardId]: false }));
   };
 
   const handleDeleteBoard = (boardId: string) => {
@@ -170,8 +183,7 @@ export default function TasksPage() {
         animate="visible"
       >
         <AnimatePresence mode="popLayout">
-          {/* Existing Boards */}
-          {boards?.map((board, index) => (
+          {boards?.map((board) => (
             <motion.div
               key={board.id}
               variants={itemVariants}
@@ -189,43 +201,54 @@ export default function TasksPage() {
                   )}
                 >
                   <div className="flex w-full items-center justify-end">
-                    <BoardPopover
-                      board={selectedBoard}
-                      isOpen={isDialogEditOpen}
-                      setIsSheetOpen={setIsDialogEditOpen}
-                    >
-                      <Button
-                        variant="ghost"
-                        className="hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
-                        onClick={() => handleEditBoard(board)}
+                    {(canAdminAbove ||
+                      (board.userId === user.id && board.visibility === 'ONLY_ME')) && (
+                      <BoardPopover
+                        canAdminAbove={canAdminAbove}
+                        board={selectedBoard}
+                        isOpen={openEditDialogs[board.id] || false}
+                        setIsSheetOpen={(isOpen) => {
+                          if (!isOpen) {
+                            handleCloseEditDialog(board.id);
+                          }
+                        }}
                       >
-                        <PencilIcon size={16} />
-                      </Button>
-                    </BoardPopover>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          size="sm"
-                          className="text-muted-foreground hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
+                          className="hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
+                          onClick={() => handleEditBoard(board)}
                         >
-                          <MoreVertical className="h-4 w-4" />
+                          <PencilIcon size={16} />
                         </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => handleDeleteBoard(board.id)}
-                          className="text-red-600 focus:text-red-600"
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Eliminar
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                      </BoardPopover>
+                    )}
+                    {canAdminAbove ||
+                      (board.userId === user.id && board.visibility === 'ONLY_ME' && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-muted-foreground hover:bg-foreground/20 size-8 p-0 opacity-0 transition-opacity group-hover:opacity-100"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteBoard(board.id)}
+                              className="text-red-600 focus:text-red-600"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Eliminar
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      ))}
                   </div>
                 </div>
                 <CardContent className="p-3">
-                  <CardTitle className="truncate text-sm font-medium text-gray-900">
+                  <CardTitle className="text-foreground truncate text-sm font-medium">
                     {board.name}
                   </CardTitle>
                 </CardContent>
@@ -236,11 +259,15 @@ export default function TasksPage() {
           {/* Create New Board Card */}
           <motion.div variants={itemVariants} initial="hidden" animate="visible" layout>
             <BoardPopover
-              board={selectedBoard}
+              canAdminAbove={canAdminAbove}
+              board={null}
               isOpen={isDialogOpen}
               setIsSheetOpen={setIsDialogOpen}
             >
-              <Card className="text-muted-foreground flex h-36 cursor-pointer flex-col items-center justify-center border-2 border-dashed transition-all hover:border-solid hover:shadow-md">
+              <Card
+                onClick={() => setSelectedBoard(null)}
+                className="text-muted-foreground flex h-36 cursor-pointer flex-col items-center justify-center border-2 border-dashed transition-all hover:border-solid hover:shadow-md"
+              >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

@@ -1,11 +1,12 @@
 // import { Novu } from '@novu/api';
 import type { Prisma } from '@prisma/client';
-import { boolean, z } from 'zod';
+import { z } from 'zod';
 
 import { findTasks } from '@documenso/lib/server-only/document/find-tasks';
 import { type GetStatsInput, getStats } from '@documenso/lib/server-only/document/get-priority';
 import { createNovuTask } from '@documenso/lib/server-only/novu/create-novu-task';
 import { getTeamById } from '@documenso/lib/server-only/team/get-team';
+import { getTeamMembers } from '@documenso/lib/server-only/team/get-team-members';
 import { ZBoardVisibilitySchema } from '@documenso/lib/types/board-visibility';
 import { type TTask } from '@documenso/lib/types/task';
 import { prisma } from '@documenso/prisma';
@@ -98,6 +99,8 @@ export const taskRouter = router({
               await createNovuTask({
                 user: { id: assignee.userId, name: assignee.name || '', email: assignee.email },
                 task: { id: taskCreated.id, title: taskCreated.title },
+                title: `New Task Assigned!`,
+                message: `You have been assigned to the task "${taskCreated.title}"`,
                 taskRootPath,
               });
             }
@@ -265,6 +268,18 @@ export const taskRouter = router({
       const { name, color, image, visibility } = input;
       const userId = user.id;
 
+      const teamMembers = await getTeamMembers({ userId, teamId });
+      const currentTeamMember = teamMembers.find((member) => member.userId === userId);
+
+      if (
+        currentTeamMember &&
+        currentTeamMember.teamRole === 'MEMBER' &&
+        visibility !== 'EVERYONE' &&
+        visibility !== 'ONLY_ME'
+      ) {
+        throw new Error('You do not have permission to change the visibility');
+      }
+
       const board = await prisma.board.create({
         data: {
           name,
@@ -279,13 +294,48 @@ export const taskRouter = router({
     }),
 
   findBoards: authenticatedProcedure.query(async ({ ctx }) => {
-    const { teamId } = ctx;
-    return await prisma.board.findMany({
-      where: { teamId },
+    const { teamId, user } = ctx;
+    const userId = user.id;
+
+    const teamMembers = await getTeamMembers({ userId, teamId });
+    const currentTeamMember = teamMembers.find((member) => member.userId === userId);
+    console.log('currentTeamMember', currentTeamMember);
+
+    const visibilityConditions: Prisma.BoardWhereInput['OR'] = [];
+
+    visibilityConditions.push({ visibility: 'EVERYONE' });
+
+    visibilityConditions.push({
+      visibility: 'ONLY_ME',
+      userId: userId,
+    });
+
+    if (
+      currentTeamMember?.teamRole === 'ADMIN' ||
+      currentTeamMember?.organisationRole === 'ADMIN'
+    ) {
+      visibilityConditions.push({ visibility: 'ADMIN' });
+      visibilityConditions.push({ visibility: 'MANAGER_AND_ABOVE' });
+    } else if (
+      currentTeamMember?.teamRole === 'MANAGER' ||
+      currentTeamMember?.organisationRole === 'MANAGER'
+    ) {
+      visibilityConditions.push({ visibility: 'MANAGER_AND_ABOVE' });
+    }
+
+    const whereClause: Prisma.BoardWhereInput = {
+      teamId,
+      OR: visibilityConditions,
+    };
+
+    const boards = await prisma.board.findMany({
+      where: whereClause,
       orderBy: { createdAt: 'desc' },
     });
-  }),
 
+    console.log('boards found', boards);
+    return boards;
+  }),
   updateBoard: authenticatedProcedure
     .input(
       z.object({
@@ -298,7 +348,21 @@ export const taskRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const { boardId, name, color, image, visibility } = input;
-      const { teamId } = ctx;
+      const { teamId, user } = ctx;
+      const userId = user.id;
+
+      const teamMembers = await getTeamMembers({ userId, teamId });
+      const currentTeamMember = teamMembers.find((member) => member.userId === userId);
+
+      if (
+        currentTeamMember &&
+        currentTeamMember.teamRole === 'MEMBER' &&
+        visibility !== 'EVERYONE' &&
+        visibility !== 'ONLY_ME'
+      ) {
+        throw new Error('You do not have permission to change the visibility');
+      }
+
       const existingBoard = await prisma.board.findFirst({
         where: { id: boardId, teamId },
       });
@@ -324,14 +388,24 @@ export const taskRouter = router({
     .input(z.object({ boardId: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const { boardId } = input;
-      const { teamId } = ctx;
-
+      const { teamId, user } = ctx;
+      const userId = user.id;
       const board = await prisma.board.findFirst({
         where: { id: boardId, teamId },
       });
-
       if (!board) {
         throw new Error('Board not found or you do not have permission to delete it');
+      }
+      const teamMembers = await getTeamMembers({ userId, teamId });
+      const currentTeamMember = teamMembers.find((member) => member.userId === userId);
+
+      if (
+        currentTeamMember &&
+        currentTeamMember.teamRole === 'MEMBER' &&
+        board?.visibility !== 'ONLY_ME' &&
+        board?.userId !== userId
+      ) {
+        throw new Error('You do not have permission to delete this board');
       }
 
       await prisma.$transaction([

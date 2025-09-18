@@ -1,10 +1,31 @@
-import { EventColor, TeamMemberRole } from '@prisma/client';
+import type { EventColor } from '@prisma/client';
+import { TeamMemberRole } from '@prisma/client';
 import { match } from 'ts-pattern';
 
 export function canPerformAction({ teamMemberRole }: { teamMemberRole: TeamMemberRole }) {
   return match(teamMemberRole)
     .with(TeamMemberRole.ADMIN, () => true)
     .with(TeamMemberRole.MANAGER, () => true)
+    .with(TeamMemberRole.MEMBER, () => false)
+    .otherwise(() => true);
+}
+
+export function canPerformManagerAndAboveAction({
+  teamMemberRole,
+}: {
+  teamMemberRole: TeamMemberRole;
+}) {
+  return match(teamMemberRole)
+    .with(TeamMemberRole.ADMIN, () => true)
+    .with(TeamMemberRole.MANAGER, () => true)
+    .with(TeamMemberRole.MEMBER, () => false)
+    .otherwise(() => true);
+}
+
+export function canPerformAdminAction({ teamMemberRole }: { teamMemberRole: TeamMemberRole }) {
+  return match(teamMemberRole)
+    .with(TeamMemberRole.ADMIN, () => true)
+    .with(TeamMemberRole.MANAGER, () => false)
     .with(TeamMemberRole.MEMBER, () => false)
     .otherwise(() => true);
 }
