@@ -50,11 +50,13 @@ type TaskCreateDialogProps = {
   listId: string;
   parentTaskId?: number;
   isLoading?: boolean;
+  onSave?: () => void;
 };
 
 export const TaskCreateDialog = ({
   teamMembers,
   isLoading,
+  onSave,
   listId,
   parentTaskId,
   taskRootPath,
@@ -65,6 +67,7 @@ export const TaskCreateDialog = ({
   const { mutateAsync: createTask } = trpc.task.createTask.useMutation({
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
+      void onSave?.();
     },
     onError: () => {
       toast.error(t`Error creating task`, {

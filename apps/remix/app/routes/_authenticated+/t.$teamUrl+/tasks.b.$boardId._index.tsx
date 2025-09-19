@@ -32,6 +32,7 @@ import {
 import { ListPopover } from '~/components/general/list-popover';
 import { StackAvatarsTasksWithTooltip } from '~/components/general/stack-avatars-tasks-with-tooltip';
 import { useDebounceQueue } from '~/hooks/use-debounce-queue';
+import { useKanbanState } from '~/hooks/use-kanban-state';
 import { useCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
 import { useSortParams } from '~/utils/searchParams';
@@ -84,29 +85,8 @@ export default function TasksPage() {
     'id' | 'name' | 'color'
   > | null>(null);
   const [openEditDialogs, setOpenEditDialogs] = React.useState<Record<string, boolean>>({});
-  const { debouncedTaskUpdate, debouncedListUpdate, clearQueues } = useDebounceQueue();
 
-  const [pendingTaskUpdates, setPendingTaskUpdates] = React.useState<Set<number>>(new Set());
-  const [pendingListUpdates, setPendingListUpdates] = React.useState<Set<string>>(new Set());
-  const [isDataInitialized, setIsDataInitialized] = React.useState(false);
-
-  const [columns, setColumns] = React.useState<Record<string, TTask[]>>({});
-  const [columnOrder, setColumnOrder] = React.useState<string[]>([]);
-
-  const handleEditList = (list: { id: string; name: string; color: string | null }) => {
-    setSelectedList({
-      id: list.id,
-      name: list.name,
-      color: (list.color as List['color']) ?? null,
-    });
-    setOpenEditDialogs((prev) => ({ ...prev, [list.id]: true }));
-  };
-
-  const handleCloseEditDialog = (listId: string) => {
-    setOpenEditDialogs((prev) => ({ ...prev, [listId]: false }));
-  };
-
-  const { data, isLoading } = trpc.task.findLists.useQuery(
+  const { data, isLoading, refetch } = trpc.task.findLists.useQuery(
     {
       filterStructure: filters,
       joinOperator: joinOperator,
@@ -115,7 +95,7 @@ export default function TasksPage() {
     queryOptions({
       queryKey: ['listTasks', filters, joinOperator, boardId],
       staleTime: Infinity,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       refetchOnReconnect: false,
       refetchOnMount: true,
     }),
@@ -130,218 +110,32 @@ export default function TasksPage() {
     },
   );
 
-  // Mutaciones para actualizar posiciones
-  const updateTaskPositionMutation = trpc.task.updateTaskPosition.useMutation({
-    onError: (error) => {
-      console.error('Error updating task position:', error);
-      toast.error('Error updating task position: ' + error.message);
-    },
-  });
-
-  const updateListPositionMutation = trpc.task.updateListPosition.useMutation({
-    onError: (error) => {
-      console.error('Error updating list position:', error);
-      toast.error('Error updating list position: ' + error.message);
-    },
-  });
-
-  const processTaskUpdates = useCallback(
-    async (taskChanges: Array<{ taskId: number; newListId: string; newPosition: number }>) => {
-      console.log('Procesando cambios de tareas en lote:', taskChanges);
-
-      // Marcar tareas como pendientes
-      const taskIds = new Set(taskChanges.map((change) => change.taskId));
-      setPendingTaskUpdates((prev) => new Set([...prev, ...taskIds]));
-
-      try {
-        // Procesar todos los cambios
-        await Promise.all(
-          taskChanges.map((change) =>
-            updateTaskPositionMutation.mutateAsync({
-              taskId: change.taskId,
-              newListId: change.newListId,
-              newPosition: change.newPosition,
-            }),
-          ),
-        );
-      } catch (error) {
-        console.error('Error in batch task update:', error);
-        toast.error('Failed to update some task positions');
-      } finally {
-        // Remover tareas de pendientes
-        setPendingTaskUpdates((prev) => {
-          const newSet = new Set(prev);
-          taskIds.forEach((id) => newSet.delete(id));
-          return newSet;
-        });
-      }
-    },
-    [updateTaskPositionMutation],
-  );
-
-  const processListUpdates = useCallback(
-    async (listChanges: Array<{ listId: string; newPosition: number; boardId: string }>) => {
-      console.log('Procesando cambios de listas en lote:', listChanges);
-
-      // Marcar listas como pendientes
-      const listIds = new Set(listChanges.map((change) => change.listId));
-      setPendingListUpdates((prev) => new Set([...prev, ...listIds]));
-
-      try {
-        // Procesar todos los cambios
-        await Promise.all(
-          listChanges.map((change) =>
-            updateListPositionMutation.mutateAsync({
-              listId: change.listId,
-              newPosition: change.newPosition,
-              boardId: change.boardId,
-            }),
-          ),
-        );
-      } catch (error) {
-        console.error('Error in batch list update:', error);
-        toast.error('Failed to update some list positions');
-      } finally {
-        // Remover listas de pendientes
-        setPendingListUpdates((prev) => {
-          const newSet = new Set(prev);
-          listIds.forEach((id) => newSet.delete(id));
-          return newSet;
-        });
-      }
-    },
-    [updateListPositionMutation],
-  );
-
-  // Actualizar estados cuando cambian los datos
-  useEffect(() => {
-    if (data?.boardsFormated && pendingTaskUpdates.size === 0 && pendingListUpdates.size === 0) {
-      // Solo inicializar en la primera carga o si no hay operaciones pendientes
-      if (!isDataInitialized || (columns && Object.keys(columns).length === 0)) {
-        const order = data.lists.sort((a, b) => a.position - b.position).map((list) => list.id);
-        setColumns(data?.boardsFormated);
-        setColumnOrder(order);
-        setIsDataInitialized(true);
-        console.log('Inicializando data desde servidor');
-      } else {
-        console.log('Ignorando cambio de data - hay optimistic updates activos');
-      }
-    }
-  }, [
-    data?.boardsFormated,
-    pendingTaskUpdates.size,
-    pendingListUpdates.size,
-    isDataInitialized,
+  // Todo el estado y lógica del Kanban está en el hook
+  const {
     columns,
-  ]);
+    columnOrder,
+    pendingTaskUpdates,
+    pendingListUpdates,
+    hasPendingOperations,
+    handleKanbanChange,
+    handleMove,
+  } = useKanbanState({
+    data,
+    boardId,
+  });
 
-  // Limpiar colas al desmontar el componente
-  useEffect(() => {
-    return () => {
-      clearQueues();
-    };
-  }, [clearQueues]);
-
-  function detectTaskChanges(
-    oldColumns: Record<string, TTask[]>,
-    newColumns: Record<string, TTask[]>,
-  ) {
-    const changes: Array<{
-      taskId: number;
-      fromColumn: string | null;
-      toColumn: string;
-      fromIndex: number;
-      toIndex: number;
-    }> = [];
-
-    Object.entries(newColumns).forEach(([columnKey, tasks]) => {
-      tasks.forEach((task, newIndex) => {
-        let oldColumn: string | null = null;
-        let oldIndex = -1;
-
-        Object.entries(oldColumns).forEach(([oldColumnKey, oldTasks]) => {
-          const taskIndex = oldTasks.findIndex((t) => t.id === task.id);
-          if (taskIndex !== -1) {
-            oldColumn = oldColumnKey;
-            oldIndex = taskIndex;
-          }
-        });
-
-        if (oldColumn !== columnKey || oldIndex !== newIndex) {
-          changes.push({
-            taskId: task.id,
-            fromColumn: oldColumn,
-            toColumn: columnKey,
-            fromIndex: oldIndex,
-            toIndex: newIndex,
-          });
-        }
-      });
+  const handleEditList = (list: { id: string; name: string; color: string | null }) => {
+    setSelectedList({
+      id: list.id,
+      name: list.name,
+      color: (list.color as List['color']) ?? null,
     });
+    setOpenEditDialogs((prev) => ({ ...prev, [list.id]: true }));
+  };
 
-    return changes;
-  }
-
-  // Handler para cambios de tareas
-  const handleKanbanChange = useCallback(
-    (newColumns: Record<string, TTask[]>) => {
-      const taskChanges = detectTaskChanges(columns, newColumns);
-
-      // Actualizar estado local inmediatamente (optimistic update)
-      setColumns(newColumns);
-
-      // Procesar TODOS los cambios de una vez, el Map automáticamente maneja duplicados
-      if (taskChanges.length > 0) {
-        // Agregar todos los cambios al debounce de una vez
-        taskChanges.forEach((change) => {
-          debouncedTaskUpdate(
-            {
-              taskId: change.taskId,
-              newListId: change.toColumn,
-              newPosition: change.toIndex,
-            },
-            processTaskUpdates,
-            500,
-          );
-        });
-      }
-    },
-    [columns, debouncedTaskUpdate, processTaskUpdates],
-  );
-
-  const handleMove = useCallback(
-    (event: any) => {
-      const { active, over } = event;
-
-      if (active.id in columns && over?.id in columns) {
-        const newOrder = [...columnOrder];
-        const draggedColumnId = active.id as string;
-        const targetColumnId = over.id as string;
-
-        const draggedIndex = newOrder.indexOf(draggedColumnId);
-        const targetIndex = newOrder.indexOf(targetColumnId);
-
-        if (draggedIndex !== -1 && targetIndex !== -1) {
-          newOrder.splice(draggedIndex, 1);
-          newOrder.splice(targetIndex, 0, draggedColumnId);
-
-          setColumnOrder(newOrder);
-
-          // Procesar cambio con debounce
-          debouncedListUpdate(
-            {
-              listId: draggedColumnId,
-              newPosition: targetIndex,
-              boardId: boardId,
-            },
-            processListUpdates,
-            500,
-          );
-        }
-      }
-    },
-    [columns, columnOrder, boardId, debouncedListUpdate, processListUpdates],
-  );
+  const handleCloseEditDialog = (listId: string) => {
+    setOpenEditDialogs((prev) => ({ ...prev, [listId]: false }));
+  };
 
   if (isLoading || isTeamMembersLoading) {
     return <div className="bg-muted h-full w-full animate-pulse" />;
@@ -361,14 +155,14 @@ export default function TasksPage() {
               {board.name.charAt(0).toUpperCase() + board.name.slice(1)}
             </h3>
             <div className="h-5">
-              {(pendingTaskUpdates.size > 0 || pendingListUpdates.size > 0) && (
+              {hasPendingOperations && (
                 <div className="text-muted-foreground text-xs">Saving changes...</div>
               )}
             </div>
           </CardHeader>
           <ScrollArea
             style={{ containerType: 'size' }}
-            className="h-[calc(100%-44px)] w-full max-w-screen-xl"
+            className="h-[calc(100%-86px)] w-full max-w-screen-xl"
           >
             <section className="flex !h-full justify-start gap-6 px-4">
               <Kanban.Root
@@ -415,6 +209,9 @@ export default function TasksPage() {
                         <TaskColumn
                           value={value}
                           list={list}
+                          onSave={() => {
+                            void refetch();
+                          }}
                           tasks={tasks}
                           boardId={boardId}
                           teamMembers={teamMembers}
@@ -441,6 +238,9 @@ export default function TasksPage() {
               </Kanban.Root>
 
               <ListDialog
+                onSave={() => {
+                  void refetch();
+                }}
                 isOpen={isSheetOpen}
                 boardId={boardId}
                 setIsSheetOpen={setIsSheetOpen}
@@ -525,6 +325,7 @@ interface TaskColumnProps extends Omit<React.ComponentProps<typeof Kanban.Column
   selectetList: Pick<List, 'id' | 'name' | 'color'> | null;
   isPending?: boolean;
   pendingTaskIds: Set<number>;
+  onSave?: () => void;
 }
 
 function TaskColumn({
@@ -539,6 +340,7 @@ function TaskColumn({
   onCloseEditDialog,
   selectetList,
   isPending = false,
+  onSave,
   pendingTaskIds,
   ...props
 }: TaskColumnProps) {
@@ -563,6 +365,7 @@ function TaskColumn({
             {tasks.length}
           </Badge>
           <ListPopover
+            onSave={onSave}
             boardId={boardId}
             list={selectetList}
             isOpen={openEditDialogs[list.id] || false}
@@ -590,13 +393,20 @@ function TaskColumn({
           </Kanban.ColumnHandle>
         </div>
       </div>
-      <div className="flex h-fit max-h-[85cqh] min-h-36 flex-col gap-2 overflow-y-auto p-0.5 px-2">
+      <div className="flex h-fit max-h-[80cqh] min-h-36 flex-col gap-2 overflow-y-auto p-0.5 px-2">
         {tasks.map((task) => (
           <TaskCard key={task.id} task={task} asHandle isPending={pendingTaskIds.has(task.id)} />
         ))}
       </div>
       <div className="w-full p-2">
-        <TaskCreateDialog taskRootPath={taskRootPath} listId={list.id} teamMembers={teamMembers} />
+        <TaskCreateDialog
+          onSave={() => {
+            void onSave?.();
+          }}
+          taskRootPath={taskRootPath}
+          listId={list.id}
+          teamMembers={teamMembers}
+        />
       </div>
     </Kanban.Column>
   );

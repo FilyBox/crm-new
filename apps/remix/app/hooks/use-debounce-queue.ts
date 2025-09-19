@@ -24,17 +24,6 @@ export function useDebounceQueue() {
       updateFunction: (changes: TaskChange[]) => Promise<void>,
       delay: number = 300,
     ) => {
-      // Agregar o SOBRESCRIBIR el cambio en la cola - esto es clave
-      console.log(`Agregando/actualizando tarea ${taskChange.taskId} en la cola`);
-
-      const previousChange = taskQueueRef.current.get(taskChange.taskId);
-      if (previousChange) {
-        console.log(`Sobrescribiendo posición anterior de tarea ${taskChange.taskId}:`, {
-          anterior: previousChange,
-          nueva: taskChange,
-        });
-      }
-
       taskQueueRef.current.set(taskChange.taskId, taskChange);
 
       // Limpiar timeout anterior
@@ -45,7 +34,6 @@ export function useDebounceQueue() {
       // Crear nuevo timeout
       taskTimeoutRef.current = setTimeout(async () => {
         const changes = Array.from(taskQueueRef.current.values());
-        console.log('Ejecutando cambios finales de tareas:', changes);
 
         taskQueueRef.current.clear();
 
@@ -63,16 +51,7 @@ export function useDebounceQueue() {
       updateFunction: (changes: ListChange[]) => Promise<void>,
       delay: number = 300,
     ) => {
-      // Agregar o SOBRESCRIBIR el cambio en la cola
-      console.log(`Agregando/actualizando lista ${listChange.listId} en la cola`);
-
       const previousChange = listQueueRef.current.get(listChange.listId);
-      if (previousChange) {
-        console.log(`Sobrescribiendo posición anterior de lista ${listChange.listId}:`, {
-          anterior: previousChange,
-          nueva: listChange,
-        });
-      }
 
       listQueueRef.current.set(listChange.listId, listChange);
 
@@ -84,7 +63,6 @@ export function useDebounceQueue() {
       // Crear nuevo timeout
       listTimeoutRef.current = setTimeout(async () => {
         const changes = Array.from(listQueueRef.current.values());
-        console.log('Ejecutando cambios finales de listas:', changes);
 
         listQueueRef.current.clear();
 

@@ -255,9 +255,10 @@ export const taskRouter = router({
       return {
         tasks: lists.flatMap((list) => list.tasks),
         lists,
+        totalTasks: lists.reduce((acc, list) => acc + list.tasks.length, 0),
+        totalLists: lists.length,
         columns,
         data,
-        // Mantener formato anterior para compatibilidad
         boardsFormated: lists.reduce(
           (acc, list) => {
             acc[list.id] = list.tasks.map((task) => {
