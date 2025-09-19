@@ -68,7 +68,7 @@ export const Header = ({ className, ...props }: HeaderProps) => {
   return (
     <header
       className={cn(
-        'supports-backdrop-blur:bg-background/60 bg-background/95 sticky top-0 z-10 flex h-16 w-full items-center border-b border-b-transparent backdrop-blur duration-200',
+        'supports-backdrop-blur:bg-background/60 bg-background/95 sticky top-0 z-50 flex h-16 w-full items-center border-b border-b-transparent backdrop-blur duration-200',
         scrollY > 5 && 'border-b-border',
         className,
       )}

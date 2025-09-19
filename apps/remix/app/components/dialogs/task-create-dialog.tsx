@@ -184,7 +184,7 @@ export const TaskCreateDialog = ({
       case 'CRITICAL':
         return 'text-red-600 bg-red-100';
       default:
-        return 'text-gray-600 bg-gray-100';
+        return 'text-foreground bg-gray-100';
     }
   };
 
@@ -194,7 +194,7 @@ export const TaskCreateDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="flex h-8 w-full items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          className="hover:bg-muted-foreground/20 hover:text-primary-foreground flex h-8 w-full items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm font-medium text-white"
         >
           <PlusIcon className="h-4 w-4" />
           <Trans>Add a card</Trans>
@@ -203,7 +203,7 @@ export const TaskCreateDialog = ({
 
       <DialogContent className="max-w-md p-0">
         <DialogHeader className="space-y-0 p-4 pb-2">
-          <DialogTitle className="text-sm font-medium text-gray-900">
+          <DialogTitle className="text-foreground text-sm font-medium">
             <Trans>Add a card</Trans>
           </DialogTitle>
         </DialogHeader>
@@ -211,7 +211,7 @@ export const TaskCreateDialog = ({
         <div className="space-y-4 p-4 pt-0">
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-xs font-medium text-gray-700">
+            <Label htmlFor="title" className="text-foreground text-xs font-medium">
               <Trans>Title</Trans>
             </Label>
             <Textarea
@@ -227,7 +227,7 @@ export const TaskCreateDialog = ({
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-xs font-medium text-gray-700">
+            <Label htmlFor="description" className="text-foreground text-xs font-medium">
               <Trans>Description</Trans>
             </Label>
             <Textarea
@@ -243,7 +243,7 @@ export const TaskCreateDialog = ({
           {/* Assignees */}
           {teamMembers && teamMembers.length > 0 && (
             <div className="space-y-2">
-              <Label className="text-xs font-medium text-gray-700">
+              <Label className="text-foreground text-xs font-medium">
                 <Trans>Assignees</Trans>
               </Label>
               <Faceted
@@ -255,7 +255,7 @@ export const TaskCreateDialog = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full justify-start border-gray-300 text-sm font-normal text-gray-600 hover:border-gray-400"
+                    className="text-foreground w-full justify-start border-gray-300 text-sm font-normal hover:border-gray-400"
                   >
                     <FacetedBadgeList
                       max={3}
@@ -296,7 +296,7 @@ export const TaskCreateDialog = ({
           {/* Priority and Due Date */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label className="text-xs font-medium text-gray-700">
+              <Label className="text-foreground text-xs font-medium">
                 <Trans>Priority</Trans>
               </Label>
               <Select value={taskData.priority} onValueChange={handlePriorityChange}>
@@ -339,7 +339,7 @@ export const TaskCreateDialog = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dueDate" className="text-xs font-medium text-gray-700">
+              <Label htmlFor="dueDate" className="text-foreground text-xs font-medium">
                 <Trans>Due Date</Trans>
               </Label>
               <Input
@@ -370,7 +370,7 @@ export const TaskCreateDialog = ({
               size="sm"
               onClick={() => setShowTaskCreateDialog(false)}
               disabled={isCreatingTask}
-              className="text-sm text-gray-600 hover:bg-gray-100"
+              className="text-foreground text-sm hover:bg-gray-100"
             >
               <X className="h-4 w-4" />
             </Button>

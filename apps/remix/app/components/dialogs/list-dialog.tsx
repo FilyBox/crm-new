@@ -38,8 +38,8 @@ interface ListDialogProps {
   setIsSheetOpen: (isOpen: boolean) => void;
   boardId: string;
   onClose: () => void;
-  onSave: (board: Pick<Board, 'id' | 'name' | 'color'>) => void;
-  onDelete: (listId: string) => void;
+  onSave?: (board: Pick<Board, 'id' | 'name' | 'color'>) => void;
+  onDelete?: (listId: string) => void;
 }
 
 export function ListDialog({
@@ -70,6 +70,7 @@ export function ListDialog({
   const createListMutation = trpc.task.createList.useMutation({
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['listTasks'] });
+      console.log('List created successfully');
     },
     onError: () => {
       toast.error(t`Error creating board`, {
@@ -116,13 +117,9 @@ export function ListDialog({
   const handleSave = (values: z.infer<typeof formSchema>) => {
     const eventName = values.name.trim() ? values.name : t`(no title)`;
 
-    if (board?.id) {
-      console.log('Editing board not implemented yet');
-    } else {
-      void handleCreate(values);
-    }
+    void handleCreate(values);
 
-    onSave({
+    onSave?.({
       id: board?.id || '',
       name: eventName,
       color: values.color as EventColor,
@@ -131,7 +128,7 @@ export function ListDialog({
 
   const handleDelete = () => {
     if (board?.id) {
-      onDelete(board.id);
+      onDelete?.(board.id);
     }
   };
 

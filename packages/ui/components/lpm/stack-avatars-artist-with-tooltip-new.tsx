@@ -31,7 +31,7 @@ export const StackAvatarsArtistWithTooltipNew = ({
     <PopoverHover
       trigger={children || <StackAvatarsArtistNew enhancedAssignees={enhancedAssignees} />}
       contentProps={{
-        className: 'flex flex-col gap-y-5 py-2 z-50',
+        className: 'flex flex-col gap-y-5 py-2 ',
         side: position,
       }}
     >

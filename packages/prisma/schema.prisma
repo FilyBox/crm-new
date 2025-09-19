@@ -389,11 +389,13 @@ model List {
   team      Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
   pinned    Boolean     @default(false)
   color     EventColor?
+  position  Int         @default(0)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now()) @updatedAt
   tasks     Task[]
 
   @@index([teamId])
+  @@index([boardId, position])
 }
 
 model Task {
@@ -411,6 +413,7 @@ model Task {
   coverImage  String?
   list        List           @relation(fields: [listId], references: [id], onDelete: Cascade)
   listId      String
+  position    Int            @default(0)
 
   tags         String[]  @default([])
   createdAt    DateTime  @default(now())
@@ -433,6 +436,7 @@ model Task {
   @@index([priority])
   @@index([dueDate])
   @@index([teamId])
+  @@index([listId, position])
 }
 
 model TaskAttachment {

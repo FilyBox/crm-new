@@ -67,6 +67,10 @@ export const taskRouter = router({
         throw new Error('Team not found');
       }
 
+      const tasksCount = await prisma.task.count({
+        where: { listId, teamId },
+      });
+
       const taskCreated = await prisma.task.create({
         data: {
           ...data,
@@ -76,6 +80,7 @@ export const taskRouter = router({
           listId,
           ...(projectId && { projectId }),
           ...(parentTaskId && { parentTaskId }),
+          position: tasksCount,
         },
       });
       // Create a TaskAssignee entry for each user
@@ -189,11 +194,16 @@ export const taskRouter = router({
         where = advancedWhere;
       }
 
-      const boards = await prisma.list.findMany({
+      const lists = await prisma.list.findMany({
         where: { teamId, boardId },
+        orderBy: { position: 'asc' }, // Ordenar por posición
         include: {
           tasks: {
-            include: { assignees: { include: { user: true } }, comments: true },
+            orderBy: { position: 'asc' }, // Ordenar tareas por posición
+            include: {
+              assignees: { include: { user: true } },
+              comments: true,
+            },
             where: {
               deletedAt: null,
               ...(assigneeIds && assigneeIds.length > 0
@@ -206,21 +216,21 @@ export const taskRouter = router({
       });
 
       // Formato correcto para columnas
-      const columns = boards.map((board) => ({
-        id: board.id,
-        name: board.name,
-        color: board.color || 'gray',
+      const columns = lists.map((list) => ({
+        id: list.id,
+        name: list.name,
+        color: list.color || 'gray',
       }));
 
       // Formato correcto para data - todas las tareas con su columna asignada
-      const data = boards.flatMap((board) =>
-        board.tasks.map((task) => {
+      const data = lists.flatMap((list) =>
+        list.tasks.map((task) => {
           const { assignees: rawAssignees, ...taskData } = task;
           return {
             ...taskData,
-            id: task.id.toString(), // Convertir a string para el Kanban
-            name: task.title, // Mapear title a name
-            column: board.id, // Asignar la columna (board.id)
+            id: task.id.toString(),
+            name: task.title,
+            column: list.id,
             assignees: rawAssignees.map((assignee) => ({
               id: assignee.id,
               userId: assignee.userId,
@@ -243,15 +253,14 @@ export const taskRouter = router({
       );
 
       return {
-        tasks: boards.flatMap((board) => board.tasks),
-        boards,
-        columns, // Nuevo formato para las columnas
-        data, // Nuevo formato para las tareas
-        // Mantener boardsFormated para compatibilidad
-        boardsFormated: boards.reduce(
-          (acc, board) => {
-            const key = `${board.id}|${board.name}`;
-            acc[key] = board.tasks.map((task) => {
+        tasks: lists.flatMap((list) => list.tasks),
+        lists,
+        columns,
+        data,
+        // Mantener formato anterior para compatibilidad
+        boardsFormated: lists.reduce(
+          (acc, list) => {
+            acc[list.id] = list.tasks.map((task) => {
               const { assignees: rawAssignees, ...taskData } = task;
               return {
                 ...taskData,
@@ -352,7 +361,7 @@ export const taskRouter = router({
 
       const defaultLists = ['To Do', 'In Progress', 'Done'];
       await Promise.allSettled(
-        defaultLists.map(async (listName) =>
+        defaultLists.map(async (listName, index) =>
           prisma.list.create({
             data: {
               color: 'blue',
@@ -360,6 +369,7 @@ export const taskRouter = router({
               userId,
               name: listName,
               boardId: board.id,
+              position: index,
             },
           }),
         ),
@@ -515,6 +525,10 @@ export const taskRouter = router({
 
       const userId = user.id;
 
+      const listsCount = await prisma.list.count({
+        where: { boardId: boardId, teamId: teamId },
+      });
+
       const board = await prisma.list.create({
         data: {
           name,
@@ -522,6 +536,7 @@ export const taskRouter = router({
           teamId,
           userId,
           boardId,
+          position: listsCount,
         },
       });
       return board;
@@ -681,6 +696,166 @@ export const taskRouter = router({
       ]);
 
       return { data: data, stats };
+    }),
+
+  updateTaskPosition: authenticatedProcedure
+    .input(
+      z.object({
+        taskId: z.number(),
+        newListId: z.string(),
+        newPosition: z.number(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { taskId, newListId, newPosition } = input;
+      const { teamId } = ctx;
+
+      // Obtener la tarea actual
+      const currentTask = await prisma.task.findUnique({
+        where: { id: taskId },
+        include: { list: true },
+      });
+
+      if (!currentTask) {
+        throw new Error('Task not found');
+      }
+
+      // Verificar que la lista pertenece al equipo
+      const list = await prisma.list.findFirst({
+        where: { id: newListId, teamId },
+      });
+
+      if (!list) {
+        throw new Error('List not found or you do not have permission to move tasks to it');
+      }
+
+      // Si cambió de lista, necesitamos reordenar ambas listas
+      if (currentTask.listId !== newListId) {
+        // Decrementar posiciones en la lista anterior
+        await prisma.task.updateMany({
+          where: {
+            listId: currentTask.listId,
+            position: { gt: currentTask.position },
+          },
+          data: {
+            position: { decrement: 1 },
+          },
+        });
+
+        // Incrementar posiciones en la nueva lista
+        await prisma.task.updateMany({
+          where: {
+            listId: newListId,
+            position: { gte: newPosition },
+          },
+          data: {
+            position: { increment: 1 },
+          },
+        });
+      } else {
+        // Reordenar dentro de la misma lista
+        if (newPosition > currentTask.position) {
+          // Mover hacia abajo
+          await prisma.task.updateMany({
+            where: {
+              listId: newListId,
+              position: {
+                gt: currentTask.position,
+                lte: newPosition,
+              },
+            },
+            data: {
+              position: { decrement: 1 },
+            },
+          });
+        } else if (newPosition < currentTask.position) {
+          // Mover hacia arriba
+          await prisma.task.updateMany({
+            where: {
+              listId: newListId,
+              position: {
+                gte: newPosition,
+                lt: currentTask.position,
+              },
+            },
+            data: {
+              position: { increment: 1 },
+            },
+          });
+        }
+      }
+
+      // Actualizar la tarea
+      return await prisma.task.update({
+        where: { id: taskId },
+        data: {
+          listId: newListId,
+          position: newPosition,
+        },
+      });
+    }),
+
+  updateListPosition: authenticatedProcedure
+    .input(
+      z.object({
+        listId: z.string(),
+        newPosition: z.number(),
+        boardId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { listId, newPosition, boardId } = input;
+      const { teamId } = ctx;
+
+      // Obtener la lista actual
+      const currentList = await prisma.list.findUnique({
+        where: { id: listId },
+      });
+
+      if (!currentList || currentList.teamId !== teamId) {
+        throw new Error('List not found or you do not have permission to update it');
+      }
+
+      // Reordenar listas
+      if (newPosition > currentList.position) {
+        // Mover hacia la derecha
+        await prisma.list.updateMany({
+          where: {
+            boardId: boardId,
+            teamId: teamId,
+            position: {
+              gt: currentList.position,
+              lte: newPosition,
+            },
+          },
+          data: {
+            position: { decrement: 1 },
+          },
+        });
+      } else if (newPosition < currentList.position) {
+        // Mover hacia la izquierda
+        await prisma.list.updateMany({
+          where: {
+            boardId: boardId,
+            teamId: teamId,
+            position: {
+              gte: newPosition,
+              lt: currentList.position,
+            },
+          },
+          data: {
+            position: { increment: 1 },
+          },
+        });
+      }
+
+      // Actualizar la lista
+      return await prisma.list.update({
+        where: { id: listId },
+        data: {
+          position: newPosition,
+        },
+      });
     }),
 
   updateTask: authenticatedProcedure
