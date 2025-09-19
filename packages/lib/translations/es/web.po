@@ -2150,10 +2150,6 @@ msgstr "Gráficas"
 msgid "Chat"
 msgstr ""
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
-msgid "Chat with documents"
-msgstr "Chatear con documentos"
-
 #: packages/ui/primitives/document-flow/types.ts
 msgid "Checkbox"
 msgstr "Casilla de verificación"
@@ -6621,6 +6617,10 @@ msgstr "Las plantillas privadas solo pueden ser modificadas y vistas por ti."
 #: apps/remix/app/components/dialogs/assistant-confirmation-dialog.tsx
 msgid "Proceed"
 msgstr "Proceder"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
+msgid "Process Contracts"
+msgstr "Procesar Contratos"
 
 #: apps/remix/app/components/general/document/document-status.tsx
 #: packages/lib/constants/document.ts

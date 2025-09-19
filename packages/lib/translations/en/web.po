@@ -738,8 +738,8 @@ msgstr "A recipient was updated"
 
 #. placeholder {0}: team.name
 #: packages/lib/server-only/team/create-team-email-verification.ts
-msgid "A request to use your email has been initiated by {0} on Documenso"
-msgstr "A request to use your email has been initiated by {0} on Documenso"
+msgid "A request to use your email has been initiated by {0}"
+msgstr "A request to use your email has been initiated by {0}"
 
 #: apps/remix/app/components/dialogs/webhook-create-dialog.tsx
 msgid "A secret that will be sent to your URL so you can verify that the request has been sent by us"
@@ -2144,10 +2144,6 @@ msgstr "Charts"
 #: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 msgid "Chat"
 msgstr "Chat"
-
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
-msgid "Chat with documents"
-msgstr "Chat with documents"
 
 #: packages/ui/primitives/document-flow/types.ts
 msgid "Checkbox"
@@ -6617,6 +6613,10 @@ msgstr "Private templates can only be modified and viewed by you."
 msgid "Proceed"
 msgstr "Proceed"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
+msgid "Process Contracts"
+msgstr "Process Contracts"
+
 #: apps/remix/app/components/general/document/document-status.tsx
 #: packages/lib/constants/document.ts
 msgid "Processing"
@@ -8182,8 +8182,8 @@ msgstr "Team"
 
 #. placeholder {0}: team.name
 #: packages/lib/server-only/team/delete-team.ts
-msgid "Team \"{0}\" has been deleted on Documenso"
-msgstr "Team \"{0}\" has been deleted on Documenso"
+msgid "Team \"{0}\" has been deleted"
+msgstr "Team \"{0}\" has been deleted"
 
 #: packages/lib/constants/teams-translations.ts
 msgid "Team Admin"
@@ -8225,8 +8225,8 @@ msgid "Team email removed"
 msgstr "Team email removed"
 
 #: packages/email/templates/team-email-removed.tsx
-msgid "Team email removed for {teamName} on Documenso"
-msgstr "Team email removed for {teamName} on Documenso"
+msgid "Team email removed for {teamName}"
+msgstr "Team email removed for {teamName}"
 
 #: apps/remix/app/routes/_unauthenticated+/team.verify.email.$token.tsx
 msgid "Team email verification"
@@ -10791,8 +10791,8 @@ msgstr "You have been invited by <0>{0}</0> to join their organisation."
 
 #. placeholder {0}: organisation.name
 #: packages/lib/server-only/organisation/create-organisation-member-invites.ts
-msgid "You have been invited to join {0} on Documenso"
-msgstr "You have been invited to join {0} on Documenso"
+msgid "You have been invited to join {0}"
+msgstr "You have been invited to join {0}"
 
 #: packages/email/templates/organisation-invite.tsx
 msgid "You have been invited to join the following organisation"

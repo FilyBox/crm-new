@@ -183,9 +183,19 @@ export function DataTable<TData>({
     // Prepare contributors/artists data
     let contributors: { name: string }[] = [];
     if (typedRow.artists) {
-      contributors = typedRow.artists.map((artist) => ({
-        name: artist.name || 'Unknown',
-      }));
+      if (Array.isArray(typedRow.artists)) {
+        contributors = typedRow.artists.map((artist) => ({
+          name: artist.name || 'Unknown',
+        }));
+      } else {
+        //separar por comas y mapear
+        const artistsArray = (typedRow.artists as unknown as string)
+          .split(',')
+          .map((name) => name.trim());
+        contributors = artistsArray.map((name) => ({
+          name: name || 'Unknown',
+        }));
+      }
     } else if (typedRow.releasesArtists) {
       contributors = typedRow.releasesArtists.map((artist: enhancedArtists) => ({
         name: artist.artistName || 'Unknown',

@@ -138,7 +138,7 @@ export const AppNavDesktop = ({
       },
       {
         href: `/t/${teamUrl}/chatspace`,
-        label: msg`Chat`,
+        label: msg`Process Contracts`,
       },
     ];
   }, [currentTeam, organisations]);

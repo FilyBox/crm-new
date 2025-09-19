@@ -301,8 +301,7 @@ export const taskRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const { listId, name, color } = input;
-      const { teamId, user } = ctx;
-      const userId = user.id;
+      const { teamId } = ctx;
 
       const existingList = await prisma.list.findFirst({
         where: { id: listId, teamId },
@@ -594,7 +593,6 @@ export const taskRouter = router({
     )
     .query(async ({ input, ctx }) => {
       const {
-        projectId,
         query,
         priority,
         page,
@@ -603,7 +601,6 @@ export const taskRouter = router({
         joinOperator,
         assigneeIds,
         period,
-        orderBy = 'createdAt',
         orderByColumn,
         orderByDirection = 'desc',
       } = input;
@@ -875,7 +872,7 @@ export const taskRouter = router({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const { userId, teamId, projectId, parentTaskId, ...data } = input;
+      const { teamId, projectId, parentTaskId, ...data } = input;
 
       // Verificar permisos si es tarea de equipo
       if (teamId && ctx.teamId !== teamId) {
@@ -886,9 +883,9 @@ export const taskRouter = router({
         where: { id: Number(input.taskId) },
         data: {
           ...data,
-          ...(teamId && { team: { connect: { id: teamId } } }),
-          ...(projectId && { project: { connect: { id: projectId } } }),
-          ...(parentTaskId && { parentTask: { connect: { id: parentTaskId } } }),
+          ...(teamId && { teamId }),
+          ...(projectId && { projectId }),
+          ...(parentTaskId && { parentTaskId }),
         },
       });
     }),

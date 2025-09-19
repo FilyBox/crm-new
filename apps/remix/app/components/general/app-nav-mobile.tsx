@@ -48,34 +48,88 @@ export const AppNavMobile = ({ isMenuOpen, onMenuOpenChange }: AppNavMobileProps
     }
 
     if (!teamUrl) {
-      return [
-        {
-          href: '/inbox',
-          text: t`Inbox`,
-        },
-        {
-          href: '/settings/profile',
-          text: t`Settings`,
-        },
-      ];
+      return [];
+    }
+
+    return [
+      {
+        href: `/t/${teamUrl}/files`,
+        label: t`Files`,
+      },
+
+      {
+        href: `/t/${teamUrl}/events`,
+        label: t`Events`,
+      },
+      {
+        href: `/t/${teamUrl}/tasks`,
+        label: t`Tasks`,
+      },
+    ];
+  }, [currentTeam, organisations]);
+
+  const menuNavigationLinksMusic = useMemo(() => {
+    let teamUrl = currentTeam?.url || null;
+
+    if (!teamUrl && isPersonalLayout(organisations)) {
+      teamUrl = organisations[0].teams[0]?.url || null;
+    }
+
+    if (!teamUrl) {
+      return [];
+    }
+
+    return [
+      {
+        href: `/t/${teamUrl}/music`,
+        label: t`Virgin`,
+      },
+      {
+        href: `/t/${teamUrl}/tuStreams`,
+        label: t`TuStreams`,
+      },
+      {
+        href: `/t/${teamUrl}/releases`,
+        label: t`Releases`,
+      },
+      {
+        href: `/t/${teamUrl}/distribution`,
+        label: t`Ada`,
+      },
+      {
+        href: `/t/${teamUrl}/isrc`,
+        label: t`ISRC`,
+      },
+    ];
+  }, [currentTeam, organisations]);
+
+  const menuNavigationLinksContracts = useMemo(() => {
+    let teamUrl = currentTeam?.url || null;
+
+    if (!teamUrl && isPersonalLayout(organisations)) {
+      teamUrl = organisations[0].teams[0]?.url || null;
+    }
+
+    if (!teamUrl) {
+      return [];
     }
 
     return [
       {
         href: `/t/${teamUrl}/documents`,
-        text: t`Documents`,
+        label: t`Create contracts`,
       },
       {
         href: `/t/${teamUrl}/templates`,
-        text: t`Templates`,
+        label: t`Templates`,
       },
       {
-        href: '/inbox',
-        text: t`Inbox`,
+        href: `/t/${teamUrl}/contracts`,
+        label: t`Contracts`,
       },
       {
-        href: '/settings/profile',
-        text: t`Settings`,
+        href: `/t/${teamUrl}/chatspace`,
+        label: t`Process Contracts`,
       },
     ];
   }, [currentTeam, organisations]);
@@ -85,19 +139,40 @@ export const AppNavMobile = ({ isMenuOpen, onMenuOpenChange }: AppNavMobileProps
       <SheetContent className="flex w-full max-w-[350px] flex-col">
         <BrandingLogo className="h-6 w-auto" />
         <div className="mt-8 flex w-full flex-col items-start gap-y-4">
-          {menuNavigationLinks.map(({ href, text }) => (
+          {menuNavigationLinksContracts.map(({ href, label }) => (
             <Link
               key={href}
               className="text-foreground hover:text-foreground/80 flex items-center gap-2 text-2xl font-semibold"
               to={href}
               onClick={() => handleMenuItemClick()}
             >
-              {text}
+              {label}
+            </Link>
+          ))}
+          {menuNavigationLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              className="text-foreground hover:text-foreground/80 flex items-center gap-2 text-2xl font-semibold"
+              to={href}
+              onClick={() => handleMenuItemClick()}
+            >
+              {label}
               {href === '/inbox' && unreadCountData && unreadCountData.count > 0 && (
                 <span className="bg-primary text-primary-foreground flex h-6 min-w-[1.5rem] items-center justify-center rounded-full px-1.5 text-xs font-semibold">
                   {unreadCountData.count > 99 ? '99+' : unreadCountData.count}
                 </span>
               )}
+            </Link>
+          ))}
+
+          {menuNavigationLinksMusic.map(({ href, label }) => (
+            <Link
+              key={href}
+              className="text-foreground hover:text-foreground/80 flex items-center gap-2 text-2xl font-semibold"
+              to={href}
+              onClick={() => handleMenuItemClick()}
+            >
+              {label}
             </Link>
           ))}
 

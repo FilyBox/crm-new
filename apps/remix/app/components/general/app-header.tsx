@@ -97,9 +97,8 @@ export const Header = ({ className, ...props }: HeaderProps) => {
           </Link>
         </Button> */}
 
-        <NotificationCenter suscriberId={user.id.toString()} />
-
-        <div className="md:-ml-2">
+        <div className="flex flex-row-reverse items-center sm:flex-row md:-ml-2">
+          <NotificationCenter suscriberId={user.id.toString()} />
           {isPersonalLayout(organisations) ? <MenuSwitcher /> : <OrgMenuSwitcher />}
         </div>
 

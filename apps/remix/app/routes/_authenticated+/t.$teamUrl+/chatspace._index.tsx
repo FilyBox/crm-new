@@ -176,7 +176,7 @@ export default function DocumentsPage() {
             )}
 
             <h2 className="text-4xl font-semibold">
-              <Trans>Chat with documents</Trans>
+              <Trans>Process Contracts</Trans>
             </h2>
           </div>
 
