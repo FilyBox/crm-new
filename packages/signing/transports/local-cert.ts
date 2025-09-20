@@ -31,7 +31,7 @@ export const signWithLocalCert = async ({ pdf }: SignWithLocalCertOptions) => {
   }
 
   if (!cert) {
-    let certPath = env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH') || '/opt/documenso/cert.p12';
+    let certPath = env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH') || '/opt/documenso/certificate.p12';
 
     // We don't want to make the development server suddenly crash when using the `dx` script
     // so we retain this when NODE_ENV isn't set to production which it should be in most production
@@ -39,7 +39,7 @@ export const signWithLocalCert = async ({ pdf }: SignWithLocalCertOptions) => {
     //
     // Our docker image automatically sets this so it shouldn't be an issue for self-hosters.
     if (env('NODE_ENV') !== 'production') {
-      certPath = env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH') || './example/cert.p12';
+      certPath = env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH') || './example/certificate.p12';
     }
 
     cert = Buffer.from(fs.readFileSync(certPath));
