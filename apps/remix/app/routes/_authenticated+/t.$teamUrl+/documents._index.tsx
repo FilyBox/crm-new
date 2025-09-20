@@ -95,8 +95,7 @@ export default function DocumentsPage() {
           filters,
           folderId,
         ],
-        staleTime: Infinity,
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true,
         placeholderData: (previousData) => previousData,
       }),
     );
