@@ -213,7 +213,7 @@ export const FilesTable = ({
           />
         }
       >
-        <DataTableAdvancedToolbar loading={isLoading || false} table={table}>
+        {/* <DataTableAdvancedToolbar loading={isLoading || false} table={table}>
           <DataTableSortList table={table} align="start" loading={isLoading || false} />
           <DataTableFilterList
             loading={isLoading || false}
@@ -223,7 +223,7 @@ export const FilesTable = ({
             throttleMs={throttleMs}
             align="start"
           />
-        </DataTableAdvancedToolbar>
+        </DataTableAdvancedToolbar> */}
       </DataTable>
     </div>
   );

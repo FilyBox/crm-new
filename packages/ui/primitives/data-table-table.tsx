@@ -165,8 +165,9 @@ export function DataTable<TData>({
   const { i18n } = useLingui();
   const currentLanguage = i18n.locale;
   const isDesktop = useMediaQuery('(min-width: 640px)');
-  const prepareCardData = (row: TData) => {
+  const prepareCardData = (row: TData, index: number) => {
     const typedRow = row as HasId & HasOptionalFields;
+    const tableRow = table.getRowModel().rows[index];
 
     const lpmData = row as LpmData;
     const statusElements = [
@@ -237,6 +238,8 @@ export function DataTable<TData>({
       Biography: Boolean(typedRow.Biography),
       total: typedRow.total || 0,
       from: from || '',
+      isSelected: tableRow?.getIsSelected() || false,
+      onSelectChange: (selected: boolean) => tableRow?.toggleSelected(selected),
     };
   };
 
@@ -255,24 +258,39 @@ export function DataTable<TData>({
       {children}
       <div className="overflow-hidden rounded-md">
         <Toaster theme="system" richColors className="mb-16" />
-        {isDesktop ? (
-          <Table overflowHidden={skeleton?.enable} className="scrollbar-hide">
-            {/* <ScrollArea className="w-full max-w-screen-xl whitespace-nowrap rounded-md border"> */}
-            <TableHeader className="scrollbar-hide">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(header.column.columnDef.header, header.getContext())}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
+        <Table overflowHidden={skeleton?.enable} className="scrollbar-hide">
+          {/* <ScrollArea className="w-full max-w-screen-xl whitespace-nowrap rounded-md border"> */}
+          <TableHeader className="scrollbar-hide">
+            {isDesktop
+              ? table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              : table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.slice(0, 1).map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+          </TableHeader>
+
+          {isDesktop ? (
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
@@ -478,11 +496,15 @@ export function DataTable<TData>({
                 </TableRow>
               )}
             </TableBody>
-            {/* <ScrollBar orientation="horizontal" />
+          ) : (
+            <></>
+          )}
+          {/* <ScrollBar orientation="horizontal" />
             </ScrollArea> */}
-          </Table>
-        ) : (
-          <div className="flex flex-col gap-5">
+        </Table>
+
+        {!isDesktop && (
+          <div className="mb-10 flex flex-col gap-5">
             {skeleton?.enable ? (
               <div className="flex flex-col gap-2">
                 <Skeleton className="h-64 w-full" />
@@ -494,7 +516,7 @@ export function DataTable<TData>({
                 return (
                   <ExpandibleCard
                     key={index}
-                    {...prepareCardData(row)}
+                    {...prepareCardData(row, index)}
                     {...(onNavegate && { onNavegate: () => onNavegate(row) })}
                     {...(onEdit && { onEdit: () => onEdit(row) })}
                     {...(onDelete && { onDelete: () => onDelete(row) })}

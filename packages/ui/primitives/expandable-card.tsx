@@ -15,6 +15,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '../primitives/card';
 import { Progress as ProgressBar } from '../primitives/progress';
 import type { LpmData } from '../types/tables-types';
 import { Badge } from './badge';
+import { Checkbox } from './checkbox';
 
 interface ExpandibleCardProps {
   title: string;
@@ -48,6 +49,8 @@ interface ExpandibleCardProps {
   EPKUpdates?: boolean;
   WebSiteUpdates?: boolean;
   Biography?: boolean;
+  isSelected?: boolean;
+  onSelectChange?: (selected: boolean) => void;
 }
 
 export function useExpandable(initialState = false) {
@@ -92,6 +95,8 @@ export function ExpandibleCard({
   link,
   total,
   fileName,
+  isSelected = false,
+  onSelectChange,
 }: ExpandibleCardProps) {
   const { isExpanded, toggleExpand, animatedHeight } = useExpandable();
   const contentRef = useRef<HTMLDivElement>(null);
@@ -114,12 +119,26 @@ export function ExpandibleCard({
     }
   };
 
+  const handleCheckboxChange = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <Card className="text-foreground w-full cursor-pointer transition-all duration-300 hover:shadow-lg">
       <CardHeader onClick={toggleExpand} className="pb-0">
         <div className="flex w-full items-start justify-between">
           <div className="space-y-2">
             <div className="flex gap-2">
+              {onSelectChange && (
+                <div onClick={handleCheckboxChange}>
+                  <Checkbox
+                    checked={isSelected}
+                    onCheckedChange={onSelectChange}
+                    aria-label="Select row"
+                    className="translate-y-1"
+                  />
+                </div>
+              )}
               {status &&
                 status.length > 0 &&
                 status.map((status, index) => (

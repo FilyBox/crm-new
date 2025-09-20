@@ -900,6 +900,7 @@ msgid "Active sessions"
 msgstr "Sesiones activas"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 msgid "Ada"
 msgstr ""
@@ -2144,7 +2145,6 @@ msgstr "Límite de caracteres"
 msgid "Charts"
 msgstr "Gráficas"
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/tables/chatspace-table-action-button.tsx
 msgid "Chat"
@@ -2491,6 +2491,7 @@ msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
@@ -2694,6 +2695,7 @@ msgid "Create Claim"
 msgstr "Crear reclamación"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 msgid "Create contracts"
 msgstr "Crear contrato"
 
@@ -3672,7 +3674,6 @@ msgid "Document will be permanently deleted"
 msgstr "El documento será eliminado permanentemente"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
-#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/skeletons/document-edit-skeleton.tsx
 #: apps/remix/app/components/general/user-profile-timur.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
@@ -4356,6 +4357,7 @@ msgid "Event Type"
 msgstr "Tipo de evento"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 msgid "Events"
 msgstr "Eventos"
 
@@ -4581,6 +4583,7 @@ msgid "file{0}"
 msgstr "archivo{0}"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/files._index.tsx
 msgid "Files"
 msgstr "Archivos"
@@ -4979,8 +4982,6 @@ msgstr ""
 msgid "In Progress"
 msgstr "En proceso"
 
-#: apps/remix/app/components/general/app-nav-mobile.tsx
-#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/document/document-status.tsx
 msgid "Inbox"
 msgstr "Bandeja de entrada"
@@ -5126,6 +5127,7 @@ msgid "Isrc"
 msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/tables/distribution-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "ISRC"
@@ -6618,6 +6620,8 @@ msgstr "Las plantillas privadas solo pueden ser modificadas y vistas por ti."
 msgid "Proceed"
 msgstr "Proceder"
 
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/chatspace._index.tsx
 msgid "Process Contracts"
 msgstr "Procesar Contratos"
@@ -6965,6 +6969,7 @@ msgid "Release Date"
 msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 msgid "Releases"
 msgstr ""
@@ -7585,8 +7590,6 @@ msgstr "Configura las propiedades de tu plantilla y la información del destinat
 
 #: apps/remix/app/components/general/app-command-menu.tsx
 #: apps/remix/app/components/general/app-command-menu.tsx
-#: apps/remix/app/components/general/app-nav-mobile.tsx
-#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/folder/folder-card.tsx
 #: apps/remix/app/components/general/org-menu-switcher.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
@@ -8176,6 +8179,7 @@ msgid "Task in progress"
 msgstr "Tarea en proceso"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 msgid "Tasks"
 msgstr "Tareas"
 
@@ -9282,6 +9286,7 @@ msgid "Triggers"
 msgstr "Desencadenadores"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "TuStreams"
@@ -10075,6 +10080,7 @@ msgid "Vigente"
 msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
 msgid "Virgin"
