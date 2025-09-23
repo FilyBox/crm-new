@@ -37,23 +37,22 @@ enum Role {
 }
 
 model User {
-  id               Int              @id @default(autoincrement())
-  name             String?
-  email            String           @unique
-  emailVerified    DateTime?
-  password         String? // Todo: (RR7) Remove after RR7 migration.
-  source           String?
-  signature        String?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @default(now()) @updatedAt
-  lastSignedIn     DateTime         @default(now())
-  roles            Role[]           @default([USER])
-  identityProvider IdentityProvider @default(DOCUMENSO) // Todo: (RR7) Remove after RR7 migration.
-  avatarImageId    String?
-  disabled         Boolean          @default(false)
-  boards           Board[]
-  lists            List[]
-
+  id                  Int                  @id @default(autoincrement())
+  name                String?
+  email               String               @unique
+  emailVerified       DateTime?
+  password            String? // Todo: (RR7) Remove after RR7 migration.
+  source              String?
+  signature           String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now()) @updatedAt
+  lastSignedIn        DateTime             @default(now())
+  roles               Role[]               @default([USER])
+  identityProvider    IdentityProvider     @default(DOCUMENSO) // Todo: (RR7) Remove after RR7 migration.
+  avatarImageId       String?
+  disabled            Boolean              @default(false)
+  boards              Board[]
+  lists               List[]
   accounts            Account[]
   sessions            Session[]
   passwordResetTokens PasswordResetToken[]
@@ -102,6 +101,8 @@ model User {
   siteSettings       SiteSettings[]
   passkeys           Passkey[]
   avatarImage        AvatarImage?           @relation(fields: [avatarImageId], references: [id], onDelete: SetNull)
+  album              Album[]
+  allMusic           AllMusic[]
 
   @@index([email])
 }
@@ -1021,16 +1022,15 @@ model Team {
   emailVerification TeamEmailVerification?
   avatarImage       AvatarImage?           @relation(fields: [avatarImageId], references: [id], onDelete: SetNull)
 
-  profile    TeamProfile?
-  boards     Board[]
-  lists      List[]
-  documents  Document[]
-  templates  Template[]
-  folders    Folder[]
-  apiTokens  ApiToken[]
-  webhooks   Webhook[]
-  teamGroups TeamGroup[]
-
+  profile        TeamProfile?
+  boards         Board[]
+  lists          List[]
+  documents      Document[]
+  templates      Template[]
+  folders        Folder[]
+  apiTokens      ApiToken[]
+  webhooks       Webhook[]
+  teamGroups     TeamGroup[]
   organisationId String
   organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
 
@@ -1058,6 +1058,8 @@ model Team {
   lpm                                 lpm[]
   lpmProductDisplayArtists            lpmProductDisplayArtists[]
   Files                               Files[]
+  album                               Album[]
+  allMusic                            AllMusic[]
 }
 
 model TeamEmail {
@@ -1225,6 +1227,7 @@ model AvatarImage {
 
   team         Team[]
   user         User[]
+  artist       ArtistsAllMusic[]
   organisation Organisation[]
 }
 
@@ -1667,6 +1670,7 @@ model Artist {
   teamId            Int
   tuStreams         tuStreams[]
   tuStreamsArtists  tuStreamsArtists[]
+  album             Album[]
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
   team Team  @relation(fields: [teamId], references: [id], onDelete: Cascade)
@@ -1784,6 +1788,109 @@ model lpm {
   // writer     Writers?                   @relation(fields: [writerId], references: [id], onDelete: SetNull)
   user                                User?                      @relation(fields: [userId], references: [id], onDelete: SetNull)
   team                                Team                       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model Album {
+  id          Int        @id @default(autoincrement())
+  title       String?
+  userId      Int?
+  teamId      Int
+  isrcVideo   String?
+  isrcSong    String?
+  UPC         String?
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  allMusic    AllMusic[]
+  artists     Artist[]
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team        Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model ArtistsAllMusic {
+  id            Int          @id @default(autoincrement())
+  name          String       @unique
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
+  avatarImageId String?
+  disabled      Boolean?     @default(false)
+  deletedAt     DateTime?
+  url           String?      @unique
+  avatarImage   AvatarImage? @relation(fields: [avatarImageId], references: [id], onDelete: SetNull)
+  allMusic      AllMusic[]
+}
+
+model AllMusic {
+  id                     Int               @id @default(autoincrement())
+  userId                 Int?
+  teamId                 Int
+  title                  String
+  isrcVideo              String?
+  isrcSong               String?
+  UPC                    String?
+  publishedAt            DateTime?
+  createdAt              DateTime          @default(now())
+  artists                ArtistsAllMusic[]
+  album                  Album[]
+  videoLinks             VideoLinks[]
+  generalLinks           GeneralLinks[]
+  agregadoraPercentage   Int?
+  distribuidorPercentage Int?
+  catalog                String?
+  deletedAt              DateTime?
+  user                   User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  team                   Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  agregadoraId           Int?
+  agregadora             Agregadora?       @relation(fields: [agregadoraId], references: [id], onDelete: SetNull)
+  distribuidorId         Int?
+  distribuidor           Distribuidor?     @relation(fields: [distribuidorId], references: [id], onDelete: SetNull)
+  recordLabelId          Int?
+  recordLabel            RecordLabel?      @relation(fields: [recordLabelId], references: [id], onDelete: SetNull)
+}
+
+model RecordLabel {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  deletedAt DateTime?
+  allMusic  AllMusic[]
+}
+
+model Agregadora {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  deletedAt DateTime?
+  allMusic  AllMusic[]
+}
+
+model Distribuidor {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  deletedAt DateTime?
+  allMusic  AllMusic[]
+}
+
+model VideoLinks {
+  id          Int        @id @default(autoincrement())
+  isrcVideo   String?
+  name        String
+  url         String
+  lyrics      String?
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  deletedAt   DateTime?
+  allMusic    AllMusic[]
+}
+
+model GeneralLinks {
+  id        Int        @id @default(autoincrement())
+  name      String
+  url       String
+  createdAt DateTime   @default(now())
+  deletedAt DateTime?
+  allMusic  AllMusic[]
 }
 
 enum ContractStatus {

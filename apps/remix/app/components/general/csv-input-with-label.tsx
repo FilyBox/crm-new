@@ -23,7 +23,7 @@ export interface CSVFile {
   id: string;
   rowCount: number;
   columnCount: number;
-  label?: string;
+  label: string;
 }
 
 type InputCSVProps = {
@@ -31,19 +31,19 @@ type InputCSVProps = {
   uploadFilesVoid: (file: File) => void;
   onMultipleUpload?: (files: File[]) => void;
   multiple: boolean;
-  label?: string;
   isSubmitting: boolean;
+  label: string;
   // csvFiles: CSVFile[];
   // setCsvFiles: React.Dispatch<React.SetStateAction<CSVFile[]>>;
 };
 
-export default function CsvUploadInput({
+export default function CsvUploadInputWithLabel({
+  label,
   onUpload,
   onMultipleUpload,
   multiple,
   uploadFilesVoid,
   isSubmitting,
-  label,
 }: InputCSVProps) {
   // const [csvFiles, setCsvFiles] = useState<CSVFile[]>([]);
   const { csvFiles, addCsvFiles, removeCsvFile, clearCsvFiles } = useCsvFilesStore();
@@ -131,24 +131,31 @@ export default function CsvUploadInput({
   };
 
   return (
-    <div className="w-full max-w-80 space-y-4">
+    <div className="w-full max-w-fit space-y-4">
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="outline"
-            disabled={isSubmitting}
+            disabled={
+              isSubmitting ||
+              (csvFiles.length > 0 && !!csvFiles[0]?.label && csvFiles[0].label !== label)
+            }
             onClick={triggerFileInput}
-            className={`flex w-full flex-1 items-center bg-transparent ${csvFiles.length > 0 ? 'justify-between' : 'justify-center'}`}
+            className={`flex w-full max-w-fit flex-1 items-center bg-transparent ${csvFiles.length > 0 ? 'justify-between' : 'justify-center'}`}
           >
             <div className="flex items-center">
               <Upload className="mr-2 h-4 w-4" />
-              Upload
+              {label}
             </div>
-            {csvFiles.length > 0 && <Badge variant="secondary">{csvFiles.length} file</Badge>}
+            {csvFiles.length > 0 && csvFiles[0]?.label === label && (
+              <Badge className="ml-2" variant="secondary">
+                {csvFiles.length} file
+              </Badge>
+            )}
           </Button>
 
-          {csvFiles.length > 0 && (
+          {csvFiles.length > 0 && csvFiles[0]?.label && csvFiles[0].label === label && (
             <div className="flex items-center gap-2">
               <Popover>
                 <PopoverTrigger asChild>

@@ -266,8 +266,6 @@ export default function TablePage() {
         continuousMix: item['Continuous Mix'] || '',
         continuouslyMixedIndividualSong: item['Continuously Mixed Individual Song'] || '',
         trackPlayLink: item['Track Play Link'] || '',
-
-        // Campos adicionales de licencia
         license: item['Licencia'] || '',
       }));
       // Filtrar cualquier objeto que esté completamente vacío (por si hay filas vacías en el CSV)

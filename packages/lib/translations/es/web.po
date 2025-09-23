@@ -763,6 +763,9 @@ msgstr "Una conexión a Internet estable"
 msgid "A team you were a part of has been deleted"
 msgstr "Un equipo del que formabas parte ha sido eliminado"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4286,6 +4289,9 @@ msgstr "Error al eliminar registros"
 msgid "Error downloading files"
 msgstr "Error al descargar archivos"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -5636,6 +5642,8 @@ msgid "Multiple access methods can be selected."
 msgstr "Se pueden seleccionar varios métodos de acceso."
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 msgid "Music"
 msgstr "Música"
 
@@ -6631,6 +6639,9 @@ msgstr "Procesar Contratos"
 msgid "Processing"
 msgstr "Procesando"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -9074,6 +9085,7 @@ msgstr ""
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx

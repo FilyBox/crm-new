@@ -1,4 +1,5 @@
 import { adminRouter } from './admin-router/router';
+import { allMusicRouter } from './allMusic-router/router';
 import { apiTokenRouter } from './api-token-router/router';
 import { artistRouter } from './artist-router/router';
 import { authRouter } from './auth-router/router';
@@ -55,6 +56,7 @@ export const appRouter = router({
   ticketType: ticketTypeRouter,
   chat: chatRouter,
   task: taskRouter,
+  allMusic: allMusicRouter,
 });
 
 export type AppRouter = typeof appRouter;

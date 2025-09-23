@@ -62,6 +62,10 @@ export const AppNavDesktop = ({
 
     return [
       {
+        href: `/t/${teamUrl}/allMusic`,
+        label: msg`Music`,
+      },
+      {
         href: `/t/${teamUrl}/files`,
         label: msg`Files`,
       },

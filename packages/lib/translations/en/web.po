@@ -758,6 +758,9 @@ msgstr "A stable internet connection"
 msgid "A team you were a part of has been deleted"
 msgstr "A team you were a part of has been deleted"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4281,6 +4284,9 @@ msgstr "Error deleting records"
 msgid "Error downloading files"
 msgstr "Error downloading files"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -5631,6 +5637,8 @@ msgid "Multiple access methods can be selected."
 msgstr "Multiple access methods can be selected."
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 msgid "Music"
 msgstr "Music"
 
@@ -6626,6 +6634,9 @@ msgstr "Process Contracts"
 msgid "Processing"
 msgstr "Processing"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -9083,6 +9094,7 @@ msgstr "Tipo de Precio"
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx

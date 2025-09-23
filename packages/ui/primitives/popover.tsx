@@ -33,9 +33,16 @@ type PopoverHoverProps = {
   side?: 'top' | 'bottom' | 'left' | 'right';
   children: React.ReactNode;
   contentProps?: React.ComponentPropsWithoutRef<typeof PopoverContent>;
+  className?: string;
 };
 
-const PopoverHover = ({ trigger, children, contentProps, side = 'top' }: PopoverHoverProps) => {
+const PopoverHover = ({
+  trigger,
+  children,
+  contentProps,
+  side = 'top',
+  className,
+}: PopoverHoverProps) => {
   const [open, setOpen] = React.useState(false);
 
   const isControlled = React.useRef(false);
@@ -84,6 +91,7 @@ const PopoverHover = ({ trigger, children, contentProps, side = 'top' }: Popover
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         {...contentProps}
+        className={cn('', className)}
       >
         {children}
       </PopoverContent>
