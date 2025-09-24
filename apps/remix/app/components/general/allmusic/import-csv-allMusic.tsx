@@ -328,7 +328,7 @@ export function CsvImportManager({ onImportComplete }: CsvImportManagerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">
+        <Button size="sm" variant="outline">
           <Trans>Import</Trans>
         </Button>
       </PopoverTrigger>

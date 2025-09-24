@@ -1,5 +1,3 @@
-import { useTransition } from 'react';
-
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Release, TypeOfRelease } from '@prisma/client';
@@ -9,7 +7,6 @@ import { enUS, es } from 'date-fns/locale';
 import { CheckIcon, CircleDashed, XIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type {
   TFindReleaseInternalResponse,
   TFindReleaseResponse,
@@ -53,15 +50,10 @@ export const ReleasesTable = ({
   onEdit,
   onDelete,
   onMultipleDelete,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
 }: DataTableProps<ReleaseTableRow, ReleaseTableRow>) => {
   const { _, i18n } = useLingui();
   const currentLanguage = i18n.locale;
   const team = useCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<ReleaseTableRow>[] => {
     const columns: ColumnDef<ReleaseTableRow>[] = [
@@ -497,15 +489,6 @@ export const ReleasesTable = ({
     clearOnDefault: true,
   });
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   const results = data ?? {
     data: [],
     perPage: 10,
@@ -516,19 +499,10 @@ export const ReleasesTable = ({
   return (
     <>
       <DataTable
-        setIsMultipleDelete={setIsMultipleDelete}
-        isMultipleDelete={isMultipleDelete}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team.currentTeamRole}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
-        onPaginationChange={onPaginationChange}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}

@@ -1,11 +1,8 @@
-import { useTransition } from 'react';
-
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DateTime } from 'luxon';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindDistributionInternalResponse } from '@documenso/trpc/server/distributionStatement-router/schema';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
@@ -57,14 +54,10 @@ export const DistributionTable = ({
   onEdit,
   onDelete,
   onMultipleDelete,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
   const { _, i18n } = useLingui();
 
   const team = useCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -453,15 +446,6 @@ export const DistributionTable = ({
     clearOnDefault: true,
   });
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   const results = data ?? {
     data: [],
     perPage: 10,
@@ -472,19 +456,10 @@ export const DistributionTable = ({
   return (
     <div className="relative">
       <DataTable
-        setIsMultipleDelete={setIsMultipleDelete}
-        isMultipleDelete={isMultipleDelete}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
-        onPaginationChange={onPaginationChange}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}
@@ -520,7 +495,11 @@ export const DistributionTable = ({
             align="start"
           />
           {findAll && (
-            <DataTableExportAllData findAll={findAll} loading={isPending} columns={columns} />
+            <DataTableExportAllData
+              findAll={findAll}
+              loading={isLoading || false}
+              columns={columns}
+            />
           )}
         </DataTableAdvancedToolbar>
       </DataTable>

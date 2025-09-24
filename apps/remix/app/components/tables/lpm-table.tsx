@@ -1,5 +1,3 @@
-import { useTransition } from 'react';
-
 import { msg } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import type { TeamMemberRole } from '@prisma/client';
@@ -7,7 +5,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindLpmResponse } from '@documenso/trpc/server/lpm-router/schema';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
@@ -45,21 +42,14 @@ export const LpmTable = ({
   data,
   isLoading,
   isLoadingError,
-  onAdd,
-  currentTeamMemberRole,
   findAll,
   onEdit,
   onDelete,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
   onMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
   const { _, i18n } = useLingui();
   const currentLanguage = i18n.locale;
   const team = useOptionalCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -717,15 +707,6 @@ export const LpmTable = ({
     clearOnDefault: true,
   });
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   const results = data ?? {
     data: [],
     artist: [],
@@ -737,19 +718,10 @@ export const LpmTable = ({
   return (
     <DataTable
       from="lpm"
-      setIsMultipleDelete={setIsMultipleDelete}
-      isMultipleDelete={isMultipleDelete}
       onDelete={onDelete}
       onEdit={onEdit}
       currentTeamMemberRole={team?.currentTeamRole}
       data={results.data}
-      perPage={results.perPage}
-      currentPage={results.currentPage}
-      totalPages={results.totalPages}
-      onPaginationChange={onPaginationChange}
-      columnVisibility={{
-        sender: team !== undefined,
-      }}
       error={{
         enable: isLoadingError || false,
       }}
@@ -785,7 +757,11 @@ export const LpmTable = ({
           align="start"
         />
         {findAll && (
-          <DataTableExportAllData findAll={findAll} loading={isPending} columns={columns} />
+          <DataTableExportAllData
+            findAll={findAll}
+            loading={isLoading || false}
+            columns={columns}
+          />
         )}
       </DataTableAdvancedToolbar>
     </DataTable>

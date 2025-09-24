@@ -6,7 +6,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindAllMusicResponse } from '@documenso/trpc/server/allMusic-router/schema';
 import { StackAvatarsArtistWithTooltipNew } from '@documenso/ui/components/lpm/stack-avatars-artist-with-tooltip-new';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
@@ -15,15 +14,14 @@ import { DataTable } from '@documenso/ui/primitives/data-table-table';
 
 import { useCurrentTeam } from '~/providers/team';
 
+import { DataTableFilterList } from '../general/allmusic/data-table-filter-list-allmusic';
 import { CsvImportManager } from '../general/allmusic/import-csv-allMusic';
 import { LinksWithTooltip } from '../general/links-with-tooltip';
 import { DataTableAdvancedToolbar } from './data-table-advanced-toolbar';
 import { DataTableColumnHeader } from './data-table-column-header';
 import { DataTableExportAllData } from './data-table-export-all-data';
-import { DataTableFilterList } from './data-table-filter-list';
 import { DataTableSkeleton } from './data-table-skeleton';
 import { TableActionBar } from './table-action-bar';
-import { TableFilter } from './table-filter';
 
 interface DataTableProps<TData, TValue> {
   data?: TFindAllMusicResponse;
@@ -57,8 +55,6 @@ export const AllMusicTable = ({
   const currentLanguage = i18n.locale;
   const team = useCurrentTeam();
   const [isPending, startTransition] = useTransition();
-
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -241,31 +237,13 @@ export const AllMusicTable = ({
     totalPages: 1,
   };
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   return (
     <div className="relative">
       <DataTable
-        setIsMultipleDelete={setIsMultipleDelete}
-        isMultipleDelete={isMultipleDelete}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
-        onPaginationChange={onPaginationChange}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}
@@ -291,36 +269,16 @@ export const AllMusicTable = ({
         }
       >
         <DataTableAdvancedToolbar loading={false} table={table}>
-          {/* <DataTableSortList table={table} align="start" loading={false} /> */}
           <DataTableFilterList
             loading={false}
             table={table}
             shallow={shallow}
+            allDataToFilter={allDataToFilter}
             debounceMs={debounceMs}
             throttleMs={throttleMs}
             align="start"
           />
 
-          <TableFilter
-            data={allDataToFilter.data?.artists}
-            isLoading={allDataToFilter.isLoading}
-            label="Artist"
-            searchParamsIdentifier="artistIds"
-          />
-
-          <TableFilter
-            data={allDataToFilter.data?.agregadora}
-            isLoading={allDataToFilter.isLoading}
-            label="Agregadora"
-            searchParamsIdentifier="agregadoraIds"
-          />
-
-          <TableFilter
-            data={allDataToFilter.data?.recordLabel}
-            isLoading={allDataToFilter.isLoading}
-            label="Disquera"
-            searchParamsIdentifier="recordLabelIds"
-          />
           {findAll && (
             <DataTableExportAllData
               filename={`all-music-${Date.now()}`}

@@ -1,4 +1,4 @@
-import { useMemo, useTransition } from 'react';
+import { useMemo } from 'react';
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -10,7 +10,6 @@ import { CircleDashed } from 'lucide-react';
 import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import { useSession } from '@documenso/lib/client-only/providers/session';
 import { isDocumentCompleted } from '@documenso/lib/utils/document';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
@@ -55,8 +54,6 @@ export const DocumentsTable = ({
   const currentLanguage = i18n.locale;
 
   const team = useCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-  const updateSearchParams = useUpdateSearchParams();
 
   const columns = useMemo((): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -183,15 +180,6 @@ export const DocumentsTable = ({
     clearOnDefault: true,
   });
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   const results = data ?? {
     data: [],
     perPage: 10,
@@ -206,14 +194,7 @@ export const DocumentsTable = ({
         // onRetry={onRetry}
         onNavegate={onNavegate}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
-        onPaginationChange={onPaginationChange}
         onMoveDocument={onMoveDocument}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}

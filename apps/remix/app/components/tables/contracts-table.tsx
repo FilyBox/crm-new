@@ -1,12 +1,9 @@
-import { useTransition } from 'react';
-
 import { useLingui } from '@lingui/react';
 import type { TeamMemberRole } from '@prisma/client';
 import { ContractStatus, ExpansionPossibility } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import { CircleDashed } from 'lucide-react';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindContractsResponse } from '@documenso/trpc/server/contracts-router/schema';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
@@ -31,8 +28,6 @@ interface DataTableProps<TData, TValue> {
 
   onEdit?: (data: DocumentsTableRow) => void;
   onMultipleDelete: (ids: number[]) => Promise<void>;
-  isMultipleDelete?: boolean;
-  setIsMultipleDelete?: (value: boolean) => void;
   onDelete?: (data: DocumentsTableRow) => void;
   onNavegate?: (data: DocumentsTableRow) => void;
   onMoveDocument?: (data: DocumentsTableRow) => void;
@@ -45,11 +40,7 @@ export const ContractsTable = ({
   isLoading,
   isLoadingError,
   onRetry,
-  onAdd,
   onEdit,
-  currentTeamMemberRole,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
   onNavegate,
   onMultipleDelete,
   onDelete,
@@ -64,9 +55,6 @@ export const ContractsTable = ({
   //   console.warn('onDelete dei');
   // }
   const team = useOptionalCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -224,15 +212,6 @@ export const ContractsTable = ({
     clearOnDefault: true,
   });
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   const results = data ?? {
     data: [],
     perPage: 10,
@@ -243,22 +222,13 @@ export const ContractsTable = ({
   return (
     <>
       <DataTable
-        setIsMultipleDelete={setIsMultipleDelete}
-        isMultipleDelete={isMultipleDelete}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team?.currentTeamRole}
         onRetry={onRetry}
         onNavegate={onNavegate}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
-        onPaginationChange={onPaginationChange}
         onMoveDocument={onMoveDocument}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}

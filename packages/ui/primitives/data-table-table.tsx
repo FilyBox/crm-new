@@ -2,11 +2,7 @@ import * as React from 'react';
 
 import { Trans, useLingui } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
-import {
-  type Table as TanstackTable,
-  type VisibilityState,
-  flexRender,
-} from '@tanstack/react-table';
+import { type Table as TanstackTable, flexRender } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { Bird } from 'lucide-react';
@@ -26,7 +22,6 @@ import {
   ContextMenuTrigger,
 } from './context-menu';
 import { ExpandibleCard } from './expandable-card';
-import { Scroller } from './scroller';
 import { Skeleton } from './skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
@@ -34,21 +29,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tool
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>;
   actionBar?: React.ReactNode;
-
-  columnVisibility?: VisibilityState;
   data?: TData[];
   onEdit?: (data: TData) => void;
   onNavegate?: (data: TData) => void;
   onDelete?: (data: TData) => void;
   from?: string;
-  isMultipleDelete?: boolean;
-  setIsMultipleDelete?: (value: boolean) => void;
   onMoveDocument?: (data: TData) => void;
-  perPage?: number;
-  currentPage?: number;
-  totalPages?: number;
   onRetry?: (data: TData) => void;
-  onPaginationChange?: (_page: number, _perPage: number) => void;
   onClearFilters?: () => void;
   hasFilters?: boolean;
   skeleton?: {

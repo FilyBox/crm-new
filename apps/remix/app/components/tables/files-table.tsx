@@ -1,12 +1,9 @@
-import { useTransition } from 'react';
-
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindFilesInternalResponse } from '@documenso/trpc/server/files-router/schema';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
@@ -14,11 +11,8 @@ import { DataTable } from '@documenso/ui/primitives/data-table-table';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
 
-import { DataTableAdvancedToolbar } from './data-table-advanced-toolbar';
 import { DataTableColumnHeader } from './data-table-column-header';
-import { DataTableFilterList } from './data-table-filter-list';
 import { DataTableSkeleton } from './data-table-skeleton';
-import { DataTableSortList } from './data-table-sort-list';
 import { TableActionDropdown } from './files-table-action-dropdown';
 import { TableActionBar } from './table-action-bar';
 
@@ -49,15 +43,10 @@ export const FilesTable = ({
   onHandleRetry,
   onMultipleDelete,
   onMultipleDownload,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
   const { _, i18n } = useLingui();
   const currentLanguage = i18n.locale;
   const team = useOptionalCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -154,15 +143,6 @@ export const FilesTable = ({
     clearOnDefault: true,
   });
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   const results = data ?? {
     data: [],
     perPage: 10,
@@ -173,20 +153,11 @@ export const FilesTable = ({
   return (
     <div className="relative">
       <DataTable
-        setIsMultipleDelete={setIsMultipleDelete}
-        isMultipleDelete={isMultipleDelete}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
         from="tustreams"
-        onPaginationChange={onPaginationChange}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}

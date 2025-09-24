@@ -474,8 +474,6 @@ export default function TuStreamsPage() {
         <div className="w-full">
           <TuStreamsTable
             onMultipleDelete={handleMultipleDelete}
-            isMultipleDelete={isMultipleDelete}
-            setIsMultipleDelete={setIsMultipleDelete}
             data={data?.tuStreams}
             isLoading={isLoading}
             findAll={findAll}

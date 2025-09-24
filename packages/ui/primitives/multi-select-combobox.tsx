@@ -137,7 +137,6 @@ export function MultiSelectCombobox<T = OptionValue>({
           </Button>
         </PopoverTrigger>
 
-        {/* This is placed outside the trigger since we can't have nested buttons. */}
         {showClearButton && !loading && (
           <div className="absolute bottom-0 right-8 top-0 flex items-center justify-center">
             <button
@@ -156,7 +155,7 @@ export function MultiSelectCombobox<T = OptionValue>({
           <CommandEmpty>
             <Trans>No value found.</Trans>
           </CommandEmpty>
-          <ScrollArea className={options.length > 10 ? 'h-48' : 'h-fit'}>
+          <ScrollArea className={options.length > 10 ? 'h-72' : 'h-fit'}>
             <CommandGroup>
               {options.map((option, i) => (
                 <CommandItem key={i} onSelect={() => handleSelect(option.value)}>

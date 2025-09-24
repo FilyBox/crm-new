@@ -1,9 +1,6 @@
-import { useTransition } from 'react';
-
 import { useLingui } from '@lingui/react';
 import type { ColumnDef } from '@tanstack/react-table';
 
-import { useUpdateSearchParams } from '@documenso/lib/client-only/hooks/use-update-search-params';
 import type { TFindIsrcSongsResponse } from '@documenso/trpc/server/isrcsong-router/schema';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
@@ -50,9 +47,6 @@ export const IsrcTable = ({
   const { _, i18n } = useLingui();
 
   const team = useCurrentTeam();
-  const [isPending, startTransition] = useTransition();
-
-  const updateSearchParams = useUpdateSearchParams();
 
   const createColumns = (): ColumnDef<DocumentsTableRow>[] => {
     const columns: ColumnDef<DocumentsTableRow>[] = [
@@ -163,31 +157,13 @@ export const IsrcTable = ({
     totalPages: 1,
   };
 
-  const onPaginationChange = (page: number, perPage: number) => {
-    startTransition(() => {
-      updateSearchParams({
-        page,
-        perPage,
-      });
-    });
-  };
-
   return (
     <div className="relative">
       <DataTable
-        setIsMultipleDelete={setIsMultipleDelete}
-        isMultipleDelete={isMultipleDelete}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
-        perPage={results.perPage}
-        currentPage={results.currentPage}
-        totalPages={results.totalPages}
-        onPaginationChange={onPaginationChange}
-        columnVisibility={{
-          sender: team !== undefined,
-        }}
         error={{
           enable: isLoadingError || false,
         }}
@@ -223,7 +199,11 @@ export const IsrcTable = ({
             align="start"
           />
           {findAll && (
-            <DataTableExportAllData findAll={findAll} loading={isPending} columns={columns} />
+            <DataTableExportAllData
+              findAll={findAll}
+              loading={isLoading || false}
+              columns={columns}
+            />
           )}
         </DataTableAdvancedToolbar>
       </DataTable>

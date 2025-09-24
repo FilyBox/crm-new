@@ -417,7 +417,6 @@ export default function ContractsPage() {
         onMultipleDelete={handleMultipleDelete}
         onRetry={handleRetry}
         isLoading={isLoading}
-        isMultipleDelete={deleteMultipleContractsMutation.isPending}
         isLoadingError={isLoadingError}
         // onMoveDocument={(row: Contract) => {
         //   setDocumentToMove(row.id);
