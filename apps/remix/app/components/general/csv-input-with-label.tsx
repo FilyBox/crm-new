@@ -131,7 +131,7 @@ export default function CsvUploadInputWithLabel({
   };
 
   return (
-    <div className="w-full max-w-fit space-y-4">
+    <div className="w-full space-y-4">
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <Button
@@ -142,12 +142,9 @@ export default function CsvUploadInputWithLabel({
               (csvFiles.length > 0 && !!csvFiles[0]?.label && csvFiles[0].label !== label)
             }
             onClick={triggerFileInput}
-            className={`flex w-full max-w-fit flex-1 items-center bg-transparent ${csvFiles.length > 0 ? 'justify-between' : 'justify-center'}`}
+            className={`flex w-full flex-1 items-center bg-transparent ${csvFiles.length > 0 ? 'justify-between' : 'justify-center'}`}
           >
-            <div className="flex items-center">
-              <Upload className="mr-2 h-4 w-4" />
-              {label}
-            </div>
+            <div className="flex items-center">{label}</div>
             {csvFiles.length > 0 && csvFiles[0]?.label === label && (
               <Badge className="ml-2" variant="secondary">
                 {csvFiles.length} file

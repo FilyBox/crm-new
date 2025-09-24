@@ -156,7 +156,7 @@ export function MultiSelectCombobox<T = OptionValue>({
           <CommandEmpty>
             <Trans>No value found.</Trans>
           </CommandEmpty>
-          <ScrollArea className="h-72">
+          <ScrollArea className={options.length > 10 ? 'h-48' : 'h-fit'}>
             <CommandGroup>
               {options.map((option, i) => (
                 <CommandItem key={i} onSelect={() => handleSelect(option.value)}>

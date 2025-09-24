@@ -12,6 +12,8 @@ export type FindAllMusicOptions = {
   teamId?: number;
   page?: number;
   artistIds?: number[];
+  agregadoraIds?: number[];
+  recordLabelIds?: number[];
   perPage?: number;
   orderBy?: {
     column: keyof AllMusic;
@@ -31,6 +33,8 @@ export const findAllMusic = async ({
   orderBy,
   artistIds,
   period,
+  agregadoraIds,
+  recordLabelIds,
 }: FindAllMusicOptions) => {
   const team = await prisma.team.findFirstOrThrow({
     where: {
@@ -96,6 +100,18 @@ export const findAllMusic = async ({
           in: artistIds,
         },
       },
+    };
+  }
+
+  if (recordLabelIds && recordLabelIds.length > 0) {
+    whereClause.recordLabelId = {
+      in: recordLabelIds,
+    };
+  }
+
+  if (agregadoraIds && agregadoraIds.length > 0) {
+    whereClause.agregadoraId = {
+      in: agregadoraIds,
     };
   }
 

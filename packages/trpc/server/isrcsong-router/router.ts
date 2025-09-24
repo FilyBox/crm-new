@@ -401,8 +401,10 @@ export const IsrcSongsRouter = router({
     .input(z.object({ ids: z.array(z.number()) }))
     .mutation(async ({ input }) => {
       const { ids } = input;
-      const deleted = await prisma.isrcSongs.deleteMany({
+
+      const deleted = await prisma.isrcSongs.updateMany({
         where: { id: { in: ids } },
+        data: { deletedAt: new Date() },
       });
 
       return deleted;

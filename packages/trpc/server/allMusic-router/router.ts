@@ -33,7 +33,7 @@ export const allMusicRouter = router({
             recordLabel: z.string().optional(),
           }),
         ),
-        agregadora: z.enum(['Virgin', 'TuStreams', 'Ada']),
+        agregadora: z.enum(['Virgin', 'TuStreams', 'Ada', 'No definida']),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -48,6 +48,7 @@ export const allMusicRouter = router({
       );
 
       const titles = uniqueInputMusic.map((item) => item.title.toLowerCase().trim());
+      const existingArtists = await prisma.artistsAllMusic.findMany({});
 
       const existingTitles = await prisma.allMusic.findMany({
         where: {
@@ -93,6 +94,45 @@ export const allMusicRouter = router({
               console.log('Creating AllMusic:', baseData.title);
               console.log('baseData:', allMusicData);
               console.log('artists:', artists);
+
+              const normalizedArtistString = (artists || '')
+                .replace(/\s+ft\.\s+/gi, ', ')
+                .replace(/\s+&\s+/g, ', ')
+                .replace(/\s+feat\.\s+/gi, ', ')
+                .replace(/\s+ft\s+/gi, ', ')
+                .replace(/\s+feat\s+/gi, ', ')
+                .replace(/\s*\/\s*/g, ', ');
+              console.log('normalizedArtistString:', normalizedArtistString);
+
+              // Función para normalizar texto (sin acentos, minúsculas, sin espacios extra)
+              const normalizeText = (text: string) => {
+                return text
+                  .toLowerCase()
+                  .trim()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, ''); // Remover acentos
+              };
+
+              const existingArtistsMap = new Map();
+              existingArtists.forEach((artist) => {
+                const normalizedKey = normalizeText(artist.name);
+                existingArtistsMap.set(normalizedKey, artist.name);
+              });
+
+              const normalizedArtistsList = normalizedArtistString
+                .split(',')
+                .map((name) => name.trim())
+                .filter((name) => name.length > 0);
+              const finalArtistsList = normalizedArtistsList.map((artistName) => {
+                const normalizedName = normalizeText(artistName);
+                // Si existe en la BD, usar el nombre exacto de la BD, sino usar el nombre normalizado original
+                return existingArtistsMap.has(normalizedName)
+                  ? existingArtistsMap.get(normalizedName)
+                  : artistName;
+              });
+
+              console.log('finalArtistsList:', finalArtistsList);
+
               // Verificar una vez más antes de crear (por si acaso se creó durante el procesamiento)
               const existingRecord = await tx.allMusic.findFirst({
                 where: {
@@ -117,9 +157,9 @@ export const allMusicRouter = router({
                   team: { connect: { id: teamId } },
                   user: { connect: { id: userId } },
 
-                  ...(artists && {
+                  ...(finalArtistsList.length > 0 && {
                     artists: {
-                      connectOrCreate: artists.split(',').map((artistName) => ({
+                      connectOrCreate: finalArtistsList.map((artistName) => ({
                         where: { name: artistName.trim() },
                         create: { name: artistName.trim() },
                       })),
@@ -205,6 +245,8 @@ export const allMusicRouter = router({
 
       const titles = uniqueInputMusic.map((item) => item.title.toLowerCase().trim());
 
+      const existingArtists = await prisma.artistsAllMusic.findMany({});
+
       const existingTitles = await prisma.allMusic.findMany({
         where: {
           title: {
@@ -249,7 +291,37 @@ export const allMusicRouter = router({
               console.log('Creating AllMusic:', baseData.title);
               console.log('baseData:', allMusicData);
               console.log('artists:', artists);
-              // Verificar una vez más antes de crear (por si acaso se creó durante el procesamiento)
+
+              const normalizedArtistString = (artists || '')
+                .replace(/\s+ft\.\s+/gi, ', ')
+                .replace(/\s+&\s+/g, ', ')
+
+                .replace(/\s+feat\.\s+/gi, ', ')
+
+                .replace(/\s+ft\s+/gi, ', ')
+                .replace(/\s+feat\s+/gi, ', ')
+                .replace(/\s*\/\s*/g, ', ');
+              console.log('normalizedArtistString:', normalizedArtistString);
+              const existingArtistsMap = new Map();
+              existingArtists.forEach((artist) => {
+                existingArtistsMap.set(artist.name.toLowerCase().trim(), artist.name);
+              });
+
+              // Procesar los artistas normalizados para usar los nombres exactos de la BD
+              const normalizedArtistsList = normalizedArtistString
+                .split(',')
+                .map((name) => name.trim())
+                .filter((name) => name.length > 0);
+              const finalArtistsList = normalizedArtistsList.map((artistName) => {
+                const lowerName = artistName.toLowerCase().trim();
+                // Si existe en la BD, usar el nombre exacto de la BD, sino usar el nombre normalizado original
+                return existingArtistsMap.has(lowerName)
+                  ? existingArtistsMap.get(lowerName)
+                  : artistName;
+              });
+
+              console.log('finalArtistsList:', finalArtistsList);
+
               const existingRecord = await tx.allMusic.findFirst({
                 where: {
                   title: {
@@ -272,10 +344,9 @@ export const allMusicRouter = router({
                   ...baseData,
                   team: { connect: { id: teamId } },
                   user: { connect: { id: userId } },
-
-                  ...(artists && {
+                  ...(finalArtistsList.length > 0 && {
                     artists: {
-                      connectOrCreate: artists.split(',').map((artistName) => ({
+                      connectOrCreate: finalArtistsList.map((artistName) => ({
                         where: { name: artistName.trim() },
                         create: { name: artistName.trim() },
                       })),
@@ -369,7 +440,17 @@ export const allMusicRouter = router({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const { query, page, perPage, artistIds, period, joinOperator, filterStructure } = input;
+      const {
+        query,
+        page,
+        perPage,
+        artistIds,
+        agregadoraIds,
+        recordLabelIds,
+        period,
+        joinOperator,
+        filterStructure,
+      } = input;
 
       const { user, teamId } = ctx;
       const userId = user.id;
@@ -390,6 +471,8 @@ export const allMusicRouter = router({
           query,
           page,
           perPage,
+          agregadoraIds,
+          recordLabelIds,
           artistIds,
           userId,
           teamId,
@@ -409,5 +492,33 @@ export const allMusicRouter = router({
         ...documents,
         data: mappedData,
       };
+    }),
+
+  findInfoToFilter: authenticatedProcedure.query(async ({}) => {
+    const [artists, agregadora, recordLabel, distribuidor] = await Promise.all([
+      prisma.artistsAllMusic.findMany({ select: { id: true, name: true } }),
+      prisma.agregadora.findMany({ select: { id: true, name: true } }),
+      prisma.recordLabel.findMany({ select: { id: true, name: true } }),
+      prisma.distribuidor.findMany({ select: { id: true, name: true } }),
+    ]);
+    return {
+      agregadora,
+      recordLabel,
+      distribuidor,
+      artists,
+    };
+  }),
+
+  deleteMultipleByIds: authenticatedProcedure
+    .input(z.object({ ids: z.array(z.number()) }))
+    .mutation(async ({ input }) => {
+      const { ids } = input;
+
+      const deleted = await prisma.allMusic.updateMany({
+        where: { id: { in: ids } },
+        data: { deletedAt: new Date() },
+      });
+
+      return deleted;
     }),
 });

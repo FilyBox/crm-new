@@ -26,6 +26,7 @@ import {
   ContextMenuTrigger,
 } from './context-menu';
 import { ExpandibleCard } from './expandable-card';
+import { Scroller } from './scroller';
 import { Skeleton } from './skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
@@ -254,7 +255,13 @@ export function DataTable<TData>({
   }
 
   return (
-    <div className={cn('mb-32 flex w-full flex-col gap-2.5 overflow-auto', className)} {...props}>
+    <div
+      className={cn(
+        'mb-32 flex w-full flex-col gap-2.5 overflow-auto rounded-lg border-2 p-2',
+        className,
+      )}
+      {...props}
+    >
       {children}
       <div className="overflow-hidden rounded-md">
         <Toaster theme="system" richColors className="mb-16" />

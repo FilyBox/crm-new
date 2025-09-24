@@ -15,6 +15,7 @@ import { DataTable } from '@documenso/ui/primitives/data-table-table';
 
 import { useCurrentTeam } from '~/providers/team';
 
+import { CsvImportManager } from '../general/allmusic/import-csv-allMusic';
 import { LinksWithTooltip } from '../general/links-with-tooltip';
 import { DataTableAdvancedToolbar } from './data-table-advanced-toolbar';
 import { DataTableColumnHeader } from './data-table-column-header';
@@ -22,11 +23,13 @@ import { DataTableExportAllData } from './data-table-export-all-data';
 import { DataTableFilterList } from './data-table-filter-list';
 import { DataTableSkeleton } from './data-table-skeleton';
 import { TableActionBar } from './table-action-bar';
+import { TableFilter } from './table-filter';
 
 interface DataTableProps<TData, TValue> {
   data?: TFindAllMusicResponse;
   isLoading?: boolean;
   isLoadingError?: boolean;
+  allDataToFilter: any;
   onAdd?: () => void;
   onEdit?: (data: DocumentsTableRow) => void;
   findAll?: () => Promise<TData[]>;
@@ -44,6 +47,7 @@ export const AllMusicTable = ({
   isLoadingError,
   onEdit,
   findAll,
+  allDataToFilter,
   onDelete,
   isMultipleDelete = false,
   setIsMultipleDelete,
@@ -296,9 +300,31 @@ export const AllMusicTable = ({
             throttleMs={throttleMs}
             align="start"
           />
+
+          <TableFilter
+            data={allDataToFilter.data?.artists}
+            isLoading={allDataToFilter.isLoading}
+            label="Artist"
+            searchParamsIdentifier="artistIds"
+          />
+
+          <TableFilter
+            data={allDataToFilter.data?.agregadora}
+            isLoading={allDataToFilter.isLoading}
+            label="Agregadora"
+            searchParamsIdentifier="agregadoraIds"
+          />
+
+          <TableFilter
+            data={allDataToFilter.data?.recordLabel}
+            isLoading={allDataToFilter.isLoading}
+            label="Disquera"
+            searchParamsIdentifier="recordLabelIds"
+          />
           {findAll && (
             <DataTableExportAllData findAll={findAll} loading={isPending} columns={columns} />
           )}
+          <CsvImportManager />
         </DataTableAdvancedToolbar>
       </DataTable>
     </div>

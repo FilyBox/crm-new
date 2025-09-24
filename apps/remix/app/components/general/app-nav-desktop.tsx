@@ -167,7 +167,7 @@ export const AppNavDesktop = ({
               >
                 <NavigationMenu>
                   <NavigationMenuList className="flex items-center gap-3">
-                    <NavigationMenuItem>
+                    {/* <NavigationMenuItem>
                       <NavigationMenuTrigger
                         className={cn(
                           'dark:text-muted-foreground/60 text-muted-foreground dark:hover:text-foreground m-0 p-0',
@@ -200,7 +200,7 @@ export const AppNavDesktop = ({
                           </NavigationMenuLink>
                         ))}
                       </NavigationMenuContent>
-                    </NavigationMenuItem>
+                    </NavigationMenuItem> */}
 
                     <NavigationMenuItem>
                       <NavigationMenuTrigger

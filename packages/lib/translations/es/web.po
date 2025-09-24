@@ -450,6 +450,10 @@ msgstr "# archivos"
 msgid "<0>\"{0}\"</0>is no longer available to sign"
 msgstr "<0>\"{0}\"</0> ya no está disponible para firmar"
 
+#: apps/remix/app/components/tables/table-filter.tsx
+msgid "<0>{label}:</0> All"
+msgstr ""
+
 #. placeholder {0}: NEXT_PUBLIC_WEBAPP_URL()
 #: packages/email/templates/confirm-team-email.tsx
 msgid "<0>{teamName}</0> has requested to use your email address for their team on {0}."
@@ -763,9 +767,10 @@ msgstr "Una conexión a Internet estable"
 msgid "A team you were a part of has been deleted"
 msgstr "Un equipo del que formabas parte ha sido eliminado"
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4289,9 +4294,10 @@ msgstr "Error al eliminar registros"
 msgid "Error downloading files"
 msgstr "Error al descargar archivos"
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -4980,6 +4986,10 @@ msgstr "Si tu aplicación de autenticación no admite códigos QR, puedes usar e
 msgid "Image"
 msgstr "Imagen"
 
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+msgid "Import"
+msgstr ""
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Import Date"
 msgstr ""
@@ -5641,7 +5651,6 @@ msgstr "Mover a carpeta"
 msgid "Multiple access methods can be selected."
 msgstr "Se pueden seleccionar varios métodos de acceso."
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 msgid "Music"
@@ -6639,9 +6648,10 @@ msgstr "Procesar Contratos"
 msgid "Processing"
 msgstr "Procesando"
 
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
+#: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/isrc._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
@@ -7241,6 +7251,7 @@ msgstr "Se han creado {0} registros exitosamente"
 #: apps/remix/app/components/tables/distribution-table-territoriesName-filter.tsx
 #: apps/remix/app/components/tables/documents-table-sender-filter.tsx
 #: apps/remix/app/components/tables/lpm-table-artist-filter.tsx
+#: apps/remix/app/components/tables/table-filter.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.members.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.teams.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.groups.tsx
