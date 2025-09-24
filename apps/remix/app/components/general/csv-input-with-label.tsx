@@ -1,6 +1,7 @@
 import { type ChangeEvent, useRef } from 'react';
 
-import { CheckIcon, Eye, FileText, Trash2Icon, Upload, X } from 'lucide-react';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { CheckIcon, Eye, FileText, Trash2Icon, X } from 'lucide-react';
 
 import { Badge } from '@documenso/ui/primitives/badge';
 import { Button } from '@documenso/ui/primitives/button';
@@ -33,8 +34,6 @@ type InputCSVProps = {
   multiple: boolean;
   isSubmitting: boolean;
   label: string;
-  // csvFiles: CSVFile[];
-  // setCsvFiles: React.Dispatch<React.SetStateAction<CSVFile[]>>;
 };
 
 export default function CsvUploadInputWithLabel({
@@ -45,8 +44,8 @@ export default function CsvUploadInputWithLabel({
   uploadFilesVoid,
   isSubmitting,
 }: InputCSVProps) {
-  // const [csvFiles, setCsvFiles] = useState<CSVFile[]>([]);
   const { csvFiles, addCsvFiles, removeCsvFile, clearCsvFiles } = useCsvFilesStore();
+  const { t } = useLingui();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -107,7 +106,7 @@ export default function CsvUploadInputWithLabel({
           });
 
           if (newCSVFiles.length === files.length) {
-            addCsvFiles(newCSVFiles); // Use store method instead of setCsvFiles
+            addCsvFiles(newCSVFiles);
           }
         };
         reader.readAsText(file);
@@ -116,11 +115,11 @@ export default function CsvUploadInputWithLabel({
   };
 
   const removeFile = (id: string) => {
-    removeCsvFile(id); // Use store method instead of setCsvFiles
+    removeCsvFile(id);
   };
 
   const clearAll = () => {
-    clearCsvFiles(); // Use store method instead of setCsvFiles
+    clearCsvFiles();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -147,7 +146,7 @@ export default function CsvUploadInputWithLabel({
             <div className="flex items-center">{label}</div>
             {csvFiles.length > 0 && csvFiles[0]?.label === label && (
               <Badge className="ml-2" variant="secondary">
-                {csvFiles.length} file
+                {csvFiles.length} {csvFiles.length === 1 ? t`file` : t`files`}
               </Badge>
             )}
           </Button>
@@ -163,9 +162,12 @@ export default function CsvUploadInputWithLabel({
                 <PopoverContent className="w-[600px] p-4">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-medium">Vista Previa de CSV</h4>
+                      <h4 className="font-medium">
+                        <Trans>Preview</Trans>
+                      </h4>
                       <Badge variant="secondary">
-                        {csvFiles.length} {csvFiles.length === 1 ? 'archivo' : 'archivos'}
+                        {csvFiles.length}{' '}
+                        {csvFiles.length === 1 ? <Trans>file</Trans> : <Trans>files</Trans>}
                       </Badge>
                     </div>
                     <div className="max-h-96 space-y-4 overflow-y-auto">
@@ -180,7 +182,7 @@ export default function CsvUploadInputWithLabel({
                             </div>
                             <div className="flex items-center gap-2">
                               <Badge variant="default" className="text-xs">
-                                {csvFile.columnCount} columnas
+                                {csvFile.columnCount} <Trans>columns</Trans>
                               </Badge>
                               <button
                                 onClick={() => removeFile(csvFile.id)}
@@ -202,7 +204,7 @@ export default function CsvUploadInputWithLabel({
                                   ))}
                                   {csvFile.headers.length > 4 && (
                                     <TableHead className="text-muted-foreground text-xs">
-                                      +{csvFile.headers.length - 4} más
+                                      +{csvFile.headers.length - 4} <Trans>more</Trans>
                                     </TableHead>
                                   )}
                                 </TableRow>

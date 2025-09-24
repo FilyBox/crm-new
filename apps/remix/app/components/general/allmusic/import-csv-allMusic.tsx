@@ -20,7 +20,7 @@ interface CsvImportManagerProps {
 
 export function CsvImportManager({ onImportComplete }: CsvImportManagerProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { clearCsvFiles } = useCsvFilesStore();
+  const { clearCsvFiles, csvFiles } = useCsvFilesStore();
   const { _ } = useLingui();
 
   const createManyAllMusicMutation = trpc.allMusic.createManyAllMusic.useMutation({
@@ -332,7 +332,11 @@ export function CsvImportManager({ onImportComplete }: CsvImportManagerProps) {
           <Trans>Import</Trans>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-52">
+      <PopoverContent
+        className={
+          csvFiles.length < 0 ? 'dark:bg-backgroundDark w-52' : 'dark:bg-backgroundDark w-fit'
+        }
+      >
         <div className="flex flex-col gap-2">
           <CsvUploadInputWithLabel
             isSubmitting={isSubmitting}

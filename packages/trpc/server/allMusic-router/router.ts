@@ -2,6 +2,7 @@ import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 import { findAllMusic } from '@documenso/lib/server-only/document/find-allMusic';
+import { findAllMusicNoPagination } from '@documenso/lib/server-only/document/find-allMusic-no-pagination';
 import { prisma } from '@documenso/prisma';
 import { ZFindAllMusicResponseSchema } from '@documenso/trpc/server/allMusic-router/schema';
 import { type FilterStructure, filterColumns } from '@documenso/ui/lib/filter-columns';
@@ -494,7 +495,116 @@ export const allMusicRouter = router({
       };
     }),
 
-  findInfoToFilter: authenticatedProcedure.query(async ({}) => {
+  findAllMusicNoPagination: authenticatedProcedure
+    .input(
+      z.object({
+        query: z.string().optional(),
+        page: z.number().optional(),
+        perPage: z.number().optional(),
+        period: z.enum(['7d', '14d', '30d']).optional(),
+        orderByColumn: z
+          .enum([
+            'id',
+            'createdAt',
+            'date',
+            'lanzamiento',
+            'typeOfRelease',
+            'uploaded',
+            'release',
+            'streamingLink',
+            'assets',
+            'canvas',
+            'cover',
+            'audioWAV',
+            'video',
+            'banners',
+            'pitch',
+            'EPKUpdates',
+            'WebSiteUpdates',
+            'Biography',
+          ])
+          .optional(),
+        artistIds: z.array(z.number()).optional(),
+        distributorIds: z.array(z.number()).optional(),
+        agregadoraIds: z.array(z.number()).optional(),
+        recordLabelIds: z.array(z.number()).optional(),
+        videoLinksDatesRange: z
+          .object({
+            from: z.date().optional(),
+            to: z.date().optional(),
+          })
+          .optional(),
+        generalLinksDatesRange: z
+          .object({
+            from: z.date().optional(),
+            to: z.date().optional(),
+          })
+          .optional(),
+        filterStructure: z
+          .array(
+            z
+              .custom<FilterStructure>(
+                (val) => val === null || val === undefined || typeof val === 'object',
+              )
+              .optional()
+              .nullable(),
+          )
+          .optional(),
+        joinOperator: z.enum(['and', 'or']).optional().default('and'),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const {
+        query,
+        artistIds,
+        agregadoraIds,
+        recordLabelIds,
+        period,
+        joinOperator,
+        filterStructure,
+      } = input;
+
+      const { user, teamId } = ctx;
+      const userId = user.id;
+      let where: Prisma.AllMusicWhereInput = {};
+
+      if (filterStructure) {
+        const advancedWhere = filterColumns({
+          filters: filterStructure.filter(
+            (filter): filter is FilterStructure => filter !== null && filter !== undefined,
+          ),
+          joinOperator: joinOperator,
+        });
+        where = advancedWhere;
+      }
+
+      const [documents] = await Promise.all([
+        findAllMusicNoPagination({
+          query,
+          agregadoraIds,
+          recordLabelIds,
+          artistIds,
+          userId,
+          teamId,
+          period,
+          where,
+        }),
+      ]);
+
+      const mappedData = documents.data.map((item) => ({
+        ...item,
+        agregadora: item.agregadora === null ? undefined : item.agregadora,
+        distribuidor: item.distribuidor === null ? undefined : item.distribuidor,
+        recordLabel: item.recordLabel === null ? undefined : item.recordLabel,
+      }));
+
+      return {
+        ...documents,
+        data: mappedData,
+      };
+    }),
+
+  findInfoToFilter: authenticatedProcedure.query(async () => {
     const [artists, agregadora, recordLabel, distribuidor] = await Promise.all([
       prisma.artistsAllMusic.findMany({ select: { id: true, name: true } }),
       prisma.agregadora.findMany({ select: { id: true, name: true } }),

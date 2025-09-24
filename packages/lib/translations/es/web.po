@@ -2270,6 +2270,10 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
+#: apps/remix/app/components/general/csv-input-with-label.tsx
+msgid "columns"
+msgstr ""
+
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 msgid "Communication"
 msgstr "Comunicación"
@@ -4570,6 +4574,11 @@ msgstr "Campos"
 msgid "Fields updated"
 msgstr "Campos actualizados"
 
+#: apps/remix/app/components/general/csv-input-with-label.tsx
+#: apps/remix/app/components/general/csv-input-with-label.tsx
+msgid "file"
+msgstr ""
+
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 #: apps/remix/app/components/general/document/chatspace-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/document/document-drop-zone-wrapper.tsx
@@ -4593,6 +4602,11 @@ msgstr "Archivo subido"
 #: packages/ui/primitives/input-image.tsx
 msgid "file{0}"
 msgstr "archivo{0}"
+
+#: apps/remix/app/components/general/csv-input-with-label.tsx
+#: apps/remix/app/components/general/csv-input-with-label.tsx
+msgid "files"
+msgstr ""
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
@@ -4988,7 +5002,7 @@ msgstr "Imagen"
 
 #: apps/remix/app/components/general/allmusic/import-csv-allMusic.tsx
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Import Date"
@@ -5607,6 +5621,10 @@ msgstr "Usuarios activos mensuales: Usuarios que crearon al menos un documento"
 #: apps/remix/app/routes/_authenticated+/admin+/stats.tsx
 msgid "Monthly Active Users: Users that had at least one of their documents completed"
 msgstr "Usuarios activos mensuales: Usuarios que completaron al menos uno de sus documentos"
+
+#: apps/remix/app/components/general/csv-input-with-label.tsx
+msgid "more"
+msgstr ""
 
 #: packages/ui/primitives/faceted-hover-badge.tsx
 msgid "more selected"
@@ -6601,6 +6619,7 @@ msgid "PreOrder Type"
 msgstr ""
 
 #: apps/remix/app/components/forms/document-preferences-form.tsx
+#: apps/remix/app/components/general/csv-input-with-label.tsx
 #: apps/remix/app/components/general/event-calendar/input-image-event.tsx
 #: packages/ui/primitives/input-image.tsx
 msgid "Preview"

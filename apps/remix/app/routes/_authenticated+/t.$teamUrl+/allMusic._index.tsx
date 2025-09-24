@@ -1,26 +1,18 @@
 import { useMemo, useState } from 'react';
 
-import { msg } from '@lingui/core/macro';
-import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { isValid } from 'date-fns';
 import { useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
-import { parseCsvFile } from '@documenso/lib/utils/csvParser';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
-import { type IsrcSongs } from '@documenso/prisma/client';
 import { trpc } from '@documenso/trpc/react';
 import { ZFindIsrcSongsInternalRequestSchema } from '@documenso/trpc/server/isrcsong-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 
-import { AdvancedFilterDialog } from '~/components/general/advanced-filter-drawer';
 import { AllMusicTable } from '~/components/tables/allMusic-table';
-import { TableFilter } from '~/components/tables/table-filter';
 import { useOptionalCurrentTeam } from '~/providers/team';
-import { useCsvFilesStore } from '~/storage/store-csv';
 import { appMetaTags } from '~/utils/meta';
 import { useSortParams } from '~/utils/searchParams';
 
@@ -58,7 +50,6 @@ const ZSearchParamsSchema = ZFindIsrcSongsInternalRequestSchema.pick({
 
 export default function AllMusicPage() {
   const [searchParams] = useSearchParams();
-  const { clearCsvFiles } = useCsvFilesStore();
 
   const { filters, perPage, query, page, joinOperator, columnOrder, columnDirection } =
     useSortParams({ sortColumns });
@@ -69,8 +60,6 @@ export default function AllMusicPage() {
     () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
     [searchParams],
   );
-  const { _ } = useLingui();
-
   const { data, isLoading, isLoadingError, refetch } = trpc.allMusic.findAllMusic.useQuery({
     query: query,
     page: page,
@@ -82,15 +71,35 @@ export default function AllMusicPage() {
     joinOperator: joinOperator,
     perPage: perPage,
   });
-  const [editingData, seteditingData] = useState<IsrcSongs | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const findAllMusicNoPaginationMutation = trpc.allMusic.findAllMusicNoPagination.useMutation();
+
+  const findAll = async () => {
+    try {
+      const result = await findAllMusicNoPaginationMutation.mutateAsync({
+        artistIds: findDocumentSearchParams.artistIds,
+        agregadoraIds: findDocumentSearchParams.agregadoraIds,
+        recordLabelIds: findDocumentSearchParams.recordLabelIds,
+        orderByColumn: columnOrder,
+        filterStructure: filters,
+        joinOperator: joinOperator,
+      });
+
+      if (Array.isArray(result.data)) {
+        return result.data;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching all distributions:', error);
+      return [];
+    }
+  };
+
   const [isMultipleDelete, setIsMultipleDelete] = useState(false);
 
   const allDataToFilter = trpc.allMusic.findInfoToFilter.useQuery();
 
-  const updateIsrcSongsMutation = trpc.isrcSongs.updateIsrcSongsById.useMutation();
-  const deleteIsrcSongsMutation = trpc.isrcSongs.deleteIsrcSongsById.useMutation();
   const deleteMultipleMutation = trpc.allMusic.deleteMultipleByIds.useMutation();
 
   const handleMultipleDelete = async (ids: number[]) => {
@@ -106,11 +115,6 @@ export default function AllMusicPage() {
     } finally {
       setIsMultipleDelete(false);
     }
-  };
-
-  const openCreateDialog = () => {
-    seteditingData(null);
-    setIsDialogOpen(true);
   };
 
   return (
@@ -139,11 +143,8 @@ export default function AllMusicPage() {
         setIsMultipleDelete={setIsMultipleDelete}
         isMultipleDelete={isMultipleDelete}
         isLoading={isLoading}
-        // findAll={findAll}
         isLoadingError={isLoadingError}
-        onAdd={openCreateDialog}
-        // onEdit={handleEdit}
-        // onDelete={handleDelete}
+        findAll={findAll}
       />
     </div>
   );

@@ -322,7 +322,12 @@ export const AllMusicTable = ({
             searchParamsIdentifier="recordLabelIds"
           />
           {findAll && (
-            <DataTableExportAllData findAll={findAll} loading={isPending} columns={columns} />
+            <DataTableExportAllData
+              filename={`all-music-${Date.now()}`}
+              findAll={findAll}
+              loading={isPending}
+              columns={columns}
+            />
           )}
           <CsvImportManager />
         </DataTableAdvancedToolbar>

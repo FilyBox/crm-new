@@ -31,15 +31,31 @@ export function exportTableToCSV<TData>(
               } else {
                 cellValue = '';
               }
-            } else if (header === 'artists' || header === 'productDisplayArtist') {
+            } else if (
+              header === 'artists' ||
+              header === 'productDisplayArtist' ||
+              header === 'agregadora' ||
+              header === 'disquera' ||
+              header === 'recordLabel'
+            ) {
               if (Array.isArray(cellValue)) {
                 cellValue = cellValue.map((artist) => artist.name).join(', ');
               } else {
-                cellValue = '';
+                if (cellValue && typeof cellValue === 'object' && 'name' in cellValue) {
+                  cellValue = cellValue.name;
+                } else {
+                  cellValue = '';
+                }
               }
             } else if (header === 'distributionStatementTerritories') {
               if (Array.isArray(cellValue)) {
                 cellValue = cellValue.map((territory) => territory.name).join(', ');
+              } else {
+                cellValue = '';
+              }
+            } else if (header === 'generalLinks' || header === 'videoLinks') {
+              if (Array.isArray(cellValue)) {
+                cellValue = cellValue.map((territory) => territory.url).join(', ');
               } else {
                 cellValue = '';
               }

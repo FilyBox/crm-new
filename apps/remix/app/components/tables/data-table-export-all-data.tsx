@@ -12,12 +12,14 @@ interface DataTableExportAllDataProps<TData> {
   loading: boolean;
   columns: ColumnDef<TData>[];
   findAll: () => Promise<TData[]>;
+  filename?: string;
 }
 
 export function DataTableExportAllData<TData>({
   loading,
   columns,
   findAll,
+  filename,
 }: DataTableExportAllDataProps<TData>) {
   const { _ } = useLingui();
 
@@ -40,6 +42,7 @@ export function DataTableExportAllData<TData>({
         exportTableToCSV(table, {
           excludeColumns: ['select', 'actions', 'id'],
           onlySelected: false,
+          filename: filename,
         });
       }, 0);
     } catch (error) {
