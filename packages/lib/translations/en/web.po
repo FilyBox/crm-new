@@ -998,6 +998,10 @@ msgstr "Add Email Domain"
 msgid "Add Fields"
 msgstr "Add Fields"
 
+#: apps/remix/app/components/general/links-add.tsx
+msgid "Add General Link"
+msgstr "Add General Link"
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 msgid "Add group roles"
 msgstr "Add group roles"
@@ -1038,6 +1042,10 @@ msgstr "Add myself"
 msgid "Add Myself"
 msgstr "Add Myself"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
+msgid "Add new record"
+msgstr "Add new record"
+
 #: apps/remix/app/components/dialogs/organisation-email-create-dialog.tsx
 msgid "Add Organisation Email"
 msgstr "Add Organisation Email"
@@ -1054,6 +1062,10 @@ msgstr "Add Placeholder Recipient"
 #: apps/remix/app/components/general/template/template-edit-form.tsx
 msgid "Add Placeholders"
 msgstr "Add Placeholders"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Add Record"
+msgstr "Add Record"
 
 #: apps/remix/app/components/embed/authoring/configure-document-recipients.tsx
 #: packages/ui/primitives/document-flow/add-signers.tsx
@@ -1103,6 +1115,10 @@ msgstr "Add the recipients to create the document with"
 #: apps/remix/app/components/dialogs/organisation-email-domain-records-dialog.tsx
 msgid "Add these DNS records to verify your domain ownership"
 msgstr "Add these DNS records to verify your domain ownership"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "Add Video Link"
+msgstr "Add Video Link"
 
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 msgid "Add Virgin Record"
@@ -1172,6 +1188,10 @@ msgstr "After submission, a document will be automatically generated and added t
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "Agenda"
 msgstr "Agenda"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Agregator"
+msgstr "Agregator"
 
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
@@ -1689,6 +1709,7 @@ msgid "Artist created successfully"
 msgstr "Artist created successfully"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
@@ -2079,6 +2100,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
 #: apps/remix/app/components/sheets/isrc-sheet.tsx
 #: apps/remix/app/components/sheets/releases-sheet.tsx
@@ -2114,6 +2136,10 @@ msgstr "Canvas"
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Catalog"
 msgstr "Catalog"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Catalog number"
+msgstr "Catalog number"
 
 #: packages/lib/constants/recipient-roles.ts
 msgctxt "Recipient role name"
@@ -2781,6 +2807,10 @@ msgstr "Create organisation"
 msgid "Create Organisation"
 msgstr "Create Organisation"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Create Record"
+msgstr "Create Record"
+
 #: apps/remix/app/components/general/billing-plans.tsx
 msgid "Create separate organisation"
 msgstr "Create separate organisation"
@@ -3061,6 +3091,7 @@ msgstr "delete"
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/folder/folder-card.tsx
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
 #: apps/remix/app/components/tables/documents-table-action-dropdown.tsx
@@ -3866,6 +3897,10 @@ msgstr "Edit Event"
 msgid "Edit List"
 msgstr "Edit List"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Edit Record"
+msgstr "Edit Record"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
 msgid "Edit Template"
 msgstr "Edit Template"
@@ -4119,6 +4154,10 @@ msgstr "Enter a name for your new folder. Folders help you organise your items."
 #: apps/remix/app/components/forms/subscription-claim-form.tsx
 msgid "Enter claim name"
 msgstr "Enter claim name"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "Enter lyrics here..."
+msgstr "Enter lyrics here..."
 
 #: apps/remix/app/components/dialogs/organisation-email-domain-create-dialog.tsx
 msgid "Enter the domain you want to use for sending emails (without http:// or www)"
@@ -4622,6 +4661,10 @@ msgstr "Files downloaded successfully"
 msgid "Files uploaded"
 msgstr "Files uploaded"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Fill in the details to create a new record."
+msgstr "Fill in the details to create a new record."
+
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
 msgstr "Fill in the details to create a new subscription claim."
@@ -4728,6 +4771,14 @@ msgstr "Full Name"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings._layout.tsx
 msgid "General"
 msgstr "General"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "General Link"
+msgstr "General Link"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "General Links"
+msgstr "General Links"
 
 #: apps/remix/app/components/dialogs/organisation-email-domain-create-dialog.tsx
 msgid "Generate DKIM Records"
@@ -5153,10 +5204,15 @@ msgstr "Isrc"
 
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/distribution-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "ISRC"
 msgstr "ISRC"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "ISRC Video"
+msgstr "ISRC Video"
 
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "It is crucial to keep your contact information, especially your email address, up to date with us. Please notify us immediately of any changes to ensure that you continue to receive all necessary communications."
@@ -5306,6 +5362,15 @@ msgstr "Link expires in 1 hour."
 msgid "Link template"
 msgstr "Link template"
 
+#. placeholder {0}: totalLinks > 1 ? 's' : ''
+#: apps/remix/app/components/general/links-add.tsx
+msgid "Link{0}"
+msgstr "Link{0}"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Links"
+msgstr "Links"
+
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 msgid "Links Generated"
 msgstr "Links Generated"
@@ -5368,6 +5433,7 @@ msgstr "Login"
 msgid "Low"
 msgstr "Low"
 
+#: apps/remix/app/components/general/links-add.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Lyrics"
 msgstr "Lyrics"
@@ -5692,6 +5758,8 @@ msgstr "N/A"
 #: apps/remix/app/components/general/document-signing/document-signing-name-field.tsx
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
+#: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/general/links-add.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
@@ -5805,6 +5873,10 @@ msgstr "No"
 msgid "No active drafts"
 msgstr "No active drafts"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "No artists found."
+msgstr "No artists found."
+
 #: apps/remix/app/components/general/event-calendar/stack-avatars-tasks-with-tooltip.tsx
 msgid "No artists specified"
 msgstr "No artists specified"
@@ -5847,6 +5919,10 @@ msgstr "No folders found matching \"{searchTerm}\""
 #: apps/remix/app/routes/_recipient+/sign.$token+/rejected.tsx
 msgid "No further action is required from you at this time."
 msgstr "No further action is required from you at this time."
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "No general links added yet"
+msgstr "No general links added yet"
 
 #: apps/remix/app/components/general/event-calendar/event-calendar.tsx
 msgid "No has creado ningun evento todavía. Crea una nuevo evento para comenzar."
@@ -5948,6 +6024,10 @@ msgstr "No value found."
 #: apps/remix/app/components/general/event-calendar/event-card.tsx
 msgid "No venue specified"
 msgstr "No venue specified"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "No video links added yet"
+msgstr "No video links added yet"
 
 #: apps/remix/app/routes/_unauthenticated+/forgot-password.tsx
 msgid "No worries, it happens! Enter your email and we'll email you a special link to reset your password."
@@ -6407,6 +6487,10 @@ msgstr "Personal Account"
 msgid "Personal Inbox"
 msgstr "Personal Inbox"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Pick a date..."
+msgstr "Pick a date..."
+
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/checkbox-field.tsx
 msgid "Pick a number"
 msgstr "Pick a number"
@@ -6775,6 +6859,11 @@ msgstr "Public templates are connected to your public profile. Any modifications
 msgid "Published"
 msgstr "Published"
 
+#: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Published Date"
+msgstr "Published Date"
+
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Publishers/Collection Societies"
 msgstr "Publishers/Collection Societies"
@@ -6919,6 +7008,10 @@ msgstr "Record created successfully"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
 msgid "Record deleted successfully"
 msgstr "Record deleted successfully"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Record Label"
+msgstr "Record Label"
 
 #: apps/remix/app/components/dialogs/organisation-email-domain-records-dialog.tsx
 msgid "Record Name"
@@ -7277,6 +7370,10 @@ msgstr "Search"
 msgid "Search and manage all organisations"
 msgstr "Search and manage all organisations"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Search artists..."
+msgstr "Search artists..."
+
 #: apps/remix/app/routes/_authenticated+/admin+/claims.tsx
 msgid "Search by claim ID or name"
 msgstr "Search by claim ID or name"
@@ -7378,6 +7475,10 @@ msgstr "Select a plan"
 msgid "Select a plan to continue"
 msgstr "Select a plan to continue"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Select a record label"
+msgstr "Select a record label"
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl._index.tsx
 msgid "Select a team to view its dashboard"
 msgstr "Select a team to view its dashboard"
@@ -7401,6 +7502,10 @@ msgstr "Select a time zone"
 #: packages/ui/components/document/document-global-auth-access-select.tsx
 msgid "Select access methods"
 msgstr "Select access methods"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Select an agregator"
+msgstr "Select an agregator"
 
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 msgid "Select an artist..."
@@ -7471,6 +7576,10 @@ msgstr "Select passkey"
 #: apps/remix/app/components/forms/document-preferences-form.tsx
 msgid "Select signature types"
 msgstr "Select signature types"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Select some artists..."
+msgstr "Select some artists..."
 
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
@@ -7654,6 +7763,7 @@ msgstr "Share the Link"
 msgid "Share your signing experience!"
 msgstr "Share your signing experience!"
 
+#: apps/remix/app/components/general/links-with-tooltip.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
 msgid "Show"
 msgstr "Show"
@@ -9124,6 +9234,7 @@ msgstr "Tipo de Precio"
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/allMusic-table.tsx
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
@@ -9138,6 +9249,7 @@ msgstr "Tipo de Precio"
 msgid "Title"
 msgstr "Title"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: packages/ui/primitives/document-flow/add-settings.types.ts
 msgid "Title cannot be empty"
 msgstr "Title cannot be empty"
@@ -9533,6 +9645,7 @@ msgstr "Unpin"
 msgid "Untitled Group"
 msgstr "Untitled Group"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/distribution-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
@@ -9632,6 +9745,10 @@ msgstr "Update profile"
 msgid "Update Recipient"
 msgstr "Update Recipient"
 
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Update Record"
+msgstr "Update Record"
+
 #: apps/remix/app/components/tables/organisation-members-table.tsx
 #: apps/remix/app/components/tables/team-groups-table.tsx
 #: apps/remix/app/components/tables/team-members-table.tsx
@@ -9660,6 +9777,10 @@ msgstr "Update team group"
 #: apps/remix/app/components/dialogs/team-member-update-dialog.tsx
 msgid "Update team member"
 msgstr "Update team member"
+
+#: apps/remix/app/components/sheets/allmusic-sheet.tsx
+msgid "Update the record details below."
+msgstr "Update the record details below."
 
 #: packages/lib/constants/template.ts
 msgid "Update the role and add fields as required for the direct recipient. The individual who uses the direct link will sign the document as the direct recipient."
@@ -9845,6 +9966,11 @@ msgstr "Uploading File..."
 msgid "Uploading template..."
 msgstr "Uploading template..."
 
+#: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/general/links-add.tsx
+msgid "URL"
+msgstr "URL"
+
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
 msgid "Use"
 msgstr "Use"
@@ -9986,6 +10112,14 @@ msgstr "Vevo Channel"
 #: apps/remix/app/components/tables/releases-table.tsx
 msgid "Video"
 msgstr "Video"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "Video Link"
+msgstr "Video Link"
+
+#: apps/remix/app/components/general/links-add.tsx
+msgid "Video Links"
+msgstr "Video Links"
 
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
 #: apps/remix/app/components/forms/2fa/view-recovery-codes-dialog.tsx

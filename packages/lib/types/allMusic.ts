@@ -11,6 +11,9 @@ const ZVideoLinkPlatformSchema = z.object({
   id: z.number(),
   name: z.string(),
   url: z.string(),
+  publishedAt: z.date().optional().nullable(),
+  lyrics: z.string().optional().nullable(),
+  isrcVideo: z.string().optional().nullable(),
 });
 
 const ZGeneralLinkSchema = z.object({

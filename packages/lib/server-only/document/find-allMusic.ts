@@ -79,7 +79,11 @@ export const findAllMusic = async ({
     },
   };
 
-  const whereAndClause: Prisma.AllMusicWhereInput['AND'] = [{ ...Filter }, { ...where }];
+  const whereAndClause: Prisma.AllMusicWhereInput['AND'] = [
+    { ...Filter },
+    { ...where },
+    { deletedAt: null },
+  ];
 
   const whereClause: Prisma.AllMusicWhereInput = {
     AND: whereAndClause,
@@ -145,6 +149,9 @@ export const findAllMusic = async ({
             id: true,
             url: true,
             name: true,
+            publishedAt: true,
+            lyrics: true,
+            isrcVideo: true,
           },
         },
         generalLinks: {

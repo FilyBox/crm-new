@@ -345,7 +345,7 @@ function Calendar({
                 <SelectTrigger className="focus:bg-accent focus:text-accent-foreground w-fit gap-1 border-none p-0">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="z-9999">
+                <SelectContent className="z-9999 h-full max-h-72 overflow-auto">
                   {YEARS.map((year) => (
                     <SelectItem key={year.value} value={year.value.toString()}>
                       {year.label}

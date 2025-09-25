@@ -2,16 +2,19 @@ import { useMemo, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
+import type { TAllMusic } from '@documenso/lib/types/allMusic';
 import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { parseToIntegerArray } from '@documenso/lib/utils/params';
 import { trpc } from '@documenso/trpc/react';
 import { ZFindIsrcSongsInternalRequestSchema } from '@documenso/trpc/server/isrcsong-router/schema';
 import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
+import { Button } from '@documenso/ui/primitives/button';
 
+import { AllMusicDialog } from '~/components/sheets/allmusic-sheet';
 import { AllMusicTable } from '~/components/tables/allMusic-table';
+import { useAllMusic } from '~/hooks/use-allmusic';
 import { useOptionalCurrentTeam } from '~/providers/team';
 import { appMetaTags } from '~/utils/meta';
 import { useSortParams } from '~/utils/searchParams';
@@ -104,11 +107,7 @@ export default function AllMusicPage() {
 
   const handleMultipleDelete = async (ids: number[]) => {
     try {
-      toast.promise(deleteMultipleMutation.mutateAsync({ ids: ids }), {
-        position: 'bottom-center',
-        className: 'mb-16',
-      });
-
+      await deleteMultipleMutation.mutateAsync({ ids: ids });
       await refetch();
     } catch (error) {
       throw new Error('Error deleting record');
@@ -117,8 +116,36 @@ export default function AllMusicPage() {
     }
   };
 
+  // Add these new state variables
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Add the custom hook
+  const { handleDelete, isCreating, isUpdating, isDeleting, editingRecord, setEditingRecord } =
+    useAllMusic();
+
+  // Add dialog handlers
+  const handleOpenCreateDialog = () => {
+    setEditingRecord(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleOpenEditDialog = (record: TAllMusic) => {
+    setEditingRecord(record);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setEditingRecord(null);
+  };
+
+  const handleDeleteRecord = async (recordId: number) => {
+    await handleDelete(recordId);
+    handleCloseDialog();
+  };
+
   return (
-    <div className="mx-auto flex max-w-screen-xl flex-col gap-y-8 px-4 md:px-8">
+    <div className="mx-auto mt-10 flex max-w-screen-xl flex-col gap-y-8 px-4 md:px-8">
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-8">
         <div className="flex flex-row items-center">
           {team && (
@@ -134,10 +161,16 @@ export default function AllMusicPage() {
             <Trans>Music</Trans>
           </h2>
         </div>
+        <div className="flex justify-end">
+          <Button onClick={handleOpenCreateDialog}>
+            <Trans>Add new record</Trans>
+          </Button>
+        </div>
       </div>
 
       <AllMusicTable
         data={data}
+        onEdit={handleOpenEditDialog}
         onMultipleDelete={handleMultipleDelete}
         allDataToFilter={allDataToFilter}
         setIsMultipleDelete={setIsMultipleDelete}
@@ -145,6 +178,16 @@ export default function AllMusicPage() {
         isLoading={isLoading}
         isLoadingError={isLoadingError}
         findAll={findAll}
+      />
+
+      <AllMusicDialog
+        record={editingRecord}
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        onDelete={handleDeleteRecord}
+        artistData={allDataToFilter.data?.artists}
+        agregadoraData={allDataToFilter.data?.agregadora}
+        recordLabelData={allDataToFilter.data?.recordLabel}
       />
     </div>
   );

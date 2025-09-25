@@ -47,8 +47,6 @@ export const AllMusicTable = ({
   findAll,
   allDataToFilter,
   onDelete,
-  isMultipleDelete = false,
-  setIsMultipleDelete,
   onMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
   const { _, i18n } = useLingui();
@@ -104,7 +102,6 @@ export const AllMusicTable = ({
         enableColumnFilter: true,
         enableHiding: true,
       },
-
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title={_(msg`Title`)} />,
         enableColumnFilter: true,

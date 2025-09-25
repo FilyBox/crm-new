@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { findAllMusic } from '@documenso/lib/server-only/document/find-allMusic';
 import { findAllMusicNoPagination } from '@documenso/lib/server-only/document/find-allMusic-no-pagination';
 import { prisma } from '@documenso/prisma';
-import { ZFindAllMusicResponseSchema } from '@documenso/trpc/server/allMusic-router/schema';
 import { type FilterStructure, filterColumns } from '@documenso/ui/lib/filter-columns';
 
 import { authenticatedProcedure, router } from '../trpc';
@@ -17,6 +16,319 @@ export type GetTaskByIdOptions = {
 };
 
 export const allMusicRouter = router({
+  createAllMusic: authenticatedProcedure
+    .input(
+      z.object({
+        title: z.string().min(1),
+        isrcVideo: z.string().optional(),
+        isrcSong: z.string().optional(),
+        UPC: z.string().optional(),
+        publishedAt: z.date().optional(),
+        catalog: z.string().optional(),
+        artists: z.array(z.string()).optional(),
+        agregadoraId: z.number().optional(),
+        distribuidorId: z.number().optional(),
+        recordLabelId: z.number().optional(),
+        videoLinks: z
+          .array(
+            z.object({
+              name: z.string(),
+              url: z.string(),
+              isrcVideo: z.string().optional().nullable(),
+              publishedAt: z.date().optional().nullable(),
+              lyrics: z.string().optional().nullable(),
+            }),
+          )
+          .optional(),
+        generalLinks: z
+          .array(
+            z.object({
+              name: z.string(),
+              url: z.string(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { teamId, user } = ctx;
+      const { artists, videoLinks, generalLinks, ...data } = input;
+
+      try {
+        const result = await prisma.$transaction(async (tx) => {
+          // Create the AllMusic record
+          const allMusic = await tx.allMusic.create({
+            data: {
+              ...data,
+              userId: user.id,
+              teamId,
+            },
+          });
+
+          // Connect artists if provided
+          if (artists && artists.length > 0) {
+            const existingArtists = await tx.artistsAllMusic.findMany({
+              where: { name: { in: artists } },
+            });
+
+            const newArtists = artists.filter(
+              (name) => !existingArtists.find((artist) => artist.name === name),
+            );
+
+            // Create new artists
+            for (const name of newArtists) {
+              await tx.artistsAllMusic.create({ data: { name } });
+            }
+
+            // Connect all artists
+            await tx.allMusic.update({
+              where: { id: allMusic.id },
+              data: {
+                artists: {
+                  connect: artists.map((name) => ({ name })),
+                },
+              },
+            });
+          }
+
+          // Create video links if provided
+          if (videoLinks && videoLinks.length > 0) {
+            for (const link of videoLinks) {
+              const videoLink = await tx.videoLinks.create({
+                data: link,
+              });
+              await tx.allMusic.update({
+                where: { id: allMusic.id },
+                data: {
+                  videoLinks: { connect: { id: videoLink.id } },
+                },
+              });
+            }
+          }
+
+          // Create general links if provided
+          if (generalLinks && generalLinks.length > 0) {
+            for (const link of generalLinks) {
+              const generalLink = await tx.generalLinks.create({
+                data: link,
+              });
+              await tx.allMusic.update({
+                where: { id: allMusic.id },
+                data: {
+                  generalLinks: { connect: { id: generalLink.id } },
+                },
+              });
+            }
+          }
+
+          return allMusic;
+        });
+
+        return { success: true, data: result };
+      } catch (error) {
+        throw new Error('Failed to create AllMusic record');
+      }
+    }),
+
+  updateAllMusic: authenticatedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        isrcVideo: z.string().optional(),
+        isrcSong: z.string().optional(),
+        UPC: z.string().optional(),
+        publishedAt: z.date().optional(),
+        catalog: z.string().optional(),
+        artists: z.array(z.string()).optional(),
+        agregadoraId: z.number().optional(),
+        distribuidorId: z.number().optional(),
+        recordLabelId: z.number().optional(),
+        videoLinks: z
+          .array(
+            z.object({
+              id: z.number().optional(),
+              name: z.string(),
+              url: z.string(),
+              isrcVideo: z.string().optional().nullable(),
+              publishedAt: z.date().optional().nullable(),
+              lyrics: z.string().optional().nullable(),
+              deleted: z.boolean().optional(),
+              modified: z.boolean().optional(),
+            }),
+          )
+          .optional(),
+        generalLinks: z
+          .array(
+            z.object({
+              id: z.number().optional(),
+              name: z.string(),
+              url: z.string(),
+              modified: z.boolean().optional(),
+              deleted: z.boolean().optional(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { id, artists, videoLinks, generalLinks, ...data } = input;
+
+      try {
+        const result = await prisma.$transaction(async (tx) => {
+          // Update the main AllMusic record
+          const allMusic = await tx.allMusic.update({
+            where: { id },
+            data,
+          });
+
+          // Handle artist updates if provided
+          if (artists) {
+            // Disconnect current artists
+            await tx.allMusic.update({
+              where: { id },
+              data: {
+                artists: { set: [] },
+              },
+            });
+
+            if (artists.length > 0) {
+              const existingArtists = await tx.artistsAllMusic.findMany({
+                where: { name: { in: artists } },
+              });
+
+              const newArtists = artists.filter(
+                (name) => !existingArtists.find((artist) => artist.name === name),
+              );
+
+              // Create new artists
+              for (const name of newArtists) {
+                await tx.artistsAllMusic.create({ data: { name } });
+              }
+
+              // Connect all artists
+              await tx.allMusic.update({
+                where: { id },
+                data: {
+                  artists: {
+                    connect: artists.map((name) => ({ name })),
+                  },
+                },
+              });
+            }
+          }
+
+          // Handle video links updates
+          if (videoLinks) {
+            for (const link of videoLinks) {
+              console.log('Processing video link:', link);
+              if (link.deleted && link.id) {
+                // Remove from AllMusic connection and delete
+                await tx.allMusic.update({
+                  where: { id },
+                  data: {
+                    videoLinks: { disconnect: { id: link.id } },
+                  },
+                });
+                await tx.videoLinks.delete({ where: { id: link.id } });
+              } else if (link.id && link.modified) {
+                // Update existing link
+                await tx.videoLinks.update({
+                  where: { id: link.id },
+                  data: {
+                    name: link.name,
+                    url: link.url,
+                    isrcVideo: link.isrcVideo,
+                    publishedAt: link.publishedAt,
+                    lyrics: link.lyrics,
+                  },
+                });
+              } else if (!link.id) {
+                // Create new link
+                const videoLink = await tx.videoLinks.create({
+                  data: {
+                    name: link.name,
+                    url: link.url,
+                    isrcVideo: link.isrcVideo,
+                    publishedAt: link.publishedAt,
+                    lyrics: link.lyrics,
+                  },
+                });
+                await tx.allMusic.update({
+                  where: { id },
+                  data: {
+                    videoLinks: { connect: { id: videoLink.id } },
+                  },
+                });
+              }
+            }
+          }
+
+          // Handle general links updates
+          if (generalLinks) {
+            for (const link of generalLinks) {
+              if (link.deleted && link.id) {
+                // Remove from AllMusic connection and delete
+                await tx.allMusic.update({
+                  where: { id },
+                  data: {
+                    generalLinks: { disconnect: { id: link.id } },
+                  },
+                });
+                await tx.generalLinks.delete({ where: { id: link.id } });
+              } else if (link.id) {
+                // Update existing link
+                await tx.generalLinks.update({
+                  where: { id: link.id },
+                  data: {
+                    name: link.name,
+                    url: link.url,
+                  },
+                });
+              } else {
+                // Create new link
+                const generalLink = await tx.generalLinks.create({
+                  data: {
+                    name: link.name,
+                    url: link.url,
+                  },
+                });
+                await tx.allMusic.update({
+                  where: { id },
+                  data: {
+                    generalLinks: { connect: { id: generalLink.id } },
+                  },
+                });
+              }
+            }
+          }
+
+          return allMusic;
+        });
+
+        return { success: true, data: result };
+      } catch (error) {
+        throw new Error('Failed to update AllMusic record');
+      }
+    }),
+
+  getByIdAllMusic: authenticatedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      const { id } = input;
+
+      return await prisma.allMusic.findUnique({
+        where: { id },
+        include: {
+          artists: true,
+          videoLinks: true,
+          generalLinks: true,
+          agregadora: true,
+          distribuidor: true,
+          recordLabel: true,
+        },
+      });
+    }),
   createManyAllMusic: authenticatedProcedure
     .input(
       z.object({
@@ -382,7 +694,6 @@ export const allMusicRouter = router({
     }),
 
   findAllMusic: authenticatedProcedure
-    .output(ZFindAllMusicResponseSchema)
     .input(
       z.object({
         query: z.string().optional(),
