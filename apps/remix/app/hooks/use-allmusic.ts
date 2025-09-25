@@ -53,6 +53,8 @@ export const useAllMusic = () => {
       toast.loading('Creating music record...');
     },
     onError: (error) => {
+      toast.dismiss();
+
       toast.error(`Failed to create record: ${error.message}`);
     },
   });
@@ -66,9 +68,13 @@ export const useAllMusic = () => {
       toast.success('Music record updated successfully');
     },
     onMutate: () => {
+      toast.dismiss();
+
       toast.loading('Updating music record...');
     },
     onError: (error) => {
+      toast.dismiss();
+
       toast.error(`Failed to update record: ${error.message}`);
     },
   });
@@ -76,6 +82,7 @@ export const useAllMusic = () => {
   // Delete mutation
   const deleteMutation = trpc.allMusic.deleteMultipleByIds.useMutation({
     onSuccess: async () => {
+      toast.dismiss();
       await utils.allMusic.findAllMusic.invalidate();
       toast.success('Music record deleted successfully');
     },
@@ -83,6 +90,8 @@ export const useAllMusic = () => {
       toast.loading('Deleting music record...');
     },
     onError: (error) => {
+      toast.dismiss();
+
       toast.error(`Failed to delete record: ${error.message}`);
     },
   });

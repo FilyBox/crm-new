@@ -242,6 +242,17 @@ export function AllMusicDialog({
     }
   };
 
+  const handleDeleteRecord = async () => {
+    if (!record) return;
+
+    try {
+      await handleDelete(record.id);
+      onClose();
+    } catch (error) {
+      console.error('Error deleting record:', error);
+    }
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="flex w-full max-w-2xl flex-col sm:max-w-2xl">
@@ -519,7 +530,7 @@ export function AllMusicDialog({
                   loading={isDeleting}
                   type="button"
                   variant="destructive"
-                  onClick={() => void handleDelete(record.id!)}
+                  onClick={() => void handleDeleteRecord()}
                   className="w-full sm:w-auto"
                 >
                   <Trash2Icon className="mr-2 h-4 w-4" />
