@@ -915,6 +915,73 @@ export const allMusicRouter = router({
       };
     }),
 
+  findAllMusicLastMonth: authenticatedProcedure.mutation(async ({ ctx }) => {
+    const { teamId } = ctx;
+    const allmusic = await prisma.allMusic.findMany({
+      where: {
+        publishedAt: {
+          gte: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+          lte: new Date(),
+        },
+        teamId: teamId,
+        deletedAt: null,
+      },
+      include: {
+        artists: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        distribuidor: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+
+        agregadora: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+        videoLinks: {
+          select: {
+            id: true,
+            url: true,
+            name: true,
+            publishedAt: true,
+            lyrics: true,
+            isrcVideo: true,
+          },
+        },
+        generalLinks: {
+          select: {
+            id: true,
+            url: true,
+            name: true,
+          },
+        },
+        recordLabel: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    const mappedData = allmusic.map((item) => ({
+      ...item,
+      agregadora: item.agregadora === null ? undefined : item.agregadora,
+      distribuidor: item.distribuidor === null ? undefined : item.distribuidor,
+      recordLabel: item.recordLabel === null ? undefined : item.recordLabel,
+    }));
+
+    return mappedData;
+  }),
+
   findInfoToFilter: authenticatedProcedure.query(async () => {
     const [artists, agregadora, recordLabel, distribuidor] = await Promise.all([
       prisma.artistsAllMusic.findMany({ select: { id: true, name: true } }),

@@ -4467,6 +4467,7 @@ msgstr "Export"
 msgid "Export All"
 msgstr "Export All"
 
+#: apps/remix/app/components/general/allmusic/data-table-export-all-data-lasmonth.tsx
 #: apps/remix/app/components/tables/data-table-export-all-data.tsx
 msgid "Exporting"
 msgstr "Exporting"
@@ -7180,6 +7181,10 @@ msgstr "Reply to email"
 #: packages/ui/primitives/template-flow/add-template-settings.tsx
 msgid "Reply To Email"
 msgstr "Reply To Email"
+
+#: apps/remix/app/components/general/allmusic/data-table-export-all-data-lasmonth.tsx
+msgid "Report Last Month"
+msgstr "Report Last Month"
 
 #: packages/lib/constants/document-auth.ts
 msgid "Require 2FA"

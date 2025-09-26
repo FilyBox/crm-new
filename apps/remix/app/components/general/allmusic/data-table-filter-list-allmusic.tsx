@@ -852,7 +852,6 @@ function onFilterInputRender<TData>({
         </Faceted>
       );
     }
-
     case 'date':
     case 'dateRange': {
       const inputListboxId = `${inputId}-listbox`;
@@ -869,6 +868,39 @@ function onFilterInputRender<TData>({
           : dateValue[0]
             ? formatDate(new Date(Number(dateValue[0])))
             : 'Pick a date';
+
+      const handleQuickDateSelect = (type: 'today' | 'last7days' | 'lastMonth') => {
+        const today = new Date();
+        const todayTime = today.getTime();
+
+        let fromDate: Date;
+        let toDate: Date;
+
+        switch (type) {
+          case 'today':
+            fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+            break;
+          case 'last7days':
+            fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6);
+            toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+            break;
+          case 'lastMonth':
+            fromDate = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+            toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+            break;
+        }
+
+        if (filter.operator === 'isBetween') {
+          onFilterUpdate(filter.filterId, {
+            value: [fromDate.getTime().toString(), toDate.getTime().toString()],
+          });
+        } else {
+          onFilterUpdate(filter.filterId, {
+            value: fromDate.getTime().toString(),
+          });
+        }
+      };
 
       return (
         <Popover open={showValueSelector} onOpenChange={setShowValueSelector}>
@@ -893,6 +925,34 @@ function onFilterInputRender<TData>({
             align="start"
             className="z-9999 w-auto origin-[var(--radix-popover-content-transform-origin)] p-0"
           >
+            {/* Quick date selection buttons */}
+            <div className="flex flex-wrap gap-2 border-b p-3">
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-xs"
+                onClick={() => handleQuickDateSelect('today')}
+              >
+                Hoy
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-xs"
+                onClick={() => handleQuickDateSelect('last7days')}
+              >
+                Últimos 7 días
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="text-xs"
+                onClick={() => handleQuickDateSelect('lastMonth')}
+              >
+                Último mes
+              </Button>
+            </div>
+
             {filter.operator === 'isBetween' ? (
               <Calendar
                 aria-label={`Select ${columnMeta?.label} date range`}

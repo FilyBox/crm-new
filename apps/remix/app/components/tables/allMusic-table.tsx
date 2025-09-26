@@ -14,6 +14,7 @@ import { DataTable } from '@documenso/ui/primitives/data-table-table';
 
 import { useCurrentTeam } from '~/providers/team';
 
+import { DataTableExportAllDataLastMonth } from '../general/allmusic/data-table-export-all-data-lasmonth';
 import { DataTableFilterList } from '../general/allmusic/data-table-filter-list-allmusic';
 import { CsvImportManager } from '../general/allmusic/import-csv-allMusic';
 import { LinksWithTooltip } from '../general/links-with-tooltip';
@@ -288,6 +289,12 @@ export const AllMusicTable = ({
               columns={columns}
             />
           )}
+
+          <DataTableExportAllDataLastMonth
+            filename={`songs-last-month-${Date.now()}`}
+            loading={isPending}
+            columns={columns}
+          />
           <CsvImportManager />
         </DataTableAdvancedToolbar>
       </DataTable>

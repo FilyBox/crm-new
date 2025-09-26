@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import {
   type ColumnFiltersState,
-  type ColumnSizingState,
   type PaginationState,
   type RowSelectionState,
   type SortingState,
@@ -102,14 +101,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     initialState?.columnVisibility ?? {},
   );
 
-  const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>(
-    initialState?.columnSizing ?? {},
-  );
-
-  // const [page, setPage] = useQueryState(
-  //   PAGE_KEY,
-  //   parseAsInteger.withOptions(queryStateOptions).withDefault(1),
-  // );
   const { page, setPage } = usePage({ queryStateOptions });
   const [perPage, setPerPage] = useQueryState(
     PER_PAGE_KEY,
