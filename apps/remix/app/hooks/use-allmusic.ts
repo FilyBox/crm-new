@@ -40,59 +40,37 @@ export const useAllMusic = () => {
 
   const [editingRecord, setEditingRecord] = useState<TAllMusic | null>(null);
 
-  // Create mutation
   const createMutation = trpc.allMusic.createAllMusic.useMutation({
     onSuccess: async () => {
-      toast.dismiss();
-
       await utils.allMusic.findAllMusic.invalidate();
       resetStore();
-      toast.success('Music record created successfully');
-    },
-    onMutate: () => {
-      toast.loading('Creating music record...');
     },
     onError: (error) => {
       toast.dismiss();
 
-      toast.error(`Failed to create record: ${error.message}`);
+      toast.error(`Failed to create record: ${error.message}`, { position: 'top-right' });
     },
   });
 
   // Update mutation
   const updateMutation = trpc.allMusic.updateAllMusic.useMutation({
     onSuccess: async () => {
-      toast.dismiss();
       await utils.allMusic.findAllMusic.invalidate();
       resetStore();
-      toast.success('Music record updated successfully');
-    },
-    onMutate: () => {
-      toast.dismiss();
-
-      toast.loading('Updating music record...');
     },
     onError: (error) => {
-      toast.dismiss();
-
-      toast.error(`Failed to update record: ${error.message}`);
+      toast.error(`Failed to update record: ${error.message}`, { position: 'top-right' });
     },
   });
 
   // Delete mutation
   const deleteMutation = trpc.allMusic.deleteMultipleByIds.useMutation({
     onSuccess: async () => {
-      toast.dismiss();
       await utils.allMusic.findAllMusic.invalidate();
-      toast.success('Music record deleted successfully');
     },
-    onMutate: () => {
-      toast.loading('Deleting music record...');
-    },
-    onError: (error) => {
-      toast.dismiss();
 
-      toast.error(`Failed to delete record: ${error.message}`);
+    onError: (error) => {
+      toast.error(`Failed to delete record: ${error.message}`, { position: 'top-right' });
     },
   });
 

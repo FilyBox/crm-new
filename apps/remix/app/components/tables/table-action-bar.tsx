@@ -19,7 +19,6 @@ import { toast as sonnertoast, useSonner } from 'sonner';
 import { toast } from 'sonner';
 import { match } from 'ts-pattern';
 
-import { trpc } from '@documenso/trpc/react';
 import { exportTableToCSV } from '@documenso/ui/lib/export';
 import { Button } from '@documenso/ui/primitives/button';
 import {
@@ -29,60 +28,30 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@documenso/ui/primitives/select';
 import { Separator } from '@documenso/ui/primitives/separator';
 
-const CONTAINER_VARIANTS: Variants = {
-  hidden: {
-    opacity: 0,
-    width: 0,
-    scale: 0.8,
-  },
-  visible: {
-    opacity: 1,
-    width: 'auto',
-    scale: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
-      width: {
-        duration: 0.3,
-      },
-      scale: {
-        duration: 0.2,
-      },
-    },
-  },
-  exit: {
-    opacity: 0,
-    width: 0,
-    scale: 0.8,
-    transition: {
-      duration: 0.2,
-      staggerChildren: 0.03,
-      staggerDirection: -1,
-    },
-  },
-};
-
 const ITEM_VARIANTS: Variants = {
   hidden: {
     opacity: 0,
-    x: -20,
-    scale: 0.9,
+    scale: 0.8,
+    y: -10,
   },
   visible: {
     opacity: 1,
-    x: 0,
     scale: 1,
+    y: 0,
     transition: {
-      duration: 0.3,
-      ease: 'easeOut',
+      type: 'spring',
+      stiffness: 400,
+      damping: 25,
     },
   },
   exit: {
     opacity: 0,
-    x: -20,
-    scale: 0.9,
+    scale: 0.8,
+    y: -10,
     transition: {
-      duration: 0.2,
+      type: 'spring',
+      stiffness: 400,
+      damping: 25,
     },
   },
 };
@@ -102,7 +71,6 @@ export function TableActionBar<TData extends { id: number }>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50],
   loading,
-  download,
   currentTeamMemberRole,
   onMultipleDelete,
   onMultipleDownload,
@@ -121,8 +89,6 @@ export function TableActionBar<TData extends { id: number }>({
   const isOperationPending = React.useMemo(() => {
     return isDownloading || isPending;
   }, [isDownloading, isPending]);
-
-  const getFiles = trpc.files.getMultipleDocumentById.useMutation();
 
   const BUTTON_MOTION_CONFIG = {
     initial: 'rest',
@@ -153,21 +119,6 @@ export function TableActionBar<TData extends { id: number }>({
   };
 
   const { _ } = useLingui();
-
-  // async function handleDownload() {
-  //   try {
-  //     const files = await getFiles.mutateAsync({
-  //       fileIds: rows.map((row) => row.original.id),
-  //     });
-
-  //     if (files) {
-  //       await downloadAnyFileMultiple({ multipleFiles: files });
-  //     }
-  //   } catch (error) {
-  //     console.log('error downloading files:', error);
-  //     throw new Error('Error downloading files');
-  //   }
-  // }
 
   const handleMultipleDownload = () => {
     try {
@@ -242,7 +193,7 @@ export function TableActionBar<TData extends { id: number }>({
 
   return (
     <DataTableActionBar className="z-[55] min-h-[57px]" table={table} visible={true}>
-      <div className="flex flex-col items-center gap-1.5 sm:flex-row">
+      <motion.div layout className="flex flex-col items-center gap-1.5 sm:flex-row">
         <div className="flex w-full items-center justify-between space-x-2 sm:w-fit sm:justify-center">
           <p className="whitespace-nowrap text-sm font-medium">
             <Trans>Per page</Trans>
@@ -265,10 +216,12 @@ export function TableActionBar<TData extends { id: number }>({
             </SelectContent>
           </Select>
         </div>
+
         <Separator
           orientation="vertical"
           className="hidden data-[orientation=vertical]:h-5 sm:block"
         />
+
         <div className="mx-auto flex w-full shrink-0 items-center justify-between gap-1 sm:w-fit sm:justify-center">
           <Button
             size={'icon'}
@@ -327,102 +280,127 @@ export function TableActionBar<TData extends { id: number }>({
           {rows.length > 0 && (
             <motion.div
               layout
-              layoutRoot
               initial="hidden"
               animate="visible"
               exit="exit"
-              variants={CONTAINER_VARIANTS}
-              className="mx-auto flex flex-wrap items-center space-x-2 overflow-hidden sm:flex-nowrap"
-              style={{ originX: 0 }}
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  scale: 0.9,
+                  height: 0,
+                  width: 0,
+                },
+                visible: {
+                  opacity: 1,
+                  scale: 1,
+                  height: 'auto',
+                  width: 'auto',
+                  transition: {
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 30,
+                    staggerChildren: 0.05,
+                    delayChildren: 0.02,
+                  },
+                },
+                exit: {
+                  opacity: 0,
+                  scale: 0.9,
+                  height: 0,
+                  width: 0,
+                  transition: {
+                    type: 'spring',
+                    stiffness: 400,
+                    damping: 40,
+                    staggerChildren: 0.02,
+                    staggerDirection: -1,
+                  },
+                },
+              }}
+              className="relative overflow-hidden"
+              style={{
+                originY: 0.5,
+                originX: 0.5,
+                transformOrigin: 'center',
+              }}
             >
-              <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
-                <Separator
-                  orientation="vertical"
-                  className="hidden data-[orientation=vertical]:h-5 sm:block"
-                />
-              </motion.div>
-              <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
-                <DataTableActionBarSelection table={table} />
-              </motion.div>
-              {canExport ||
-                (canEditDelete && onMultipleDelete && (
-                  <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
-                    <Separator
-                      orientation="vertical"
-                      className="hidden data-[orientation=vertical]:h-5 sm:block"
-                    />
-                  </motion.div>
-                ))}
-
-              {canEditDelete && onMultipleDelete && (
+              <motion.div layout className="flex flex-row gap-2 sm:items-center sm:gap-3">
                 <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
-                  <motion.button
-                    {...BUTTON_MOTION_CONFIG}
-                    className={`flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg bg-red-200/60 p-2 ${isOperationPending ? 'cursor-not-allowed text-red-500 opacity-50 dark:!text-red-200' : 'text-red-600 dark:text-red-300'} dark:bg-red-800/80`}
-                    aria-label="Reject"
-                    disabled={isOperationPending}
-                    onClick={() => {
-                      removeAllToasts();
-                      sonnertoast.warning('Esta acción sera permanente', {
-                        description: 'Estas seguro que quieres eliminar estos registros?',
-                        action: {
-                          label: 'Eliminar',
-                          onClick: () => handleMultipleDelete(),
-                        },
-                        className: 'mb-16',
-                        position: 'bottom-center',
-                        closeButton: true,
-                      });
-                    }}
-                  >
-                    <Trash2 size={16} className="shrink-0" />
-                    <motion.span
-                      variants={LABEL_VARIANTS}
-                      transition={LABEL_TRANSITION}
-                      className="invisible text-sm"
-                    >
-                      <Trans>Delete</Trans>
-                    </motion.span>
-                  </motion.button>
+                  <DataTableActionBarSelection table={table} />
                 </motion.div>
-              )}
 
-              {canExport && (
-                <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
-                  <motion.button
-                    {...BUTTON_MOTION_CONFIG}
-                    className={`bg-secondary/50 ${isOperationPending ? 'dark:text-primary/50 text-foreground cursor-not-allowed' : ''} hover:bg-secondary/70 dark:!text-primary text-foreground flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg p-2`}
-                    aria-label="Reject"
-                    disabled={isOperationPending}
-                    onClick={onMultipleDownload ? handleMultipleDownload : onTaskExport}
-                  >
-                    <Download size={16} className="shrink-0" />
-                    <motion.span
-                      variants={LABEL_VARIANTS}
-                      transition={LABEL_TRANSITION}
-                      className="invisible text-sm"
-                    >
-                      {onMultipleDownload ? _(msg`Download`) : _(msg`Export`)}
-                    </motion.span>
-                  </motion.button>
-                </motion.div>
-              )}
-
-              {/* <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
-                <DataTableActionBarAction
-                  size="icon"
-                  className="h-8 w-8"
-                  tooltip="Export"
-                  isPending={getIsActionPending('export')}
-                  onClick={onTaskExport}
+                <motion.div
+                  layout
+                  variants={ITEM_VARIANTS}
+                  className="hidden flex-shrink-0 sm:block"
                 >
-                  <Download />
-                </DataTableActionBarAction>
-              </motion.div> */}
+                  <Separator orientation="vertical" className="h-5" />
+                </motion.div>
+
+                <motion.div
+                  layout
+                  variants={ITEM_VARIANTS}
+                  className="flex flex-wrap items-center gap-2 sm:flex-nowrap"
+                >
+                  {canEditDelete && onMultipleDelete && (
+                    <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
+                      <motion.button
+                        {...BUTTON_MOTION_CONFIG}
+                        className={`flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg bg-red-200/60 p-2 ${isOperationPending ? 'cursor-not-allowed text-red-500 opacity-50 dark:!text-red-200' : 'text-red-600 dark:text-red-300'} dark:bg-red-800/80`}
+                        aria-label="Reject"
+                        disabled={isOperationPending}
+                        onClick={() => {
+                          removeAllToasts();
+                          sonnertoast.warning('Esta acción sera permanente', {
+                            description: 'Estas seguro que quieres eliminar estos registros?',
+                            action: {
+                              label: 'Eliminar',
+                              onClick: () => handleMultipleDelete(),
+                            },
+                            className: 'mb-16',
+                            position: 'bottom-center',
+                            closeButton: true,
+                          });
+                        }}
+                      >
+                        <Trash2 size={16} className="shrink-0" />
+                        <motion.span
+                          variants={LABEL_VARIANTS}
+                          transition={LABEL_TRANSITION}
+                          className="invisible text-sm"
+                        >
+                          <Trans>Delete</Trans>
+                        </motion.span>
+                      </motion.button>
+                    </motion.div>
+                  )}
+
+                  {canExport && (
+                    <motion.div layout variants={ITEM_VARIANTS} className="flex-shrink-0">
+                      <motion.button
+                        {...BUTTON_MOTION_CONFIG}
+                        className={`bg-secondary/50 ${isOperationPending ? 'dark:text-primary/50 text-foreground cursor-not-allowed' : ''} hover:bg-secondary/70 dark:!text-primary text-foreground flex h-8 w-auto items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg p-2`}
+                        aria-label="Reject"
+                        disabled={isOperationPending}
+                        onClick={onMultipleDownload ? handleMultipleDownload : onTaskExport}
+                      >
+                        <Download size={16} className="shrink-0" />
+                        <motion.span
+                          variants={LABEL_VARIANTS}
+                          transition={LABEL_TRANSITION}
+                          className="invisible text-sm"
+                        >
+                          {onMultipleDownload ? _(msg`Download`) : _(msg`Export`)}
+                        </motion.span>
+                      </motion.button>
+                    </motion.div>
+                  )}
+                </motion.div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </DataTableActionBar>
   );
 }

@@ -137,13 +137,13 @@ export default function LinksAdd({ isLoading }: { isLoading: boolean; editar: bo
                           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div>
                               <Label htmlFor={`video-name-${link.id}`}>
-                                <Trans>Name</Trans> *
+                                <Trans>Title</Trans> *
                               </Label>
                               <Input
                                 id={`video-name-${link.id}`}
                                 value={link.name}
                                 onChange={(e) => updateVideoLink(link.id, { name: e.target.value })}
-                                placeholder="Platform or link name"
+                                placeholder={t`Title`}
                                 disabled={isLoading}
                                 required
                               />
@@ -284,7 +284,7 @@ export default function LinksAdd({ isLoading }: { isLoading: boolean; editar: bo
                           <div className="mt-4 grid grid-cols-1 gap-4">
                             <div>
                               <Label htmlFor={`general-name-${link.id}`}>
-                                <Trans>Name</Trans> *
+                                <Trans>Title</Trans> *
                               </Label>
                               <Input
                                 id={`general-name-${link.id}`}
@@ -292,7 +292,7 @@ export default function LinksAdd({ isLoading }: { isLoading: boolean; editar: bo
                                 onChange={(e) =>
                                   updateGeneralLink(link.id, { name: e.target.value })
                                 }
-                                placeholder="Platform or link name"
+                                placeholder={t`Title`}
                                 disabled={isLoading}
                                 required
                               />

@@ -255,12 +255,12 @@ export function AllMusicDialog({
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="flex w-full max-w-2xl flex-col sm:max-w-2xl">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+      <SheetContent className="flex w-full max-w-2xl flex-col text-start sm:max-w-2xl">
+        <SheetHeader className="items-start justify-start text-start">
+          <SheetTitle className="flex items-center gap-2 text-start">
             {record ? t`Edit Record` : t`Add Record`}
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="w-full items-start justify-start !text-start">
             {record
               ? t`Update the record details below.`
               : t`Fill in the details to create a new record.`}
@@ -273,7 +273,7 @@ export function AllMusicDialog({
             onSubmit={form.handleSubmit(handleSave)}
             className="flex flex-1 flex-col justify-between"
           >
-            <ScrollArea className="h-[75cqh] w-full sm:h-[75cqh]">
+            <ScrollArea className={` ${record ? 'h-[60cqh]' : 'h-[70cqh]'} w-full sm:h-[75cqh]`}>
               <div className="flex-1 space-y-4 overflow-y-auto px-1">
                 {error && (
                   <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">

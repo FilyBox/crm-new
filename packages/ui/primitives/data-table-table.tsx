@@ -48,6 +48,8 @@ interface DataTableProps<TData> extends React.ComponentProps<'div'> {
     component?: React.ReactNode;
   };
   currentTeamMemberRole?: TeamMemberRole;
+  expandibleCardHeightExpanded?: number;
+  expandibleCardHeightCollapsed?: number;
 }
 
 export type DataTableChildren<TData> = (_table: TanstackTable<TData>) => React.ReactNode;
@@ -72,6 +74,8 @@ export function DataTable<TData>({
   onNavegate,
   skeleton,
   onMoveDocument,
+  expandibleCardHeightExpanded,
+  expandibleCardHeightCollapsed,
   children,
   ...props
 }: DataTableProps<TData>) {
@@ -140,15 +144,33 @@ export function DataTable<TData>({
     WebSiteUpdates?: boolean;
     Biography?: boolean;
     label?: string;
-    UPC?: string;
     userId?: number;
     teamId?: number;
     license?: string;
     duration?: string;
     isrc?: string;
+    UPC?: string;
+    isrcSong?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    publishedAt?: Date;
     submissionStatus?: string;
+    agregadora?: { name: string } | null;
+    recordLabel?: { name: string } | null;
+    videoLinks?: Array<{
+      name: string;
+      id: number;
+      url: string;
+      publishedAt?: Date | null;
+      lyrics?: string | null;
+    }>;
+    generalLinks?: Array<{
+      name: string;
+      id: number;
+      url: string;
+      publishedAt?: Date | null;
+      lyrics?: string | null;
+    }>;
   };
   const { i18n } = useLingui();
   const currentLanguage = i18n.locale;
@@ -203,7 +225,7 @@ export function DataTable<TData>({
       status: statusElements,
       title: title || 'Untitled',
       fileName: typedRow.fileName,
-      startDate: typedRow.startDate || typedRow.date || null,
+      startDate: typedRow.publishedAt || typedRow.startDate || typedRow.date || null,
       endDate: typedRow.endDate,
       contributors,
       expandible: typedRow.isPossibleToExpand || '',
@@ -213,7 +235,8 @@ export function DataTable<TData>({
       githubStars: 128,
       openIssues: 5,
       LpmData: lpmData,
-      isrc: typedRow.isrc || typedRow.UPC || '',
+      isrc: typedRow.isrc || typedRow.isrcSong || '',
+      UPC: typedRow.UPC || '',
       assets: Boolean(typedRow.assets),
       canvas: Boolean(typedRow.canvas),
       cover: Boolean(typedRow.cover),
@@ -227,6 +250,10 @@ export function DataTable<TData>({
       total: typedRow.total || 0,
       from: from || '',
       isSelected: tableRow?.getIsSelected() || false,
+      agregadora: typedRow.agregadora || null,
+      recordLabel: typedRow.recordLabel || null,
+      videoLinks: typedRow.videoLinks,
+      generalLinks: typedRow.generalLinks,
       onSelectChange: (selected: boolean) => tableRow?.toggleSelected(selected),
     };
   };
@@ -244,7 +271,7 @@ export function DataTable<TData>({
   return (
     <div
       className={cn(
-        'mb-32 flex w-full flex-col gap-2.5 overflow-auto rounded-lg border-2 p-2',
+        'mb-32 flex w-full flex-col gap-2.5 overflow-auto rounded-lg p-2 sm:border-2',
         className,
       )}
       {...props}
@@ -498,7 +525,7 @@ export function DataTable<TData>({
         </Table>
 
         {!isDesktop && (
-          <div className="mb-10 flex flex-col gap-5">
+          <div className="mb-10 flex w-full flex-col gap-5">
             {skeleton?.enable ? (
               <div className="flex flex-col gap-2">
                 <Skeleton className="h-64 w-full" />
@@ -510,6 +537,8 @@ export function DataTable<TData>({
                 return (
                   <ExpandibleCard
                     key={index}
+                    expandibleCardHeightExpanded={expandibleCardHeightExpanded}
+                    expandibleCardHeightCollapsed={expandibleCardHeightCollapsed}
                     {...prepareCardData(row, index)}
                     {...(onNavegate && { onNavegate: () => onNavegate(row) })}
                     {...(onEdit && { onEdit: () => onEdit(row) })}

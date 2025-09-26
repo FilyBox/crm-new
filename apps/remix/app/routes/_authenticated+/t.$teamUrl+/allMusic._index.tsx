@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { Trans } from '@lingui/react/macro';
+import { queryOptions } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 import { z } from 'zod';
 
@@ -63,17 +64,34 @@ export default function AllMusicPage() {
     () => ZSearchParamsSchema.safeParse(Object.fromEntries(searchParams.entries())).data || {},
     [searchParams],
   );
-  const { data, isLoading, isLoadingError, refetch } = trpc.allMusic.findAllMusic.useQuery({
-    query: query,
-    page: page,
-    artistIds: findDocumentSearchParams.artistIds,
-    agregadoraIds: findDocumentSearchParams.agregadoraIds,
-    recordLabelIds: findDocumentSearchParams.recordLabelIds,
-    orderByColumn: columnOrder,
-    filterStructure: filters,
-    joinOperator: joinOperator,
-    perPage: perPage,
-  });
+  const { data, isLoading, isLoadingError, refetch } = trpc.allMusic.findAllMusic.useQuery(
+    {
+      query: query,
+      page: page,
+      artistIds: findDocumentSearchParams.artistIds,
+      agregadoraIds: findDocumentSearchParams.agregadoraIds,
+      recordLabelIds: findDocumentSearchParams.recordLabelIds,
+      orderByColumn: columnOrder,
+      filterStructure: filters,
+      joinOperator: joinOperator,
+      perPage: perPage,
+    },
+    queryOptions({
+      queryKey: [
+        'allMusic',
+        page,
+        perPage,
+        query,
+        findDocumentSearchParams.artistIds,
+        findDocumentSearchParams.agregadoraIds,
+        findDocumentSearchParams.recordLabelIds,
+        columnOrder,
+        filters,
+        joinOperator,
+      ],
+      placeholderData: (previousData) => previousData,
+    }),
+  );
 
   const findAllMusicNoPaginationMutation = trpc.allMusic.findAllMusicNoPagination.useMutation();
 
@@ -167,7 +185,6 @@ export default function AllMusicPage() {
           </Button>
         </div>
       </div>
-
       <AllMusicTable
         data={data}
         onEdit={handleOpenEditDialog}

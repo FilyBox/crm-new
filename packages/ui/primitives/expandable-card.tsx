@@ -4,23 +4,33 @@ import { useCallback, useState } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useSpring } from 'framer-motion';
 import { CalendarIcon, CalendarOff, CheckCircle2, User, Users, X } from 'lucide-react';
 import { toast } from 'sonner';
 
+import {
+  Expandable,
+  ExpandableCard,
+  ExpandableCardContent,
+  ExpandableCardFooter,
+  ExpandableCardHeader,
+  ExpandableContent,
+  ExpandableTrigger,
+} from '@documenso/ui/primitives/new-expandible-card';
+
 import LpmMobileDetails from '../components/lpm/lpm-mobile-table-details';
 import { Button } from '../primitives/button';
-import { Card, CardContent, CardFooter, CardHeader } from '../primitives/card';
 import { Progress as ProgressBar } from '../primitives/progress';
 import type { LpmData } from '../types/tables-types';
 import { Badge } from './badge';
 import { Checkbox } from './checkbox';
+import { LinksWithTooltip } from './links-with-tooltip';
 
 interface ExpandibleCardProps {
   title: string;
   fileName?: string;
   isrc?: string;
+  UPC?: string;
   progress?: number;
   onNavegate?: () => void;
   onEdit?: () => void;
@@ -32,6 +42,8 @@ interface ExpandibleCardProps {
   endDate?: Date;
   summary?: string;
   contributors: Array<{ name: string; image?: string }>;
+  agregadora?: { name: string } | null;
+  recordLabel?: { name: string } | null;
   tasks?: Array<{ title: string; completed: boolean }>;
   githubStars: number;
   openIssues: number;
@@ -51,11 +63,28 @@ interface ExpandibleCardProps {
   Biography?: boolean;
   isSelected?: boolean;
   onSelectChange?: (selected: boolean) => void;
+  expandibleCardHeightExpanded?: number;
+  expandibleCardHeightCollapsed?: number;
+  catalog?: string;
+  videoLinks?: Array<{
+    name: string;
+    id: number;
+    url: string;
+    publishedAt?: Date | null;
+    lyrics?: string | null;
+  }>;
+  generalLinks?: Array<{
+    name: string;
+    id: number;
+    url: string;
+    publishedAt?: Date | null;
+    lyrics?: string | null;
+  }>;
 }
 
 export function useExpandable(initialState = false) {
   const [isExpanded, setIsExpanded] = useState(initialState);
-  const springConfig = { stiffness: 300, damping: 30 };
+  const springConfig = { stiffness: 200, damping: 20, bounce: 0 };
   const animatedHeight = useSpring(0, springConfig);
 
   const toggleExpand = useCallback(() => {
@@ -77,6 +106,7 @@ export function ExpandibleCard({
   onDelete,
   status,
   isrc,
+  UPC,
   endDate,
   assets,
   canvas,
@@ -96,10 +126,18 @@ export function ExpandibleCard({
   total,
   fileName,
   isSelected = false,
+  expandibleCardHeightExpanded,
+  agregadora,
+  recordLabel,
+  expandibleCardHeightCollapsed,
+  catalog,
+  videoLinks,
+  generalLinks,
   onSelectChange,
 }: ExpandibleCardProps) {
   const { isExpanded, toggleExpand, animatedHeight } = useExpandable();
   const contentRef = useRef<HTMLDivElement>(null);
+
   const { i18n } = useLingui();
   const currentLanguage = i18n.locale;
   useEffect(() => {
@@ -124,73 +162,86 @@ export function ExpandibleCard({
   };
 
   return (
-    <Card className="text-foreground w-full cursor-pointer transition-all duration-300 hover:shadow-lg">
-      <CardHeader onClick={toggleExpand} className="pb-0">
-        <div className="flex w-full items-start justify-between">
-          <div className="space-y-2">
-            <div className="flex gap-2">
-              {onSelectChange && (
-                <div onClick={handleCheckboxChange}>
-                  <Checkbox
-                    checked={isSelected}
-                    onCheckedChange={onSelectChange}
-                    aria-label="Select row"
-                    className="translate-y-1"
-                  />
-                </div>
-              )}
-              {status &&
-                status.length > 0 &&
-                status.map((status, index) => (
-                  <Badge
-                    key={index}
-                    variant="secondary"
-                    className={
-                      status === 'VIGENTE'
-                        ? 'bg-green-100 text-green-600'
-                        : 'bg-blue-100 text-blue-600'
-                    }
-                  >
-                    {status}
-                  </Badge>
-                ))}
-            </div>
-
-            <h3 className="text-xl font-semibold">{title}</h3>
-
-            {fileName && (
-              <h4 className="text-accent-foreground text-lg font-semibold">{fileName}</h4>
-            )}
-          </div>
-        </div>
-      </CardHeader>
-
-      <CardContent onClick={toggleExpand}>
-        <div className="space-y-4">
-          {progress && (
-            <div className="space-y-2">
-              <div className="fileName flex justify-between text-sm">
-                <span>Progress</span>
-                <span>{progress}%</span>
-              </div>
-              <ProgressBar value={progress} className="h-2" />
-            </div>
-          )}
-
-          <motion.div
-            style={{ height: animatedHeight }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="overflow-hidden"
+    <Expandable
+      expandDirection="vertical"
+      className="w-full"
+      expandBehavior="push"
+      onExpandStart={() => console.log('Expanding product card...')}
+      onExpandEnd={() => console.log('Product card expanded!')}
+    >
+      {({ isExpanded }) => (
+        <ExpandableTrigger className="overflow-hidden">
+          <ExpandableCard
+            className="relative h-full w-full overflow-hidden"
+            collapsedSize={{ height: expandibleCardHeightCollapsed || 350 }}
+            expandedSize={{ height: expandibleCardHeightExpanded || 640 }}
+            hoverToExpand={false}
+            expandDelay={500}
+            collapseDelay={700}
           >
-            <div ref={contentRef}>
-              <AnimatePresence>
-                {isExpanded && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="space-y-4"
-                  >
+            <ExpandableCardHeader className="pb-2">
+              <div className="flex w-full items-start justify-between">
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    {onSelectChange && (
+                      <div onClick={handleCheckboxChange}>
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={onSelectChange}
+                          aria-label="Select row"
+                          className="translate-y-1"
+                        />
+                      </div>
+                    )}
+
+                    <h3 className="text-xl font-semibold">{title}</h3>
+                  </div>
+                  {status &&
+                    status.length > 0 &&
+                    status.map((status, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className={
+                          status === 'VIGENTE'
+                            ? 'bg-green-100 text-green-600'
+                            : 'bg-blue-100 text-blue-600'
+                        }
+                      >
+                        {status}
+                      </Badge>
+                    ))}
+                </div>
+              </div>
+            </ExpandableCardHeader>
+            <ExpandableCardContent
+              className={isExpanded ? 'h-full items-start justify-start pb-4' : ''}
+            >
+              <ExpandableContent
+                preset="fade"
+                keepMounted={false}
+                animateIn={{
+                  initial: { opacity: 0, y: 20 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { type: 'spring', stiffness: 300, damping: 20 },
+                }}
+              >
+                <div className="space-y-4">
+                  {progress && (
+                    <div className="space-y-2">
+                      <div className="fileName flex justify-between text-sm">
+                        <span>Progress</span>
+                        <span>{progress}%</span>
+                      </div>
+                      <ProgressBar value={progress} className="h-2" />
+                    </div>
+                  )}
+
+                  {fileName && (
+                    <h4 className="text-accent-foreground text-lg font-semibold">{fileName}</h4>
+                  )}
+
+                  <div className="flex flex-col gap-2" ref={contentRef}>
                     <div className="text-foreground flex items-center justify-between text-sm">
                       {expandible && (
                         <div className="flex flex-col items-start">
@@ -224,13 +275,48 @@ export function ExpandibleCard({
                           Artistas
                         </h4>
                         {contributors.map((contributor, index) => (
-                          <div key={index} className="flex flex-col gap-2">
+                          <div key={index} className="flex flex-col gap-1">
                             <div className="flex items-center">
                               <User className="text-accent-foreground mr-2 h-4 w-4" />
                               <p>{contributor.name}</p>
                             </div>
                           </div>
                         ))}
+                      </div>
+                    )}
+                    {agregadora && (
+                      <div className="space-y-2">
+                        <h4 className="flex items-center gap-1 text-sm font-medium">
+                          Agregadora:{' '}
+                          <span className="text-muted-foreground">({agregadora.name})</span>
+                        </h4>
+                      </div>
+                    )}
+                    {recordLabel && (
+                      <div className="space-y-2">
+                        <h4 className="flex items-center gap-1 text-sm font-medium">
+                          Disquera:{' '}
+                          <span className="text-muted-foreground">({recordLabel.name})</span>
+                        </h4>
+                      </div>
+                    )}
+                    {catalog && (
+                      <div className="space-y-2">
+                        <h4 className="flex items-center gap-1 text-sm font-medium">
+                          Catálogo: <span className="text-muted-foreground">({catalog})</span>
+                        </h4>
+                      </div>
+                    )}
+                    {videoLinks && videoLinks.length > 0 && (
+                      <div className="flex w-full items-center justify-between gap-2">
+                        <span className="text-sm font-medium">Video Links:</span>
+                        <LinksWithTooltip Links={videoLinks || []} position="bottom" />
+                      </div>
+                    )}
+                    {generalLinks && generalLinks.length > 0 && (
+                      <div className="flex w-full items-center justify-between gap-2">
+                        <span className="text-sm font-medium">General Links:</span>
+                        <LinksWithTooltip Links={generalLinks || []} position="bottom" />
                       </div>
                     )}
                     {total && from === 'tustreams' ? (
@@ -414,90 +500,112 @@ export function ExpandibleCard({
                       </div>
                     )}
                     {renderDetailComponent()}{' '}
-                  </motion.div>
+                  </div>
+                </div>
+              </ExpandableContent>
+            </ExpandableCardContent>
+            {/* <ExpandableContent preset="slide-up"> */}
+            <ExpandableCardFooter className="order-last">
+              <div className="text-foreground flex w-full flex-col items-center justify-between gap-2 text-sm">
+                <div className="flex w-full items-center justify-between">
+                  {startDate ? (
+                    <div className="flex items-center">
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <span>
+                        {format(startDate, 'd MMM yyyy', {
+                          locale: currentLanguage === 'es' ? es : enUS,
+                        })}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <span>Sin especificar</span>
+                    </div>
+                  )}
+
+                  {endDate && (
+                    <div className="flex items-center">
+                      <CalendarOff className="mr-2 h-4 w-4" />
+                      <span>
+                        {format(endDate, 'd MMM yyyy', {
+                          locale: currentLanguage === 'es' ? es : enUS,
+                        })}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex w-full items-center justify-between">
+                  {isrc && (
+                    <div className="flex items-center">
+                      ISRC: <span>{isrc}</span>
+                    </div>
+                  )}
+                  {UPC && (
+                    <div className="flex items-center">
+                      <span>UPC: </span>&nbsp; <span>{UPC}</span>
+                    </div>
+                  )}
+                </div>
+
+                {onNavegate && (
+                  <div className="w-full space-y-2">
+                    <Button
+                      size={'sm'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onNavegate();
+                      }}
+                      className="w-full"
+                    >
+                      {/* <MessageSquare className="mr-2 h-4 w-4" /> */}
+                      <Trans>View</Trans>
+                    </Button>
+                  </div>
                 )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        </div>
-      </CardContent>
+                {onEdit && (
+                  <div className="w-full space-y-2">
+                    <Button
+                      size={'sm'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit();
+                      }}
+                      className="w-full"
+                    >
+                      {/* <MessageSquare className="mr-2 h-4 w-4" /> */}
+                      <Trans>Edit</Trans>
+                    </Button>
+                  </div>
+                )}
 
-      <CardFooter>
-        <div className="text-foreground flex w-full flex-col items-center justify-between gap-2 text-sm">
-          <div className="flex w-full items-center justify-between">
-            {startDate ? (
-              <div className="flex items-center">
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                <span>
-                  {format(startDate, 'd MMM yyyy', {
-                    locale: currentLanguage === 'es' ? es : enUS,
-                  })}
-                </span>
+                {onDelete && (
+                  <div className="w-full space-y-2">
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toast.warning('Esta acción sera permanente', {
+                          description: 'Estas seguro que quieres eliminar este elemento?',
+                          action: {
+                            label: 'Eliminar',
+                            onClick: () => onDelete(),
+                          },
+                          className: 'mb-24',
+                        });
+                      }}
+                    >
+                      <Trans>Delete</Trans>
+                    </Button>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="flex items-center">
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                <span>Sin especificar</span>
-              </div>
-            )}
-
-            {isrc && (
-              <div className="flex items-center">
-                #<span>{isrc}</span>
-              </div>
-            )}
-            {endDate && (
-              <div className="flex items-center">
-                <CalendarOff className="mr-2 h-4 w-4" />
-                <span>
-                  {format(endDate, 'd MMM yyyy', { locale: currentLanguage === 'es' ? es : enUS })}
-                </span>
-              </div>
-            )}
-          </div>
-
-          {onNavegate && (
-            <div className="w-full space-y-2">
-              <Button size={'sm'} onClick={onNavegate} className="w-full">
-                {/* <MessageSquare className="mr-2 h-4 w-4" /> */}
-                <Trans>View</Trans>
-              </Button>
-            </div>
-          )}
-          {onEdit && (
-            <div className="w-full space-y-2">
-              <Button size={'sm'} onClick={onEdit} className="w-full">
-                {/* <MessageSquare className="mr-2 h-4 w-4" /> */}
-                <Trans>Edit</Trans>
-              </Button>
-            </div>
-          )}
-
-          {onDelete && (
-            <div className="w-full space-y-2">
-              {/* <Button size={'sm'} variant={'destructive'} onClick={onDelete} className="w-full">
-                Delete
-              </Button> */}
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  toast.warning('Esta acción sera permanente', {
-                    description: 'Estas seguro que quieres eliminar este elemento?',
-                    action: {
-                      label: 'Eliminar',
-                      onClick: () => onDelete(),
-                    },
-                    className: 'mb-24',
-                  });
-                }}
-              >
-                <Trans>Delete</Trans>
-              </Button>
-            </div>
-          )}
-        </div>
-      </CardFooter>
-    </Card>
+            </ExpandableCardFooter>
+            {/* </ExpandableContent> */}
+          </ExpandableCard>
+        </ExpandableTrigger>
+      )}
+    </Expandable>
   );
 }

@@ -239,6 +239,8 @@ export const AllMusicTable = ({
       <DataTable
         onDelete={onDelete}
         onEdit={onEdit}
+        expandibleCardHeightCollapsed={200}
+        expandibleCardHeightExpanded={300}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
         error={{

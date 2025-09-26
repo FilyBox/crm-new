@@ -5763,8 +5763,6 @@ msgstr "N/A"
 #: apps/remix/app/components/general/document-signing/document-signing-name-field.tsx
 #: apps/remix/app/components/general/event-calendar/events-filters.tsx
 #: apps/remix/app/components/general/event-calendar/ticket-type-create-dialog.tsx
-#: apps/remix/app/components/general/links-add.tsx
-#: apps/remix/app/components/general/links-add.tsx
 #: apps/remix/app/components/tables/admin-claims-table.tsx
 #: apps/remix/app/components/tables/admin-dashboard-users-table.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
@@ -6032,7 +6030,7 @@ msgstr "Ubicación no especificada"
 
 #: apps/remix/app/components/general/links-add.tsx
 msgid "No video links added yet"
-msgstr ""
+msgstr "Sin enlaces"
 
 #: apps/remix/app/routes/_unauthenticated+/forgot-password.tsx
 msgid "No worries, it happens! Enter your email and we'll email you a special link to reset your password."
@@ -9224,6 +9222,10 @@ msgstr ""
 #: apps/remix/app/components/dialogs/task-create-dialog.tsx
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 #: apps/remix/app/components/general/event-calendar/event-dialog.tsx
+#: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/general/links-add.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/allMusic-table.tsx
@@ -9771,7 +9773,7 @@ msgstr "Actualizar miembro del equipo"
 
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 msgid "Update the record details below."
-msgstr ""
+msgstr "Actualiza los detalles del registro."
 
 #: packages/lib/constants/template.ts
 msgid "Update the role and add fields as required for the direct recipient. The individual who uses the direct link will sign the document as the direct recipient."
