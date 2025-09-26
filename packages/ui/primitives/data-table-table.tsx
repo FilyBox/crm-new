@@ -342,8 +342,6 @@ export function DataTable<TData>({
                 onNavegate={onNavegate}
                 onRetry={onRetry}
                 onMoveDocument={onMoveDocument}
-                from={from}
-                currentTeamMemberRole={currentTeamMemberRole}
               />
             ) : (
               <DataTableBodyComponent
@@ -356,8 +354,6 @@ export function DataTable<TData>({
                 onNavegate={onNavegate}
                 onRetry={onRetry}
                 onMoveDocument={onMoveDocument}
-                from={from}
-                currentTeamMemberRole={currentTeamMemberRole}
               />
             )
           ) : (
