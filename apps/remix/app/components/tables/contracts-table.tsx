@@ -86,6 +86,8 @@ export const ContractsTable = ({
       {
         accessorKey: 'id',
         header: 'ID',
+        maxSize: 20,
+        enableResizing: false,
         enableSorting: true,
         enableHiding: true,
       },
@@ -94,6 +96,7 @@ export const ContractsTable = ({
         header: ({ column }) => <DataTableColumnHeader column={column} title="Title" />,
         enableHiding: true,
         enableColumnFilter: true,
+        enableResizing: true,
       },
       {
         accessorKey: 'fileName',
@@ -103,7 +106,9 @@ export const ContractsTable = ({
       },
       {
         accessorKey: 'artists',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Artists" />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Individuals involved" />
+        ),
         enableHiding: true,
         enableSorting: false,
       },
@@ -194,7 +199,7 @@ export const ContractsTable = ({
 
   const columns = createColumns();
 
-  const { table, shallow, debounceMs, throttleMs } = useDataTable({
+  const { table, shallow, debounceMs, throttleMs, columnSizeVars } = useDataTable({
     data: data?.data || [],
     columns,
     pageCount: data?.totalPages || 1,
@@ -206,6 +211,7 @@ export const ContractsTable = ({
     defaultColumn: {
       columns,
       enableColumnFilter: false,
+      enableResizing: true,
     },
     getRowId: (originalRow) => originalRow.id.toString(),
     shallow: false,
@@ -222,8 +228,11 @@ export const ContractsTable = ({
   return (
     <>
       <DataTable
+        columnSizeVars={columnSizeVars}
         onDelete={onDelete}
         onEdit={onEdit}
+        expandibleCardHeightCollapsed={330}
+        expandibleCardHeightExpanded={700}
         currentTeamMemberRole={team?.currentTeamRole}
         onRetry={onRetry}
         onNavegate={onNavegate}

@@ -4,6 +4,38 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: transparent;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+  transition: background-color 0.2s ease;
+}
+
+.resize-handle:hover {
+  background-color: #3b82f6;
+}
+
+.resize-handle.is-resizing {
+  background-color: #3b82f6;
+  opacity: 1;
+}
+
+/* Prevenir selección de texto durante resize */
+.is-resizing {
+  user-select: none;
+}
+
+/* Estilos para la tabla durante el resize */
+.table-resizing {
+  cursor: col-resize;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   background: transparent;

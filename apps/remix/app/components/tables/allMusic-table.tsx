@@ -85,6 +85,7 @@ export const AllMusicTable = ({
         header: ({ column }) => <DataTableColumnHeader column={column} title={'ID'} />,
         enableHiding: true,
         accessorKey: 'id',
+        size: 20,
       },
       {
         accessorKey: 'publishedAt',
@@ -210,7 +211,7 @@ export const AllMusicTable = ({
 
   const columns = createColumns();
 
-  const { table, shallow, debounceMs, throttleMs } = useDataTable({
+  const { table, shallow, debounceMs, throttleMs, columnSizeVars } = useDataTable({
     data: data?.data || [],
     columns,
     pageCount: data?.totalPages || 1,
@@ -237,9 +238,10 @@ export const AllMusicTable = ({
   return (
     <div className="relative">
       <DataTable
+        columnSizeVars={columnSizeVars}
         onDelete={onDelete}
         onEdit={onEdit}
-        expandibleCardHeightCollapsed={200}
+        expandibleCardHeightCollapsed={220}
         expandibleCardHeightExpanded={300}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}

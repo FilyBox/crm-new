@@ -80,7 +80,8 @@ export const DocumentsTable = ({
         ),
         enableSorting: false,
         enableHiding: false,
-        size: 40,
+        enableResizing: false,
+        size: 10,
       },
 
       {

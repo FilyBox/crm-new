@@ -125,7 +125,7 @@ export const FilesTable = ({
 
   const columns = createColumns();
 
-  const { table, shallow, debounceMs, throttleMs } = useDataTable({
+  const { table, shallow, debounceMs, throttleMs, columnSizeVars } = useDataTable({
     data: data?.data || [],
     columns,
     pageCount: data?.totalPages || 1,
@@ -155,6 +155,7 @@ export const FilesTable = ({
       <DataTable
         onDelete={onDelete}
         onEdit={onEdit}
+        columnSizeVars={columnSizeVars}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
         from="tustreams"

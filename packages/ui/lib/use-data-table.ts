@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import {
   type ColumnFiltersState,
+  type ColumnSizingState,
   type PaginationState,
   type RowSelectionState,
   type SortingState,
@@ -76,6 +77,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     enableAdvancedFilter = false,
     scroll = false,
     shallow = true,
+    enableColumnResizing = true,
     startTransition,
     ...tableProps
   } = props;
@@ -98,6 +100,10 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   );
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(
     initialState?.columnVisibility ?? {},
+  );
+
+  const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>(
+    initialState?.columnSizing ?? {},
   );
 
   // const [page, setPage] = useQueryState(
@@ -255,8 +261,14 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     defaultColumn: {
       ...tableProps.defaultColumn,
       enableColumnFilter: false,
+      enableResizing: enableColumnResizing,
+      minSize: 50,
+      maxSize: 800,
     },
     enableRowSelection: true,
+    enableColumnResizing: enableColumnResizing,
+    columnResizeMode: 'onChange',
+
     onRowSelectionChange: setRowSelection,
     onPaginationChange,
     onSortingChange,
@@ -274,5 +286,16 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     manualFiltering: true,
   });
 
-  return { table, shallow, debounceMs, throttleMs };
+  const columnSizeVars = React.useMemo(() => {
+    const headers = table.getFlatHeaders();
+    const colSizes: { [key: string]: number } = {};
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i]!;
+      colSizes[`--header-${header.id}-size`] = header.getSize();
+      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
+    }
+    return colSizes;
+  }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+
+  return { table, shallow, debounceMs, throttleMs, columnSizeVars };
 }

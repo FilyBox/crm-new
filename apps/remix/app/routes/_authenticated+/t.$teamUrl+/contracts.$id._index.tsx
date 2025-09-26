@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 
 import { Trans, useLingui } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { ChevronLeft } from 'lucide-react';
 import { useQueryState } from 'nuqs';
@@ -146,8 +146,8 @@ export default function DocumentPage() {
   useEffect(() => {
     const existingUUID = chatName;
     if (!existingUUID) {
-      setChatName(existingUUID);
-      setSearchParams(
+      void setChatName(existingUUID);
+      void setSearchParams(
         (prev) => {
           const newParams = new URLSearchParams(prev);
           newParams.set('chatId', UUID);
@@ -156,18 +156,18 @@ export default function DocumentPage() {
         { replace: true },
       );
     } else {
-      setChatName(UUID);
+      void setChatName(UUID);
     }
   }, [UUID, setSearchParams, setChatName]);
 
   const handleChatChange = (chatId: string) => {
-    setChatName(chatId);
-    queryClient.invalidateQueries({ queryKey: ['chatMessages', UUID] });
+    void setChatName(chatId);
+    void queryClient.invalidateQueries({ queryKey: ['chatMessages', UUID] });
   };
 
   const handleNewChat = () => {
     const newUUID = generateUUID();
-    setChatName(newUUID);
+    void setChatName(newUUID);
     setSearchParams(
       (prev) => {
         const newParams = new URLSearchParams(prev);
@@ -217,7 +217,7 @@ export default function DocumentPage() {
                   {contract?.artists && (
                     <div className="flex flex-col">
                       <span className="text-foreground pb-1 text-lg font-medium">
-                        <Trans>Artists</Trans>
+                        <Trans>Individuals involved</Trans>
                       </span>
                       <span className="text-sm">{contract.artists}</span>
                     </div>
@@ -239,7 +239,7 @@ export default function DocumentPage() {
                           <Trans>Start Date</Trans>
                         </span>
                         <span className="text-sm">
-                          {format(contract.startDate as Date, 'd MMM yyyy', {
+                          {format(addDays(contract.startDate as Date, 1), 'd MMM yyyy', {
                             locale: currentLanguage === 'es' ? es : enUS,
                           })}
                         </span>
@@ -252,7 +252,7 @@ export default function DocumentPage() {
                           <Trans>End Date</Trans>
                         </span>
                         <span className="text-sm">
-                          {format(contract.endDate as Date, 'd MMM yyyy', {
+                          {format(addDays(contract.endDate as Date, 1), 'd MMM yyyy', {
                             locale: currentLanguage === 'es' ? es : enUS,
                           })}
                         </span>

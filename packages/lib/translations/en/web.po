@@ -1715,7 +1715,6 @@ msgstr "Artist created successfully"
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 msgid "Artists"
 msgstr "Artists"
 
@@ -3107,7 +3106,7 @@ msgstr "delete"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
-#: packages/ui/primitives/data-table-table.tsx
+#: packages/ui/primitives/data-table-body.tsx
 #: packages/ui/primitives/expandable-card.tsx
 msgid "Delete"
 msgstr "Delete"
@@ -3884,7 +3883,7 @@ msgstr "Duration"
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/templates-table-action-dropdown.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
-#: packages/ui/primitives/data-table-table.tsx
+#: packages/ui/primitives/data-table-body.tsx
 #: packages/ui/primitives/expandable-card.tsx
 msgid "Edit"
 msgstr "Edit"
@@ -5074,6 +5073,10 @@ msgstr "Include the Audit Logs in the Document"
 msgid "Include the Signing Certificate in the Document"
 msgstr "Include the Signing Certificate in the Document"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "Individuals involved"
+msgstr "Individuals involved"
+
 #: apps/remix/app/components/general/document/document-page-view-information.tsx
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
 msgid "Information"
@@ -5722,7 +5725,7 @@ msgstr "Move Template to Folder"
 msgid "Move to Folder"
 msgstr "Move to Folder"
 
-#: packages/ui/primitives/data-table-table.tsx
+#: packages/ui/primitives/data-table-body.tsx
 msgid "Move To Folder"
 msgstr "Move To Folder"
 
@@ -7267,7 +7270,7 @@ msgstr "Retention of Documents"
 
 #: apps/remix/app/components/general/document-signing/document-signing-auth-passkey.tsx
 #: apps/remix/app/components/tables/chat-table-action-dropdown.tsx
-#: packages/ui/primitives/data-table-table.tsx
+#: packages/ui/primitives/data-table-body.tsx
 msgid "Retry"
 msgstr "Retry"
 
@@ -10136,7 +10139,7 @@ msgstr "Video Links"
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
 #: apps/remix/app/components/tables/organisation-billing-invoices-table.tsx
-#: packages/ui/primitives/data-table-table.tsx
+#: packages/ui/primitives/data-table-body.tsx
 #: packages/ui/primitives/expandable-card.tsx
 msgid "View"
 msgstr "View"

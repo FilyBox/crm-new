@@ -3,28 +3,17 @@ import * as React from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { TeamMemberRole } from '@prisma/client';
 import { type Table as TanstackTable, flexRender } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { enUS, es } from 'date-fns/locale';
 import { Bird } from 'lucide-react';
 import { Toaster } from 'sonner';
-import { toast as sonnertoast } from 'sonner';
 import { match } from 'ts-pattern';
 
-import { StackAvatarsArtistWithTooltip } from '../components/lpm/stack-avatars-artist-with-tooltip';
-import { StackAvatarsArtistWithTooltipNew } from '../components/lpm/stack-avatars-artist-with-tooltip-new';
 import { useMediaQuery } from '../lib/use-media-query';
 import { cn } from '../lib/utils';
 import type { LpmData } from '../types/tables-types';
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from './context-menu';
+import { DataTableBodyComponent, MemoizedDataTableBody } from './data-table-body';
 import { ExpandibleCard } from './expandable-card';
 import { Skeleton } from './skeleton';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
+import { Table, TableHead, TableHeader, TableRow } from './table';
 
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>;
@@ -50,6 +39,7 @@ interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   currentTeamMemberRole?: TeamMemberRole;
   expandibleCardHeightExpanded?: number;
   expandibleCardHeightCollapsed?: number;
+  columnSizeVars?: { [key: string]: number };
 }
 
 export type DataTableChildren<TData> = (_table: TanstackTable<TData>) => React.ReactNode;
@@ -76,6 +66,7 @@ export function DataTable<TData>({
   onMoveDocument,
   expandibleCardHeightExpanded,
   expandibleCardHeightCollapsed,
+  columnSizeVars,
   children,
   ...props
 }: DataTableProps<TData>) {
@@ -92,8 +83,8 @@ export function DataTable<TData>({
     'instantGratificationDate',
     'submittedAt',
     'lastModified',
-    'startDate',
-    'endDate',
+    // 'startDate',
+    // 'endDate',
   ];
 
   type enhancedArtists = {
@@ -264,6 +255,8 @@ export function DataTable<TData>({
     .with(TeamMemberRole.MEMBER, () => false)
     .otherwise(() => true);
 
+  const isResizing = table.getState().columnSizingInfo.isResizingColumn;
+
   if (!data) {
     return <div>No data</div>;
   }
@@ -279,18 +272,45 @@ export function DataTable<TData>({
       {children}
       <div className="overflow-hidden rounded-md">
         <Toaster theme="system" richColors className="mb-16" />
-        <Table overflowHidden={skeleton?.enable} className="scrollbar-hide">
+        <Table
+          overflowHidden={skeleton?.enable || !isDesktop}
+          className="scrollbar-hide min-w-full"
+          style={{
+            ...columnSizeVars,
+            width: table.getTotalSize(),
+            tableLayout: 'fixed',
+          }}
+        >
           {/* <ScrollArea className="w-full max-w-screen-xl whitespace-nowrap rounded-md border"> */}
-          <TableHeader className="scrollbar-hide">
+          <TableHeader
+            className={`scrollbar-hide ${isDesktop === false ? 'max-w-full overflow-hidden' : ''}`}
+          >
             {isDesktop
               ? table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                       return (
-                        <TableHead key={header.id}>
+                        <TableHead
+                          key={header.id}
+                          style={{
+                            width: `calc(var(--header-${header.id}-size) * 1px)`,
+                            position: 'relative',
+                          }}
+                        >
                           {header.isPlaceholder
                             ? null
                             : flexRender(header.column.columnDef.header, header.getContext())}
+                          {header.column.getCanResize() && (
+                            <div
+                              onDoubleClick={() => header.column.resetSize()}
+                              onMouseDown={header.getResizeHandler()}
+                              onTouchStart={header.getResizeHandler()}
+                              className={cn(
+                                'resize-handle',
+                                header.column.getIsResizing() && 'is-resizing',
+                              )}
+                            />
+                          )}
                         </TableHead>
                       );
                     })}
@@ -310,213 +330,36 @@ export function DataTable<TData>({
                   </TableRow>
                 ))}
           </TableHeader>
-
           {isDesktop ? (
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <ContextMenu key={row.id}>
-                    <ContextMenuTrigger asChild className="h-fit w-fit">
-                      <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() && 'selected'}
-                        className="hover:bg-muted/50"
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell
-                            key={cell.id}
-                            className="overflow-hidden text-ellipsis whitespace-nowrap"
-                            style={{ maxWidth: '200px' }}
-                          >
-                            {cell.column.id === 'linerNotes' &&
-                            typeof cell.getValue() === 'string' ? (
-                              `${(cell.getValue() as string).substring(0, 50)}${(cell.getValue() as string).length > 50 ? '...' : ''}`
-                            ) : cell.column.id === 'productPlayLink' && cell.getValue() ? (
-                              cell.getValue() === '(ExistingChannel)' ? (
-                                <>(ExistingChannel)</>
-                              ) : (
-                                <a
-                                  href={cell.getValue() as string}
-                                  className="text-blue-600 hover:underline"
-                                >
-                                  Link
-                                </a>
-                              )
-                            ) : cell.column.id === 'fileName' && cell.getValue() ? (
-                              <>
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger>{cell.getValue() as string}</TooltipTrigger>
-                                    <TooltipContent className="break-words">
-                                      {cell.getValue() as string}
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </>
-                            ) : cell.column.id === 'summary' && cell.getValue() ? (
-                              <>
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger>{cell.getValue() as string}</TooltipTrigger>
-                                    <TooltipContent className="max-w-40 break-words">
-                                      {cell.getValue() as string}
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </>
-                            ) : (cell.column.id === 'productDisplayArtist' && cell.getValue()) ||
-                              (cell.column.id === 'artists' && Array.isArray(cell.getValue())) ? (
-                              <StackAvatarsArtistWithTooltipNew
-                                enhancedAssignees={cell.getValue() as artists[]}
-                              />
-                            ) : (cell.column.id === 'isrcArtists' && cell.getValue()) ||
-                              (cell.column.id === 'tuStreamsArtists' && cell.getValue()) ||
-                              (cell.column.id === 'releasesArtists' && cell.getValue()) ? (
-                              <StackAvatarsArtistWithTooltip
-                                enhancedAssignees={cell.getValue() as enhancedAssignees[]}
-                              />
-                            ) : cell.column.id === 'trackPlayLink' && cell.getValue() ? (
-                              <a
-                                href={cell.getValue() as string}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:underline"
-                              >
-                                Link
-                              </a>
-                            ) : cell.column.id === 'vevoChannel' && cell.getValue() ? (
-                              cell.getValue() === '(ExistingChannel)' ? (
-                                <>(ExistingChannel)</>
-                              ) : (
-                                <a
-                                  href={cell.getValue() as string}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:underline"
-                                >
-                                  Link
-                                </a>
-                              )
-                            ) : cell.column.id === 'productId' && cell.getValue() ? (
-                              <span className="w-fit max-w-fit whitespace-nowrap break-keep">
-                                {cell.getValue() as string}
-                              </span>
-                            ) : cell.column.id === 'lyrics' &&
-                              typeof cell.getValue() === 'string' ? (
-                              `${(cell.getValue() as string).substring(0, 50)}${(cell.getValue() as string).length > 50 ? '...' : ''}`
-                            ) : dateColumnIds.includes(cell.column.id) ? (
-                              `${cell.getValue() ? format(cell.getValue() as Date, 'd MMM yyyy', { locale: currentLanguage === 'es' ? es : enUS }) : '-'}`
-                            ) : cell.column.id === 'writersComposers' &&
-                              typeof cell.getValue() === 'string' ? (
-                              `${(cell.getValue() as string).substring(0, 50)}${(cell.getValue() as string).length > 50 ? '...' : ''}`
-                            ) : (
-                              flexRender(cell.column.columnDef.cell, cell.getContext())
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    </ContextMenuTrigger>
-                    <ContextMenuContent className="z-[60] w-40 text-center">
-                      {onEdit && canEditDelete && (
-                        <ContextMenuItem
-                          className="text-center"
-                          onClick={() => {
-                            onEdit(row.original);
-                          }}
-                          inset
-                        >
-                          <Trans>Edit</Trans>
-                        </ContextMenuItem>
-                      )}
-
-                      {onNavegate && (
-                        <ContextMenuItem
-                          onClick={() => {
-                            onNavegate(row.original);
-                          }}
-                          inset
-                        >
-                          <Trans>View</Trans>
-                        </ContextMenuItem>
-                      )}
-
-                      {onRetry && (
-                        <ContextMenuItem
-                          onClick={() => {
-                            onRetry(row.original);
-                          }}
-                          inset
-                        >
-                          <Trans>Retry</Trans>
-                        </ContextMenuItem>
-                      )}
-
-                      {onMoveDocument && (
-                        <ContextMenuItem
-                          onClick={() => {
-                            onMoveDocument(row.original);
-                          }}
-                          inset
-                        >
-                          <Trans>Move To Folder</Trans>
-                        </ContextMenuItem>
-                      )}
-
-                      {onDelete && canEditDelete && (
-                        <ContextMenuItem
-                          onClick={() => {
-                            sonnertoast.warning('Esta acción sera permanente', {
-                              description: 'Estas seguro que quieres eliminar este elemento?',
-                              action: {
-                                label: 'Eliminar',
-                                onClick: () => onDelete(row.original),
-                              },
-                              className: 'mb-16 ',
-                              position: 'bottom-center',
-                              closeButton: true,
-                            });
-                          }}
-                          inset
-                        >
-                          <Trans>Delete</Trans>
-                        </ContextMenuItem>
-                      )}
-                    </ContextMenuContent>
-                  </ContextMenu>
-                ))
-              ) : error?.enable ? (
-                <TableRow>
-                  {/* {error.component ?? (
-                    <TableCell colSpan={columns} className="h-32 text-center">
-                      <Trans>Something went wrong.</Trans>
-                    </TableCell>
-                  )} */}
-                </TableRow>
-              ) : skeleton?.enable ? (
-                Array.from({ length: skeleton.rows }).map((_, i) => (
-                  <TableRow key={`skeleton-row-${i}`}>
-                    {skeleton.component ?? <Skeleton />}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  {/* <TableCell colSpan={columns} className="h-32 text-center">
-                    <p>
-                      <Trans>No results found</Trans>
-                    </p>
-
-                    {hasFilters && onClearFilters !== undefined && (
-                      <button
-                        onClick={() => onClearFilters()}
-                        className="text-foreground mt-1 text-sm"
-                      >
-                        <Trans>Clear filters</Trans>
-                      </button>
-                    )}
-                  </TableCell> */}
-                </TableRow>
-              )}
-            </TableBody>
+            isResizing ? (
+              <MemoizedDataTableBody
+                table={table}
+                data={data}
+                skeleton={skeleton}
+                canEditDelete={canEditDelete}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onNavegate={onNavegate}
+                onRetry={onRetry}
+                onMoveDocument={onMoveDocument}
+                from={from}
+                currentTeamMemberRole={currentTeamMemberRole}
+              />
+            ) : (
+              <DataTableBodyComponent
+                table={table}
+                data={data}
+                skeleton={skeleton}
+                onEdit={onEdit}
+                canEditDelete={canEditDelete}
+                onDelete={onDelete}
+                onNavegate={onNavegate}
+                onRetry={onRetry}
+                onMoveDocument={onMoveDocument}
+                from={from}
+                currentTeamMemberRole={currentTeamMemberRole}
+              />
+            )
           ) : (
             <></>
           )}
