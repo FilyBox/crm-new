@@ -38,20 +38,20 @@ export const LinksWithTooltip = ({ Links, position }: StackAvatarsWithTooltipPro
       className="dark:bg-backgroundDark min-w-96 rounded-2xl"
     >
       {Links.length > 0 && (
-        <div className="flex flex-col items-center justify-start gap-y-3">
+        <div className="flex flex-col items-center justify-start gap-y-3 overflow-hidden">
           {Links.map((links) => (
             <div
               key={links.id}
               className="bg-muted-foreground/10 my-1 flex w-full items-center rounded-xl p-2"
             >
               <div className="flex flex-col items-start justify-start gap-0">
-                <p className="text-foregroundtext-sm">{links.name}</p>
+                <p className="text-foregroundtext-sm line-clamp-1">{links.name}</p>
                 {links.publishedAt && (
                   <>
                     {/* {console.log('normal fecha', links.publishedAt)}
                     {console.log('fecha modificada', addDays(setHours(links.publishedAt, 0), 1))}
                     {console.log('==============================================')} */}
-                    <p className="text-muted-foreground text-xs">
+                    <p className="text-muted-foreground line-clamp-1 text-xs">
                       {format(addDays(setHours(links.publishedAt, 0), 1), 'd MMM yyyy', {
                         locale: currentLanguage === 'es' ? es : enUS,
                       })}
@@ -59,7 +59,7 @@ export const LinksWithTooltip = ({ Links, position }: StackAvatarsWithTooltipPro
                   </>
                 )}
                 <Button variant="link" className="line-clamp-1 h-fit w-fit p-0 text-xs" asChild>
-                  <Link to={links.url} target="_blank" rel="noreferrer">
+                  <Link to={links.url} target="_blank" rel="noreferrer" className="line-clamp-1">
                     {links.url}
                   </Link>
                 </Button>

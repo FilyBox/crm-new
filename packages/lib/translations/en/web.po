@@ -7809,6 +7809,7 @@ msgstr "Share your signing experience!"
 
 #: apps/remix/app/components/general/links-with-tooltip.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
+#: packages/ui/primitives/links-with-tooltip.tsx
 msgid "Show"
 msgstr "Show"
 
