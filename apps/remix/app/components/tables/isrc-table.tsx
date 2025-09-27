@@ -1,7 +1,8 @@
-import { useLingui } from '@lingui/react';
+import { useLingui } from '@lingui/react/macro';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import type { TFindIsrcSongsResponse } from '@documenso/trpc/server/isrcsong-router/schema';
+import { StackAvatarsArtistWithTooltipNew } from '@documenso/ui/components/lpm/stack-avatars-artist-with-tooltip-new';
 import { useDataTable } from '@documenso/ui/lib/use-data-table';
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import { DataTable } from '@documenso/ui/primitives/data-table-table';
@@ -44,7 +45,7 @@ export const IsrcTable = ({
   setIsMultipleDelete,
   onMultipleDelete,
 }: DataTableProps<DocumentsTableRow, DocumentsTableRow>) => {
-  const { _, i18n } = useLingui();
+  const { t, i18n } = useLingui();
 
   const team = useCurrentTeam();
 
@@ -73,58 +74,97 @@ export const IsrcTable = ({
         ),
         enableSorting: false,
         enableHiding: false,
-        size: 40,
+        size: 20,
+        maxSize: 20,
       },
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title={'ID'} />,
         enableHiding: true,
         accessorKey: 'id',
+        size: 20,
+        maxSize: 20,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Date'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t`Date`} />,
         enableColumnFilter: true,
         accessorKey: 'date',
         meta: {
-          label: 'date',
+          label: t`Date`,
           variant: 'dateRange',
         },
         enableHiding: true,
       },
       {
-        header: 'Artists',
-        enableColumnFilter: true,
+        header: t`Artists`,
+        enableColumnFilter: false,
         accessorKey: 'artists',
         enableHiding: true,
+        cell: ({ row }) => {
+          const artists = row.original.artists?.map((artist) => ({
+            name: artist.name,
+            id: artist.id,
+          }));
+          return <StackAvatarsArtistWithTooltipNew enhancedAssignees={artists || []} />;
+        },
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Track Name'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t`Title`} />,
+        meta: {
+          label: t`Title`,
+          variant: 'text',
+        },
         enableColumnFilter: true,
         accessorKey: 'trackName',
         enableHiding: true,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'ISRC'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t`ISRC`} />,
+        meta: {
+          label: t`ISRC`,
+        },
         enableColumnFilter: true,
         accessorKey: 'isrc',
         enableHiding: true,
       },
       {
         accessorKey: 'duration',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Duration'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t`Duration`} />,
+        meta: {
+          label: t`Duration`,
+        },
         enableColumnFilter: true,
         enableHiding: true,
       },
       {
         accessorKey: 'title',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Title'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={'Album'} />,
         enableColumnFilter: true,
+        meta: {
+          label: 'Album',
+          variant: 'text',
+        },
+        enableHiding: true,
+      },
+      {
+        accessorKey: 'label',
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t`Label`} />,
+        meta: {
+          label: t`Label`,
+          variant: 'text',
+        },
+        enableHiding: true,
+        enableColumnFilter: false,
       },
       {
         enableHiding: true,
 
         enableColumnFilter: true,
         accessorKey: 'license',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'License'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t`License`} />,
+        meta: {
+          label: t`License`,
+          variant: 'text',
+        },
       },
     ];
     return columns;

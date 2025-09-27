@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { msg } from '@lingui/core/macro';
-import { useLingui } from '@lingui/react';
+import { useLingui } from '@lingui/react/macro';
 import { Trans } from '@lingui/react/macro';
 import { ContractStatus, ExpansionPossibility } from '@prisma/client';
 import { queryOptions } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
 import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -89,7 +89,9 @@ export default function ContractsSheet({
   setIsSheetOpen,
   isSheetOpen,
 }: MyFormProps) {
-  const { _ } = useLingui();
+  const { t, i18n } = useLingui();
+  const currentLanguage = i18n.locale;
+
   const team = useCurrentTeam();
 
   const { data: documents } = trpc.document.findAllDocumentsInternalUseToChat.useQuery(
@@ -108,14 +110,14 @@ export default function ContractsSheet({
       await queryClient.invalidateQueries({ queryKey: ['contracts'] });
     },
     onError: () => {
-      toast.error(_(msg`Error updating record`), {
+      toast.error(t`Error updating record`, {
         className: 'mb-16',
         position: 'bottom-center',
       });
     },
     onSettled: (success) => {
       if (success) {
-        toast.success(_(msg`Record updated successfully`), {
+        toast.success(t`Record updated successfully`, {
           className: 'mb-16',
           position: 'bottom-center',
         });
@@ -130,14 +132,14 @@ export default function ContractsSheet({
       await queryClient.invalidateQueries({ queryKey: ['contracts'] });
     },
     onError: () => {
-      toast.error(_(msg`Error updating record`), {
+      toast.error(t`Error updating record`, {
         className: 'mb-16',
         position: 'bottom-center',
       });
     },
     onSettled: (success) => {
       if (success) {
-        toast.success(_(msg`Record updated successfully`), {
+        toast.success(t`Record updated successfully`, {
           className: 'mb-16',
           position: 'bottom-center',
         });
@@ -175,8 +177,16 @@ export default function ContractsSheet({
       Object.keys(initialData).forEach((key) => {
         if (key !== 'id' && key !== 'createdAt' && key !== 'updatedAt') {
           // Skip the id field and timestamps
-          // @ts-expect-error - We know these fields exist in our form schema
-          form.setValue(key, initialData[key]);
+
+          if (key === 'startDate' || key === 'endDate') {
+            form.setValue(
+              key,
+              initialData[key] ? addDays(new Date(initialData[key]), 1) : undefined,
+            );
+          } else {
+            // @ts-expect-error - We know these fields exist in our form schema
+            form.setValue(key, initialData[key]);
+          }
         }
       });
 
@@ -273,12 +283,12 @@ export default function ContractsSheet({
         <div className="flex flex-col gap-4">
           <SheetHeader>
             <SheetTitle>
-              <Trans>{initialData ? _(msg`Update Contract`) : _(msg`Add Contract`)}</Trans>
+              <Trans>{initialData ? t`Update Contract` : t`Add Contract`}</Trans>
             </SheetTitle>
             <SheetDescription>
               {initialData
-                ? _(msg`Update your contract details.`)
-                : _(msg`Create a new contract with details.`)}
+                ? t`Update your contract details.`
+                : t`Create a new contract with details.`}
             </SheetDescription>
           </SheetHeader>
           <Form {...form}>
@@ -286,7 +296,7 @@ export default function ContractsSheet({
               <ScrollArea className="h-[80cqh] w-full px-1">
                 <fieldset
                   disabled={updateContractsMutation.isPending || createContractsMutation.isPending}
-                  className=""
+                  className="px-1"
                 >
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-12 md:col-span-6">
@@ -423,7 +433,9 @@ export default function ContractsSheet({
                                           const date = new Date(field.value);
                                           return isNaN(date.getTime())
                                             ? 'Select date'
-                                            : format(date, 'dd/MM/yyyy');
+                                            : format(date, 'd MMM yyyy', {
+                                                locale: currentLanguage === 'es' ? es : enUS,
+                                              });
                                         } catch (error) {
                                           return 'Select date';
                                         }
@@ -434,7 +446,7 @@ export default function ContractsSheet({
                                       //   field.value && field.value.trim() !== ''
                                       //     ? new Date(field.value + 'T00:00:00')
                                       //     : new Date(),
-                                      //   'dd/MM/yyyy',
+                                      //   'd MMM yyyy',
                                       // )
                                       <span>Pick a date</span>
                                     )}
@@ -491,7 +503,9 @@ export default function ContractsSheet({
                                           const date = new Date(field.value);
                                           return isNaN(date.getTime())
                                             ? 'Select date'
-                                            : format(date, 'dd/MM/yyyy');
+                                            : format(date, 'd MMM yyyy', {
+                                                locale: currentLanguage === 'es' ? es : enUS,
+                                              });
                                         } catch (error) {
                                           return 'Select date';
                                         }
@@ -502,7 +516,7 @@ export default function ContractsSheet({
                                       //   field.value && field.value.trim() !== ''
                                       //     ? new Date(field.value + 'T00:00:00')
                                       //     : new Date(),
-                                      //   'dd/MM/yyyy',
+                                      //   'd MMM yyyy',
                                       // )
                                       <span>Pick a date</span>
                                     )}

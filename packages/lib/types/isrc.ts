@@ -19,7 +19,6 @@ export const ZIsrcSongsSchema = IsrcSongsSchema.pick({
   id: true,
   date: true,
   isrc: true,
-  artist: true,
   duration: true,
   trackName: true,
   title: true,

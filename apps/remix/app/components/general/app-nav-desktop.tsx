@@ -62,10 +62,6 @@ export const AppNavDesktop = ({
 
     return [
       {
-        href: `/t/${teamUrl}/allMusic`,
-        label: msg`Music`,
-      },
-      {
         href: `/t/${teamUrl}/files`,
         label: msg`Files`,
       },
@@ -94,24 +90,12 @@ export const AppNavDesktop = ({
 
     return [
       {
-        href: `/t/${teamUrl}/music`,
-        label: msg`Virgin`,
-      },
-      {
-        href: `/t/${teamUrl}/tuStreams`,
-        label: msg`TuStreams`,
-      },
-      {
-        href: `/t/${teamUrl}/releases`,
-        label: msg`Releases`,
-      },
-      {
-        href: `/t/${teamUrl}/distribution`,
-        label: msg`Ada`,
+        href: `/t/${teamUrl}/allMusic`,
+        label: msg`Music`,
       },
       {
         href: `/t/${teamUrl}/isrc`,
-        label: msg`ISRC`,
+        label: msg`Historical`,
       },
     ];
   }, [currentTeam, organisations]);
@@ -167,7 +151,7 @@ export const AppNavDesktop = ({
               >
                 <NavigationMenu>
                   <NavigationMenuList className="flex items-center gap-3">
-                    {/* <NavigationMenuItem>
+                    <NavigationMenuItem>
                       <NavigationMenuTrigger
                         className={cn(
                           'dark:text-muted-foreground/60 text-muted-foreground dark:hover:text-foreground m-0 p-0',
@@ -200,7 +184,7 @@ export const AppNavDesktop = ({
                           </NavigationMenuLink>
                         ))}
                       </NavigationMenuContent>
-                    </NavigationMenuItem> */}
+                    </NavigationMenuItem>
 
                     <NavigationMenuItem>
                       <NavigationMenuTrigger

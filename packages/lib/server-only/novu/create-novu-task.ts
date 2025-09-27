@@ -27,8 +27,8 @@ export async function createNovuTask({
     workflowId: 'task-assigned',
     payload: {
       taskId: task.id,
-      title: title,
-      message: message,
+      title: title || 'New Task Assigned',
+      message: message || `You have been assigned a new task`,
       url: `${publicUrl}` + taskRootPath,
     },
   });

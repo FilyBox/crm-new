@@ -437,9 +437,10 @@ function DataTableFilterItem<TData>({
               size="sm"
               className="w-32 justify-between rounded font-normal"
             >
-              <span className="truncate">
-                {columns.find((column) => column.id === filter.id)?.id ?? 'Select field'}
-              </span>
+              {columns.find((column) => column.id === filter.id)?.columnDef?.meta?.label
+                ? columns.find((column) => column.id === filter.id)?.columnDef?.meta?.label
+                : columns.find((column) => column.id === filter.id)?.id || 'Select field'}
+
               <ChevronsUpDown size={16} className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -471,7 +472,7 @@ function DataTableFilterItem<TData>({
                         setShowFieldSelector(false);
                       }}
                     >
-                      <span className="truncate">{column.id}</span>
+                      <span className="truncate">{column.columnDef.meta?.label ?? column.id}</span>
                       <Check
                         size={16}
                         className={cn(

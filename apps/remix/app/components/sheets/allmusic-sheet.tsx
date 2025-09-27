@@ -255,7 +255,7 @@ export function AllMusicDialog({
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="flex w-full max-w-2xl flex-col text-start sm:max-w-2xl">
+      <SheetContent className="dark:bg-backgroundDark m-2 flex max-h-[98vh] w-full max-w-[94vw] flex-col justify-between overflow-y-auto rounded-lg bg-zinc-50 sm:m-2 md:max-w-4xl">
         <SheetHeader className="items-start justify-start text-start">
           <SheetTitle className="flex items-center gap-2 text-start">
             {record ? t`Edit Record` : t`Add Record`}

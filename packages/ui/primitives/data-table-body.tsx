@@ -50,7 +50,6 @@ function DataTableBodyComponent<TData>({
     'releaseDate',
     'originalReleaseDate',
     'createdAt',
-    'date',
     'preOrderDate',
     'lastProcessDate',
     'timedReleaseDate',
@@ -95,6 +94,14 @@ function DataTableBodyComponent<TData>({
                           : '-'
                       }`
                     ) : cell.column.id === 'endDate' || cell.column.id === 'startDate' ? (
+                      `${
+                        cell.getValue()
+                          ? format(addDays(cell.getValue() as Date, 1), 'd MMM yyyy', {
+                              locale: currentLanguage === 'es' ? es : enUS,
+                            })
+                          : '-'
+                      }`
+                    ) : cell.column.id === 'date' ? (
                       `${
                         cell.getValue()
                           ? format(addDays(cell.getValue() as Date, 1), 'd MMM yyyy', {

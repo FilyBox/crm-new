@@ -111,7 +111,7 @@ msgstr "{0, plural, one {Waiting on 1 recipient} other {Waiting on # recipients}
 
 #. placeholder {0}: _(FRIENDLY_FIELD_TYPE[fieldType as FieldType])
 #. placeholder {0}: event_data.color
-#. placeholder {0}: initialData ? _(msg`Update Contract`) : _(msg`Add Contract`)
+#. placeholder {0}: initialData ? _(msg`Update Distribution Record`) : _(msg`Add Distribution Record`)
 #: apps/remix/app/components/general/document-signing/document-signing-auto-sign.tsx
 #: apps/remix/app/components/general/event-calendar/event-card.tsx
 #: apps/remix/app/components/sheets/contracts-sheet.tsx
@@ -902,7 +902,6 @@ msgstr "Active Rate"
 msgid "Active sessions"
 msgstr "Active sessions"
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/distribution._index.tsx
 msgid "Ada"
@@ -1190,8 +1189,15 @@ msgid "Agenda"
 msgstr "Agenda"
 
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 msgid "Agregator"
 msgstr "Agregator"
+
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+msgid "Agregator %"
+msgstr "Agregator %"
 
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
 #: apps/remix/app/components/general/advanced-filter-drawer.tsx
@@ -1714,6 +1720,8 @@ msgstr "Artist created successfully"
 #: apps/remix/app/components/sheets/releases-sheet.tsx
 #: apps/remix/app/components/sheets/tustreams-sheet.tsx
 #: apps/remix/app/components/sheets/virgin-sheet.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
 msgid "Artists"
 msgstr "Artists"
@@ -2132,6 +2140,8 @@ msgstr "Cannot remove signer"
 msgid "Canvas"
 msgstr "Canvas"
 
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Catalog"
 msgstr "Catalog"
@@ -3009,6 +3019,8 @@ msgid "Data Tables"
 msgstr "Data Tables"
 
 #: apps/remix/app/components/general/document-signing/document-signing-date-field.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
 #: apps/remix/app/components/tables/releases-table.tsx
 #: apps/remix/app/components/tables/settings-security-activity-table.tsx
 #: apps/remix/app/components/tables/tustreams-table.tsx
@@ -3372,6 +3384,11 @@ msgstr "Distribute Document"
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 msgid "Distribution Method"
 msgstr "Distribution Method"
+
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+msgid "Distributor %"
+msgstr "Distributor %"
 
 #: apps/remix/app/components/dialogs/organisation-email-domain-create-dialog.tsx
 msgid "DKIM records generated. Please add the DNS records to verify your domain."
@@ -3869,6 +3886,8 @@ msgstr "Duplicate"
 msgid "Duplicate on all pages"
 msgstr "Duplicate on all pages"
 
+#: apps/remix/app/components/tables/isrc-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "Duration"
 msgstr "Duration"
@@ -4777,6 +4796,8 @@ msgid "General Link"
 msgstr "General Link"
 
 #: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 msgid "General Links"
 msgstr "General Links"
 
@@ -4972,6 +4993,10 @@ msgstr "Hide"
 #: apps/remix/app/components/general/task/task-priority.tsx
 msgid "High"
 msgstr "High"
+
+#: apps/remix/app/components/general/app-nav-desktop.tsx
+msgid "Historical"
+msgstr "Historical"
 
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
 #: apps/remix/app/components/general/folder/folder-grid.tsx
@@ -5206,10 +5231,11 @@ msgstr "IP Address"
 msgid "Isrc"
 msgstr "Isrc"
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/distribution-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 msgid "ISRC"
 msgstr "ISRC"
@@ -5257,6 +5283,8 @@ msgstr "Join {organisationName} on {0}"
 msgid "Joined {0}"
 msgstr "Joined {0}"
 
+#: apps/remix/app/components/tables/isrc-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
 #: apps/remix/app/components/tables/lpm-table.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/checkbox-field.tsx
 #: packages/ui/primitives/document-flow/field-items-advanced-settings/number-field.tsx
@@ -5345,6 +5373,11 @@ msgstr "Legal Identification picture"
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Legality of Electronic Signatures"
 msgstr "Legality of Electronic Signatures"
+
+#: apps/remix/app/components/tables/isrc-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
+msgid "License"
+msgstr "License"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
 msgid "Light Mode"
@@ -5734,6 +5767,7 @@ msgstr "Move To Folder"
 msgid "Multiple access methods can be selected."
 msgstr "Multiple access methods can be selected."
 
+#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/allMusic._index.tsx
 msgid "Music"
@@ -7011,6 +7045,11 @@ msgstr "Record created successfully"
 msgid "Record deleted successfully"
 msgstr "Record deleted successfully"
 
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+msgid "Record label"
+msgstr "Record label"
+
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 msgid "Record Label"
 msgstr "Record Label"
@@ -7098,7 +7137,6 @@ msgstr "Release"
 msgid "Release Date"
 msgstr "Release Date"
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/releases._index.tsx
 msgid "Releases"
@@ -9246,10 +9284,13 @@ msgstr "Tipo de Precio"
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 #: apps/remix/app/components/tables/documents-chatspace-table.tsx
 #: apps/remix/app/components/tables/documents-table.tsx
 #: apps/remix/app/components/tables/files-table.tsx
 #: apps/remix/app/components/tables/inbox-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
+#: apps/remix/app/components/tables/isrc-table.tsx
 #: apps/remix/app/components/tables/new-documents-table.tsx
 #: apps/remix/app/components/tables/new-templates-table.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
@@ -9458,7 +9499,6 @@ msgstr "Track Volume"
 msgid "Triggers"
 msgstr "Triggers"
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/tustreams._index.tsx
@@ -10128,6 +10168,8 @@ msgid "Video Link"
 msgstr "Video Link"
 
 #: apps/remix/app/components/general/links-add.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
+#: apps/remix/app/components/tables/allMusic-table.tsx
 msgid "Video Links"
 msgstr "Video Links"
 
@@ -10274,7 +10316,6 @@ msgstr "Viewing"
 msgid "Vigente"
 msgstr "Vigente"
 
-#: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/music._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/stats.tsx

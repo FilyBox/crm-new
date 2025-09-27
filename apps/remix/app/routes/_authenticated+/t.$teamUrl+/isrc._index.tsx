@@ -79,7 +79,6 @@ export default function IsrcPage() {
     joinOperator: joinOperator,
     perPage: perPage,
   });
-
   const { data: artistData, isLoading: artistDataloading } =
     trpc.isrcSongs.findIsrcUniqueArtists.useQuery();
   const findData = trpc.isrcSongs.findAllIsrc.useMutation();
@@ -154,18 +153,18 @@ export default function IsrcPage() {
       };
 
       const validatedData = csvData.map((item) => ({
-        trackName: item.Track || item['trackName'] || '', // Mapear "Track" a trackName
-        artist: item.Artista || item['isrcArtists'] || '', // Mapear "Artista" a artist
-        duration: item['Duración / Tipo'] || item['duration'] || item['Duration'] || '', // Mapear "Duración / Tipo" a duration
-        title: item['Titulo (Álbum/Single/LP/EP)'] || item['title'] || item['Title'] || '', // Mapear "Titulo..." a title
-        license: item.Licencia || item['license'] || '', // Mapear "Licencia" a license
+        trackName: item.Track || item['titulo'] || '',
+        artist: item.Artista || item['artistas'] || '',
+        duration: item['tipo'] || item['duration'] || item['Duration'] || '',
+        title: item['album'], // Mapear album
+        license: item.Licencia || item['licencia'] || '',
         date:
-          convertDateFormat(item['Fecha (año)']) ||
+          convertDateFormat(item['fechalanzamiento']) ||
           convertDateFormat(item['date']) ||
-          convertDateFormat(item['Date']) ||
-          new Date(), // Mapear "Fecha (año)" a date
-        isrc: item['ISRC'] || item['isrc'] || '', // Mapear "ISRC" a isrc
+          convertDateFormat(item['Date']),
+        isrc: item['isrc'] || item['ISRC'] || '',
       }));
+
       // Filtrar cualquier objeto que esté completamente vacío (por si hay filas vacías en el CSV)
       const filteredData = validatedData.filter((item) =>
         Object.values(item).some((value) => value !== ''),
@@ -244,7 +243,6 @@ export default function IsrcPage() {
           artists: updatedIsrcSongs.artists ?? [],
 
           trackName: updatedIsrcSongs.trackName ?? undefined,
-          artist: updatedIsrcSongs.artist ?? undefined,
           duration: updatedIsrcSongs.duration ?? undefined,
           title: updatedIsrcSongs.title ?? undefined,
           license: updatedIsrcSongs.license ?? undefined,

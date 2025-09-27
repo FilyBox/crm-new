@@ -88,7 +88,10 @@ export const IsrcSongsRouter = router({
       }
 
       const BATCH_SIZE = 25;
+
       let totalCreated = 0;
+
+      const existingArtists = await prisma.artistsAllMusic.findMany({});
 
       // Process releases in batches to avoid transaction timeouts
       for (let i = 0; i < isrcSongs.length; i += BATCH_SIZE) {
@@ -103,7 +106,6 @@ export const IsrcSongsRouter = router({
               createdAt: Date;
               date: Date | null;
               trackName: string | null;
-              artist: string | null;
               duration: string | null;
               title: string | null;
               license: string | null;
@@ -114,31 +116,59 @@ export const IsrcSongsRouter = router({
 
             for (const file of batch) {
               // Normalize artist string for consistent processing
-              const normalizedArtistString = (file.artist || '')
+              const { artist, ...data } = file;
+              const normalizedArtistString = (artist || '')
                 .replace(/\s+ft\.\s+/gi, ', ')
                 .replace(/\s+&\s+/g, ', ')
-
                 .replace(/\s+feat\.\s+/gi, ', ')
-
                 .replace(/\s+ft\s+/gi, ', ')
                 .replace(/\s+feat\s+/gi, ', ')
-                .replace(/\s*\/\s*/g, ', '); // Cambiar \s+ por \s*
+                .replace(/\s*\/\s*/g, ', ');
+              console.log('normalizedArtistString:', normalizedArtistString);
+
+              // Función para normalizar texto (sin acentos, minúsculas, sin espacios extra)
+              const normalizeText = (text: string) => {
+                return text
+                  .toLowerCase()
+                  .trim()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, ''); // Remover acentos
+              };
+
+              const existingArtistsMap = new Map();
+              existingArtists.forEach((artist) => {
+                const normalizedKey = normalizeText(artist.name);
+                existingArtistsMap.set(normalizedKey, artist.name);
+              });
+
+              const normalizedArtistsList = normalizedArtistString
+                .split(',')
+                .map((name) => name.trim())
+                .filter((name) => name.length > 0);
+              const finalArtistsList = normalizedArtistsList.map((artistName) => {
+                const normalizedName = normalizeText(artistName);
+                // Si existe en la BD, usar el nombre exacto de la BD, sino usar el nombre normalizado original
+                return existingArtistsMap.has(normalizedName)
+                  ? existingArtistsMap.get(normalizedName)
+                  : artistName;
+              });
+
+              console.log('finalArtistsList:', finalArtistsList);
 
               // Create the release with associated artists
               const release = await tx.isrcSongs.create({
                 data: {
-                  ...file,
+                  ...data,
                   userId,
                   teamId,
-                  artists: {
-                    create: (normalizedArtistString?.split(',') || []).map((artistName) => ({
-                      name: artistName.trim(),
-                      user: {
-                        connect: { id: userId },
-                      },
-                      team: { connect: { id: teamId } },
-                    })),
-                  },
+                  ...(finalArtistsList.length > 0 && {
+                    artists: {
+                      connectOrCreate: finalArtistsList.map((artistName) => ({
+                        where: { name: artistName.trim() },
+                        create: { name: artistName.trim() },
+                      })),
+                    },
+                  }),
                 },
               });
 
@@ -147,7 +177,7 @@ export const IsrcSongsRouter = router({
 
             return createdReleases;
           },
-          { timeout: 60000 }, // 60 second timeout for each batch
+          { timeout: 60000 },
         );
 
         totalCreated += result.length;
@@ -156,14 +186,8 @@ export const IsrcSongsRouter = router({
       return totalCreated;
     }),
 
-  findIsrcUniqueArtists: authenticatedProcedure.query(async ({ ctx }) => {
-    const { teamId } = ctx;
-
-    const uniqueArtists = await prisma.artist.findMany({
-      where: {
-        teamId,
-      },
-    });
+  findIsrcUniqueArtists: authenticatedProcedure.query(async () => {
+    const uniqueArtists = await prisma.artistsAllMusic.findMany({});
 
     return uniqueArtists;
   }),
@@ -181,17 +205,7 @@ export const IsrcSongsRouter = router({
         orderBy: z.enum(['createdAt', 'updatedAt']).optional(),
         orderByDirection: z.enum(['asc', 'desc']).optional().default('desc'),
         orderByColumn: z
-          .enum([
-            'id',
-            'date',
-            'createdAt',
-            'isrc',
-            'artist',
-            'duration',
-            'trackName',
-            'title',
-            'license',
-          ])
+          .enum(['id', 'date', 'createdAt', 'isrc', 'duration', 'trackName', 'title', 'license'])
           .optional(),
         filterStructure: z
           .array(
@@ -263,17 +277,7 @@ export const IsrcSongsRouter = router({
         orderBy: z.enum(['createdAt', 'updatedAt']).optional(),
         orderByDirection: z.enum(['asc', 'desc']).optional().default('desc'),
         orderByColumn: z
-          .enum([
-            'id',
-            'date',
-            'createdAt',
-            'isrc',
-            'artist',
-            'duration',
-            'trackName',
-            'title',
-            'license',
-          ])
+          .enum(['id', 'date', 'createdAt', 'isrc', 'duration', 'trackName', 'title', 'license'])
           .optional(),
         filterStructure: z
           .array(

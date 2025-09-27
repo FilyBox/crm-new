@@ -109,22 +109,25 @@ export const AllMusicTable = ({
         enableColumnFilter: true,
         accessorKey: 'title',
         meta: {
-          label: 'title',
+          label: _(msg`Title`),
           variant: 'text',
         },
         enableHiding: true,
       },
       {
         accessorKey: 'recordLabel',
-        header: 'Disquera',
+        header: _(msg`Record label`),
         cell: ({ row }) => {
           return <div>{row.original.recordLabel?.name || '-'}</div>;
         },
         enableHiding: true,
+        meta: {
+          label: _(msg`Record label`),
+        },
         enableColumnFilter: false,
       },
       {
-        header: 'Artists',
+        header: _(msg`Artists`),
         enableColumnFilter: false,
         accessorKey: 'artists',
         enableHiding: true,
@@ -145,11 +148,17 @@ export const AllMusicTable = ({
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title={'ISRC'} />,
         enableColumnFilter: true,
+        meta: {
+          label: 'ISRC',
+        },
         accessorKey: 'isrcSong',
         enableHiding: true,
       },
       {
-        header: 'Agregadora',
+        header: _(msg`Agregator`),
+        meta: {
+          label: _(msg`Agregator`),
+        },
         enableColumnFilter: false,
         accessorKey: 'agregadora',
         cell: ({ row }) => {
@@ -158,8 +167,13 @@ export const AllMusicTable = ({
         enableHiding: true,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Agregadora %'} />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={_(msg`Agregator %`)} />
+        ),
         accessorKey: 'agregadoraPercentage',
+        meta: {
+          label: _(msg`Agregator %`),
+        },
         enableColumnFilter: true,
         enableHiding: true,
       },
@@ -173,22 +187,35 @@ export const AllMusicTable = ({
         enableHiding: true,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Distribuidor %'} />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={_(msg`Distributor %`)} />
+        ),
         accessorKey: 'distribuidorPercentage',
+        meta: {
+          label: _(msg`Distributor %`),
+        },
         enableColumnFilter: true,
         enableHiding: true,
       },
 
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Catálogo'} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={_(msg`Catalog`)} />,
         enableColumnFilter: true,
+        meta: {
+          label: _(msg`Catalog`),
+        },
         accessorKey: 'catalog',
         enableHiding: true,
       },
 
       {
         accessorKey: 'videoLinks',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Links de Video'} />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={_(msg`Video Links`)} />
+        ),
+        meta: {
+          label: _(msg`Video Links`),
+        },
         cell: ({ row }) => {
           return <LinksWithTooltip Links={row.original.videoLinks || []} position="bottom" />;
         },
@@ -198,7 +225,12 @@ export const AllMusicTable = ({
       },
       {
         accessorKey: 'generalLinks',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Links Generales'} />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={_(msg`General Links`)} />
+        ),
+        meta: {
+          label: _(msg`General Links`),
+        },
         cell: ({ row }) => {
           return <LinksWithTooltip Links={row.original.generalLinks || []} position="bottom" />;
         },

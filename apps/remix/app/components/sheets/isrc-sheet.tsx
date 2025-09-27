@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -267,7 +267,7 @@ export default function IsrcSheet({
                                           const date = new Date(field.value);
                                           return isNaN(date.getTime())
                                             ? 'Select date'
-                                            : format(date, 'dd/MM/yyyy');
+                                            : format(addDays(date, 1), 'dd/MM/yyyy');
                                         } catch (error) {
                                           return 'Select date';
                                         }
@@ -284,13 +284,14 @@ export default function IsrcSheet({
                                   mode="single"
                                   selected={(() => {
                                     try {
-                                      // Safely parse the date
                                       const date = field.value
                                         ? field.value instanceof Date
                                           ? field.value
                                           : new Date(field.value)
                                         : undefined;
-                                      return date && !isNaN(date.getTime()) ? date : undefined;
+                                      return date && !isNaN(date.getTime())
+                                        ? addDays(date, 1)
+                                        : undefined;
                                     } catch (error) {
                                       return undefined;
                                     }

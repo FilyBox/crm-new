@@ -105,7 +105,7 @@ export const taskRouter = router({
                 user: { id: assignee.userId, name: assignee.name || '', email: assignee.email },
                 task: { id: taskCreated.id, title: taskCreated.title },
                 title: `New Task Assigned!`,
-                message: `You have been assigned to the task "${taskCreated.title}"`,
+                message: `You have been assigned to the task: ${taskCreated.title}`,
                 taskRootPath,
               });
             }

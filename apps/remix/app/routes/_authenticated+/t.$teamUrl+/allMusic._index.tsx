@@ -92,7 +92,7 @@ export default function AllMusicPage() {
       placeholderData: (previousData) => previousData,
     }),
   );
-
+  console.log('filters', filters);
   const findAllMusicNoPaginationMutation = trpc.allMusic.findAllMusicNoPagination.useMutation();
 
   const findAll = async () => {

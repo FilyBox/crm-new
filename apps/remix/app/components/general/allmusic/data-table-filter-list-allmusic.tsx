@@ -570,7 +570,9 @@ function DataTableFilterItem<TData>({
               className="w-32 justify-between rounded font-normal"
             >
               <span className="truncate">
-                {columns.find((column) => column.id === filter.id)?.id ?? 'Select field'}
+                {columns.find((column) => column.id === filter.id)?.columnDef?.meta?.label
+                  ? columns.find((column) => column.id === filter.id)?.columnDef?.meta?.label
+                  : columns.find((column) => column.id === filter.id)?.id || 'Select field'}{' '}
               </span>
               <ChevronsUpDown size={16} className="opacity-50" />
             </Button>
@@ -603,7 +605,7 @@ function DataTableFilterItem<TData>({
                         setShowFieldSelector(false);
                       }}
                     >
-                      <span className="truncate">{column.id}</span>
+                      <span className="truncate">{column.columnDef.meta?.label ?? column.id}</span>
                       <Check
                         size={16}
                         className={cn(
