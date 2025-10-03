@@ -47,6 +47,58 @@ export const chatRouter = router({
       });
     }),
 
+  getChatHistoryInfinite: authenticatedProcedure
+    .input(
+      z.object({
+        documentId: z.number(),
+        limit: z.number().min(1).max(100).default(10),
+        cursor: z.string().nullish(), // cursor para paginación infinita
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { documentId, limit, cursor } = input;
+      const { teamId } = ctx;
+
+      const extendedLimit = limit + 1;
+
+      let whereCondition: any = {
+        teamId: teamId,
+        documentId: documentId,
+      };
+
+      if (cursor) {
+        const selectedChat = await prisma.chat.findUnique({
+          where: { id: cursor },
+          select: { createdAt: true },
+        });
+
+        if (!selectedChat) {
+          throw new Error(`Chat with id ${cursor} not found`);
+        }
+
+        whereCondition.createdAt = {
+          lt: selectedChat.createdAt,
+        };
+      }
+
+      const chats = await prisma.chat.findMany({
+        where: whereCondition,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: extendedLimit,
+      });
+
+      const hasMore = chats.length > limit;
+      const items = hasMore ? chats.slice(0, limit) : chats;
+
+      return {
+        chats: items,
+        hasMore,
+        nextCursor: hasMore ? items[items.length - 1]?.id : undefined,
+      };
+    }),
+
   getChatsByDocumentId: authenticatedProcedure
     .input(z.object({ documentId: z.number() }))
     .query(async ({ input, ctx }) => {

@@ -70,7 +70,7 @@ const PureChatItem = ({
           </SidebarMenuAction>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent side="bottom" className="z-9999" align="end">
+        <DropdownMenuContent side="bottom" className="" align="end">
           <DropdownMenuItem
             className="text-destructive focus:bg-destructive/15 focus:text-destructive cursor-pointer dark:text-red-500"
             onSelect={() => onDelete(chat.id)}

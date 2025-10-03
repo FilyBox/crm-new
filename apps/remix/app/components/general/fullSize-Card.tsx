@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import React from 'react';
 
-import type { Chat } from '@prisma/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { type LucideIcon } from 'lucide-react';
 import { ExpandIcon } from 'lucide-react';
@@ -15,17 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@documenso/ui/primitives/card';
-import { ScrollArea } from '@documenso/ui/primitives/scroll-area';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-} from '@documenso/ui/primitives/sidebar';
+import { Sidebar, SidebarContent, SidebarProvider } from '@documenso/ui/primitives/sidebar';
 
 import { useIsActiveStore } from '~/storage/active-full-container';
 

@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { useChat } from '@ai-sdk/react';
 import { queryOptions } from '@tanstack/react-query';
 import type { UIMessage } from 'ai';
@@ -21,7 +23,9 @@ type ChatDemoProps = {
 };
 
 export function ChatDemo(props: ChatDemoProps) {
-  const { id, teamId, contractId, userId, body, selectedChatModel, initialMessages } = props;
+  const { id, teamId, contractId, userId, body, selectedChatModel } = props;
+  const utils = trpc.useUtils();
+  const wasEmptyRef = useRef(false);
 
   const { data: messagesFromDb } = trpc.chat.getMessagesByChatId.useQuery(
     {
@@ -31,8 +35,18 @@ export function ChatDemo(props: ChatDemoProps) {
       queryKey: ['chatMessages', id],
       staleTime: Infinity,
       refetchOnWindowFocus: false,
+      refetchOnMount: false, // AGREGAR: Evitar refetch al montar
+      refetchOnReconnect: false, // AGREGAR: Evitar refetch en reconexión
     }),
   );
+
+  // CAMBIO: Optimizar el useEffect para evitar cambios innecesarios
+  useEffect(() => {
+    const isEmpty = !messagesFromDb || messagesFromDb.length === 0;
+    if (wasEmptyRef.current !== isEmpty) {
+      wasEmptyRef.current = isEmpty;
+    }
+  }, [messagesFromDb]);
 
   const { messages, input, handleInputChange, handleSubmit, append, stop, status, setMessages } =
     useChat({
@@ -43,8 +57,38 @@ export function ChatDemo(props: ChatDemoProps) {
       initialMessages: convertToUIMessages(messagesFromDb || []),
       body: { id, model: selectedChatModel, teamId, contractId, body, userId },
       generateId: generateUUID,
-      onFinish: () => {
-        void queryClient.invalidateQueries({ queryKey: ['chatMessages', id] });
+      onFinish: async () => {
+        // CAMBIO: Usar requestIdleCallback para diferir las invalidaciones
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => {
+            queryClient.invalidateQueries({ queryKey: ['chatMessages', id] });
+
+            if (wasEmptyRef.current) {
+              console.log('New chat detected, invalidating chat history');
+
+              utils.chat.getChatHistoryInfinite.invalidate({
+                documentId: contractId,
+              });
+
+              wasEmptyRef.current = false;
+            }
+          });
+        } else {
+          // Fallback para navegadores que no soportan requestIdleCallback
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ['chatMessages', id] });
+
+            if (wasEmptyRef.current) {
+              console.log('New chat detected, invalidating chat history');
+
+              utils.chat.getChatHistoryInfinite.invalidate({
+                documentId: contractId,
+              });
+
+              wasEmptyRef.current = false;
+            }
+          }, 100);
+        }
       },
       onError: () => {
         toast.error('An error occurred, please try again!');

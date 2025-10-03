@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useLingui } from '@lingui/react/macro';
@@ -24,7 +24,7 @@ import { getRecipientsForDocument } from '@documenso/lib/server-only/recipient/g
 import { getTeamByUrl } from '@documenso/lib/server-only/team/get-team';
 import { DocumentVisibility } from '@documenso/lib/types/document-visibility';
 import { formatContractsPath } from '@documenso/lib/utils/teams';
-import { queryClient, trpc } from '@documenso/trpc/react';
+import { trpc } from '@documenso/trpc/react';
 import { generateUUID } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
@@ -166,9 +166,8 @@ export default function DocumentPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   const UUID = useMemo(() => {
-    const existingUUID = chatName;
-    return existingUUID || generateUUID();
-  }, [searchParams, setChatName]);
+    return chatName || generateUUID();
+  }, [chatName]); // Solo chatName, NO searchParams
 
   const updateContractMutation = trpc.contracts.updateContractsById.useMutation({
     onSuccess: () => {
@@ -239,32 +238,31 @@ export default function DocumentPage() {
     setHasUnsavedChanges(false);
   };
 
-  // Guardar el UUID en searchParams solo si no existe
   useEffect(() => {
-    const existingUUID = chatName;
-    if (!existingUUID) {
-      void setChatName(existingUUID);
-      void setSearchParams(
+    if (!chatName) {
+      const newUUID = generateUUID();
+      setChatName(newUUID); // Sin void
+      setSearchParams(
         (prev) => {
           const newParams = new URLSearchParams(prev);
-          newParams.set('chatId', UUID);
+          newParams.set('chatId', newUUID);
           return newParams;
         },
         { replace: true },
       );
-    } else {
-      void setChatName(UUID);
     }
-  }, [UUID, setSearchParams, setChatName]);
+  }, []); // Mantener array vacío
 
-  const handleChatChange = (chatId: string) => {
-    void setChatName(chatId);
-    void queryClient.invalidateQueries({ queryKey: ['chatMessages', UUID] });
-  };
+  const handleChatChange = useCallback(
+    (chatId: string) => {
+      setChatName(chatId);
+    },
+    [setChatName],
+  );
 
-  const handleNewChat = () => {
+  const handleNewChat = useCallback(() => {
     const newUUID = generateUUID();
-    void setChatName(newUUID);
+    setChatName(newUUID);
     setSearchParams(
       (prev) => {
         const newParams = new URLSearchParams(prev);
@@ -273,7 +271,25 @@ export default function DocumentPage() {
       },
       { replace: true },
     );
-  };
+  }, [setChatName, setSearchParams]);
+
+  // CAMBIO: Memorizar el componente ChatDemo
+  const chatDemo = useMemo(
+    () => (
+      <ChatDemo
+        id={chatName || UUID}
+        teamId={id}
+        contractId={contract.documentId}
+        initialMessages={[]}
+        selectedChatModel="chat-model"
+        contractName={contract.fileName || contract.title}
+        isReadonly={false}
+        body={''}
+        userId={user.id}
+      />
+    ),
+    [chatName, UUID, id, contract.documentId, contract.fileName, contract.title, user.id],
+  );
 
   return (
     <div
@@ -625,18 +641,7 @@ export default function DocumentPage() {
                 onChatChange={handleChatChange}
                 onNewChat={handleNewChat}
               >
-                <ChatDemo
-                  id={chatName || UUID}
-                  teamId={id}
-                  contractId={contract.documentId}
-                  initialMessages={[]}
-                  selectedChatModel="chat-model"
-                  contractName={contract.fileName || contract.title}
-                  isReadonly={false}
-                  body={''}
-                  key={UUID}
-                  userId={user.id}
-                />
+                {chatDemo}
               </FullSizeCard>
             </FeatureCard>
           </div>

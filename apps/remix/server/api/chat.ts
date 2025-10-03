@@ -4,7 +4,6 @@ import { Hono } from 'hono';
 import { mutate } from 'swr';
 
 import { getSession } from '@documenso/auth/server/lib/utils/get-session';
-import { NEXT_PRIVATE_INTERNAL_WEBAPP_URL } from '@documenso/lib/constants/app';
 import {
   generateTitleFromUserMessage,
   getChatById,
@@ -27,6 +26,7 @@ import { ZChatRequestSchema } from './files.types';
 export const ChatRoute = new Hono<HonoEnv>().post(
   '/chat',
   sValidator('json', ZChatRequestSchema),
+
   async (c) => {
     try {
       const { session, user } = await getSession(c);
@@ -54,6 +54,7 @@ export const ChatRoute = new Hono<HonoEnv>().post(
 
       const chat = await getChatById({ id });
       const contract = await singleDocumentById(Number(contractId));
+
       if (!contract) {
         return new Response('Invalid contract', { status: 400 });
       }
@@ -62,14 +63,20 @@ export const ChatRoute = new Hono<HonoEnv>().post(
       const messageAndContractName = `Nombre del contrato: ${contract.title} contenido del mensaje: ${MessageContent}`;
 
       userMessage.content = messageAndContractName;
+      let isNewChat = false;
 
       if (!chat) {
+        isNewChat = true;
         const title = await generateTitleFromUserMessage({
           message: userMessage,
         });
 
         await saveChat({ id, contractId, userId, title, teamId });
-        await mutate(() => true, undefined, { revalidate: false });
+
+        console.log('newchat', isNewChat);
+
+        c.header('X-Chat-Created', 'true');
+        c.header('X-Document-Id', contractId.toString());
       } else {
         if (Number(chat.userId) !== Number(userId)) {
           return new Response('Unauthorized', { status: 401 });
