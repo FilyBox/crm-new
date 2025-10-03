@@ -3375,7 +3375,7 @@ msgstr "Deshabilitar al usuario implica que no podrá usar la cuenta. También d
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #: apps/remix/app/components/dialogs/organisation-email-create-dialog.tsx
 #: apps/remix/app/components/dialogs/organisation-email-update-dialog.tsx
@@ -6048,6 +6048,10 @@ msgstr "No se encontró campo de firma"
 msgid "No sorting applied"
 msgstr "Sin ordenar"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "No summary yet"
+msgstr "Sin resumen"
+
 #: apps/remix/app/components/tables/team-groups-table.tsx
 msgid "No team groups found"
 msgstr "No se encontraron grupos de equipo"
@@ -6099,6 +6103,15 @@ msgstr "Ninguno"
 #: packages/lib/constants/document-auth.ts
 msgid "None (Overrides global settings)"
 msgstr "Ninguno (Sobrescribir configuraciones globales)"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "Not defined"
+msgstr "Sin definir"
 
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Not supported"
@@ -7404,7 +7417,7 @@ msgstr "Guardar"
 
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
 msgid "Save Changes"
-msgstr ""
+msgstr "Guardar cambios"
 
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
 msgid "Save Template"
@@ -9303,6 +9316,10 @@ msgstr ""
 #: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Title"
 msgstr "Título"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "Title - Not defined"
+msgstr "Título - Sin definir"
 
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: packages/ui/primitives/document-flow/add-settings.types.ts

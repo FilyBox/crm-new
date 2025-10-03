@@ -322,7 +322,7 @@ export default function DocumentPage() {
                               handleFieldChange('title', value);
                             }}
                             variant="input"
-                            placeholder="Contract title..."
+                            placeholder={t`Title - Not defined`}
                             className="text-primary line-clamp-1 p-0 text-lg font-semibold"
                             displayClassName="p-0 h-fit text-base min-h-0"
                           />
@@ -407,7 +407,7 @@ export default function DocumentPage() {
                                   }}
                                   autoResize={true}
                                   variant="textarea"
-                                  placeholder="Artists involved..."
+                                  placeholder={t`Not defined`}
                                   className="p-0 text-base"
                                   displayClassName="p-0 h-fit text-base min-h-0"
                                   editClassName=""
@@ -447,7 +447,7 @@ export default function DocumentPage() {
                                       label: string;
                                     }>
                                   }
-                                  placeholder="Select status..."
+                                  placeholder={t`Not defined`}
                                   className="h-fit p-0 text-base"
                                   displayClassName="p-0 h-fit text-base min-h-0"
                                 />
@@ -477,7 +477,7 @@ export default function DocumentPage() {
                                     variant="date"
                                     dateFormat="d MMM yyyy"
                                     locale={currentLanguage === 'es' ? es : enUS}
-                                    placeholder="Pick start date..."
+                                    placeholder={t`Not defined`}
                                     className="p-0 text-base"
                                     displayClassName="p-0 h-fit text-base min-h-0"
                                   />
@@ -505,7 +505,7 @@ export default function DocumentPage() {
                                     variant="date"
                                     dateFormat="d MMM yyyy"
                                     locale={currentLanguage === 'es' ? es : enUS}
-                                    placeholder="Pick end date..."
+                                    placeholder={t`Not defined`}
                                     className="p-0 text-base"
                                     displayClassName="p-0 h-fit text-base min-h-0"
                                   />
@@ -547,7 +547,7 @@ export default function DocumentPage() {
                                         label: string;
                                       }>
                                     }
-                                    placeholder="Can extend..."
+                                    placeholder={t`Not defined`}
                                     className="h-fit p-0 text-base"
                                     displayClassName="p-0 h-fit text-base min-h-0"
                                   />
@@ -573,7 +573,7 @@ export default function DocumentPage() {
                                       handleFieldChange('possibleExtensionTime', value);
                                     }}
                                     variant="input"
-                                    placeholder="Extension time..."
+                                    placeholder={t`Not defined`}
                                     className="p-0 text-base"
                                     displayClassName="p-0 h-fit text-base min-h-0"
                                   />
@@ -601,7 +601,7 @@ export default function DocumentPage() {
                                   }}
                                   variant="textarea"
                                   autoResize={true}
-                                  placeholder="Contract summary..."
+                                  placeholder={t`No summary yet`}
                                   className="h-fit p-0"
                                   displayClassName="p-0 h-fit text-base min-h-0"
                                 />

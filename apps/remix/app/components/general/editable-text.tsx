@@ -124,16 +124,9 @@ export const EditableText = forwardRef<
       }
     }, [tempValue, autoResize, variant, isEditing]);
 
-    const handleDoubleClick = () => {
-      if (readonly || disabled) return;
-      setIsEditing(true);
-    };
-
     const handleClick = () => {
       if (readonly || disabled) return;
-      if (variant === 'select' || variant === 'date') {
-        setIsEditing(true);
-      }
+      setIsEditing(true);
     };
 
     const handleSave = () => {
@@ -306,7 +299,7 @@ export const EditableText = forwardRef<
           <Popover open={isEditing} onOpenChange={setIsEditing}>
             <PopoverTrigger asChild>
               <div
-                onDoubleClick={handleDoubleClick}
+                onClick={handleClick}
                 className={cn(
                   readonly || disabled ? 'cursor-default' : 'cursor-pointer',
                   'flex min-h-[2.5rem] items-center gap-2 rounded px-3 py-2 transition-colors',
@@ -348,7 +341,7 @@ export const EditableText = forwardRef<
             />
           )}
           <div
-            onDoubleClick={handleDoubleClick}
+            onClick={handleClick}
             className={cn(
               readonly || disabled ? 'cursor-default' : 'cursor-pointer',
               'min-h-[2.5rem] rounded px-3 py-2 transition-colors',

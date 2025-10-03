@@ -6043,6 +6043,10 @@ msgstr "No signature field found"
 msgid "No sorting applied"
 msgstr "No sorting applied"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "No summary yet"
+msgstr "No summary yet"
+
 #: apps/remix/app/components/tables/team-groups-table.tsx
 msgid "No team groups found"
 msgstr "No team groups found"
@@ -6094,6 +6098,15 @@ msgstr "None"
 #: packages/lib/constants/document-auth.ts
 msgid "None (Overrides global settings)"
 msgstr "None (Overrides global settings)"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "Not defined"
+msgstr "Not defined"
 
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Not supported"
@@ -9312,6 +9325,10 @@ msgstr "Tipo de Precio"
 #: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Title"
 msgstr "Title"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/contracts.$id._index.tsx
+msgid "Title - Not defined"
+msgstr "Title - Not defined"
 
 #: apps/remix/app/components/sheets/allmusic-sheet.tsx
 #: packages/ui/primitives/document-flow/add-settings.types.ts
