@@ -718,6 +718,7 @@ export const LpmTable = ({
   return (
     <DataTable
       from="lpm"
+      isLoading={isLoading || false}
       onDelete={onDelete}
       onEdit={onEdit}
       currentTeamMemberRole={team?.currentTeamRole}

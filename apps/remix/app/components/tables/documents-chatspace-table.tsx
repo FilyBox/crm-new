@@ -194,6 +194,7 @@ export const DocumentsChatSpaceTable = ({
   return (
     <>
       <DataTable<DocumentsTableRow>
+        isLoading={isLoading || false}
         currentTeamMemberRole={team.currentTeamRole}
         // onRetry={onRetry}
         data={results.data}

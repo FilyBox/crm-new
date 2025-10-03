@@ -17,10 +17,12 @@ type WrapperStyle = MotionStyle & {
 
 interface CardProps {
   className?: string;
+  contentClassName?: string;
 }
 
 export function FeatureCard({
   className,
+  contentClassName,
   children,
 }: CardProps & {
   children: React.ReactNode;
@@ -59,7 +61,9 @@ export function FeatureCard({
           className,
         )}
       >
-        <div className="min-h-[550px] w-full">{mounted ? children : null}</div>
+        <div className={cn('min-h-[550px] w-full', contentClassName)}>
+          {mounted ? children : null}
+        </div>
       </div>
     </motion.div>
   );

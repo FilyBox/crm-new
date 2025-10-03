@@ -192,8 +192,12 @@ export function TableActionBar<TData extends { id: number }>({
     .otherwise(() => true);
 
   return (
-    <DataTableActionBar className="z-[55] min-h-[57px]" table={table} visible={true}>
-      <motion.div layout className="flex flex-col items-center gap-1.5 sm:flex-row">
+    <DataTableActionBar
+      className="z-[55] min-h-[57px] overflow-hidden"
+      table={table}
+      visible={true}
+    >
+      <motion.div className="flex flex-col items-center gap-1.5 sm:flex-row">
         <div className="flex w-full items-center justify-between space-x-2 sm:w-fit sm:justify-center">
           <p className="whitespace-nowrap text-sm font-medium">
             <Trans>Per page</Trans>

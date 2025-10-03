@@ -234,6 +234,7 @@ export const TemplatesTable = ({
       <DataTable<TemplatesTableRow>
         currentTeamMemberRole={team.currentTeamRole}
         // onRetry={onRetry}
+        isLoading={isLoading || false}
         onNavegate={onNavegate}
         data={results.data}
         onMoveDocument={onMoveDocument}

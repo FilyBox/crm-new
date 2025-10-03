@@ -21,10 +21,7 @@ import { DataTable } from '@documenso/ui/primitives/data-table-table';
 import { DocumentStatus } from '~/components/general/document/document-status';
 import { useCurrentTeam } from '~/providers/team';
 
-import { DataTableAdvancedToolbar } from './data-table-advanced-toolbar';
-import { DataTableFilterList } from './data-table-filter-list';
 import { DataTableSkeleton } from './data-table-skeleton';
-import { DataTableSortList } from './data-table-sort-list';
 import { DocumentsTableActionButton } from './documents-table-action-button';
 import { DocumentsTableActionDropdown } from './documents-table-action-dropdown';
 import { TableActionBar } from './table-action-bar';
@@ -163,7 +160,7 @@ export const DocumentsTable = ({
 
   // const columns = createColumns();
 
-  const { table, shallow, debounceMs, throttleMs } = useDataTable({
+  const { table } = useDataTable({
     data: data?.data || [],
     columns,
     pageCount: data?.totalPages || 1,
@@ -188,11 +185,14 @@ export const DocumentsTable = ({
     totalPages: 1,
   };
 
+  console.log('isLoading', isLoading);
+
   return (
     <>
       <DataTable<DocumentsTableRow>
         currentTeamMemberRole={team.currentTeamRole}
         // onRetry={onRetry}
+        isLoading={isLoading || false}
         onNavegate={onNavegate}
         data={results.data}
         onMoveDocument={onMoveDocument}
@@ -216,7 +216,7 @@ export const DocumentsTable = ({
           />
         }
       >
-        <DataTableAdvancedToolbar loading={false} table={table}>
+        {/* <DataTableAdvancedToolbar loading={false} table={table}>
           <DataTableSortList table={table} align="start" loading={false} />
           <DataTableFilterList
             loading={isLoading || false}
@@ -226,7 +226,7 @@ export const DocumentsTable = ({
             throttleMs={throttleMs}
             align="start"
           />
-        </DataTableAdvancedToolbar>
+        </DataTableAdvancedToolbar> */}
       </DataTable>
     </>
   );

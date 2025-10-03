@@ -27,6 +27,7 @@ interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   onRetry?: (data: TData) => void;
   onClearFilters?: () => void;
   hasFilters?: boolean;
+  isLoading: boolean;
   skeleton?: {
     enable: boolean;
     rows: number;
@@ -52,6 +53,7 @@ type enhancedAssignees = {
 
 export function DataTable<TData>({
   table,
+  isLoading,
   actionBar,
   className,
   data,
@@ -333,6 +335,7 @@ export function DataTable<TData>({
           {isDesktop ? (
             isResizing ? (
               <MemoizedDataTableBody
+                isLoading={isLoading}
                 table={table}
                 data={data}
                 skeleton={skeleton}
@@ -347,6 +350,7 @@ export function DataTable<TData>({
               <DataTableBodyComponent
                 table={table}
                 data={data}
+                isLoading={isLoading}
                 skeleton={skeleton}
                 onEdit={onEdit}
                 canEditDelete={canEditDelete}

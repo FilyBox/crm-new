@@ -456,6 +456,7 @@ export const DistributionTable = ({
   return (
     <div className="relative">
       <DataTable
+        isLoading={isLoading || false}
         onDelete={onDelete}
         onEdit={onEdit}
         currentTeamMemberRole={team?.currentTeamRole}

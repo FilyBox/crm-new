@@ -228,6 +228,7 @@ export const ContractsTable = ({
   return (
     <>
       <DataTable
+        isLoading={isLoading || false}
         columnSizeVars={columnSizeVars}
         onDelete={onDelete}
         onEdit={onEdit}

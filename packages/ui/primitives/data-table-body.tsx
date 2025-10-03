@@ -19,6 +19,7 @@ import { TableBody, TableCell, TableRow } from './table';
 interface DataTableBodyProps<TData> {
   table: TanstackTable<TData>;
   data?: TData[];
+  isLoading?: boolean;
   onEdit?: (data: TData) => void;
   onDelete?: (data: TData) => void;
   onNavegate?: (data: TData) => void;
@@ -37,6 +38,7 @@ function DataTableBodyComponent<TData>({
   table,
   onEdit,
   onDelete,
+  isLoading,
   onNavegate,
   onRetry,
   onMoveDocument,
@@ -61,7 +63,7 @@ function DataTableBodyComponent<TData>({
   ];
 
   return (
-    <TableBody>
+    <TableBody isLoading={isLoading}>
       {table.getRowModel().rows?.length ? (
         table.getRowModel().rows.map((row) => (
           <ContextMenu key={row.id}>

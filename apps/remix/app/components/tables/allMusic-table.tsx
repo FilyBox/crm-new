@@ -271,6 +271,7 @@ export const AllMusicTable = ({
   return (
     <div className="relative">
       <DataTable
+        isLoading={isLoading || false}
         columnSizeVars={columnSizeVars}
         onDelete={onDelete}
         onEdit={onEdit}

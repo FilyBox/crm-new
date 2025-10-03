@@ -266,11 +266,20 @@ export const contractsRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      const { id, ...data } = input;
+      const { id, startDate, endDate, ...data } = input;
+      // startDate.setHours(0, 0, 0, 0);
+      // endDate.setHours(0, 0, 0, 0); construir nueva fecha para evitar problemas de zona horaria
+      const newStartDate = new Date(
+        Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0, 0),
+      );
+
+      const newEndDate = new Date(
+        Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0, 0),
+      );
 
       const olalo = await prisma.contract.update({
         where: { id },
-        data,
+        data: { ...data, startDate: newStartDate, endDate: newEndDate },
       });
 
       return olalo;

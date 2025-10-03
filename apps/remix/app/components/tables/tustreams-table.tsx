@@ -194,6 +194,7 @@ export const TuStreamsTable = ({
       <DataTable
         onDelete={onDelete}
         onEdit={onEdit}
+        isLoading={isLoading || false}
         currentTeamMemberRole={team?.currentTeamRole}
         data={results.data}
         from="tustreams"

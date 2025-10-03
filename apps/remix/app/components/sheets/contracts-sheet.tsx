@@ -17,7 +17,7 @@ import { trpc } from '@documenso/trpc/react';
 import { queryClient } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
-import { Calendar } from '@documenso/ui/primitives/calendar-year-picker';
+import { Calendar } from '@documenso/ui/primitives/calendar';
 import {
   Command,
   CommandEmpty,
@@ -457,6 +457,7 @@ export default function ContractsSheet({
                               <PopoverContent className="z-9999 w-auto p-0" align="start">
                                 <Calendar
                                   mode="single"
+                                  captionLayout="dropdown"
                                   selected={(() => {
                                     try {
                                       return field.value ? new Date(field.value) : undefined;
@@ -527,6 +528,7 @@ export default function ContractsSheet({
                               <PopoverContent className="z-9999 w-auto p-0" align="start">
                                 <Calendar
                                   mode="single"
+                                  captionLayout="dropdown"
                                   selected={(() => {
                                     try {
                                       return field.value ? new Date(field.value) : undefined;

@@ -153,6 +153,7 @@ export const FilesTable = ({
   return (
     <div className="relative">
       <DataTable
+        isLoading={isLoading || false}
         onDelete={onDelete}
         onEdit={onEdit}
         columnSizeVars={columnSizeVars}
